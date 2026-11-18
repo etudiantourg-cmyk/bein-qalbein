@@ -3,9 +3,8 @@
   "short_name": "بين قلبين",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#fff8ef",
-  "theme_color": "#4b1027",
-  "description": "رسائل محبة واهتمام بين الزوجين",
+  "background_color": "#f7d7df",
+  "theme_color": "#4a0824",
   "icons": [
     {
       "src": "icon.svg",

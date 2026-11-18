@@ -74,7 +74,9 @@ en:[
 ]};
 const labels={ar:{who:'اختر هويتك',husband:'أنا زوج',wife:'أنا زوجة',cat:'اختر المناسبة',msg:'رسالة من القلب',new:'رسالة أخرى ✨',copy:'نسخ',share:'مشاركة',fav:'♡ أضف للمفضلة',show:'☆ المفضلة',search:'ابحث في التصنيفات…',tag:'كلمات صغيرة… تصنع حباً كبيراً',note:'الرسائل تُنشأ من قوالب متنوعة داخل التطبيق، ويمكن إضافة لغات ورسائل جديدة لاحقاً.'},
 en:{who:'Choose your role',husband:'I am a husband',wife:'I am a wife',cat:'Choose an occasion',msg:'A message from the heart',new:'Another message ✨',copy:'Copy',share:'Share',fav:'♡ Add to favorites',show:'☆ Favorites',search:'Search categories…',tag:'Small words… big love',note:'Messages are generated from varied templates. More languages and messages can be added later.'}};
-let role='husband',lang='ar',selected=0,current='',favs=[];
+let role='husband',lang='ar',selected=0,current='';
+let favs=[];try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]}
+function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){}}
 const $=id=>document.getElementById(id);
 function tr(k){return (labels[lang]||labels.en)[k]||(labels.en[k]||k)}
 function renderCats(filter=''){ $('cats').innerHTML='';categories.forEach((c,i)=>{let name=c[lang==='ar'?1:({en:2,fr:3,es:4,de:5,tr:6,it:7,pt:8}[lang]||2)];if(!name.toLowerCase().includes(filter.toLowerCase()))return;let b=document.createElement('button');b.className='cat'+(i===selected?' active':'');b.textContent=name;b.onclick=()=>{selected=i;renderCats($('search').value);generate()};$('cats').append(b)})}
@@ -84,8 +86,17 @@ document.querySelectorAll('.role').forEach(b=>b.onclick=()=>{role=b.dataset.role
 $('lang').onchange=e=>{lang=e.target.value;applyLang()};$('newBtn').onclick=generate;
 $('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(current);$('copyBtn').textContent=lang==='ar'?'تم النسخ ✓':'Copied ✓';setTimeout(()=>$('copyBtn').textContent=tr('copy'),1300)}catch(e){alert(current)}};
 $('shareBtn').onclick=()=>{if(navigator.share)navigator.share({title:'BEIN QALBEIN PRO',text:current});else{navigator.clipboard?.writeText(current);alert(lang==='ar'?'تم نسخ الرسالة لمشاركتها':'Message copied to share')}};
-$('favBtn').onclick=()=>{if(current&&!favs.includes(current))favs.unshift(current);showFavs()};
+$('favBtn').addEventListener('click',()=>{ 
+  if(!current){alert(lang==='ar'?'اختر رسالة أولاً':'Choose a message first');return;}
+  if(!favs.includes(current)){favs.unshift(current);saveFavs();}
+  showFavs();$('favorites').classList.remove('hidden');
+  $('favBtn').textContent=lang==='ar'?'تمت الإضافة ✓':'Added ✓';
+  setTimeout(()=>$('favBtn').textContent=tr('fav'),1500);
+});
 $('showFav').onclick=()=>{$('favorites').classList.toggle('hidden');showFavs()};
-function showFavs(){$('favorites').innerHTML=favs.length?favs.map((x,i)=>`<div class="favitem">${x}<br><button onclick="navigator.clipboard.writeText(favs[${i}])">نسخ</button></div>`).join(''):'<p class="muted">لا توجد رسائل محفوظة بعد.</p>'}
+function showFavs(){
+ $('favorites').innerHTML=favs.length?favs.map((x,i)=>`<div class="favitem">${x}<br><button onclick="navigator.clipboard.writeText(favs[${i}])">نسخ</button> <button onclick="removeFav(${i})">حذف</button></div>`).join(''):'<p class="muted">لا توجد رسائل محفوظة بعد.</p>';
+}
+function removeFav(i){favs.splice(i,1);saveFavs();showFavs()}
 $('search').oninput=e=>renderCats(e.target.value);renderCats();generate();applyLang();if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 </script></body></html>

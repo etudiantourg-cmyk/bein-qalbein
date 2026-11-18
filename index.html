@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4b1027"><meta name="description" content="بين قلبين — رسائل محبة واهتمام بين الزوجين">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>BEIN QALBEIN PRO</title>
+<style>
+:root{--wine:#4b1027;--wine2:#741d3d;--gold:#d9b66d;--cream:#fff8ef;--pink:#f6dce4;--ink:#3a1726}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#fff5eb,#f4e4e7 55%,#ead4da);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#3b0b20,#711d3d);color:#fff;padding:25px 18px 30px;text-align:center;border-radius:0 0 30px 30px;box-shadow:0 8px 24px #4b102733}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px}.sub{color:#f1d7a2;margin-top:7px;font-size:14px}
+main{max-width:760px;margin:auto;padding:18px}.panel{background:#fffaf5eF;border:1px solid #e7cfaa;border-radius:22px;padding:17px;margin:14px 0;box-shadow:0 7px 22px #4b102712}
+h2{font-size:18px;margin:0 0 13px;color:var(--wine)}.roles,.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+button,select,input{font:inherit}button{border:0;cursor:pointer;border-radius:14px;padding:12px 14px;font-weight:700}
+.role,.cat{background:#fff0f3;color:var(--wine);border:1px solid #edcbd5}.role.active,.cat.active,.primary{background:linear-gradient(135deg,var(--wine),var(--wine2));color:white;border-color:var(--gold)}
+select,input{width:100%;padding:12px;border:1px solid #e3c8cf;border-radius:12px;background:white;color:var(--ink);margin:5px 0 12px}
+.cats{grid-template-columns:repeat(2,minmax(0,1fr))}.cat{font-size:14px;min-height:48px}
+.message{background:linear-gradient(145deg,#fff,#fff5f0);border:1px solid #e6c88f;border-radius:18px;padding:18px;line-height:1.9;font-size:17px;min-height:110px;white-space:pre-wrap}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.actions button{background:#f4e4e8;color:var(--wine);font-size:13px}.actions .primary{color:white}
+.row{display:flex;gap:8px}.row>*{flex:1}.muted{font-size:12px;color:#866b75;text-align:center}.favitem{padding:10px;border-bottom:1px solid #eedde1;line-height:1.7}.hidden{display:none}
+footer{text-align:center;padding:20px;color:#896c78;font-size:12px}
+@media(min-width:600px){.cats{grid-template-columns:repeat(3,1fr)}}
+</style></head>
+<body>
+<header><div class="logo">♡ BEIN QALBEIN PRO ♡</div><div class="sub" id="tagline">كلمات صغيرة… تصنع حباً كبيراً</div></header>
+<main>
+<section class="panel"><h2 id="whoTitle">اختر هويتك</h2><div class="roles"><button class="role active" data-role="husband" id="husband">أنا زوج</button><button class="role" data-role="wife" id="wife">أنا زوجة</button></div>
+<label for="lang" id="langLabel">لغة التطبيق</label><select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option><option value="de">Deutsch</option><option value="tr">Türkçe</option><option value="it">Italiano</option><option value="pt">Português</option></select></section>
+<section class="panel"><h2 id="catTitle">اختر المناسبة</h2><div class="cats" id="cats"></div></section>
+<section class="panel"><h2 id="messageTitle">رسالة من القلب</h2><div class="message" id="message">اختر تصنيفاً لتظهر لك رسالة جميلة هنا. ❤️</div><div class="actions"><button class="primary" id="newBtn">رسالة أخرى ✨</button><button id="copyBtn">نسخ</button><button id="shareBtn">مشاركة</button></div></section>
+<section class="panel"><h2 id="toolsTitle">أدواتك</h2><input id="search" placeholder="ابحث في التصنيفات…"><div class="row"><button id="favBtn">♡ أضف للمفضلة</button><button id="showFav">☆ المفضلة</button></div><div id="favorites" class="hidden"></div></section>
+<p class="muted" id="note">الرسائل تُنشأ من قوالب متنوعة داخل التطبيق، ويمكن إضافة لغات ورسائل جديدة لاحقاً.</p>
+</main><footer>صُنع بالمحبة ♡ BEIN QALBEIN PRO</footer>
+<script>
+const categories=[
+['work','في العمل','At work','Au travail','En el trabajo','Bei der Arbeit','İşte','Al lavoro','No trabalho'],
+['travel','مسافر/مسافرة','Traveling','En voyage','De viaje','Auf Reisen','Seyahatte','In viaggio','Viajando'],
+['sick','مريض/مريضة','Feeling unwell','Malade','Enfermo/a','Krank','Hasta','Malato/a','Doente'],
+['sad','حزين/حزينة','Feeling sad','Triste','Triste','Traurig','Üzgün','Triste','Triste'],
+['angry','غاضب/غاضبة','Upset','En colère','Enfadado/a','Verärgert','Kızgın','Arrabbiato/a','Chateado/a'],
+['tired','متعب/متعبة','Tired','Fatigué/e','Cansado/a','Müde','Yorgun','Stanco/a','Cansado/a'],
+['sleep','قبل النوم','Before sleep','Avant de dormir','Antes de dormir','Vor dem Schlafen','Uyumadan önce','Prima di dormire','Antes de dormir'],
+['miss','اشتياق','Missing you','Tu me manques','Te extraño','Ich vermisse dich','Seni özledim','Mi manchi','Saudades'],
+['sorry','مصالحة واعتذار','Making peace','Réconciliation','Reconciliación','Versöhnung','Barışma','Riconciliazione','Reconciliação'],
+['sweet','تدليل','Sweet words','Tendresse','Cariño','Zärtlichkeit','Şefkat','Tenerezza','Carinho'],
+['morning','صباح الخير','Good morning','Bonjour','Buenos días','Guten Morgen','Günaydın','Buongiorno','Bom dia'],
+['evening','مساء الخير','Good evening','Bonsoir','Buenas noches','Guten Abend','İyi akşamlar','Buonasera','Boa noite'],
+['romance','رومانسية','Romance','Romance','Romance','Romantik','Romantik','Romantico','Romance'],
+['thanks','تقدير وامتنان','Gratitude','Gratitude','Gratitud','Dankbarkeit','Minnettarlık','Gratitudine','Gratidão'],
+['anniversary','ذكرى الزواج','Anniversary','Anniversaire','Aniversario','Jahrestag','Yıl dönümü','Anniversario','Aniversário']];
+const templates={
+ar:[
+['أتمنى أن يمر يومك بخير، وتعرف أن هناك قلباً يدعو لك ويحبك في كل لحظة. ❤️','حتى وأنت بعيد، تبقى أقرب الناس إلى قلبي. انتبه لنفسك من أجلي.','وجودك في حياتي نعمة لا أريد أن أعتادها؛ أريد أن أقدّرها كل يوم.'],
+['اشتقت إلى صوتك وتفاصيلك الصغيرة، وأنتظر لحظة تجمعنا من جديد.','المسافة لا تغيّر مكانتك في قلبي، بل تجعل الشوق أجمل وأصدق.','أرسل لك حضناً كبيراً يعبر كل المسافات.'],
+['لا أريد من الدنيا شيئاً الآن سوى أن أراك بخير ومطمئناً. أنا بجانبك دائماً.','خذ وقتك للراحة، وصحتك عندي أهم من كل شيء. أحبك.','أتمنى أن تحمل لك الساعات القادمة راحة وعافية وابتسامة.'],
+['إن كان يومك ثقيلاً، تذكّر أنك لست وحدك. أنا هنا لأسمعك وأساندك.','ابتسم قليلاً، فهناك من يرى في ابتسامتك أجمل ما في الدنيا.','أحبك في أيامك الجميلة وحتى في الأيام التي لا تشبهك.'],
+['قد نختلف، لكن مكانتك عندي لا تتغير. دعنا نتحدث بهدوء ونفهم بعضنا.','لا أريد أن ينتصر أحدنا على الآخر؛ أريد أن ينتصر حبنا.','قلبي مفتوح لك دائماً، فلنبدأ من جديد بكلمة طيبة.'],
+['أعرف أنك متعب، وأتمنى لو أستطيع أن أريح قلبك قبل جسدك.','لا تنسَ أن تأخذ استراحة؛ أنت أهم من كل انشغال.','أنا فخور/ة بك وبكل ما تبذله، أحبك كثيراً.'],
+['ليلة هادئة لقلبك، وأحلام جميلة تشبه روحك. تصبح على خير يا حبيبي.','سأترك لك قبلة على جبينك ودعوة أن تنام مطمئناً.','آخر فكرة في يومي أنت، وأجمل أمنية في ليلتي أن تكون بخير.'],
+['أشتاق إليك بطريقة لا تشرحها الكلمات؛ كأن كل شيء يذكّرني بك.','كل دقيقة بعيدة عنك تجعلني أقدّر قربك أكثر.','لو كان الشوق رسالة، لأرسلت لك كتاباً لا ينتهي.'],
+['أنا آسف/ة إن جرحتك. لم يكن هذا ما أريده، وأتمنى أن نصلح ما بيننا بالمحبة.','أنت أغلى من أن نترك لحظة غضب تبعدنا. سامحني ولنحاول من جديد.','أسمعك وأحترم شعورك، وأريد أن أفهمك أكثر.'],
+['يا أجمل تفاصيل أيامي، أتمنى أن أكون سبب ابتسامتك اليوم.','أنت حبيبي وصديقي وراحة قلبي، ولك مني كل الدلال.','لو أستطيع لوضعت الفرح كله بين يديك.'],
+['صباحك حب وطمأنينة، أتمنى أن يبتسم لك هذا اليوم من أوله إلى آخره.','صباح الخير لمن يجعل الحياة ألطف بمجرد وجوده.','ابدأ يومك وأنت تعرف أنني أحبك وأؤمن بك.'],
+['مساء الورد لقلبك، أتمنى أن يهدأ تعب اليوم وتبقى ابتسامتك.','انتهى اليوم، لكن حبي لك لا ينتهي. مساءك سعادة.','أتمنى أن يكون مساؤك دافئاً كقربك من قلبي.'],
+['أختارك كل يوم، ليس لأن الحياة كاملة، بل لأنك الشخص الذي أريد أن أكملها معه.','في عينيك أجد معنى البيت، وفي قربك أجد السلام.','أحب تفاصيلك كما هي، وأحب أننا نبني حكايتنا معاً.'],
+['شكراً لأنك أنت، ولأنك تضيف إلى أيامي معنى ودفئاً.','أقدّر تعبك واهتمامك وكل الأشياء التي تفعلها بصمت.','وجودك ليس أمراً عادياً في حياتي؛ إنه هدية أمتنّ لها.'],
+['كل عام ونحن نختار بعضنا بالمودة والرحمة، ونصنع ذكريات أجمل.','ذكرى زواج سعيدة لنا؛ وما زال في قلبي لك حب يكبر كل يوم.','أجمل ما في رحلتنا أننا نمضيها معاً، خطوة بخطوة.']
+],
+en:[
+['I hope your day is kind to you. Someone is thinking of you and cheering you on. ❤️','Even from afar, you are close to my heart. Take good care of yourself.','Having you in my life is a gift I never want to take for granted.'],
+['I miss your voice and all the little things that make you you.','Distance cannot change your place in my heart.','Sending you the warmest hug across every mile.'],
+['All I want right now is to know you are safe and well. I am here for you.','Rest when you need to. Your wellbeing matters most to me.','Wishing you comfort, strength, and a smile soon.']
+]};
+const labels={ar:{who:'اختر هويتك',husband:'أنا زوج',wife:'أنا زوجة',cat:'اختر المناسبة',msg:'رسالة من القلب',new:'رسالة أخرى ✨',copy:'نسخ',share:'مشاركة',fav:'♡ أضف للمفضلة',show:'☆ المفضلة',search:'ابحث في التصنيفات…',tag:'كلمات صغيرة… تصنع حباً كبيراً',note:'الرسائل تُنشأ من قوالب متنوعة داخل التطبيق، ويمكن إضافة لغات ورسائل جديدة لاحقاً.'},
+en:{who:'Choose your role',husband:'I am a husband',wife:'I am a wife',cat:'Choose an occasion',msg:'A message from the heart',new:'Another message ✨',copy:'Copy',share:'Share',fav:'♡ Add to favorites',show:'☆ Favorites',search:'Search categories…',tag:'Small words… big love',note:'Messages are generated from varied templates. More languages and messages can be added later.'}};
+let role='husband',lang='ar',selected=0,current='',favs=[];
+const $=id=>document.getElementById(id);
+function tr(k){return (labels[lang]||labels.en)[k]||(labels.en[k]||k)}
+function renderCats(filter=''){ $('cats').innerHTML='';categories.forEach((c,i)=>{let name=c[lang==='ar'?1:({en:2,fr:3,es:4,de:5,tr:6,it:7,pt:8}[lang]||2)];if(!name.toLowerCase().includes(filter.toLowerCase()))return;let b=document.createElement('button');b.className='cat'+(i===selected?' active':'');b.textContent=name;b.onclick=()=>{selected=i;renderCats($('search').value);generate()};$('cats').append(b)})}
+function generate(){let pool=(templates[lang]&&templates[lang][selected])||templates.ar[selected]||templates.ar[0];current=pool[Math.floor(Math.random()*pool.length)];if(role==='wife')current=current.replaceAll('حبيبي','حبيبتي');$('message').textContent=current}
+function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';$('tagline').textContent=tr('tag');$('whoTitle').textContent=tr('who');$('husband').textContent=tr('husband');$('wife').textContent=tr('wife');$('catTitle').textContent=tr('cat');$('messageTitle').textContent=tr('msg');$('newBtn').textContent=tr('new');$('copyBtn').textContent=tr('copy');$('shareBtn').textContent=tr('share');$('favBtn').textContent=tr('fav');$('showFav').textContent=tr('show');$('search').placeholder=tr('search');$('note').textContent=tr('note');renderCats($('search').value);generate()}
+document.querySelectorAll('.role').forEach(b=>b.onclick=()=>{role=b.dataset.role;document.querySelectorAll('.role').forEach(x=>x.classList.toggle('active',x===b));generate()});
+$('lang').onchange=e=>{lang=e.target.value;applyLang()};$('newBtn').onclick=generate;
+$('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(current);$('copyBtn').textContent=lang==='ar'?'تم النسخ ✓':'Copied ✓';setTimeout(()=>$('copyBtn').textContent=tr('copy'),1300)}catch(e){alert(current)}};
+$('shareBtn').onclick=()=>{if(navigator.share)navigator.share({title:'BEIN QALBEIN PRO',text:current});else{navigator.clipboard?.writeText(current);alert(lang==='ar'?'تم نسخ الرسالة لمشاركتها':'Message copied to share')}};
+$('favBtn').onclick=()=>{if(current&&!favs.includes(current))favs.unshift(current);showFavs()};
+$('showFav').onclick=()=>{$('favorites').classList.toggle('hidden');showFavs()};
+function showFavs(){$('favorites').innerHTML=favs.length?favs.map((x,i)=>`<div class="favitem">${x}<br><button onclick="navigator.clipboard.writeText(favs[${i}])">نسخ</button></div>`).join(''):'<p class="muted">لا توجد رسائل محفوظة بعد.</p>'}
+$('search').oninput=e=>renderCats(e.target.value);renderCats();generate();applyLang();if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+</script></body></html>

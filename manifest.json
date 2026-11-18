@@ -1,0 +1,17 @@
+{
+  "name": "BEIN QALBEIN PRO",
+  "short_name": "بين قلبين",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff8ef",
+  "theme_color": "#4b1027",
+  "description": "رسائل محبة واهتمام بين الزوجين",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

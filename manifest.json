@@ -2,9 +2,12 @@
   "name": "BEIN QALBEIN PRO",
   "short_name": "بين قلبين",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f7d7df",
-  "theme_color": "#4a0824",
+  "background_color": "#fff5e9",
+  "theme_color": "#500820",
+  "lang": "ar",
+  "dir": "rtl",
   "icons": [
     {
       "src": "icon.svg",

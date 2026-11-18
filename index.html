@@ -1,119 +1,341 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#4b1027"><meta name="description" content="بين قلبين — رسائل محبة واهتمام بين الزوجين">
-<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#500820">
+<meta name="description" content="بين قلبين برو — رسائل مودة واهتمام">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>BEIN QALBEIN PRO</title>
 <style>
-:root{--wine:#4b1027;--wine2:#741d3d;--gold:#d9b66d;--cream:#fff8ef;--pink:#f6dce4;--ink:#3a1726}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#fff5eb,#f4e4e7 55%,#ead4da);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-header{background:linear-gradient(135deg,#3b0b20,#711d3d);color:#fff;padding:25px 18px 30px;text-align:center;border-radius:0 0 30px 30px;box-shadow:0 8px 24px #4b102733}
-.logo{font-size:27px;font-weight:900;letter-spacing:1px}.sub{color:#f1d7a2;margin-top:7px;font-size:14px}
-main{max-width:760px;margin:auto;padding:18px}.panel{background:#fffaf5eF;border:1px solid #e7cfaa;border-radius:22px;padding:17px;margin:14px 0;box-shadow:0 7px 22px #4b102712}
-h2{font-size:18px;margin:0 0 13px;color:var(--wine)}.roles,.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-button,select,input{font:inherit}button{border:0;cursor:pointer;border-radius:14px;padding:12px 14px;font-weight:700}
-.role,.cat{background:#fff0f3;color:var(--wine);border:1px solid #edcbd5}.role.active,.cat.active,.primary{background:linear-gradient(135deg,var(--wine),var(--wine2));color:white;border-color:var(--gold)}
-select,input{width:100%;padding:12px;border:1px solid #e3c8cf;border-radius:12px;background:white;color:var(--ink);margin:5px 0 12px}
-.cats{grid-template-columns:repeat(2,minmax(0,1fr))}.cat{font-size:14px;min-height:48px}
-.message{background:linear-gradient(145deg,#fff,#fff5f0);border:1px solid #e6c88f;border-radius:18px;padding:18px;line-height:1.9;font-size:17px;min-height:110px;white-space:pre-wrap}
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.actions button{background:#f4e4e8;color:var(--wine);font-size:13px}.actions .primary{color:white}
-.row{display:flex;gap:8px}.row>*{flex:1}.muted{font-size:12px;color:#866b75;text-align:center}.favitem{padding:10px;border-bottom:1px solid #eedde1;line-height:1.7}.hidden{display:none}
-footer{text-align:center;padding:20px;color:#896c78;font-size:12px}
-@media(min-width:600px){.cats{grid-template-columns:repeat(3,1fr)}}
-
-:root{--wine:#4a0824;--wine2:#8f123f;--gold:#e8bd65;--cream:#fff3e6;--pink:#f7d7df;--ink:#451326}
-body{background:radial-gradient(ellipse at 50% 0%,#fff8f4 0,#f9dfe4 48%,#e9c5d0 100%);font-family:system-ui,-apple-system,"Noto Naskh Arabic","Segoe UI",sans-serif}
-header{position:relative;overflow:hidden;padding:30px 18px 34px;border:2px solid #dba94f;border-top:0;border-radius:0 0 42px 42px;background:radial-gradient(circle at 50% 18%,#a42b52 0,#650d31 48%,#350719 100%);box-shadow:0 10px 28px #5b0b2e44,inset 0 -3px 0 #f5d58a}
-header:before{content:"";position:absolute;top:-170px;left:-65px;width:230px;height:230px;border:1px solid #f1cf80;border-radius:50%;opacity:.24}
-.logo{position:relative;z-index:1;font-size:clamp(23px,6vw,34px);text-shadow:0 2px 8px #17000b}
-.logo:before{content:"💞";display:block;font-size:46px;margin-bottom:4px;filter:drop-shadow(0 2px 4px #f5b95a)}
-.sub{position:relative;z-index:1;color:#ffe4a5;font-size:16px}
-main{max-width:780px;padding:16px 14px 26px}
-.panel{background:linear-gradient(145deg,#fffaf5,#ffeadf);border:1.5px solid #dfbd79;border-radius:27px;padding:20px 17px;margin:17px 0;box-shadow:0 8px 22px #64152b17,inset 0 1px 0 white}
-.panel h2{font-size:21px;color:#5a0c2d;margin-bottom:16px}
-.roles{gap:12px}.role{min-height:70px;border-radius:21px;background:linear-gradient(145deg,#fff1f2,#f6dce4);border:1px solid #e7b9c7;color:#64112f;font-size:18px;box-shadow:0 3px 7px #5b10200c}
-.role.active{background:linear-gradient(145deg,#7c1239,#43071f);color:#fff2c8;border:2px solid #e9bd68;box-shadow:0 4px 12px #4b0a2833}
-select,input{border:1.5px solid #d8b66f;border-radius:17px;padding:14px;background:#fffdfb}
-.cats{gap:10px}.cat{min-height:65px;border-radius:19px;background:linear-gradient(145deg,#fff4f4,#f7e1e5);border:1px solid #e6c2c9;color:#5a102c;font-size:15px;box-shadow:0 3px 8px #5b10200a}
-.cat:before{content:attr(data-icon);display:inline-grid;place-items:center;width:27px;height:27px;margin-inline-end:6px;border-radius:50%;background:linear-gradient(145deg,#a81b4b,#590b2a);color:#ffe7a7;box-shadow:0 2px 5px #4b092833;font-size:15px;vertical-align:middle}
-.cat.active{background:linear-gradient(145deg,#86123d,#4b0825);color:#fff4d9;border:1.5px solid #e8bd65;box-shadow:0 4px 12px #4b0a2833}
-.message{background:linear-gradient(145deg,#fffdf9,#ffefe6);border:1.5px solid #dfbd79;border-radius:23px;padding:22px 18px;line-height:2;font-size:19px;box-shadow:inset 0 1px 0 white}
-.actions{gap:9px}.actions button,.row button{min-height:58px;border-radius:18px;background:linear-gradient(145deg,#f9e4e8,#f1d4dc);color:#5b0d2b;border:1px solid #e8c3ca;box-shadow:0 3px 8px #5b102012}
-.actions .primary,.primary{background:linear-gradient(145deg,#a9144b,#550824);color:#fff0c5;border:1.5px solid #e9bd68;box-shadow:0 4px 12px #570b2c33}
-.row button:first-child{background:linear-gradient(145deg,#fff0dc,#f7dfbd);border-color:#dfb45d}
-.row button:last-child{background:linear-gradient(145deg,#85113b,#4a0824);color:#fff0c5;border:1px solid #e8bd65}
-.favitem{background:#fff8f2;border:1px solid #e7c987;border-radius:16px;margin-top:10px;padding:14px}
-footer{color:#7e5260;padding:25px 12px 35px;font-size:13px}
-@media(min-width:560px){.cats{grid-template-columns:repeat(2,minmax(0,1fr))}.cat{text-align:right;padding-inline:14px}}
-</style></head>
+:root{--wine:#4c0825;--wine2:#8f1242;--wine3:#b51e52;--gold:#f0c66e;--gold2:#ffe8ad;--cream:#fff5e9;--paper:#fffaf4;--ink:#48152b;--muted:#8d6573;--shadow:0 14px 32px #43051f24}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Noto Naskh Arabic","Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% 0,#fff9f4 0,#f7dfe4 48%,#e8c2ce 100%);min-height:100vh}
+button,select,input{font:inherit}button{cursor:pointer}
+header{position:relative;overflow:hidden;text-align:center;color:#fff4d9;padding:26px 16px 28px;border-bottom:3px solid var(--gold);border-radius:0 0 38px 38px;background:radial-gradient(ellipse at 50% 10%,#a82a58 0,#650d32 50%,#310416 100%);box-shadow:0 12px 30px #4b082c55,inset 0 -3px 0 #e9bd68}
+header:before,header:after{content:"";position:absolute;border:1px solid #f8d98d;border-radius:50%;opacity:.28;pointer-events:none}
+header:before{width:250px;height:250px;top:-175px;left:-75px}header:after{width:210px;height:210px;bottom:-165px;right:-55px}
+.brandmark{font-size:52px;line-height:1.05;text-shadow:0 4px 12px #ffb74d88;filter:drop-shadow(0 2px 3px #19000b)}
+.logo{font-size:clamp(25px,6vw,36px);font-weight:950;letter-spacing:.5px;text-shadow:0 3px 10px #18000b}
+.arabic-brand{font-size:clamp(30px,8vw,43px);font-weight:900;color:var(--gold2);text-shadow:0 3px 0 #6c2d12,0 7px 15px #17000b;margin-top:2px}
+.sub{color:#ffe7b4;margin-top:7px;font-size:15px}
+main{max-width:780px;margin:auto;padding:15px 13px 30px}
+.panel{position:relative;background:linear-gradient(145deg,#fffdf9,#ffeadf);border:1.5px solid #dfbd79;border-radius:25px;padding:19px 16px;margin:15px 0;box-shadow:var(--shadow),inset 0 1px 0 #fff}
+h2{font-size:20px;color:#5a0c2d;margin:0 0 15px;font-weight:900}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.role{min-height:76px;border-radius:22px;border:1.5px solid #e4bac6;background:linear-gradient(145deg,#fff4f5,#f4dce4);color:#64112f;font-weight:850;font-size:18px;box-shadow:0 5px 12px #5b102014}
+.role .ico{display:block;font-size:25px;margin-bottom:3px}
+.role.active{background:linear-gradient(145deg,#163c68,#071b39);border:2px solid var(--gold);color:#fff0c5;box-shadow:0 5px 15px #081a3b55}
+.role.active.wife{background:linear-gradient(145deg,#ad174d,#4c0825)}
+label{display:block;margin:14px 0 5px;font-weight:800;color:#5a0c2d}
+select,input{width:100%;padding:13px 14px;border:1.5px solid #d8b66f;border-radius:16px;background:#fffdfb;color:var(--ink);outline:none}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cat{display:flex;align-items:center;gap:10px;text-align:right;min-height:68px;padding:9px 11px;border-radius:19px;background:linear-gradient(145deg,#fff7f1,#f7e2df);border:1px solid #e6c2c9;color:#58112d;box-shadow:0 4px 9px #5b102010;font-weight:800}
+.cat .badge{flex:0 0 43px;height:43px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#d12c62,#520923);border:1px solid var(--gold);color:#ffe6a4;font-size:22px;box-shadow:0 3px 8px #4b092833}
+.cat.active{background:linear-gradient(145deg,#86123d,#4b0825);color:#fff4d9;border:1.5px solid var(--gold)}
+.cat small{display:block;font-size:11px;font-weight:500;opacity:.8;margin-top:2px}
+.message-card{border:1.5px solid #dfbd79;border-radius:23px;padding:23px 17px;background:linear-gradient(145deg,#fffefa,#ffefe5);box-shadow:inset 0 1px 0 white;position:relative}
+.message-card:before{content:"♡";position:absolute;top:-19px;left:calc(50% - 20px);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#a8154a,#4b0825);border:2px solid var(--gold);color:#ffe4a1;font-size:25px}
+#message{font-size:19px;line-height:2.05;text-align:center;white-space:pre-wrap;min-height:110px;padding-top:8px}
+.message-foot{text-align:center;color:#bd274d;font-size:23px;margin-top:5px}
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.actions button,.row button,.wide{min-height:55px;border-radius:17px;border:1px solid #e5c18a;background:linear-gradient(145deg,#fff0dc,#f5dcb9);color:#5b0d2b;font-weight:850;box-shadow:0 4px 10px #5b102018}
+.actions .primary,.primary,.wide.primary{background:linear-gradient(145deg,#a9144b,#500820);color:#fff0c5;border:1.5px solid var(--gold);box-shadow:0 5px 13px #570b2c44}
+.row{display:flex;gap:9px;margin-top:10px}.row>*{flex:1}
+.wide{width:100%;margin-top:10px}
+.tools-title{display:flex;align-items:center;justify-content:space-between}
+#favorites{margin-top:12px}.favitem{background:#fff8f2;border:1px solid #e7c987;border-radius:16px;margin-top:9px;padding:13px;line-height:1.8}
+.favitem button{margin:7px 4px 0 0;padding:8px 12px;border-radius:12px;background:#f4e2e6;color:#5b0d2b}
+.empty,.hint{text-align:center;color:var(--muted);font-size:13px}
+footer{text-align:center;color:#805363;padding:22px 10px 32px;font-size:13px}
+.spark{color:#d8a84f}
+@media(min-width:560px){main{padding-inline:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:22px}}
+@media(max-width:360px){.actions{grid-template-columns:1fr}.cat{font-size:13px}.cat .badge{flex-basis:37px;height:37px}}
+</style>
+</head>
 <body>
-<header><div class="logo">♡ BEIN QALBEIN PRO ♡</div><div class="sub" id="tagline">كلمات صغيرة… تصنع حباً كبيراً</div></header>
+<header>
+ <div class="brandmark">♡ ♡</div>
+ <div class="arabic-brand">بين قلبين</div>
+ <div class="logo">BEIN QALBEIN PRO</div>
+ <div class="sub">الكلمات الجميلة تصنع حياة أجمل</div>
+</header>
 <main>
-<section class="panel"><h2 id="whoTitle">اختر هويتك</h2><div class="roles"><button class="role active" data-role="husband" id="husband">أنا زوج</button><button class="role" data-role="wife" id="wife">أنا زوجة</button></div>
-<label for="lang" id="langLabel">لغة التطبيق</label><select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option><option value="de">Deutsch</option><option value="tr">Türkçe</option><option value="it">Italiano</option><option value="pt">Português</option></select></section>
-<section class="panel"><h2 id="catTitle">اختر المناسبة</h2><div class="cats" id="cats"></div></section>
-<section class="panel"><h2 id="messageTitle">رسالة من القلب</h2><div class="message" id="message">اختر تصنيفاً لتظهر لك رسالة جميلة هنا. ❤️</div><div class="actions"><button class="primary" id="newBtn">رسالة أخرى ✨</button><button id="copyBtn">نسخ</button><button id="shareBtn">مشاركة</button></div></section>
-<section class="panel"><h2 id="toolsTitle">أدواتك</h2><input id="search" placeholder="ابحث في التصنيفات…"><div class="row"><button id="favBtn">♡ أضف للمفضلة</button><button id="showFav">☆ المفضلة</button></div><div id="favorites" class="hidden"></div></section>
-<p class="muted" id="note">الرسائل تُنشأ من قوالب متنوعة داخل التطبيق، ويمكن إضافة لغات ورسائل جديدة لاحقاً.</p>
-</main><footer>صُنع بالمحبة ♡ BEIN QALBEIN PRO</footer>
+<section class="panel">
+ <h2>اختر هويتك</h2>
+ <div class="roles">
+  <button class="role active" id="husband" data-role="husband"><span class="ico">♛</span>أنا زوج</button>
+  <button class="role wife" id="wife" data-role="wife"><span class="ico">♡</span>أنا زوجة</button>
+ </div>
+ <label for="lang">لغة الواجهة</label>
+ <select id="lang"><option value="ar">العربية</option><option value="en">English (واجهة أساسية)</option><option value="fr">Français (واجهة أساسية)</option></select>
+</section>
+<section class="panel">
+ <h2>اختر التصنيف المناسب</h2>
+ <input id="search" placeholder="ابحث عن تصنيف...">
+ <div class="grid" id="cats" style="margin-top:12px"></div>
+</section>
+<section class="panel">
+ <h2>رسالة من القلب</h2>
+ <div class="message-card"><div id="message">اختر تصنيفاً لتظهر لك رسالة جميلة هنا.</div><div class="message-foot">♥</div></div>
+ <div class="actions">
+  <button id="shareBtn">↗ مشاركة</button>
+  <button id="favBtn">☆ أضف للمفضلة</button>
+  <button id="newBtn" class="primary">⟳ رسالة أخرى</button>
+ </div>
+ <button id="copyBtn" class="wide primary">▢ نسخ الرسالة</button>
+</section>
+<section class="panel">
+ <div class="tools-title"><h2 style="margin:0">رسائلك المفضلة</h2><span class="spark">✦</span></div>
+ <div class="row"><button id="showFav">عرض المفضلة</button><button id="hideFav">إخفاء المفضلة</button></div>
+ <div id="favorites" class="hidden"></div>
+</section>
+<p class="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
+</main>
+<footer>صُنع بالمحبة والاحترام · BEIN QALBEIN PRO</footer>
 <script>
 const categories=[
-['work','في العمل','At work','Au travail','En el trabajo','Bei der Arbeit','İşte','Al lavoro','No trabalho'],
-['travel','مسافر/مسافرة','Traveling','En voyage','De viaje','Auf Reisen','Seyahatte','In viaggio','Viajando'],
-['sick','مريض/مريضة','Feeling unwell','Malade','Enfermo/a','Krank','Hasta','Malato/a','Doente'],
-['sad','حزين/حزينة','Feeling sad','Triste','Triste','Traurig','Üzgün','Triste','Triste'],
-['angry','غاضب/غاضبة','Upset','En colère','Enfadado/a','Verärgert','Kızgın','Arrabbiato/a','Chateado/a'],
-['tired','متعب/متعبة','Tired','Fatigué/e','Cansado/a','Müde','Yorgun','Stanco/a','Cansado/a'],
-['sleep','قبل النوم','Before sleep','Avant de dormir','Antes de dormir','Vor dem Schlafen','Uyumadan önce','Prima di dormire','Antes de dormir'],
-['miss','اشتياق','Missing you','Tu me manques','Te extraño','Ich vermisse dich','Seni özledim','Mi manchi','Saudades'],
-['sorry','مصالحة واعتذار','Making peace','Réconciliation','Reconciliación','Versöhnung','Barışma','Riconciliazione','Reconciliação'],
-['sweet','تدليل','Sweet words','Tendresse','Cariño','Zärtlichkeit','Şefkat','Tenerezza','Carinho'],
-['morning','صباح الخير','Good morning','Bonjour','Buenos días','Guten Morgen','Günaydın','Buongiorno','Bom dia'],
-['evening','مساء الخير','Good evening','Bonsoir','Buenas noches','Guten Abend','İyi akşamlar','Buonasera','Boa noite'],
-['romance','رومانسية','Romance','Romance','Romance','Romantik','Romantik','Romantico','Romance'],
-['thanks','تقدير وامتنان','Gratitude','Gratitude','Gratitud','Dankbarkeit','Minnettarlık','Gratitudine','Gratidão'],
-['anniversary','ذكرى الزواج','Anniversary','Anniversaire','Aniversario','Jahrestag','Yıl dönümü','Anniversario','Aniversário']];
-const templates={
-ar:[
-['أتمنى أن يمر يومك بخير، وتعرف أن هناك قلباً يدعو لك ويحبك في كل لحظة. ❤️','حتى وأنت بعيد، تبقى أقرب الناس إلى قلبي. انتبه لنفسك من أجلي.','وجودك في حياتي نعمة لا أريد أن أعتادها؛ أريد أن أقدّرها كل يوم.'],
-['اشتقت إلى صوتك وتفاصيلك الصغيرة، وأنتظر لحظة تجمعنا من جديد.','المسافة لا تغيّر مكانتك في قلبي، بل تجعل الشوق أجمل وأصدق.','أرسل لك حضناً كبيراً يعبر كل المسافات.'],
-['لا أريد من الدنيا شيئاً الآن سوى أن أراك بخير ومطمئناً. أنا بجانبك دائماً.','خذ وقتك للراحة، وصحتك عندي أهم من كل شيء. أحبك.','أتمنى أن تحمل لك الساعات القادمة راحة وعافية وابتسامة.'],
-['إن كان يومك ثقيلاً، تذكّر أنك لست وحدك. أنا هنا لأسمعك وأساندك.','ابتسم قليلاً، فهناك من يرى في ابتسامتك أجمل ما في الدنيا.','أحبك في أيامك الجميلة وحتى في الأيام التي لا تشبهك.'],
-['قد نختلف، لكن مكانتك عندي لا تتغير. دعنا نتحدث بهدوء ونفهم بعضنا.','لا أريد أن ينتصر أحدنا على الآخر؛ أريد أن ينتصر حبنا.','قلبي مفتوح لك دائماً، فلنبدأ من جديد بكلمة طيبة.'],
-['أعرف أنك متعب، وأتمنى لو أستطيع أن أريح قلبك قبل جسدك.','لا تنسَ أن تأخذ استراحة؛ أنت أهم من كل انشغال.','أنا فخور/ة بك وبكل ما تبذله، أحبك كثيراً.'],
-['ليلة هادئة لقلبك، وأحلام جميلة تشبه روحك. تصبح على خير يا حبيبي.','سأترك لك قبلة على جبينك ودعوة أن تنام مطمئناً.','آخر فكرة في يومي أنت، وأجمل أمنية في ليلتي أن تكون بخير.'],
-['أشتاق إليك بطريقة لا تشرحها الكلمات؛ كأن كل شيء يذكّرني بك.','كل دقيقة بعيدة عنك تجعلني أقدّر قربك أكثر.','لو كان الشوق رسالة، لأرسلت لك كتاباً لا ينتهي.'],
-['أنا آسف/ة إن جرحتك. لم يكن هذا ما أريده، وأتمنى أن نصلح ما بيننا بالمحبة.','أنت أغلى من أن نترك لحظة غضب تبعدنا. سامحني ولنحاول من جديد.','أسمعك وأحترم شعورك، وأريد أن أفهمك أكثر.'],
-['يا أجمل تفاصيل أيامي، أتمنى أن أكون سبب ابتسامتك اليوم.','أنت حبيبي وصديقي وراحة قلبي، ولك مني كل الدلال.','لو أستطيع لوضعت الفرح كله بين يديك.'],
-['صباحك حب وطمأنينة، أتمنى أن يبتسم لك هذا اليوم من أوله إلى آخره.','صباح الخير لمن يجعل الحياة ألطف بمجرد وجوده.','ابدأ يومك وأنت تعرف أنني أحبك وأؤمن بك.'],
-['مساء الورد لقلبك، أتمنى أن يهدأ تعب اليوم وتبقى ابتسامتك.','انتهى اليوم، لكن حبي لك لا ينتهي. مساءك سعادة.','أتمنى أن يكون مساؤك دافئاً كقربك من قلبي.'],
-['أختارك كل يوم، ليس لأن الحياة كاملة، بل لأنك الشخص الذي أريد أن أكملها معه.','في عينيك أجد معنى البيت، وفي قربك أجد السلام.','أحب تفاصيلك كما هي، وأحب أننا نبني حكايتنا معاً.'],
-['شكراً لأنك أنت، ولأنك تضيف إلى أيامي معنى ودفئاً.','أقدّر تعبك واهتمامك وكل الأشياء التي تفعلها بصمت.','وجودك ليس أمراً عادياً في حياتي؛ إنه هدية أمتنّ لها.'],
-['كل عام ونحن نختار بعضنا بالمودة والرحمة، ونصنع ذكريات أجمل.','ذكرى زواج سعيدة لنا؛ وما زال في قلبي لك حب يكبر كل يوم.','أجمل ما في رحلتنا أننا نمضيها معاً، خطوة بخطوة.']
+ {id:'morning',name:'صباح الخير',icon:'☀️',desc:'بداية لطيفة لليوم'},
+ {id:'evening',name:'مساء الخير',icon:'🌙',desc:'كلمات هادئة للمساء'},
+ {id:'work',name:'في العمل',icon:'💼',desc:'تشجيع ودعم'},
+ {id:'travel',name:'أثناء السفر',icon:'✈️',desc:'دعاء واطمئنان واشتياق'},
+ {id:'wellness',name:'العافية والمرض',icon:'♡',desc:'اهتمام وتمنيات بالعافية'},
+ {id:'sad',name:'عند الحزن',icon:'🌷',desc:'مواساة واحتواء'},
+ {id:'upset',name:'عند الغضب',icon:'🕊️',desc:'تهدئة وتفاهم'},
+ {id:'tired',name:'عند التعب',icon:'☁️',desc:'راحة ومساندة'},
+ {id:'sleep',name:'قبل النوم',icon:'🌙',desc:'طمأنينة وراحة'},
+ {id:'miss',name:'الاشتياق',icon:'💌',desc:'كلمات شوق راقية'},
+ {id:'sorry',name:'اعتذار ومصالحة',icon:'🤝',desc:'تفاهم وصفاء'},
+ {id:'thanks',name:'تقدير وامتنان',icon:'🌟',desc:'شكر وتقدير'},
+ {id:'dua',name:'دعاء وكلمات طيبة',icon:'🤲',desc:'دعوات بالخير والبركة'},
+ {id:'support',name:'تشجيع وتحفيز',icon:'🏅',desc:'ثقة وأمل وإنجاز'}
+];
+const messages={
+morning:[
+'صباح الخير لقلبك الجميل، أسأل الله أن يجعل يومك مليئاً باليسر والبركة والطمأنينة.',
+'بدأ يوم جديد، وأحببت أن تكون أول كلماته لك: أنا أقدّرك، وأتمنى لك كل خير.',
+'أسأل الله أن يفتح لك أبواب الرزق والتوفيق، وأن يشرح صدرك لكل ما فيه خير.',
+'صباحك هدوء ورضا، وخطوات موفقة، وأخبار تسرّ قلبك.',
+'أتمنى أن تستقبل هذا الصباح بقلب مطمئن، وأن تجد في يومك ما يسعدك.',
+'وجودك في حياتي يجعل للأيام معنى أجمل، أسأل الله أن يحفظك ويسعدك.',
+'لا تنسَ أن تبدأ يومك بابتسامة، فأنت تستحق أياماً طيبة.',
+'صباح مليء بالأمل؛ ثق أن بعد السعي يأتي التيسير بإذن الله.',
+'أرسل لك كلمة تقدير قبل انشغال اليوم: شكراً لكل ما تبذله.',
+'جعل الله هذا اليوم بداية خير وراحة ونجاح لك.'
 ],
-en:[
-['I hope your day is kind to you. Someone is thinking of you and cheering you on. ❤️','Even from afar, you are close to my heart. Take good care of yourself.','Having you in my life is a gift I never want to take for granted.'],
-['I miss your voice and all the little things that make you you.','Distance cannot change your place in my heart.','Sending you the warmest hug across every mile.'],
-['All I want right now is to know you are safe and well. I am here for you.','Rest when you need to. Your wellbeing matters most to me.','Wishing you comfort, strength, and a smile soon.']
-]};
-const labels={ar:{who:'اختر هويتك',husband:'أنا زوج',wife:'أنا زوجة',cat:'اختر المناسبة',msg:'رسالة من القلب',new:'رسالة أخرى ✨',copy:'نسخ',share:'مشاركة',fav:'♡ أضف للمفضلة',show:'☆ المفضلة',search:'ابحث في التصنيفات…',tag:'كلمات صغيرة… تصنع حباً كبيراً',note:'الرسائل تُنشأ من قوالب متنوعة داخل التطبيق، ويمكن إضافة لغات ورسائل جديدة لاحقاً.'},
-en:{who:'Choose your role',husband:'I am a husband',wife:'I am a wife',cat:'Choose an occasion',msg:'A message from the heart',new:'Another message ✨',copy:'Copy',share:'Share',fav:'♡ Add to favorites',show:'☆ Favorites',search:'Search categories…',tag:'Small words… big love',note:'Messages are generated from varied templates. More languages and messages can be added later.'}};
-let role='husband',lang='ar',selected=0,current='';
-let favs=[];try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]}
-function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){}}
+evening:[
+'مساء الخير لقلب أتمنى له راحة لا يعكرها شيء، وطمأنينة تدوم.',
+'انتهى يوم طويل، فامنح نفسك بعض الهدوء؛ لقد بذلت ما استطعت.',
+'أسأل الله أن يجعل مساءك سكينة، وأن يبدّل تعبك راحة.',
+'مساؤك جميل كطيب قلبك، وأتمنى أن تحمل لك الساعات القادمة خبراً ساراً.',
+'مهما كان يومك مزدحماً، تذكّر أن راحتك مهمة وأنك تستحق التقدير.',
+'أحب أن أختم يومي بالاطمئنان عليك، فحفظك الله ورعاك.',
+'أتمنى أن تترك خلفك ما أتعبك اليوم، وتستقبل المساء بقلب أخف.',
+'مساء هادئ ودعوات صادقة بأن يكتب الله لك الخير حيث كان.',
+'شكراً لأنك تجعل تفاصيل الحياة ألطف بحضورك واهتمامك.',
+'ليلة مقبلة تحمل لك السكينة والرضا بإذن الله.'
+],
+work:[
+'أعرف مقدار الجهد الذي تبذله، وأقدّر تعبك وسعيك. أسأل الله أن يبارك في عملك.',
+'لا تقلّل من قيمة خطواتك الصغيرة؛ كل إنجاز كبير يبدأ بمحاولة صادقة.',
+'أتمنى لك يوماً موفقاً، وعملاً ميسراً، ورزقاً طيباً مباركاً.',
+'خذ استراحة حين تحتاج؛ صحتك وراحتك أهم من أي مهمة.',
+'أنا أؤمن بقدرتك على تجاوز الصعوبات، خطوة هادئة بعد خطوة.',
+'أسأل الله أن يفتح لك أبواب التوفيق، ويجعل ثمرة تعبك خيراً.',
+'لا تنسَ أن ما تقدمه محل تقدير، حتى إن لم تُقل لك هذه الكلمات كل يوم.',
+'أتمنى أن يسير عملك اليوم بسهولة، وأن تعود إلى بيتك مرتاح البال.',
+'اجتهد بما تستطيع، ولا تقسُ على نفسك؛ التوازن جزء من النجاح.',
+'أنا فخور/ة بسعيك وأمانتك، وأسأل الله أن يبارك لك في وقتك وجهدك.'
+],
+travel:[
+'رافقَتك دعواتي أينما ذهبت؛ أسأل الله أن يحفظك في طريقك ويردّك سالماً.',
+'طمئنّي عليك عندما تستطيع، فسلامتك وراحتك تهمّانني كثيراً.',
+'المسافة لا تنقص من مكانتك، بل تجعلني أقدّر لحظات اللقاء أكثر.',
+'أسأل الله أن يسهّل سفرك، ويحفظ خطاك، ويكتب لك الخير في وجهتك.',
+'أتمنى أن تكون رحلتك ميسّرة، وأن تصل إلى مقصدك بأمان وراحة.',
+'كلما ابتعدت، تذكّرت كم أن وجودك قريباً نعمة تستحق الشكر.',
+'لا ترهق نفسك، وخذ قسطاً من الراحة، واعتنِ بنفسك جيداً.',
+'أنت في حفظ الله، وأسأله أن يردّك إلينا سالماً مطمئناً.',
+'أنتظر عودتك بفرح، وأسأل الله أن يجعل أيامك في السفر مباركة.',
+'أرسل لك من قلبي شوقاً ودعاءً بأن تكون بخير في كل خطوة.'
+],
+wellness:[
+'أسأل الله العظيم أن يمنّ عليك بالعافية والشفاء، وأن يخفف عنك كل ألم.',
+'لا تشغل بالك بشيء الآن؛ خذ وقتك في الراحة واعتنِ بصحتك.',
+'أتمنى أن تتحسن يوماً بعد يوم، وأن تعود إليك قوتك وراحتك قريباً.',
+'سلامتك عندي غالية، وأرجو أن تخبرني بما تحتاج إليه دون تردد.',
+'أسأل الله أن يلبسك ثوب الصحة والعافية، وأن يجعل ما أصابك تكفيراً ورفعة.',
+'خذ العلاج والراحة كما ينبغي، ولا تتردد في طلب المساعدة.',
+'أنا بجانبك بالكلمة الطيبة والدعاء وكل ما أستطيع تقديمه.',
+'أتمنى أن يخفّ تعبك، وأن ترى أياماً مليئة بالصحة والطمأنينة.',
+'لا بأس أن تتوقف قليلاً لتستعيد قوتك؛ صحتك أولوية.',
+'حفظك الله من كل سوء، وأسبغ عليك نعمه ظاهرة وباطنة.'
+],
+sad:[
+'إن ضاق صدرك، فتحدث معي؛ سأستمع إليك دون لوم أو استعجال.',
+'لا يلزم أن تكون قوياً طوال الوقت؛ خذ وقتك، وأنا إلى جانبك.',
+'أسأل الله أن يشرح صدرك، ويبدّل حزنك طمأنينة وفرجاً.',
+'مهما ثقلت عليك الأيام، لا تنسَ أن بعد العسر يسراً.',
+'أنت لست وحدك في هذه اللحظة؛ يمكننا أن نتجاوزها بهدوء معاً.',
+'لا تحكم على حياتك من يوم صعب؛ ما زالت أمامك أيام أجمل بإذن الله.',
+'أتمنى لو أستطيع أن أخفف عنك بعض ما تشعر به؛ أنا هنا لأجلك.',
+'رفقاً بنفسك، فلك حق في الراحة والهدوء والوقت.',
+'أسأل الله أن يرزق قلبك سكينة تزيل عنه ثقل التفكير.',
+'تذكّر محاسنك وما تجاوزته من قبل؛ فيك قوة وخير كثير.'
+],
+upset:[
+'أحب أن نفهم بعضنا بهدوء؛ فالكلمة الطيبة تفتح أبواباً يغلقها الغضب.',
+'قد نختلف في الرأي، لكن الاحترام بيننا يجب أن يبقى دائماً.',
+'لا أريد أن نجرح بعضنا وقت الانفعال؛ لنهدأ ثم نتحدث.',
+'مشاعرك مهمة عندي، وأريد أن أسمع وجهة نظرك بصدق.',
+'لنبحث عن حل يرضينا معاً بدلاً من البحث عمّن أخطأ أكثر.',
+'أعتذر إن كان أسلوبي قد ضايقك؛ لم أقصد أن أؤذيك.',
+'الهدوء لا يعني أن الأمر غير مهم، بل يعني أننا نريد إصلاحه بحكمة.',
+'دعنا نمنح الحديث فرصة جديدة، باحترام وصراحة وحسن ظن.',
+'مكانتك محفوظة، والخلاف لا يبرر التقليل من شأنك.',
+'أسأل الله أن يؤلف بين قلوبنا، ويرزقنا حسن القول والتفاهم.'
+],
+tired:[
+'أعرف أنك بذلت الكثير اليوم؛ أرجو أن تمنح نفسك وقتاً للراحة.',
+'ليس مطلوباً منك أن تنجز كل شيء دفعة واحدة؛ خذ الأمور خطوة خطوة.',
+'دع عنك ما يمكن تأجيله، واجعل لصحتك وراحتك نصيباً.',
+'أنا أقدّر كل ما تفعله، حتى التفاصيل التي لا يلاحظها الآخرون.',
+'أسأل الله أن يعوّض تعبك راحة، وسعيك توفيقاً ورزقاً.',
+'خذ نفساً عميقاً، واشرب شيئاً تحبه، واهدأ قليلاً.',
+'لا تقسُ على نفسك؛ يكفي أنك تحاول وتسعى بصدق.',
+'أتمنى أن تجد الليلة راحة تعيد إليك نشاطك وابتسامتك.',
+'أنا ممتن/ة لجهدك وحرصك، وأسأل الله أن يقويك.',
+'الراحة ليست تقصيراً؛ إنها حق يساعدك على مواصلة الطريق.'
+],
+sleep:[
+'أسأل الله أن يحفظك في ليلتك، ويرزقك نوماً هادئاً وقلباً مطمئناً.',
+'ضع هموم اليوم جانباً، فما عجزنا عنه اليوم نستعين بالله عليه غداً.',
+'ليلة هادئة لك، وأحلام طيبة، وصباح يحمل الخير بإذن الله.',
+'أستودعك الله الذي لا تضيع ودائعه؛ تصبح على خير.',
+'أتمنى أن تنام مرتاح البال، بعيداً عن القلق والتفكير المتعب.',
+'شكراً لكل لحظة طيبة جمعتنا اليوم؛ حفظك الله وأسعد قلبك.',
+'أغلق يومك بالرضا، فالله يعلم سعيك وما في قلبك.',
+'أسأل الله أن يكتب لك راحة في الجسد وسكينة في القلب.',
+'نم مطمئناً، فلك رب كريم يدبّر الأمر ويرحم عباده.',
+'تصبح على خير، وغداً بإذن الله فرصة جديدة وأمل جديد.'
+],
+miss:[
+'أشتاق إلى حديثك وتفاصيل يومك، وأسأل الله أن يجمعنا على خير قريباً.',
+'غيابك يجعلني أقدّر وجودك أكثر؛ حفظك الله أينما كنت.',
+'هناك أشياء كثيرة أود أن أحكيها لك، وأنت أول من يخطر ببالي.',
+'أفتقد قربك وهدوء الحديث معك، وأنتظر لقاءً يجمعنا.',
+'كلما مرّ موقف جميل تمنيت لو كنت بجانبي لنشاركه معاً.',
+'المسافة مؤقتة، والمودة الصادقة تبقى حاضرة في القلب.',
+'أرسل لك سلاماً محملاً بالشوق والدعاء بأن تكون بخير.',
+'اشتقت إلى ابتسامتك وإلى تلك التفاصيل البسيطة التي تجعل يومي أجمل.',
+'أسأل الله أن يقرّب المسافات، ويجعل لقاءنا قريباً ومباركاً.',
+'حتى في انشغالي، لك مكان طيب في قلبي ودعائي.'
+],
+sorry:[
+'أعتذر لك بصدق إن أخطأت في حقك؛ أريد أن أصلح ما أفسدته لا أن أبرر خطئي.',
+'سامحني على الكلمة التي آلمتك؛ سأحرص أن أكون أهدأ وألطف في حديثي.',
+'أنت تستحق أن أسمعك وأفهمك، لا أن أقاطعك أو أقلل من شعورك.',
+'لنغيّر طريقة حديثنا وقت الخلاف، ولنجعل الاحترام أساس كل نقاش.',
+'أعرف أن الاعتذار وحده لا يكفي دائماً؛ سأحاول أن يظهر التغيير في أفعالي.',
+'أرجو أن تمنحنا فرصة لنتحدث بهدوء ونفهم ما حدث.',
+'لم يكن قصدي أن أجرحك، لكنني أتحمل مسؤولية أثر كلامي عليك.',
+'أقدّر صراحتك، وأريد أن نتعلم من هذا الموقف ونمضي بأفضل.',
+'حقك عليّ إن قصّرت؛ أسأل الله أن يرزقنا صفاء القلوب وحسن المعاملة.',
+'لن أجعل العناد أكبر من المودة والاحترام بيننا.'
+],
+thanks:[
+'شكراً لاهتمامك وتعبك، أرى ما تبذله وأقدّره من قلبي.',
+'وجودك ودعمك يصنعان فرقاً كبيراً في أيامي؛ جزاك الله عني خيراً.',
+'أمتنّ لكل موقف وقفت فيه بجانبي، ولكل كلمة طيبة قلتها.',
+'قد لا أعبّر دائماً، لكنني أقدّر تفاصيل عطائك وحرصك.',
+'شكراً لأنك تحاول، ولأنك تمنح بيتنا من وقتك وجهدك.',
+'أسأل الله أن يجزيك خيراً، وأن يبارك لك في صحتك ورزقك.',
+'أنت شريك حياة أعتز به، وأحترم سعيك وأمانتك.',
+'كل معروف تقدمه يبقى في الذاكرة، وكل لطف منك له أثر جميل.',
+'أحب أن تعرف أن تعبك ليس أمراً عادياً بالنسبة إليّ؛ أنا أراه وأقدّره.',
+'شكراً لك على صبرك وتعاونك وحسن عشرتك.'
+],
+dua:[
+'أسأل الله أن يشرح صدرك، وييسر أمرك، ويرزقك من حيث لا تحتسب.',
+'اللهم احفظه بعينك التي لا تنام، ووفقه لما تحب وترضى.',
+'أسأل الله أن يبارك في عمرك وصحتك ورزقك، وأن يجعل أيامك عامرة بالخير.',
+'اللهم ارزقه راحة البال، وصلاح الحال، وطمأنينة القلب.',
+'جعل الله لك من كل هم فرجاً، ومن كل ضيق مخرجاً، ورزقك الخير كله.',
+'أسأل الله أن يحفظك من كل سوء، وأن يكتب لك التوفيق في خطواتك.',
+'اللهم ألّف بين قلوبنا على المودة والرحمة، وأعنّا على حسن المعاملة.',
+'بارك الله في سعيك، وشرح صدرك، وجعل لك في كل خطوة أجراً وخيراً.',
+'أسأل الله أن يرزقك قلباً شاكراً، ولساناً ذاكراً، وعملاً صالحاً متقبلاً.',
+'اللهم اجعل بيتنا عامراً بالسكينة والرحمة والاحترام.'
+],
+support:[
+'أنا أؤمن بقدرتك على التقدم؛ لا تستعجل النتائج، وواصل السعي.',
+'كل خطوة صادقة تقرّبك من هدفك، حتى إن بدت صغيرة.',
+'لا تقارن بدايتك بمرحلة شخص آخر؛ لكل إنسان طريقه ووقته.',
+'أسأل الله أن يفتح لك أبواب النجاح، ويبارك في جهدك ووقتك.',
+'تعلم من الصعوبات دون أن تسمح لها أن تقلل من ثقتك بنفسك.',
+'أنت تملك من الصبر والقدرة ما يساعدك على تجاوز هذه المرحلة.',
+'ابدأ بما تستطيع اليوم، فالتقدم المستمر خير من انتظار الكمال.',
+'أنا أشجعك وأساندك، وأتمنى أن ترى ثمرة تعبك قريباً.',
+'لا تجعل خطأ واحداً ينسّيك كل ما أنجزته؛ تعلّم وواصل.',
+'ثق بالله، وخذ بالأسباب، وامضِ بقلب مطمئن.'
+]
+};
 const $=id=>document.getElementById(id);
-function tr(k){return (labels[lang]||labels.en)[k]||(labels.en[k]||k)}
-function renderCats(filter=''){ $('cats').innerHTML='';categories.forEach((c,i)=>{let name=c[lang==='ar'?1:({en:2,fr:3,es:4,de:5,tr:6,it:7,pt:8}[lang]||2)];if(!name.toLowerCase().includes(filter.toLowerCase()))return;let b=document.createElement('button');b.className='cat'+(i===selected?' active':'');b.dataset.icon=['💼','✈️','✚','♥','🤝','☾','🌙','💌','🕊️','🌹','☀️','🌆','💞','⭐','💍'][i]||'♥';b.textContent=name;b.onclick=()=>{selected=i;renderCats($('search').value);generate()};$('cats').append(b)})}
-function generate(){let pool=(templates[lang]&&templates[lang][selected])||templates.ar[selected]||templates.ar[0];current=pool[Math.floor(Math.random()*pool.length)];if(role==='wife')current=current.replaceAll('حبيبي','حبيبتي');$('message').textContent=current}
-function applyLang(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';$('tagline').textContent=tr('tag');$('whoTitle').textContent=tr('who');$('husband').textContent=tr('husband');$('wife').textContent=tr('wife');$('catTitle').textContent=tr('cat');$('messageTitle').textContent=tr('msg');$('newBtn').textContent=tr('new');$('copyBtn').textContent=tr('copy');$('shareBtn').textContent=tr('share');$('favBtn').textContent=tr('fav');$('showFav').textContent=tr('show');$('search').placeholder=tr('search');$('note').textContent=tr('note');renderCats($('search').value);generate()}
+let role='husband',lang='ar',selected='morning',current='',favs=[];
+try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]}
+function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
+function renderCats(filter=''){
+ $('cats').innerHTML='';
+ categories.filter(c=>c.name.includes(filter)).forEach(c=>{
+  const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');
+  b.innerHTML=`<span class="badge">${c.icon}</span><span>${c.name}<small>${c.desc}</small></span>`;
+  b.onclick=()=>{selected=c.id;renderCats($('search').value);generate()};
+  $('cats').append(b);
+ });
+}
+function generate(){
+ const pool=messages[selected]||messages.morning;
+ let next=pool[Math.floor(Math.random()*pool.length)];
+ if(pool.length>1&&next===current)next=pool[(pool.indexOf(next)+1)%pool.length];
+ current=next;
+ if(role==='wife')current=current.replaceAll('حبيبي','حبيبتي');
+ $('message').textContent=current;
+}
+function showFavs(){
+ $('favorites').innerHTML='';
+ if(!favs.length){$('favorites').innerHTML='<p class="empty">لم تحفظ رسائل بعد. أضف رسالة تعجبك لتجدها هنا.</p>';return}
+ favs.forEach((item,i)=>{
+  const box=document.createElement('div');box.className='favitem';
+  const p=document.createElement('div');p.textContent=item;
+  const copy=document.createElement('button');copy.textContent='نسخ';copy.onclick=()=>copyText(item);
+  const del=document.createElement('button');del.textContent='حذف';del.onclick=()=>{favs.splice(i,1);saveFavs();showFavs()};
+  box.append(p,copy,del);$('favorites').append(box);
+ });
+}
+async function copyText(text){
+ try{await navigator.clipboard.writeText(text);alert('تم النسخ بنجاح ✓')}
+ catch(e){const t=document.createElement('textarea');t.value=text;document.body.append(t);t.select();document.execCommand('copy');t.remove();alert('تم النسخ ✓')}
+}
 document.querySelectorAll('.role').forEach(b=>b.onclick=()=>{role=b.dataset.role;document.querySelectorAll('.role').forEach(x=>x.classList.toggle('active',x===b));generate()});
-$('lang').onchange=e=>{lang=e.target.value;applyLang()};$('newBtn').onclick=generate;
-$('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(current);$('copyBtn').textContent=lang==='ar'?'تم النسخ ✓':'Copied ✓';setTimeout(()=>$('copyBtn').textContent=tr('copy'),1300)}catch(e){alert(current)}};
-$('shareBtn').onclick=()=>{if(navigator.share)navigator.share({title:'BEIN QALBEIN PRO',text:current});else{navigator.clipboard?.writeText(current);alert(lang==='ar'?'تم نسخ الرسالة لمشاركتها':'Message copied to share')}};
-$('favBtn').onclick=()=>{if(!current)return;if(!favs.includes(current)){favs.unshift(current);saveFavs();}showFavs();$('favorites').classList.remove('hidden');const old=tr('fav');$('favBtn').textContent=lang==='ar'?'تمت الإضافة ✓':'Added ✓';setTimeout(()=>$('favBtn').textContent=old,1500)};
-$('showFav').onclick=()=>{$('favorites').classList.toggle('hidden');showFavs()};
-function showFavs(){$('favorites').innerHTML=favs.length?favs.map((x,i)=>`<div class="favitem">${x}<br><button onclick="navigator.clipboard.writeText(favs[${i}])">نسخ</button> <button onclick="removeFav(${i})">حذف</button></div>`).join(''):'<p class="muted">لا توجد رسائل محفوظة بعد.</p>'}
-function removeFav(i){favs.splice(i,1);saveFavs();showFavs()}
-$('search').oninput=e=>renderCats(e.target.value);renderCats();generate();applyLang();if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
-</script></body></html>
+$('newBtn').onclick=generate;
+$('copyBtn').onclick=()=>current&&copyText(current);
+$('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'BEIN QALBEIN PRO',text:current})}catch(e){}}else copyText(current)};
+$('favBtn').onclick=()=>{
+ if(!current)return;
+ if(!favs.includes(current)){favs.unshift(current);saveFavs();$('favBtn').textContent='تمت الإضافة ✓';}
+ else $('favBtn').textContent='محفوظة بالفعل ✓';
+ $('favorites').classList.remove('hidden');showFavs();setTimeout(()=>$('favBtn').textContent='☆ أضف للمفضلة',1600);
+};
+$('showFav').onclick=()=>{$('favorites').classList.remove('hidden');showFavs()};
+$('hideFav').onclick=()=>$('favorites').classList.add('hidden');
+$('search').oninput=e=>renderCats(e.target.value);
+$('lang').onchange=e=>{
+ lang=e.target.value;
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+ // Message library remains Arabic; changing this control currently changes layout direction only.
+};
+renderCats();generate();showFavs();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+</script>
+</body></html>

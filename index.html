@@ -988,6 +988,14 @@ function groupedRenderCats(filter=''){
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
    b.onclick=()=>{
     const anchorTop=b.getBoundingClientRect().top;
+    /* Tapping the already-open category closes its message in place. */
+    if(selected===c.id&&inline.parentElement===item){
+     inline.remove();
+     selected=null;
+     b.classList.remove('active');
+     b.setAttribute('aria-expanded','false');
+     return;
+    }
     selected=c.id;generate();
     host.querySelectorAll('.cat').forEach(btn=>{
      const active=btn.closest('.category-item')?.dataset.categoryId===selected;

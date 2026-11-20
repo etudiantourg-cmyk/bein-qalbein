@@ -121,9 +121,18 @@ h2{color:#79143d;text-shadow:0 1px 0 #fff,0 3px 0 #f1d0d8,0 5px 9px #a53b5b25}
 @media(hover:hover){.role:hover,.cat:hover,.actions button:hover,.row button:hover,.wide:hover,.advice-tabs button:hover{transform:translateY(-4px) scale(1.012);filter:brightness(1.04)}}
 @media(prefers-reduced-motion:no-preference){.panel{animation:storybookRise .55s ease both}@keyframes storybookRise{from{opacity:.65;transform:translateY(10px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}}
 
+
+/* V9 — floating heart bubbles and expanded message library */
+.heart-bubbles{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;contain:strict}
+.heart-bubble{position:absolute;bottom:-12vh;left:var(--x);font-size:var(--size);color:var(--tone);opacity:0;filter:drop-shadow(0 5px 7px #a92c5a25);animation:heartRise var(--duration) linear var(--delay) infinite;will-change:transform,opacity}
+@keyframes heartRise{0%{transform:translate3d(0,0,0) rotate(-12deg) scale(.72);opacity:0}10%{opacity:var(--alpha)}45%{transform:translate3d(var(--drift),-55vh,0) rotate(12deg) scale(1)}90%{opacity:var(--alpha)}100%{transform:translate3d(calc(var(--drift) * -.45),-118vh,0) rotate(30deg) scale(.82);opacity:0}}
+header,main,footer{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.heart-bubbles{display:none}}
+
 </style>
 </head>
 <body>
+<div class="heart-bubbles" id="heartBubbles" aria-hidden="true"></div>
 <header>
  <div class="brandmark"><img src="icon.svg" alt="شعار بين قلبين"></div>
  <div class="arabic-brand">بين قلبين</div>
@@ -495,6 +504,43 @@ $('copyDaily').onclick=()=>copyText($('dailyMessage').textContent);
 $('husbandTips').onclick=()=>renderAdvice('husband');
 $('wifeTips').onclick=()=>renderAdvice('wife');
 renderAdvice('husband');
+
+
+/* V9: 50 additional carefully worded messages per category (150 total per category). */
+const extraBases={
+morning:['أحب أن أطمئن عليك مع بداية النهار، وأسأل الله أن يملأ يومك بالخير.','صباحك رضا يسبق الأخبار الجميلة، وتوفيق يرافق كل خطوة.','وجودك نعمة أحرص على شكر الله عليها، فليحفظك دائماً.','أتمنى أن تجد اليوم وقتاً لنفسك كما تمنح وقتك للآخرين.','ابدأ يومك متوكلاً على الله، فالأبواب تُفتح بالسعي والدعاء.'],
+evening:['أحب أن أطمئن أن يومك انتهى بسلام، وأن قلبك بخير.','خذ من هدوء المساء فرصة لتجديد طاقتك وترتيب أفكارك.','أقدّر كل ما فعلته اليوم، حتى الأمور التي لم يلاحظها أحد.','أسأل الله أن يرزقك في هذه الليلة راحة تليق بقلبك.','مهما كان ما حمله النهار، فلك حق في مساء هادئ.'],
+work:['أعرف أن مسؤولياتك كثيرة، وأريدك أن تعرف أن جهدك مقدّر.','لا تجعل إنجاز العمل يأتي على حساب صحتك وراحتك.','خطط بهدوء، وأنجز ما تستطيع، واترك ما لا تملك وقته.','أسأل الله أن يبارك في رزقك وييسر لك أمور عملك.','أنا فخور/فخورة بعزيمتك وبمحاولاتك المستمرة.'],
+travel:['أسأل الله أن يصحبك التيسير في طريقك وأن يردك سالماً.','خذ بالأسباب وكن مطمئناً، فدعائي لك لا ينقطع.','أرسل لك محبتي ودعائي برحلة آمنة ومريحة.','لا تتردد في التوقف للراحة متى احتجت إليها.','أخبرني عندما تصل، فاطمئنان قلبي عليك يسعدني.'],
+wellness:['أتمنى أن تتحسن صحتك يوماً بعد يوم، وأن تجد الراحة.','لا تتردد في طلب المساندة؛ العناية بك مسؤولية محبة.','أسأل الله أن يكتب لك العافية وأن يخفف عنك كل ألم.','خذ العلاج والراحة بانتظام وفق إرشادات طبيبك.','لن أضغط عليك، خذ وقتك واهتم بنفسك.'],
+sad:['لا يلزم أن تجد الكلمات الآن؛ يكفي أن تعرف أنني أسمعك.','مشاعرك مهمة، ولن أتعامل معها باستخفاف.','يمكننا أن نبدأ من جديد بخطوة صغيرة وهادئة.','أسأل الله أن يبدل حزنك طمأنينة وأن يفتح لك أبواب الفرج.','لن أطلب منك التظاهر بأن كل شيء بخير؛ كن على طبيعتك.'],
+upset:['أريد أن نختلف بأدب ونبقى حريصين على بعضنا.','سأراجع كلامي وتصرفي، وأتمنى أن نفعل ذلك معاً.','لنبحث عن حل عادل بدلاً من تبادل اللوم.','أفضّل حواراً صريحاً وهادئاً على تراكم العتاب.','لن أجعل لحظة غضب تهدم ما نبنيه بالمودة.'],
+tired:['أنت لست مطالباً بإنجاز كل شيء في يوم واحد.','دعنا نخفف عنك ما نستطيع ونعيد ترتيب الأولويات.','راحتك ليست كسلاً، بل حاجة تحفظ قوتك.','أرى تعبك وأحترم صبرك، وأسأل الله أن يقويك.','خذ استراحة قصيرة، وسأساعدك فيما أقدر عليه.'],
+sleep:['أغلق صفحة اليوم برفق، فليس كل أمر يحتاج جواباً الليلة.','أسأل الله أن يرزقك نوماً مريحاً وقلباً مطمئناً.','أنت تستحق أن تنام دون أن تحمل هموم الجميع.','اجعل آخر ما يشغل قلبك ذكراً ودعاءً وحسن ظن بالله.','ليحفظك الله في ليلك ويكتب لك صباحاً أجمل.'],
+miss:['أفتقد تفاصيل حديثنا وهدوء اللحظات التي تجمعنا.','أسأل الله أن يجمعنا دائماً على خير ومودة.','حتى مع انشغال الأيام، تبقى مكانتك عزيزة.','أرسل لك سلاماً دافئاً ودعوة صادقة من القلب.','أشتاق إلى قربك، وأتمنى أن تكون بخير وراحة.'],
+sorry:['أفهم أن الاعتذار وحده لا يكفي، لذلك سأعمل على التغيير.','أريد أن أصلح ما أفسدته أفعالي لا أن أكتفي بالكلام.','سأحترم شعورك ووقتك، وأتمنى أن نصلح الأمر بالحوار.','لا أبحث عن تبرير، بل عن فرصة لأكون أفضل.','أعتذر عن الأثر الذي تركه تصرفي، وسأتعلم منه.'],
+thanks:['شكراً لأنك تبذل من وقتك وجهدك بمحبة.','ألاحظ لطفك في التفاصيل الصغيرة وأحفظه في قلبي.','وجود شريك يشارك المسؤولية أمر يستحق الحمد.','أشكرك على صراحتك وعلى حرصك على علاقتنا.','أسأل الله أن يجزيك خيراً على كل معروف تقدمه.'],
+dua:['اللهم ارزقنا السكينة في بيوتنا والرفق في كلماتنا.','اللهم أعنّا على ذكرك وشكرك وحسن عبادتك.','نسأل الله أن يبارك في أعمارنا وأرزاقنا وأهلينا.','اللهم اجعل بيننا تعاوناً على الخير وصبراً عند الشدة.','اللهم احفظنا من الظلم وسوء الخلق وسوء الفهم.'],
+support:['لا يشترط أن تكون الطريق سهلة حتى تكون قادراً على إكمالها.','خذ بالأسباب خطوة خطوة، ولا تنسَ أن توكل أمرك إلى الله.','أنا إلى جانبك بالتشجيع والمساندة واحترام وقتك.','ما تتعلمه اليوم قد يكون سبباً في نجاح الغد.','لا تقلل من قيمة المحاولة الصادقة مهما كانت نتيجتها.']
+};
+const extraClosings=['وأنا أقدّر وجودك في حياتي.','أسأل الله أن يكتب لك الخير والتوفيق.','وتذكّر أن الحوار الطيب يقرب القلوب.','ولك مني دعوة صادقة في ظهر الغيب.','فلنحافظ دائماً على الاحترام وحسن العشرة.','وإن احتجت إلى مساندة فلن أتردد في الوقوف معك.','جعل الله أيامك عامرة بالبركة والرضا.','خذ الأمور بهدوء، فلكل مشكلة باب للحل.','دمت بخير وطمأنينة وراحة بال.','فالمودة تظهر في الاهتمام والعمل والكلمة الطيبة.'];
+Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.forEach(end=>messages[id].push(base+' '+end)));});
+/* Gentle, abstract heart-shaped bubbles; no people, animals or living imagery. */
+(function(){
+ const layer=$('heartBubbles');if(!layer)return;
+ for(let i=0;i<22;i++){
+  const b=document.createElement('span');b.className='heart-bubble';
+  b.textContent=i%3===0?'♥':'♡';
+  b.style.setProperty('--x',(Math.random()*100)+'%');
+  b.style.setProperty('--size',(13+Math.random()*27)+'px');
+  b.style.setProperty('--duration',(15+Math.random()*19)+'s');
+  b.style.setProperty('--delay',(-Math.random()*32)+'s');
+  b.style.setProperty('--drift',(-45+Math.random()*90)+'px');
+  b.style.setProperty('--tone',i%2?'#d94f78':'#d8a84f');
+  b.style.setProperty('--alpha',(0.16+Math.random()*0.2).toFixed(2));
+  layer.appendChild(b);
+ }
+})();
 
 renderCats();generate();showFavs();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));

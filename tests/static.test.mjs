@@ -37,6 +37,8 @@ test("existing saved data is preserved and backup import is validated", () => {
   assert.match(html, /bq_recent_messages/);
   assert.match(html, /bq_custom_notes/);
   assert.match(html, /bq_favorite_folders/);
+  assert.match(html, /bq_ai_language/);
+  assert.match(html, /bq_ai_language_manual/);
   assert.match(html, /file\.size>2\*1024\*1024/);
   assert.match(html, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);
 });
@@ -52,7 +54,7 @@ test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
-  assert.match(sw, /const CACHE='bein-qalbein-royal-v57'/);
+  assert.match(sw, /const CACHE='bein-qalbein-royal-v58'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });
 

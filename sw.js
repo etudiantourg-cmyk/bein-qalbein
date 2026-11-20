@@ -1,4 +1,4 @@
-const CACHE='bein-qalbein-royal-v47';
+const CACHE='bein-qalbein-royal-v48';
 const FILES=['./','./index.html','./manifest.json','./icon.svg','./couple-header.jpg.png'];
 self.addEventListener('install',event=>{
  self.skipWaiting();

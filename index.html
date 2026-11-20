@@ -480,6 +480,69 @@ body.theme-night .cat.active{background:linear-gradient(145deg,#9d315c,#4c1837);
 body.theme-night .favitem button,body.theme-night .advice-tabs button{background:#493044;color:#ffebd2;border-color:#9d755a}
 @media(max-width:380px){main{padding-inline:9px}.panel{padding:15px 11px;border-radius:21px}.cat{min-height:64px;padding:8px}.cat .badge{width:41px;height:41px;flex-basis:41px}.actions button{font-size:13px}.bottom-nav{left:7px;right:7px}}
 
+
+/* V41 — premium usability system: clear hierarchy, compact quick access, accessible controls */
+:root{--ui-gap:clamp(12px,3vw,18px);--ui-radius:22px;--ui-text-scale:1}
+html{scroll-padding-top:18px}
+body{font-size:16px;line-height:1.65}
+main{max-width:720px;padding:clamp(12px,3.5vw,20px) 14px 34px}
+.page-section{margin-block:12px}
+.page-section.panel{padding:clamp(15px,4vw,22px)}
+h2{font-size:clamp(19px,4.7vw,23px);line-height:1.4}
+button,select,input,textarea{font-size:16px}
+button{touch-action:manipulation}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #b77a20;outline-offset:3px}
+.quick-hub{margin:0 0 18px;padding:16px;border:1px solid #e6c27d;border-radius:24px;background:linear-gradient(145deg,#fffefa,#ffedf1 68%,#f6dce6);box-shadow:0 5px 0 #d7a9b8,0 13px 24px #59102a18,inset 0 2px 0 #fff}
+.quick-hub-head{margin:0 2px 12px}
+.quick-eyebrow{display:inline-block;padding:3px 10px;border-radius:99px;background:#f6e4c6;color:#7c3d24;font-size:12px;font-weight:800}
+.quick-hub-head h2{margin:7px 0 2px;color:#65102f;font-size:clamp(20px,5vw,24px)}
+.quick-hub-head p{margin:0;color:#8b6270;font-size:13px}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.quick-grid>button{min-width:0;min-height:78px;display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #e5c5ce;border-radius:17px;background:linear-gradient(145deg,#fff,#f8e5eb);color:#58112d;text-align:start;box-shadow:0 3px 0 #d8b5bf,0 7px 12px #58112d10;transition:transform .16s ease,box-shadow .16s ease}
+.quick-grid>button:active{transform:translateY(2px);box-shadow:0 1px 0 #d8b5bf}
+.quick-icon{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#a91e50,#4c0825);color:#ffe9b4;border:1px solid #eac77d}
+.quick-icon svg{width:21px;height:21px}
+.quick-copy{display:flex;flex-direction:column;min-width:0;gap:2px}
+.quick-copy b{font-size:13px;line-height:1.45;font-weight:900}
+.quick-copy small{font-size:10px;line-height:1.35;color:#8c6874}
+.quick-arrow{margin-inline-start:auto;font-size:23px;color:#a36a36}
+.roles{gap:9px}
+.role{min-height:58px;font-size:16px;border-radius:17px}
+.role .ico{display:inline-block;font-size:19px;margin:0 4px 0 0;vertical-align:middle}
+.grid{gap:9px}
+.category-group-title{margin:15px 2px 7px;font-size:14px;font-weight:900;color:#8a244a}
+.category-item{min-width:0}
+.cat{min-height:64px;padding:8px 9px;gap:8px;border-radius:17px;font-size:14px}
+.cat .badge{flex-basis:38px;width:38px;height:38px;font-size:19px}
+.cat small{font-size:10px;line-height:1.4}
+.inline-message-panel{margin-top:11px;min-width:0;animation:quickReveal .22s ease both}
+@keyframes quickReveal{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.message-card{padding:22px 15px}
+#message{font-size:clamp(18px,4.7vw,21px);line-height:1.95;overflow-wrap:anywhere}
+.actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.actions button,.row button,.wide{min-height:48px;padding:10px 12px;font-size:14px}
+.actions #newBtn{grid-column:span 2}
+.pro-tools{margin-top:14px;padding:15px;border-radius:20px}
+.pro-tools>h2{margin-bottom:8px}
+.tool-disclosure{width:100%;min-height:44px;margin:3px 0 8px;border:1px solid #dfbd79;border-radius:13px;background:#fff5e9;color:#671433;font-weight:800}
+.tool-disclosure:after{content:"＋";float:inline-end}
+.tool-disclosure[aria-expanded="true"]:after{content:"−"}
+.builder-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.bottom-nav{max-width:560px;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));padding:6px;gap:4px;border-radius:19px}
+.bottom-nav button{min-height:50px}
+.bottom-nav button span svg{width:21px;height:21px}
+body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+.daily-box{font-size:16px;overflow-wrap:anywhere}
+#search{min-height:48px}
+@media(max-width:380px){.quick-hub{padding:12px}.quick-grid{gap:7px}.quick-grid>button{min-height:72px;padding:8px;gap:7px}.quick-icon{width:34px;height:34px;flex-basis:34px}.quick-copy b{font-size:12px}.quick-copy small{font-size:9px}.cat{font-size:12px}.cat .badge{flex-basis:34px;width:34px;height:34px}}
+@media(min-width:600px){.quick-grid>button{min-height:86px;padding:13px}.quick-copy b{font-size:15px}.quick-copy small{font-size:12px}.cat{font-size:15px}}
+body.dark-mode .quick-hub{background:linear-gradient(145deg,#2d1724,#24111d);border-color:#956b43;box-shadow:0 5px 0 #160b13,0 13px 24px #0005}
+body.dark-mode .quick-hub-head h2,body.dark-mode .quick-copy b{color:#ffe8c1}
+body.dark-mode .quick-hub-head p,body.dark-mode .quick-copy small{color:#d5b6c2}
+body.dark-mode .quick-grid>button{background:linear-gradient(145deg,#442033,#2b1421);border-color:#80506a;color:#ffe9d1;box-shadow:0 3px 0 #170b12,0 7px 12px #0004}
+body.dark-mode .tool-disclosure{background:#3b2030;color:#ffe9c9;border-color:#8e6b4c}
+@media(prefers-reduced-motion:reduce){.inline-message-panel{animation:none!important}.quick-grid>button{transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -502,6 +565,16 @@ body.theme-night .favitem button,body.theme-night .advice-tabs button{background
 </header>
 <main>
 <section class="panel page-section active-page" data-page="home">
+
+ <div class="quick-hub" id="quickHub" aria-label="الوصول السريع">
+  <div class="quick-hub-head"><span class="quick-eyebrow" id="quickEyebrow">ابدأ من هنا</span><h2 id="quickTitle">ماذا تحتاج الآن؟</h2><p id="quickDesc">اختر ما يناسب لحظتك، وسنوصلك مباشرة.</p></div>
+  <div class="quick-grid">
+   <button type="button" data-quick="categories"><span class="quick-icon" data-icon="heart"></span><span class="quick-copy"><b data-quick-label="categories">رسالة لشريك حياتي</b><small data-quick-sub="categories">اختر من الرسائل</small></span><span class="quick-arrow">‹</span></button>
+   <button type="button" data-quick="surprise"><span class="quick-icon" data-icon="spark"></span><span class="quick-copy"><b data-quick-label="surprise">فاجئني برسالة</b><small data-quick-sub="surprise">كلمات مختارة عشوائياً</small></span><span class="quick-arrow">‹</span></button>
+   <button type="button" data-quick="builder"><span class="quick-icon" data-icon="message"></span><span class="quick-copy"><b data-quick-label="builder">اصنع رسالتي</b><small data-quick-sub="builder">على مقاس شعورك</small></span><span class="quick-arrow">‹</span></button>
+   <button type="button" data-quick="rescue"><span class="quick-icon" data-icon="shield"></span><span class="quick-copy"><b data-quick-label="rescue">ساعدني في موقف</b><small data-quick-sub="rescue">خطوات هادئة وعملية</small></span><span class="quick-arrow">‹</span></button>
+  </div>
+ </div>
  <h2 id="roleTitle">اختر هويتك</h2>
  <div class="roles">
   <button class="role active" id="husband" data-role="husband"><span class="ico">♛</span>أنا زوج</button>
@@ -1307,14 +1380,10 @@ ar:['أسأل الله أن يكتب لك الخير وييسر أمرك.','أن
 en:['May Allah guide you towards what is best.','I appreciate you and will show it through my actions.','Let gentleness and respect guide our words.','May Allah bless your time, health and efforts.','Let us choose one helpful step together.'],
 fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je le montrerai aussi par mes actes.','Que la douceur et le respect guident nos paroles.','Qu’Allah bénisse ton temps, ta santé et tes efforts.','Choisissons ensemble une étape utile.']
 };
+/* V41: keep curated language pools stable; do not multiply generated variants on each language switch. */
 const bqPreviousApply=applyLanguage;
 applyLanguage=function(){
  bqPreviousApply();
- const endings=bqClosings[lang]||bqClosings.ar;
- Object.keys(messages).forEach(id=>{
-  const source=messages[id].slice();
-  messages[id]=source.flatMap(sentence=>endings.map(end=>sentence+' — '+end));
- });
  document.documentElement.dataset.messageCount=String(Object.values(messages).reduce((n,p)=>n+p.length,0));
  if(typeof decorateAppIcons==='function')decorateAppIcons();
 };
@@ -1385,6 +1454,60 @@ applyLanguage();
   panel.style.display='block';
   requestAnimationFrame(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}));
  },true);
+})();
+
+
+/* V41 — quick hub, progressive disclosure, and language-safe labels */
+(function(){
+ const translations={
+  ar:{eyebrow:'ابدأ من هنا',title:'ماذا تحتاج الآن؟',desc:'اختر ما يناسب لحظتك، وسنوصلك مباشرة.',labels:{categories:'رسالة لشريك حياتي',surprise:'فاجئني برسالة',builder:'اصنع رسالتي',rescue:'ساعدني في موقف'},subs:{categories:'اختر من الرسائل',surprise:'كلمات مختارة عشوائياً',builder:'على مقاس شعورك',rescue:'خطوات هادئة وعملية'},open:'افتح الأداة',close:'إخفاء الأداة'},
+  en:{eyebrow:'START HERE',title:'What do you need now?',desc:'Choose what fits the moment and jump straight in.',labels:{categories:'A message for my spouse',surprise:'Surprise me',builder:'Create my message',rescue:'Help with a situation'},subs:{categories:'Browse the message library',surprise:'A thoughtful random pick',builder:'Match your feeling',rescue:'Calm, practical steps'},open:'Open tool',close:'Hide tool'},
+  fr:{eyebrow:'COMMENCEZ ICI',title:'De quoi avez-vous besoin ?',desc:'Choisissez votre besoin et accédez directement à l’outil.',labels:{categories:'Un message pour mon conjoint',surprise:'Surprenez-moi',builder:'Créer mon message',rescue:'M’aider dans une situation'},subs:{categories:'Parcourir les messages',surprise:'Un choix au hasard',builder:'Selon votre émotion',rescue:'Des étapes calmes et pratiques'},open:'Ouvrir',close:'Masquer'}
+ };
+ function updateQuickLanguage(){
+  const t=translations[lang]||translations.ar;
+  const put=(id,v)=>{const el=$(id);if(el)el.textContent=v};
+  put('quickEyebrow',t.eyebrow);put('quickTitle',t.title);put('quickDesc',t.desc);
+  document.querySelectorAll('[data-quick-label]').forEach(el=>el.textContent=t.labels[el.dataset.quickLabel]||'');
+  document.querySelectorAll('[data-quick-sub]').forEach(el=>el.textContent=t.subs[el.dataset.quickSub]||'');
+  document.querySelectorAll('.tool-disclosure').forEach(b=>{b.textContent=b.getAttribute('aria-expanded')==='true'?t.close:t.open});
+ }
+ function setupDisclosures(){
+  ['messageBuilder','rescueCenter','kindnessChallenge'].forEach(id=>{
+   const box=$(id);if(!box||box.dataset.disclosureReady)return;
+   const heading=box.querySelector('h2');if(!heading)return;
+   const button=document.createElement('button');button.type='button';button.className='tool-disclosure';button.setAttribute('aria-expanded','false');
+   button.addEventListener('click',()=>toggleTool(id));
+   heading.insertAdjacentElement('afterend',button);
+   [...box.children].forEach(child=>{if(child!==heading&&child!==button)child.hidden=true});
+   box.dataset.disclosureReady='1';
+  });
+  updateQuickLanguage();
+ }
+ function toggleTool(id,forceOpen){
+  const box=$(id);if(!box)return;
+  const b=box.querySelector('.tool-disclosure');if(!b)return;
+  const open=typeof forceOpen==='boolean'?forceOpen:b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',String(open));
+  [...box.children].forEach(child=>{if(child!==box.querySelector('h2')&&child!==b)child.hidden=!open});
+  updateQuickLanguage();
+ }
+ function goQuick(action){
+  if(action==='surprise'){
+   goPage('home');const b=$('surpriseBtn');if(b)b.click();return;
+  }
+  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'smooth',block:'start'});$('search')?.focus({preventScroll:true});return}
+  const id=action==='builder'?'messageBuilder':'rescueCenter';
+  goPage('home');toggleTool(id,true);
+  requestAnimationFrame(()=>$(id)?.scrollIntoView({behavior:'smooth',block:'center'}));
+ }
+ document.getElementById('quickHub')?.addEventListener('click',e=>{
+  const b=e.target.closest('[data-quick]');if(b)goQuick(b.dataset.quick);
+ });
+ const previousApplyLanguage=applyLanguage;
+ applyLanguage=function(){previousApplyLanguage();updateQuickLanguage()};
+ setupDisclosures();
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupDisclosures,{once:true});
 })();
 
 </script>

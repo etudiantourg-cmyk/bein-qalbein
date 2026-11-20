@@ -237,9 +237,44 @@ header:before,header:after{
  text-shadow:0 1px 2px #fff6,0 0 10px #f5a6c466;
 }
 
+
+/* V17 — romantic floral garden atmosphere */
+body{
+ background:
+  radial-gradient(circle at 8% 14%,#fff9 0 2px,transparent 3px),
+  radial-gradient(circle at 88% 22%,#fff9 0 3px,transparent 4px),
+  radial-gradient(circle at 17% 72%,#fff8 0 2px,transparent 3px),
+  radial-gradient(circle at 82% 82%,#fff9 0 2px,transparent 3px),
+  radial-gradient(ellipse at 10% 12%,#ffe4ee 0,transparent 32%),
+  radial-gradient(ellipse at 92% 28%,#f7c6d8 0,transparent 35%),
+  radial-gradient(ellipse at 50% 100%,#f4bfd2 0,transparent 48%),
+  linear-gradient(145deg,#fff4f7 0%,#f9dce8 45%,#eed5ef 100%);
+ background-attachment:fixed;
+}
+.floral-garden{
+ position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;contain:strict;
+}
+.floral-garden span{
+ position:absolute;left:var(--x);top:var(--y);
+ font-size:var(--s);opacity:var(--o);
+ filter:drop-shadow(0 3px 5px #a52b5940);
+ transform:rotate(var(--r));
+ user-select:none;
+}
+.floral-garden span:nth-child(1){--x:3%;--y:16%;--s:30px;--o:.22;--r:-18deg}
+.floral-garden span:nth-child(2){--x:87%;--y:12%;--s:35px;--o:.2;--r:14deg}
+.floral-garden span:nth-child(3){--x:7%;--y:54%;--s:25px;--o:.17;--r:22deg}
+.floral-garden span:nth-child(4){--x:91%;--y:48%;--s:31px;--o:.2;--r:-12deg}
+.floral-garden span:nth-child(5){--x:13%;--y:86%;--s:28px;--o:.18;--r:8deg}
+.floral-garden span:nth-child(6){--x:82%;--y:89%;--s:27px;--o:.19;--r:-20deg}
+.floral-garden span:nth-child(7){--x:48%;--y:7%;--s:22px;--o:.13;--r:18deg}
+.floral-garden span:nth-child(8){--x:53%;--y:94%;--s:24px;--o:.15;--r:-8deg}
+header,main,footer{position:relative;z-index:1}
+
 </style>
 </head>
 <body>
+<div class="floral-garden" aria-hidden="true"><span>🌸</span><span>🌹</span><span>✿</span><span>🌷</span><span>❀</span><span>🌸</span><span>♡</span><span>✿</span></div>
 <div class="heart-bubbles" id="heartBubbles" aria-hidden="true"></div>
 <header>
  <div class="brandmark"><img src="icon.svg" alt="شعار بين قلبين"></div>

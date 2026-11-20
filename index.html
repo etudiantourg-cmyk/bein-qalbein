@@ -972,11 +972,9 @@ $('showFav').onclick=()=>{$('favorites').classList.remove('hidden');showFavs()};
 $('hideFav').onclick=()=>$('favorites').classList.add('hidden');
 $('search').oninput=e=>renderCats(e.target.value);
 $('lang').onchange=e=>{
- lang=e.target.value;
+ lang=['ar','en','fr'].includes(e.target.value)?e.target.value:'ar';
  try{localStorage.setItem('bq_language',lang)}catch(e){}
- document.documentElement.lang=lang;
- document.documentElement.dir=lang==='ar'?'rtl':'ltr';
- // Message library remains Arabic; changing this control currently changes layout direction only.
+ applyLanguage();
 };
 
 /* V5: expand the curated message library to 100 entries per category while preserving saved favorites. */

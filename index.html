@@ -1829,11 +1829,11 @@ window.displayMessageInMain=displayMessageInMain;
  if($id('aiRecipient'))$id('aiRecipient').value=role==='wife'?'للزوج':'للزوجة';
  gen.addEventListener('click',generate);more?.addEventListener('click',generate);
  $id('aiUseBtn')?.addEventListener('click',()=>{
-  const finalMessage=String(output.value||latest).trim();if(!finalMessage)return;
+  const finalMessage=String(output.hidden?latest:output.value).trim();if(!finalMessage)return;
   const map={'مودة وامتنان':'thanks','اشتياق محترم':'miss','اعتذار صادق':'sorry','تشجيع ودعم':'support','مواساة':'sad','تهدئة بعد خلاف':'upset','دعاء طيب':'dua','تقدير واحترام':'thanks','رسالة صباحية أو مسائية':'morning'};
   window.displayMessageInMain(finalMessage,map[$id('aiMood').value]||'thanks');say('used');
  });
- $id('aiCopyBtn')?.addEventListener('click',async()=>{const value=String(output.value||latest).trim();if(value){const ok=await copyText(value);say(ok?'copied':'copyFailed')}});
+ $id('aiCopyBtn')?.addEventListener('click',async()=>{const value=String(output.hidden?latest:output.value).trim();if(value){const ok=await copyText(value);say(ok?'copied':'copyFailed')}});
  window.applyAiStudioLanguage=function(){
   const t=pack(),set=(id,value)=>{const el=$id(id);if(el)el.textContent=value};
   set('aiMessageTitle',t.title);set('aiMessageDesc',t.desc);set('saveAiEndpoint',t.save);set('aiTestEndpoint',t.test);

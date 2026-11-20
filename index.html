@@ -129,6 +129,11 @@ h2{color:#79143d;text-shadow:0 1px 0 #fff,0 3px 0 #f1d0d8,0 5px 9px #a53b5b25}
 header,main,footer{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){.heart-bubbles{display:none}}
 
+
+/* V10 — translucent hearts float above every screen layer without blocking text */
+.heart-bubbles{z-index:20}
+.heart-bubble{opacity:0.12;text-shadow:0 1px 5px #ffffff88;mix-blend-mode:multiply}
+
 </style>
 </head>
 <body>
@@ -537,7 +542,7 @@ Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.
   b.style.setProperty('--delay',(-Math.random()*32)+'s');
   b.style.setProperty('--drift',(-45+Math.random()*90)+'px');
   b.style.setProperty('--tone',i%2?'#d94f78':'#d8a84f');
-  b.style.setProperty('--alpha',(0.16+Math.random()*0.2).toFixed(2));
+  b.style.setProperty('--alpha',(0.07+Math.random()*0.08).toFixed(2));
   layer.appendChild(b);
  }
 })();

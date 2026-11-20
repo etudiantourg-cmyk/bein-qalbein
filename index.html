@@ -286,8 +286,8 @@ header,main,footer{position:relative;z-index:1}
  border-radius:21px;border:2px solid #ffe4a1;
  box-shadow:0 7px 18px #25001466,0 0 0 4px #ffffff25;
 }
-.couple-header .logo{margin-top:16px;font-size:clamp(17px,4vw,23px);letter-spacing:1.2px}
-.couple-header .sub{margin-top:5px}
+.couple-header .sub{margin-top:16px;font-family:"Aref Ruqaa","Tajawal",serif!important;font-size:clamp(22px,5.5vw,30px);font-weight:700;line-height:1.7;color:#ffe8ad;text-shadow:0 2px 0 #701033,0 5px 10px #260012aa;letter-spacing:0}
+.couple-header .sub{margin-top:16px;font-family:"Aref Ruqaa","Tajawal",serif!important;font-size:clamp(22px,5.5vw,30px);font-weight:700;line-height:1.7;color:#ffe8ad;text-shadow:0 2px 0 #701033,0 5px 10px #260012aa;letter-spacing:0}
 
 </style>
 </head>
@@ -296,26 +296,25 @@ header,main,footer{position:relative;z-index:1}
 <div class="heart-bubbles" id="heartBubbles" aria-hidden="true"></div>
 <header class="couple-header">
  <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين">
- <div class="logo">BEIN QALBEIN PRO</div>
- <div class="sub">الكلمات الجميلة تصنع حياة أجمل</div>
+ <div class="sub">الكلمات الجميلة تجعل الحياة أجمل</div>
 </header>
 <main>
 <section class="panel">
- <h2>اختر هويتك</h2>
+ <h2 id="roleTitle">اختر هويتك</h2>
  <div class="roles">
   <button class="role active" id="husband" data-role="husband"><span class="ico">♛</span>أنا زوج</button>
   <button class="role wife" id="wife" data-role="wife"><span class="ico">♡</span>أنا زوجة</button>
  </div>
- <label for="lang">لغة الواجهة</label>
+ <label id="languageLabel" for="lang">لغة الواجهة</label>
  <select id="lang"><option value="ar">العربية</option><option value="en">English (واجهة أساسية)</option><option value="fr">Français (واجهة أساسية)</option></select>
 </section>
 <section class="panel">
- <h2>اختر التصنيف المناسب</h2>
+ <h2 id="catTitle">اختر التصنيف المناسب</h2>
  <input id="search" placeholder="ابحث عن تصنيف...">
  <div class="grid" id="cats" style="margin-top:12px"></div>
 </section>
 <section class="panel">
- <h2>رسالة من القلب</h2>
+ <h2 id="heartTitle">رسالة من القلب</h2>
  <div class="message-card"><div id="message">اختر تصنيفاً لتظهر لك رسالة جميلة هنا.</div><div class="message-foot">♥</div></div>
  <div class="actions">
   <button id="shareBtn">↗ مشاركة</button>
@@ -325,19 +324,19 @@ header,main,footer{position:relative;z-index:1}
  <button id="copyBtn" class="wide primary">▢ نسخ الرسالة</button>
 </section>
 <section class="panel">
- <div class="tools-title"><h2 style="margin:0">رسائلك المفضلة</h2><span class="spark">✦</span></div>
+ <div class="tools-title"><h2 id="favTitle" style="margin:0">رسائلك المفضلة</h2><span class="spark">✦</span></div>
  <div class="row"><button id="showFav">عرض المفضلة</button><button id="hideFav">إخفاء المفضلة</button></div>
  <div id="favorites" class="hidden"></div>
 </section>
 
 <section class="panel">
- <h2>✦ رسالة اليوم</h2>
+ <h2 id="dailyTitle">✦ رسالة اليوم</h2>
  <div class="section-kicker">رسالة تتجدد تلقائياً كل يوم</div>
  <div class="daily-box" id="dailyMessage">رسالة طيبة لهذا اليوم</div>
  <button class="wide primary" id="copyDaily">نسخ رسالة اليوم</button>
 </section>
 <section class="panel">
- <h2>دليل الحياة الزوجية</h2>
+ <h2 id="guideTitle">دليل الحياة الزوجية</h2>
  <div class="section-kicker">خطوات عملية للمودة والرحمة وحسن العشرة</div>
  <div class="advice-tabs">
   <button id="husbandTips" class="active">نصائح للزوج</button>
@@ -345,9 +344,9 @@ header,main,footer{position:relative;z-index:1}
  </div>
  <div id="adviceList"></div>
 </section>
-<p class="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
+<p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
 </main>
-<footer>صُنع بالمحبة والاحترام · BEIN QALBEIN PRO</footer>
+<footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script>
 const categories=[
  {id:'morning',name:'صباح الخير',icon:'☀️',desc:'بداية لطيفة لليوم'},
@@ -704,6 +703,94 @@ Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.
  }
 })();
 
+
+/* V19 — complete interface language layer (Arabic / English / French) */
+const i18n={
+en:{
+ tagline:"Beautiful words make life more beautiful",footer:"Made with love and respect",
+ labels:["Choose your role","I am a husband","I am a wife","Interface language","Choose a category","Search categories…","A message from the heart","Share","Add to favorites","Another message","Copy message","Your favorites","Show favorites","Hide favorites","Today's message","A message refreshed every day","Copy today's message","Marriage life guide","Practical steps for affection, mercy and kindness","Advice for husbands","Advice for wives","Messages of care, respect and support, written with grace."],
+ empty:"You haven't saved any messages yet. Add one you like and it will appear here.",copy:"Copied successfully ✓",saved:"Added ✓",already:"Already saved ✓",del:"Delete",
+ cats:["Good morning","Good evening","At work","While travelling","Health & recovery","When feeling sad","When upset","When angry","When tired","Before sleep","Missing you","Apology & reconciliation","Gratitude & appreciation","Prayer & kind words","Encouragement"],
+ desc:["A gentle start to the day","Peaceful evening words","Encouragement and support","Prayers and reassurance","Care and wishes for good health","Comfort and understanding","Calm and understanding","Gentle words to ease tension","Rest and support","Peace and rest","Warm words of longing","Understanding and reconciliation","Thanks and appreciation","Prayers for goodness and blessing","Confidence, hope and achievement"],
+ msgs:[
+ ["Good morning, dear heart. May Allah fill your day with ease, blessings and peace.","A new day has begun, and I wanted my first words to remind you how much I appreciate you.","May Allah open the doors of provision and success for you and bring peace to your heart.","May your morning be calm, your steps guided and your news joyful.","I hope you find something today that brings comfort and happiness.","Your presence gives my days a deeper meaning. May Allah protect and bless you.","You deserve gentle days and sincere appreciation.","Begin with hope; with effort comes ease, by Allah's permission.","Thank you for all the effort you make, even the things others may not notice.","May today bring goodness, comfort and success."],
+ ["Good evening. I wish your heart lasting peace and quiet.","The day is over; give yourself time to rest. You have done what you could.","May Allah turn today's tiredness into comfort and calm.","I hope the coming hours bring you good news and peace.","Your rest matters, and you deserve appreciation.","I wanted to check on you before the day ends. May Allah keep you safe.","Leave behind what weighed on you and welcome the evening gently.","May your evening be peaceful and full of sincere prayers.","Thank you for making life's little details kinder.","May the night bring serenity and contentment."],
+ ["I see the effort you put into your work, and I truly appreciate it.","Small steps matter; every achievement begins with a sincere attempt.","May Allah bless your work, your time and your lawful provision.","Take a break when you need one. Your health matters.","I believe in your ability to overcome difficulties, one step at a time."],
+ ["May Allah protect you on your journey and bring you back safely.","Let me know when you can; your safety means so much to me.","Distance does not lessen your place in my heart.","May your journey be easy and your destination full of good.","Please rest when you need to and take good care of yourself."],
+ ["I hope your health improves day by day and comfort finds you.","Your wellbeing matters more than any task.","May Allah grant you healing, strength and ease.","Take the time you need; there is no need to rush recovery.","I am here to support you with kindness and patience."],
+ ["You do not need to find the perfect words; I am here to listen.","Your feelings matter, and I will not dismiss them.","We can begin again with one small, calm step.","May Allah replace your sadness with relief and reassurance.","You do not have to pretend that everything is fine."],
+ ["I want us to disagree respectfully and remain kind to one another.","I will reflect on my words and actions, and I hope we both can.","Let us look for a fair solution instead of trading blame.","An honest, calm conversation is better than silent resentment.","I will not let a moment of anger undo the kindness we have built."],
+ ["You do not have to finish everything in one day.","Let us share what we can and rearrange our priorities.","Rest is not laziness; it is a need that protects your strength.","I see your effort and appreciate your patience.","Take a short break; I will help where I can."],
+ ["Close today's chapter gently; not every question needs an answer tonight.","May Allah grant you restful sleep and a peaceful heart.","You deserve rest without carrying everyone's worries.","End your day with remembrance, prayer and trust in Allah.","May Allah protect you through the night and grant you a brighter morning."],
+ ["I miss our conversations and the quiet moments we share.","May Allah always bring us together upon goodness and affection.","Even when life gets busy, your place remains dear to me.","Sending you a warm greeting and a sincere prayer.","I miss being near you and hope you are well."],
+ ["I know an apology alone is not enough, so I will work to change.","I want to repair the effect of my actions, not just offer words.","I respect your feelings and hope we can make things right through dialogue.","I am not looking for excuses; I want the chance to do better.","I am sorry for the hurt my actions caused, and I will learn from it."],
+ ["Thank you for giving your time and effort with kindness.","I notice the little things you do, and I do not take them for granted.","A partner who shares responsibility is a blessing worth appreciating.","Thank you for your honesty and care for our relationship.","May Allah reward you for every good thing you do."],
+ ["O Allah, fill our homes with peace and our words with gentleness.","O Allah, help us remember You, thank You and worship You well.","May Allah bless our lives, provision and families.","O Allah, help us cooperate in goodness and remain patient in hardship.","O Allah, protect us from injustice, harshness and misunderstanding."],
+ ["The road does not have to be easy for you to keep moving forward.","Take the means step by step, and place your trust in Allah.","I am beside you with encouragement and support, without pressure.","What you learn today may become the key to tomorrow's success.","Never underestimate a sincere effort."]
+ ],
+ adviceH:["Listen fully before offering solutions, and make sure you understand her feelings.","Show appreciation clearly and mention the specific effort you noticed.","When angry, pause and agree on a time to resume the discussion calmly.","Share household and family responsibilities in practical ways.","Set aside daily time to talk without phones or distractions.","Never mock her feelings or compare her with others.","When you make a mistake, apologize clearly and show change through action.","Ask whether she needs listening, practical help or time to rest.","Balance work and family, and communicate when pressure increases.","Protect your family's privacy and avoid exposing disagreements.","Show affection through kind words, attention and keeping promises.","Treat her family with respect while maintaining fair boundaries.","Never use money, silence or threats to control; discuss finances transparently.","Leadership in a family means responsibility, care and justice, not domination."],
+ adviceW:["Express your needs calmly and clearly, without accusations or generalizations.","Appreciate his effort and mention the specific action that made you happy.","Choose a suitable time for important conversations, away from exhaustion and anger.","Listen to his view and ask for the same space to express yours.","Do not carry more than you can; agree on a fair sharing of responsibilities.","Keep respect during disagreements; avoid insults, threats and old grievances.","When you make a mistake, apologize sincerely and focus on repairing its impact.","Support him during pressure while also caring for your own needs and rest.","Agree on shared financial goals and speak openly about priorities.","Protect your marital privacy and seek trustworthy advice when needed.","Show affection through kind words, prayer, attention or shared time.","Do not compare your life with what others display; every home has its own journey.","Ask directly for what you need instead of expecting him to read your mind.","Make important decisions through consultation, mercy and mutual respect."]
+},
+fr:{
+ tagline:"Les belles paroles rendent la vie plus belle",footer:"Créé avec amour et respect",
+ labels:["Choisissez votre rôle","Je suis mari","Je suis épouse","Langue de l’interface","Choisissez une catégorie","Rechercher une catégorie…","Un message du cœur","Partager","Ajouter aux favoris","Un autre message","Copier le message","Vos favoris","Afficher les favoris","Masquer les favoris","Message du jour","Un message renouvelé chaque jour","Copier le message du jour","Guide de la vie conjugale","Des gestes concrets pour l’affection, la compassion et le respect","Conseils pour le mari","Conseils pour l’épouse","Des messages d’attention, de respect et de soutien, avec élégance."],
+ empty:"Vous n’avez pas encore enregistré de message. Ajoutez-en un pour le retrouver ici.",copy:"Copié avec succès ✓",saved:"Ajouté ✓",already:"Déjà enregistré ✓",del:"Supprimer",
+ cats:["Bonjour","Bonsoir","Au travail","En voyage","Santé et rétablissement","En cas de tristesse","En cas de contrariété","En cas de colère","En cas de fatigue","Avant de dormir","Tu me manques","Excuses et réconciliation","Gratitude et reconnaissance","Prières et mots bienveillants","Encouragement"],
+ desc:["Un doux début de journée","Des mots paisibles pour le soir","Encouragement et soutien","Prières et réassurance","Attention et souhaits de santé","Réconfort et écoute","Calme et compréhension","Des mots doux pour apaiser la tension","Repos et soutien","Paix et repos","Des mots tendres","Compréhension et réconciliation","Remerciements et reconnaissance","Prières de bien et de bénédiction","Confiance, espoir et réussite"],
+ msgs:[
+ ["Bonjour à ton cœur. Qu’Allah remplisse ta journée de facilité, de bénédictions et de paix.","Un nouveau jour commence, et je voulais te rappeler combien je t’apprécie.","Qu’Allah ouvre pour toi les portes de la subsistance et de la réussite.","Que ta matinée soit paisible et tes pas guidés vers le bien.","J’espère que tu trouveras aujourd’hui une raison de sourire.","Ta présence donne un sens plus doux à mes journées. Qu’Allah te protège.","Tu mérites des journées sereines et une sincère reconnaissance.","Avance avec espoir : après l’effort vient la facilité, avec la permission d’Allah.","Merci pour tous tes efforts, même ceux que personne ne remarque.","Qu’aujourd’hui t’apporte bien, sérénité et réussite."],
+ ["Bonsoir. Je souhaite à ton cœur une paix durable.","La journée est terminée ; accorde-toi un peu de repos.","Qu’Allah transforme ta fatigue en sérénité.","J’espère que les prochaines heures t’apporteront une bonne nouvelle.","Ton repos compte et tu mérites de la reconnaissance.","Je voulais prendre de tes nouvelles avant la fin de la journée.","Laisse derrière toi ce qui t’a pesé et accueille le soir doucement.","Que ta soirée soit paisible et pleine de prières sincères.","Merci de rendre les petits détails de la vie plus doux.","Que la nuit t’apporte sérénité et satisfaction."],
+ ["Je vois les efforts que tu consacres à ton travail et je les apprécie.","Les petits pas comptent ; chaque réussite commence par un effort sincère.","Qu’Allah bénisse ton travail, ton temps et tes revenus licites.","Fais une pause quand tu en as besoin. Ta santé compte.","Je crois en ta capacité à dépasser les difficultés, pas à pas."],
+ ["Qu’Allah te protège pendant ton voyage et te ramène sain et sauf.","Donne-moi de tes nouvelles quand tu le peux ; ta sécurité compte beaucoup.","La distance ne diminue pas la place que tu occupes dans mon cœur.","Qu’Allah facilite ton voyage et t’accorde une bonne destination.","Repose-toi quand il le faut et prends soin de toi."],
+ ["J’espère que ta santé s’améliorera chaque jour et que tu retrouveras le confort.","Ton bien-être compte plus que n’importe quelle tâche.","Qu’Allah t’accorde guérison, force et soulagement.","Prends le temps nécessaire, sans précipiter ton rétablissement.","Je suis là pour te soutenir avec douceur et patience."],
+ ["Tu n’as pas besoin de trouver les mots parfaits ; je suis là pour t’écouter.","Tes sentiments comptent et je ne les minimiserai pas.","Nous pouvons recommencer par un petit pas tranquille.","Qu’Allah remplace ta tristesse par le soulagement et la paix.","Tu n’as pas besoin de prétendre que tout va bien."],
+ ["Je veux que nous puissions être en désaccord tout en restant respectueux.","Je vais réfléchir à mes paroles et à mes actes, et j’espère que nous ferons de même.","Cherchons une solution juste au lieu de nous rejeter la faute.","Une conversation calme vaut mieux qu’un ressentiment silencieux.","Je ne laisserai pas un instant de colère détruire notre affection."],
+ ["Tu n’es pas obligé de tout accomplir en une journée.","Partageons les tâches possibles et réorganisons nos priorités.","Le repos n’est pas de la paresse ; il protège ta force.","Je vois tes efforts et respecte ta patience.","Fais une courte pause ; je t’aiderai dans la mesure du possible."],
+ ["Ferme doucement le chapitre d’aujourd’hui ; tout n’exige pas une réponse ce soir.","Qu’Allah t’accorde un sommeil réparateur et un cœur apaisé.","Tu mérites de dormir sans porter les soucis de tout le monde.","Termine ta journée par le rappel d’Allah, la prière et la confiance en Lui.","Qu’Allah te protège cette nuit et t’offre un matin meilleur."],
+ ["Nos conversations et les moments paisibles que nous partageons me manquent.","Qu’Allah nous réunisse toujours dans le bien et l’affection.","Même lorsque la vie est chargée, tu gardes une place précieuse.","Je t’envoie un salut chaleureux et une prière sincère.","Tu me manques et j’espère que tu vas bien."],
+ ["Je sais que les excuses ne suffisent pas ; je ferai des efforts pour changer.","Je veux réparer les conséquences de mes actes, pas seulement parler.","Je respecte tes sentiments et souhaite que nous réparions cela par le dialogue.","Je ne cherche pas d’excuse, mais une occasion de faire mieux.","Je regrette la peine causée par mon comportement et j’en tirerai une leçon."],
+ ["Merci de donner ton temps et tes efforts avec bienveillance.","Je remarque les petits gestes et je ne les considère pas comme acquis.","Un partenaire qui partage les responsabilités est une bénédiction.","Merci pour ta sincérité et ton attention envers notre relation.","Qu’Allah te récompense pour chaque bonne action."],
+ ["Ô Allah, remplis nos foyers de paix et nos paroles de douceur.","Ô Allah, aide-nous à nous souvenir de Toi, à Te remercier et à bien T’adorer.","Qu’Allah bénisse nos vies, nos ressources et nos familles.","Ô Allah, aide-nous à coopérer dans le bien et à patienter dans l’épreuve.","Ô Allah, protège-nous de l’injustice, de la dureté et des malentendus."],
+ ["Le chemin n’a pas besoin d’être facile pour que tu continues d’avancer.","Avance étape par étape et place ta confiance en Allah.","Je suis à tes côtés avec encouragement et soutien, sans pression.","Ce que tu apprends aujourd’hui peut ouvrir la voie à la réussite de demain.","Ne sous-estime jamais un effort sincère."]
+ ],
+ adviceH:["Écoute jusqu’au bout avant de proposer des solutions et assure-toi d’avoir compris ses sentiments.","Exprime ta reconnaissance clairement et cite l’effort précis que tu as remarqué.","En cas de colère, fais une pause et convenez d’un moment pour reprendre calmement.","Participe concrètement aux responsabilités du foyer et de la famille.","Réserve chaque jour un moment d’échange sans téléphone ni distraction.","Ne te moque jamais de ses sentiments et ne la compare pas aux autres.","Si tu fais une erreur, présente des excuses claires et montre ton changement par tes actes.","Demande-lui si elle a besoin d’écoute, d’aide pratique ou de repos.","Équilibre travail et famille et parle-lui lorsque la pression augmente.","Protège l’intimité de votre foyer et n’expose pas vos désaccords.","Montre ton affection par des paroles douces, de l’attention et des promesses tenues.","Respecte sa famille tout en préservant des limites justes.","N’utilise jamais l’argent, le silence ou les menaces pour contrôler ; discutez des finances avec transparence.","Dans le couple, la responsabilité signifie soin et justice, jamais domination."],
+ adviceW:["Exprime tes besoins calmement et clairement, sans accusation ni généralisation.","Reconnais ses efforts et précise le geste qui t’a fait plaisir.","Choisis un moment adapté pour les sujets importants, loin de la fatigue et de la colère.","Écoute son point de vue et demande le même espace pour exprimer le tien.","Ne porte pas tout toute seule ; répartissez les responsabilités équitablement.","Préserve le respect pendant les désaccords et évite insultes et menaces.","Si tu fais une erreur, excuse-toi sincèrement et répare ses conséquences.","Soutiens-le dans les périodes difficiles tout en prenant soin de toi.","Fixez des objectifs financiers communs et parlez ouvertement des priorités.","Préservez votre intimité et demandez conseil à une personne digne de confiance si besoin.","Exprime ton affection par des mots doux, une prière, de l’attention ou du temps partagé.","Ne compare pas votre vie à ce que les autres montrent ; chaque foyer a son histoire.","Demande directement ce dont tu as besoin au lieu d’attendre qu’il devine.","Prenez les décisions importantes par la concertation, la compassion et le respect mutuel."]
+}
+};
+const uiKeys=["roleTitle","roleH","roleW","language","chooseCat","search","heartMsg","share","favAdd","newMsg","copyMsg","favorites","showFav","hideFav","daily","dailyDesc","copyDaily","guide","guideDesc","husbandAdvice","wifeAdvice","hint"];
+function applyLanguage(){
+ const t=lang==='ar'?null:i18n[lang];const ar=lang==='ar';
+ document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';
+ $('lang').value=lang;
+ const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
+ if(!t){
+  set('appFooter','صُنع بالمحبة والاحترام');
+  const labels=['اختر هويتك','أنا زوج','أنا زوجة','لغة الواجهة','اختر التصنيف المناسب','ابحث عن تصنيف...','رسالة من القلب','↗ مشاركة','☆ أضف للمفضلة','⟳ رسالة أخرى','▢ نسخ الرسالة','رسائلك المفضلة','عرض المفضلة','إخفاء المفضلة','✦ رسالة اليوم','رسالة تتجدد تلقائياً كل يوم','نسخ رسالة اليوم','دليل الحياة الزوجية','خطوات عملية للمودة والرحمة وحسن العشرة','نصائح للزوج','نصائح للزوجة','رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.'];
+  const ids=['roleTitle','husband','wife','languageLabel','catTitle','search','heartTitle','shareBtn','favBtn','newBtn','copyBtn','favTitle','showFav','hideFav','dailyTitle','dailyDesc','copyDaily','guideTitle','guideDesc','husbandTips','wifeTips','hint'];
+  ids.forEach((id,n)=>{const el=$(id);if(el){if(id==='search')el.placeholder=labels[n];else el.textContent=labels[n]}});
+  set('appFooter','صُنع بالمحبة والاحترام');
+ }else{
+  const ids=['roleTitle','husband','wife','languageLabel','catTitle','search','heartTitle','shareBtn','favBtn','newBtn','copyBtn','favTitle','showFav','hideFav','dailyTitle','dailyDesc','copyDaily','guideTitle','guideDesc','husbandTips','wifeTips','hint'];
+  ids.forEach((id,n)=>{const el=$(id);if(el){if(id==='search')el.placeholder=t.labels[n];else if(id==='husband'||id==='wife')el.innerHTML=(id==='husband'?'<span class="ico">♛</span>':'<span class="ico">♡</span>')+t.labels[n];else el.textContent=t.labels[n]}});
+  set('appFooter',t.footer);
+ }
+ categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:t.cats[i];c.desc=ar?c._desc:t.desc[i]});
+ const pools=ar?null:t.msgs;
+ if(pools){Object.keys(messages).forEach((id,i)=>{const base=pools[i]||pools[0];messages[id]=base.concat(base.map((x,j)=>x+' '+(lang==='en'?'May Allah grant you goodness and peace.':'Qu’Allah t’accorde le bien et la paix.')))});}
+ renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];
+ if(!ar){const advice=lang==='en'?t.adviceH:t.adviceH;renderAdviceTranslated(advice,lang==='en'?t.adviceW:t.adviceW)}
+ else renderAdvice('husband');
+ showFavs();
+}
+function renderAdviceTranslated(list,unused){$('adviceList').innerHTML='';list.forEach((tip,i)=>{const d=document.createElement('div');d.className='advice-item';d.textContent=(i+1)+'. '+tip;$('adviceList').append(d)});$('husbandTips').classList.add('active');$('wifeTips').classList.remove('active');}
+
+/* Restore the correct language on every launch; keep saved favorites untouched. */
+$('lang').value=lang;
+$('lang').onchange=e=>{lang=e.target.value;try{localStorage.setItem('bq_language',lang)}catch(_){}applyLanguage()};
+$('husbandTips').onclick=()=>{if(lang==='ar')renderAdvice('husband');else renderAdviceTranslated(i18n[lang].adviceH,i18n[lang].adviceW)};
+$('wifeTips').onclick=()=>{if(lang==='ar')renderAdvice('wife');else renderAdviceTranslated(i18n[lang].adviceW,i18n[lang].adviceH);$('husbandTips').classList.remove('active');$('wifeTips').classList.add('active')};
+$('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'بين قلبين',text:current})}catch(_){}}else copyText(current)};
+applyLanguage();
 renderCats();generate();showFavs();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 </script>

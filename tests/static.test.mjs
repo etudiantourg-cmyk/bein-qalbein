@@ -51,7 +51,8 @@ test("visual exclusions and honest privacy note remain in place", () => {
 test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
-  assert.match(sw, /const CACHE='bein-qalbein-royal-v56'/);
+  assert.match(sw, /keys\\.filter\\(k=>k\\.startsWith\\("bein-qalbein-royal-"\\)\\&\\&k!==CACHE\\)/);
+  assert.match(sw, /const CACHE='bein-qalbein-royal-v57'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });
 

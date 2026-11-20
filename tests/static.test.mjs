@@ -20,6 +20,7 @@ test("main controls, AI connection test and safe message display exist", () => {
     assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(html, /function displayMessageInMain/);
+  assert.match(html, /applyLanguage\(\);\s*\};/);
   assert.match(html, /data-quick="ai"/);
   assert.match(html, /<textarea id="aiOutput"/);
   assert.match(html, /displayMessageInMain\(finalMessage/);
@@ -59,7 +60,7 @@ test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
-  assert.match(sw, /const CACHE='bein-qalbein-royal-v60'/);
+  assert.match(sw, /const CACHE='bein-qalbein-royal-v61'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });
 

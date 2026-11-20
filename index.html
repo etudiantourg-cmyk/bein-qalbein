@@ -1732,6 +1732,7 @@ function useMessage(v,categoryId){
  const builderMap={love:'thanks',miss:'miss',sorry:'sorry',support:'support',calm:'upset',dua:'dua'};
  return displayMessageInMain(v,categoryId||builderMap[$('builderFeeling')?.value]||'thanks');
 }
+window.displayMessageInMain=displayMessageInMain;
  d.addEventListener('click',function(e){
   const t=e.target;
   let b=t.closest('#quickHub button[data-quick]');
@@ -1821,7 +1822,7 @@ function useMessage(v,categoryId){
  $id('aiUseBtn')?.addEventListener('click',()=>{
   if(!latest)return;
   const map={'مودة وامتنان':'thanks','اشتياق محترم':'miss','اعتذار صادق':'sorry','تشجيع ودعم':'support','مواساة':'sad','تهدئة بعد خلاف':'upset','دعاء طيب':'dua','تقدير واحترام':'thanks','رسالة صباحية أو مسائية':'morning'};
-  displayMessageInMain(latest,map[$id('aiMood').value]||'thanks');say('used');
+  window.displayMessageInMain(latest,map[$id('aiMood').value]||'thanks');say('used');
  });
  $id('aiCopyBtn')?.addEventListener('click',async()=>{if(latest){const ok=await copyText(latest);say(ok?'copied':'copyFailed')}});
  window.applyAiStudioLanguage=function(){

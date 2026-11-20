@@ -810,6 +810,21 @@ $('lang').onchange=e=>{lang=e.target.value;try{localStorage.setItem('bq_language
 $('husbandTips').onclick=()=>{if(lang==='ar')renderAdvice('husband');else renderAdviceTranslated(i18n[lang].adviceH,i18n[lang].adviceW)};
 $('wifeTips').onclick=()=>{if(lang==='ar')renderAdvice('wife');else renderAdviceTranslated(i18n[lang].adviceW,i18n[lang].adviceH);$('husbandTips').classList.remove('active');$('wifeTips').classList.add('active')};
 $('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'بين قلبين',text:current})}catch(_){}}else copyText(current)};
+
+saveFavs=function(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert(lang==='en'?'Could not save in browser storage.':lang==='fr'?'Impossible d’enregistrer dans le navigateur.':'تعذر الحفظ في مساحة المتصفح.')}};
+copyText=async function(value){
+ try{await navigator.clipboard.writeText(value);alert(lang==='en'?i18n.en.copy:lang==='fr'?i18n.fr.copy:'تم النسخ بنجاح ✓')}
+ catch(e){const t=document.createElement('textarea');t.value=value;document.body.append(t);t.select();document.execCommand('copy');t.remove();alert(lang==='en'?i18n.en.copy:lang==='fr'?i18n.fr.copy:'تم النسخ ✓')}
+};
+$('favBtn').onclick=()=>{
+ if(!current)return;
+ const added=!favs.includes(current);
+ if(added){favs.unshift(current);saveFavs()}
+ $('favBtn').textContent=added?(lang==='en'?i18n.en.saved:lang==='fr'?i18n.fr.saved:'تمت الإضافة ✓'):(lang==='en'?i18n.en.already:lang==='fr'?i18n.fr.already:'محفوظة بالفعل ✓');
+ $('favorites').classList.remove('hidden');showFavs();
+ setTimeout(()=>{$('favBtn').textContent=lang==='en'?'Add to favorites':lang==='fr'?'Ajouter aux favoris':'☆ أضف للمفضلة'},1600);
+};
+
 applyLanguage();
 renderCats();generate();showFavs();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));

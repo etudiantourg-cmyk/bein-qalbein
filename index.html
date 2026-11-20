@@ -791,7 +791,12 @@ function applyLanguage(){
  categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:t.cats[i];c.desc=ar?c._desc:t.desc[i]});
  const pools=ar?null:t.msgs;
  if(ar){Object.keys(messages).forEach(id=>messages[id]=originalMessagePools[id].slice())}
- if(pools){Object.keys(messages).forEach((id,i)=>{const base=pools[i]||pools[0];messages[id]=base.concat(base.map((x,j)=>x+' '+(lang==='en'?'May Allah grant you goodness and peace.':'Qu’Allah t’accorde le bien et la paix.')))});}
+ if(pools){
+  const endings=lang==='en'
+   ?["May Allah grant you goodness and peace.","I appreciate you more than words can say.","May your heart always find reassurance.","May Allah bless your steps and your home.","Let kindness guide every word between us.","I am here with care, patience and respect.","May your efforts be rewarded with good.","May our home always be filled with mercy.","Take things gently; better days can come.","May Allah keep you safe and content."]
+   :["Qu’Allah t’accorde le bien et la paix.","Je t’apprécie plus que les mots ne peuvent le dire.","Que ton cœur trouve toujours l’apaisement.","Qu’Allah bénisse tes pas et ton foyer.","Que la douceur guide toujours nos paroles.","Je suis là avec affection, patience et respect.","Qu’Allah récompense tes efforts par le bien.","Que notre foyer soit toujours rempli de miséricorde.","Avance doucement ; de meilleurs jours viendront.","Qu’Allah te garde en sécurité et en paix."];
+  Object.keys(messages).forEach((id,i)=>{const base=pools[i]||pools[0];messages[id]=base.flatMap(sentence=>endings.map(end=>sentence+' '+end))});
+ }
  renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];
  if(!ar){const advice=lang==='en'?t.adviceH:t.adviceH;renderAdviceTranslated(advice,lang==='en'?t.adviceW:t.adviceW)}
  else renderAdvice('husband');

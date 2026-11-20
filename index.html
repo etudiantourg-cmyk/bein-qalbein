@@ -651,9 +651,9 @@ button:active{transform:translateY(1px)!important;transition:none!important}
   <details class="ai-connection">
    <summary>إعداد الاتصال بمحرك الذكاء الاصطناعي</summary>
    <p>بعد نشر المحرك، أدخل رابط Cloudflare Worker هنا. لا تضع أي مفتاح سري في التطبيق.</p>
-   <p><a href="https://github.com/etudiantourg-cmyk/bein-qalbein/blob/main/ai-worker/README.md" target="_blank" rel="noopener">شرح إعداد ونشر محرك الذكاء الاصطناعي خطوة بخطوة</a></p>
+   <p><a href="https://github.com/etudiantourg-cmyk/bein-qalbein/blob/main/ai-worker/README.md" target="_blank" rel="noopener noreferrer">شرح إعداد ونشر محرك الذكاء الاصطناعي خطوة بخطوة</a></p>
    <input id="aiEndpoint" type="url" inputmode="url" placeholder="https://اسم-الخدمة.اسمك.workers.dev">
-   <button id="saveAiEndpoint" type="button">حفظ رابط المحرك</button>
+   <div class="row ai-connection-actions"><button id="saveAiEndpoint" type="button">حفظ رابط المحرك</button><button id="aiTestEndpoint" type="button">اختبار الاتصال</button></div>
    <small id="aiConnectionState">الاتصال غير مضبوط بعد.</small>
   </details>
  </section>
@@ -686,7 +686,7 @@ button:active{transform:translateY(1px)!important;transition:none!important}
  <div class="row"><button id="showFav">عرض المفضلة</button><button id="hideFav">إخفاء المفضلة</button></div>
  <div class="favorite-tools"><label id="folderLabel" for="favoriteFolder">مجلد المفضلة</label><select id="favoriteFolder"><option value="all">كل الرسائل</option><option value="love">مودة</option><option value="support">دعم</option><option value="prayer">أدعية</option><option value="special">مميزة</option></select><button id="assignFolder" type="button">صنّف الرسالة الحالية</button></div>
  <div class="favorite-tools"><button id="exportData" type="button">نسخة احتياطية</button><label class="import-label" for="importData" id="importLabel">استعادة نسخة</label><input id="importData" type="file" accept="application/json" hidden></div>
- <div class="favorite-tools" id="privacyTools"><input id="privacyPin" type="password" inputmode="numeric" maxlength="8" placeholder="رمز خصوصية من 4 إلى 8 أرقام"><button id="setPrivacyPin" type="button">تفعيل قفل المفضلة</button><button id="unlockFavorites" type="button">فتح المفضلة</button></div>
+ <div class="favorite-tools" id="privacyTools"><input id="privacyPin" type="password" inputmode="numeric" maxlength="8" placeholder="رمز خصوصية من 4 إلى 8 أرقام" autocomplete="off"><button id="setPrivacyPin" type="button">تفعيل قفل المفضلة</button><button id="unlockFavorites" type="button">فتح المفضلة</button></div><small id="privacyNote" class="privacy-note">تنبيه: هذا قفل عرض محلي بسيط، وليس تشفيراً للرسائل أو حمايةً من فحص بيانات المتصفح.</small>
  <div id="favorites"></div>
  <h2 id="historyTitle" class="subsection-title">آخر الرسائل</h2><div id="historyList"></div>
  <h2 id="customTitle" class="subsection-title">رسائلي الخاصة</h2>
@@ -1340,8 +1340,46 @@ showFavs=function(){oldShowFavs();const chosen=$('favoriteFolder')?.value||'all'
 $('favoriteFolder').onchange=showFavs;
 $('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang==='ar'?'أضف الرسالة إلى المفضلة أولاً.':'Save this message to favorites first.');return}favFolders[current]=$('favoriteFolder').value==='all'?'love':$('favoriteFolder').value;localStorage.setItem('bq_favorite_folders',JSON.stringify(favFolders));showFavs()};
 const backupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette'];
-$('exportData').onclick=()=>{const data={app:'bein-qalbein',version:35,exportedAt:new Date().toISOString(),data:{}};backupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bein-qalbein-backup.json';a.click();URL.revokeObjectURL(url)};
-$('importData').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='bein-qalbein'||!data.data)throw Error('invalid');backupKeys.forEach(k=>{if(typeof data.data[k]==='string')localStorage.setItem(k,data.data[k])});alert(lang==='ar'?'تمت استعادة النسخة. أعد تحميل التطبيق لرؤية كل التغييرات.':'Backup restored. Reload the app to apply all changes.')}catch(_){alert(lang==='ar'?'ملف النسخة الاحتياطية غير صالح.':'Invalid backup file.')}e.target.value=''};
+function validBackupValue(key,raw){
+ if(typeof raw!=='string'||raw.length>600000)return false;
+ if(key==='bq_language')return ['ar','en','fr'].includes(raw);
+ if(key==='bq_theme')return ['dark','light'].includes(raw);
+ if(key==='bq_notifications')return ['on','off'].includes(raw);
+ if(key==='bq_palette')return ['rose','royal','night'].includes(raw);
+ if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.7&&n<=1.5}
+ if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
+ let value;try{value=JSON.parse(raw)}catch(_){return false}
+ if(key==='bq_favorites')return Array.isArray(value)&&value.length<=1000&&value.every(x=>typeof x==='string'&&x.length<=1800);
+ if(key==='bq_recent_messages')return Array.isArray(value)&&value.length<=12&&value.every(x=>typeof x==='string'&&x.length<=1800);
+ if(key==='bq_custom_notes')return Array.isArray(value)&&value.length<=100&&value.every(x=>typeof x==='string'&&x.length<=1800);
+ if(key==='bq_favorite_folders')return value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length<=1000&&Object.entries(value).every(([k,v])=>k.length<=1800&&['love','support','prayer','special'].includes(v));
+ return false;
+}
+$('exportData').onclick=()=>{
+ const data={app:'bein-qalbein',version:49,exportedAt:new Date().toISOString(),data:{}};
+ backupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=url;a.download='bein-qalbein-backup.json';document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),30000);
+};
+$('importData').onchange=async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  if(file.size>2*1024*1024)throw Error('size');
+  const data=JSON.parse(await file.text());
+  if(data.app!=='bein-qalbein'||!data.data||typeof data.data!=='object'||Array.isArray(data.data))throw Error('invalid');
+  const staged={};
+  backupKeys.forEach(k=>{if(Object.prototype.hasOwnProperty.call(data.data,k)){const raw=data.data[k];if(!validBackupValue(k,raw))throw Error('invalid '+k);staged[k]=raw}});
+  if(!Object.keys(staged).length)throw Error('empty');
+  const previous={};Object.keys(staged).forEach(k=>previous[k]=localStorage.getItem(k));
+  try{Object.entries(staged).forEach(([k,v])=>localStorage.setItem(k,v))}
+  catch(error){Object.entries(previous).forEach(([k,v])=>{try{if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(_){}});throw error}
+  alert(lang==='ar'?'تمت استعادة النسخة الاحتياطية والتحقق من بياناتها. سيُعاد تحميل التطبيق الآن.':'Backup validated and restored. The app will now reload.');
+  location.reload();
+ }catch(_){alert(lang==='ar'?'لم تُستعد النسخة: الملف تالف أو يحتوي بيانات غير صالحة. لم نغيّر بياناتك الحالية.':'Backup was not restored: the file is invalid. Your current data was left unchanged.')}
+ e.target.value='';
+};
 function updatePalette(value){document.body.classList.remove('theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+value);localStorage.setItem('bq_palette',value)}
 $('paletteSelect').onchange=e=>updatePalette(e.target.value);
 $('fontScale').oninput=e=>{document.documentElement.style.setProperty('--bq-scale',e.target.value);localStorage.setItem('bq_font_scale',e.target.value)};
@@ -1428,7 +1466,7 @@ applyLanguage=function(){
 const bqPreviousDecorate=decorateAppIcons;
 decorateAppIcons=function(){
  bqPreviousDecorate();
- const map={shareBtn:'share',favBtn:'heart',newBtn:'refresh',surpriseBtn:'spark',cardBtn:'gift',copyBtn:'copy',buildMessageBtn:'spark',useBuiltMessage:'message',copyBuiltMessage:'copy',rescueGenerate:'shield',newChallenge:'spark',showFav:'heart',hideFav:'moon',assignFolder:'book',exportData:'download',importLabel:'upload',setPrivacyPin:'lock',unlockFavorites:'lock',shareAppBtn:'share',themeToggle:'moon',notifyToggle:'heart'};
+ const map={shareBtn:'share',favBtn:'heart',newBtn:'refresh',surpriseBtn:'spark',cardBtn:'card',copyBtn:'copy',buildMessageBtn:'spark',useBuiltMessage:'message',copyBuiltMessage:'copy',rescueGenerate:'shield',newChallenge:'spark',showFav:'heart',hideFav:'moon',assignFolder:'book',exportData:'download',importLabel:'upload',setPrivacyPin:'lock',unlockFavorites:'lock',shareAppBtn:'share',themeToggle:'moon',notifyToggle:'heart'};
  Object.entries(map).forEach(([id,name])=>{const el=$(id);if(el&&!el.querySelector(':scope > svg.ui-icon'))el.insertAdjacentHTML('afterbegin',svgIcon(name))});
  const heads={rescueTitle:'shield',challengeTitle:'spark',builderTitle:'message',dailyTitle:'sun',guideTitle:'book',favTitle:'heart',settingsTitle:'settings'};
  Object.entries(heads).forEach(([id,name])=>{const el=$(id);if(el&&!el.querySelector(':scope > svg.ui-icon'))el.insertAdjacentHTML('afterbegin',svgIcon(name))});
@@ -1695,7 +1733,23 @@ applyLanguage();
   catch(_){try{const a=d.createElement('textarea');a.value=String(value);d.body.append(a);a.select();ok=d.execCommand('copy');a.remove()}catch(__){}}
   if(ok)feedback(source);return ok;
  };
- function useMessage(v){if(!v)return;current=v;$('message').textContent=v;rememberMessage(v);const p=$('inlineMessagePanel');if(p){p.hidden=false;p.style.display='block'}}
+ function displayMessageInMain(value,categoryId){
+ const message=String(value||'').trim();if(!message)return false;
+ current=message;$('message').textContent=message;rememberMessage(message);
+ if(categoryId&&messages[categoryId])selected=categoryId;
+ if(!messages[selected])selected='morning';
+ const search=$('search');if(search)search.value='';
+ goPage('home');groupedRenderCats('');
+ const panel=$('inlineMessagePanel');
+ const target=$('cats')?.querySelector('.category-item[data-category-id="'+selected+'"]');
+ if(panel&&target){target.append(panel);panel.hidden=false;panel.style.display='block'}
+ requestAnimationFrame(()=>panel?.scrollIntoView({behavior:'auto',block:'nearest'}));
+ return true;
+}
+function useMessage(v,categoryId){
+ const builderMap={love:'thanks',miss:'miss',sorry:'sorry',support:'support',calm:'upset',dua:'dua'};
+ return displayMessageInMain(v,categoryId||builderMap[$('builderFeeling')?.value]||'thanks');
+}
  d.addEventListener('click',function(e){
   const t=e.target;
   let b=t.closest('#quickHub button[data-quick]');
@@ -1730,18 +1784,33 @@ applyLanguage();
  if(!gen||gen.dataset.ready)return;gen.dataset.ready='1';
  let latest='',busy=false;
  const words={
- ar:{idle:'يمكنك توليد رسالة جديدة في كل مرة.',saved:'تم حفظ رابط المحرك على هذا الجهاز.',notSet:'محرك الذكاء الاصطناعي غير مربوط بعد. افتح إعداد الاتصال وأضف رابط المحرك المنشور.',badUrl:'أدخل رابط HTTPS صحيحاً للمحرك، دون مسار إضافي أو مفاتيح سرية.',save:'حفظ رابط المحرك',generating:'جارٍ إنشاء رسالتك…',generate:'✦ أنشئ رسالة بالذكاء الاصطناعي',done:'تم إنشاء رسالة جديدة. يمكنك استخدامها أو نسخها أو طلب رسالة أخرى.',used:'تم نقل الرسالة إلى بطاقة رسالة من القلب.',copied:'تم نسخ الرسالة.',failed:'تعذر إنشاء الرسالة الآن. تحقق من نشر المحرك وربطه، ثم حاول مجدداً.',timeout:'استغرق التوليد وقتاً أطول من المتوقع. حاول مرة أخرى.',title:'استوديو الرسائل الذكي',desc:'رسائل جديدة تُكتب لك حسب الموقف والشعور، مع ضوابط واضحة للاحترام والآداب الإسلامية.',mood:'ماذا تريد أن تعبّر؟',recipient:'لمن الرسالة؟',length:'طول الرسالة',language:'لغة الرسالة',context:'تفصيل اختياري يساعد على تخصيص الرسالة',placeholder:'مثلاً: أريد أن أشكره على صبره واهتمامه…',use:'استخدم الرسالة',copy:'نسخ',more:'رسائل أخرى',connection:'إعداد الاتصال بمحرك الذكاء الاصطناعي',guide:'شرح إعداد ونشر محرك الذكاء الاصطناعي خطوة بخطوة',guideNote:'بعد نشر المحرك، أدخل رابط Cloudflare Worker هنا. لا تضع أي مفتاح سري في التطبيق.',connectionIdle:'الاتصال غير مضبوط بعد.',connectionSaved:'تم حفظ الرابط. يمكنك الآن تجربة التوليد.'},
- en:{idle:'You can generate a fresh message each time.',saved:'The engine address is saved on this device.',notSet:'The AI engine is not connected yet. Open connection settings and add your deployed engine URL.',badUrl:'Enter a valid HTTPS engine URL without an extra path or secret key.',save:'Save engine URL',generating:'Creating your message…',generate:'✦ Generate with AI',done:'A new message is ready. You can use it, copy it, or request another.',used:'The message was added to the heart message card.',copied:'Message copied.',failed:'Could not generate a message. Check that the engine is deployed and connected, then try again.',timeout:'Generation took longer than expected. Please try again.',title:'AI Message Studio',desc:'Fresh messages tailored to the moment, with clear respect and modesty guidelines.',mood:'What would you like to express?',recipient:'Who is the message for?',length:'Message length',language:'Message language',context:'Optional detail to personalize the message',placeholder:'For example: I want to thank them for their patience and care…',use:'Use message',copy:'Copy',more:'Another message',connection:'Connect AI engine',guide:'Step-by-step engine setup and deployment guide',guideNote:'After deployment, enter your Cloudflare Worker URL here. Never put a secret key in the app.',connectionIdle:'Not connected yet.',connectionSaved:'URL saved. You can now try generating a message.'},
- fr:{idle:'Vous pouvez générer un nouveau message à chaque demande.',saved:'L’adresse du moteur est enregistrée sur cet appareil.',notSet:'Le moteur IA n’est pas encore connecté. Ouvrez les paramètres de connexion et ajoutez son URL publiée.',badUrl:'Saisissez une URL HTTPS valide, sans chemin supplémentaire ni clé secrète.',save:'Enregistrer l’URL du moteur',generating:'Création de votre message…',generate:'✦ Générer avec l’IA',done:'Un nouveau message est prêt. Vous pouvez l’utiliser, le copier ou en demander un autre.',used:'Le message a été placé dans la carte « Message du cœur ».',copied:'Message copié.',failed:'Impossible de générer le message. Vérifiez le déploiement et la connexion du moteur, puis réessayez.',timeout:'La génération a pris trop de temps. Veuillez réessayer.',title:'Studio de messages IA',desc:'Des messages adaptés à chaque situation, dans le respect et la pudeur.',mood:'Que souhaitez-vous exprimer ?',recipient:'À qui s’adresse le message ?',length:'Longueur du message',language:'Langue du message',context:'Détail facultatif pour personnaliser le message',placeholder:'Exemple : je souhaite le remercier pour sa patience et son attention…',use:'Utiliser le message',copy:'Copier',more:'Un autre message',connection:'Connecter le moteur IA',guide:'Guide de configuration et de déploiement',guideNote:'Après le déploiement, saisissez ici l’URL de votre Cloudflare Worker. Ne placez aucune clé secrète dans l’application.',connectionIdle:'Pas encore connecté.',connectionSaved:'URL enregistrée. Vous pouvez maintenant générer un message.'}
+ ar:{idle:'يمكنك توليد رسالة جديدة في كل مرة.',saved:'تم حفظ رابط المحرك على هذا الجهاز.',notSet:'محرك الذكاء الاصطناعي غير مربوط بعد. افتح إعداد الاتصال وأضف رابط المحرك المنشور.',badUrl:'أدخل رابط HTTPS صحيحاً للمحرك، دون مسار إضافي أو مفاتيح سرية.',save:'حفظ رابط المحرك',test:'اختبار الاتصال',generating:'جارٍ إنشاء رسالتك…',generate:'✦ أنشئ رسالة بالذكاء الاصطناعي',done:'تم إنشاء رسالة جديدة. يمكنك استخدامها أو نسخها أو طلب رسالة أخرى.',used:'تم نقل الرسالة إلى بطاقة رسالة من القلب.',copied:'تم نسخ الرسالة.',copyFailed:'تعذر النسخ. حاول مرة أخرى.',checking:'جارٍ اختبار الاتصال…',connected:'الاتصال بالمحرك ناجح وربط الذكاء الاصطناعي ظاهر.',connectionFailed:'تعذر الاتصال بالمحرك. تحقق من الرابط والنشر.',failed:'تعذر إنشاء الرسالة الآن. تحقق من نشر المحرك وربطه، ثم حاول مجدداً.',timeout:'استغرق التوليد وقتاً أطول من المتوقع. حاول مرة أخرى.',title:'استوديو الرسائل الذكي',desc:'رسائل جديدة تُكتب لك حسب الموقف والشعور، مع ضوابط واضحة للاحترام والآداب الإسلامية.',mood:'ماذا تريد أن تعبّر؟',recipient:'لمن الرسالة؟',length:'طول الرسالة',language:'لغة الرسالة',context:'تفصيل اختياري يساعد على تخصيص الرسالة',placeholder:'مثلاً: أريد أن أشكره على صبره واهتمامه…',use:'استخدم الرسالة',copy:'نسخ',more:'رسائل أخرى',connection:'إعداد الاتصال بمحرك الذكاء الاصطناعي',guide:'شرح إعداد ونشر محرك الذكاء الاصطناعي خطوة بخطوة',guideNote:'بعد نشر المحرك، أدخل رابط Cloudflare Worker هنا. لا تضع أي مفتاح سري في التطبيق.',connectionIdle:'الاتصال غير مضبوط بعد.',connectionSaved:'تم حفظ الرابط. يمكنك الآن تجربة التوليد.'},
+ en:{idle:'You can generate a fresh message each time.',saved:'The engine address is saved on this device.',notSet:'The AI engine is not connected yet. Open connection settings and add your deployed engine URL.',badUrl:'Enter a valid HTTPS engine URL without an extra path or secret key.',save:'Save engine URL',test:'Test connection',generating:'Creating your message…',generate:'✦ Generate with AI',done:'A new message is ready. You can use it, copy it, or request another.',used:'The message was added to the heart message card.',copied:'Message copied.',copyFailed:'Copy failed. Please try again.',checking:'Testing connection…',connected:'The engine is reachable and the AI binding is present.',connectionFailed:'Could not reach the engine. Check its URL and deployment.',failed:'Could not generate a message. Check that the engine is deployed and connected, then try again.',timeout:'Generation took longer than expected. Please try again.',title:'AI Message Studio',desc:'Fresh messages tailored to the moment, with clear respect and modesty guidelines.',mood:'What would you like to express?',recipient:'Who is the message for?',length:'Message length',language:'Message language',context:'Optional detail to personalize the message',placeholder:'For example: I want to thank them for their patience and care…',use:'Use message',copy:'Copy',more:'Another message',connection:'Connect AI engine',guide:'Step-by-step engine setup and deployment guide',guideNote:'After deployment, enter your Cloudflare Worker URL here. Never put a secret key in the app.',connectionIdle:'Not connected yet.',connectionSaved:'URL saved. You can now try generating a message.'},
+ fr:{idle:'Vous pouvez générer un nouveau message à chaque demande.',saved:'L’adresse du moteur est enregistrée sur cet appareil.',notSet:'Le moteur IA n’est pas encore connecté. Ouvrez les paramètres de connexion et ajoutez son URL publiée.',badUrl:'Saisissez une URL HTTPS valide, sans chemin supplémentaire ni clé secrète.',save:'Enregistrer l’URL du moteur',test:'Tester la connexion',generating:'Création de votre message…',generate:'✦ Générer avec l’IA',done:'Un nouveau message est prêt. Vous pouvez l’utiliser, le copier ou en demander un autre.',used:'Le message a été placé dans la carte « Message du cœur ».',copied:'Message copié.',copyFailed:'Échec de la copie. Réessayez.',checking:'Test de connexion…',connected:'Le moteur répond et la liaison IA est présente.',connectionFailed:'Connexion impossible. Vérifiez l’URL et le déploiement.',failed:'Impossible de générer le message. Vérifiez le déploiement et la connexion du moteur, puis réessayez.',timeout:'La génération a pris trop de temps. Veuillez réessayer.',title:'Studio de messages IA',desc:'Des messages adaptés à chaque situation, dans le respect et la pudeur.',mood:'Que souhaitez-vous exprimer ?',recipient:'À qui s’adresse le message ?',length:'Longueur du message',language:'Langue du message',context:'Détail facultatif pour personnaliser le message',placeholder:'Exemple : je souhaite le remercier pour sa patience et son attention…',use:'Utiliser le message',copy:'Copier',more:'Un autre message',connection:'Connecter le moteur IA',guide:'Guide de configuration et de déploiement',guideNote:'Après le déploiement, saisissez ici l’URL de votre Cloudflare Worker. Ne placez aucune clé secrète dans l’application.',connectionIdle:'Pas encore connecté.',connectionSaved:'URL enregistrée. Vous pouvez maintenant générer un message.'}
  };
  const pack=()=>words[lang]||words.ar;
  const say=k=>{if(status)status.textContent=pack()[k]||k};
  function parseEndpoint(raw){
   let u;try{u=new URL(String(raw||'').trim())}catch(_){throw new Error('url')}
-  if(u.protocol!=='https:'||!u.hostname||u.username||u.password||u.pathname!=='/'||u.search||u.hash)throw new Error('url');
+  if(u.protocol!=='https:'||!u.hostname.endsWith('.workers.dev')||u.username||u.password||u.pathname!=='/'||u.search||u.hash)throw new Error('url');
   return u.origin;
  }
  try{const saved=localStorage.getItem('bq_ai_endpoint')||'';if(endpoint)endpoint.value=saved;if(saved&&$id('aiConnectionState'))$id('aiConnectionState').textContent=pack().saved}catch(_){}
+ async function testConnection(){
+  let url;try{url=parseEndpoint(endpoint?.value||localStorage.getItem('bq_ai_endpoint')||'')}catch(_){say('notSet');return}
+  const button=$id('aiTestEndpoint');if(button)button.disabled=true;say('checking');
+  const controller=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),12000):null;
+  try{
+   const response=await fetch(url+'/health',{method:'GET',headers:{'Accept':'application/json'},signal:controller?.signal});
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok||!data.ok||!data.bindingReady)throw new Error('not-ready');
+   if($id('aiConnectionState'))$id('aiConnectionState').textContent=pack().connected;
+   say('connected');
+  }catch(_){if($id('aiConnectionState'))$id('aiConnectionState').textContent=pack().connectionFailed;say('connectionFailed')}
+  finally{if(timer)clearTimeout(timer);if(button)button.disabled=false}
+ }
+ $id('aiTestEndpoint')?.addEventListener('click',testConnection);
  $id('saveAiEndpoint')?.addEventListener('click',()=>{
   const raw=(endpoint?.value||'').trim();
   if(!raw){try{localStorage.removeItem('bq_ai_endpoint')}catch(_){}if($id('aiConnectionState'))$id('aiConnectionState').textContent=pack().connectionIdle;say('notSet');return}
@@ -1769,17 +1838,21 @@ applyLanguage();
  gen.addEventListener('click',generate);more?.addEventListener('click',generate);
  $id('aiUseBtn')?.addEventListener('click',()=>{
   if(!latest)return;
-  current=latest;$id('message').textContent=latest;rememberMessage(latest);goPage('home');
-  if(typeof groupedRenderCats==='function')groupedRenderCats($id('search')?.value||'');
-  const p=$id('inlineMessagePanel');if(p){p.hidden=false;p.style.display='block'}
-  say('used');$id('message').scrollIntoView({behavior:'auto',block:'center'});
+  const map={'مودة وامتنان':'thanks','اشتياق محترم':'miss','اعتذار صادق':'sorry','تشجيع ودعم':'support','مواساة':'sad','تهدئة بعد خلاف':'upset','دعاء طيب':'dua','تقدير واحترام':'thanks','رسالة صباحية أو مسائية':'morning'};
+  displayMessageInMain(latest,map[$id('aiMood').value]||'thanks');say('used');
  });
- $id('aiCopyBtn')?.addEventListener('click',()=>{if(latest){copyText(latest);say('copied')}});
+ $id('aiCopyBtn')?.addEventListener('click',async()=>{if(latest){const ok=await copyText(latest);say(ok?'copied':'copyFailed')}});
  window.applyAiStudioLanguage=function(){
   const t=pack(),set=(id,value)=>{const el=$id(id);if(el)el.textContent=value};
-  set('aiMessageTitle',t.title);set('aiMessageDesc',t.desc);set('saveAiEndpoint',t.save);
+  set('aiMessageTitle',t.title);set('aiMessageDesc',t.desc);set('saveAiEndpoint',t.save);set('aiTestEndpoint',t.test);
   set('aiUseBtn',t.use);set('aiCopyBtn',t.copy);set('aiMoreBtn',t.more);
   [['aiMood','mood'],['aiRecipient','recipient'],['aiLength','length'],['aiLanguage','language'],['aiContext','context']].forEach(([id,key])=>{const el=$id(id),span=el?.closest('label')?.querySelector('span');if(span)span.textContent=t[key]});
+  const optionLabels={
+   ar:{aiMood:['مودة وامتنان','اشتياق','اعتذار','تشجيع','مواساة','تهدئة بعد خلاف','دعاء','تقدير واحترام','صباحية أو مسائية'],aiRecipient:['للزوج','للزوجة','صياغة محايدة'],aiLength:['قصيرة','متوسطة','مطولة'],aiLanguage:['العربية','الإنجليزية','الفرنسية']},
+   en:{aiMood:['Affection & gratitude','Longing','Apology','Encouragement','Comfort','Calm after disagreement','Prayer','Appreciation','Morning or evening'],aiRecipient:['For husband','For wife','Neutral wording'],aiLength:['Short','Medium','Long'],aiLanguage:['Arabic','English','French']},
+   fr:{aiMood:['Affection et gratitude','Manque','Excuses','Encouragement','Réconfort','Apaisement après un désaccord','Invocation','Reconnaissance','Matin ou soir'],aiRecipient:['Pour le mari','Pour l’épouse','Formulation neutre'],aiLength:['Court','Moyen','Long'],aiLanguage:['Arabe','Anglais','Français']}
+  };
+  Object.entries(optionLabels[lang]||optionLabels.ar).forEach(([id,labels])=>{const el=$id(id);if(el)Array.from(el.options).forEach((option,index)=>{if(labels[index])option.textContent=labels[index]})});
   if($id('aiContext'))$id('aiContext').placeholder=t.placeholder;
   const details=document.querySelector('.ai-connection');if(details){const summary=details.querySelector('summary'),ps=details.querySelectorAll('p'),a=details.querySelector('a');if(summary)summary.textContent=t.connection;if(ps[0])ps[0].textContent=t.guideNote;if(a)a.textContent=t.guide}
   if($id('aiConnectionState')&&!localStorage.getItem('bq_ai_endpoint'))$id('aiConnectionState').textContent=t.connectionIdle;

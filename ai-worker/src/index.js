@@ -29,11 +29,19 @@ function rateLimited(ip, now) {
     return true;
   }
   recent.push(now);
+  // Refresh insertion order so the oldest active keys can be evicted predictably.
+  requestsByIp.delete(ip);
   requestsByIp.set(ip, recent);
   if (requestsByIp.size > 2000) {
     for (const [key, times] of requestsByIp) {
       if (!times.length || now - times[times.length - 1] > 120000) requestsByIp.delete(key);
       if (requestsByIp.size <= 1500) break;
+    }
+    // Hard cap memory even during bursts from many distinct source IPs.
+    while (requestsByIp.size > 2000) {
+      const oldest = requestsByIp.keys().next().value;
+      if (oldest === undefined) break;
+      requestsByIp.delete(oldest);
     }
   }
   return false;

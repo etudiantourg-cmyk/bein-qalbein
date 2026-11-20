@@ -331,7 +331,7 @@ header,main,footer{position:relative;z-index:1}
   <span class="hm hm9">♥</span><span class="hm hm10">🌹</span>
  </div>
 </div>
- <div class="sub">الكلمات الجميلة تجعل الحياة أجمل</div>
+ <div class="sub" id="appTagline">الكلمات الجميلة تجعل الحياة أجمل</div>
 </header>
 <main>
 <section class="panel">
@@ -366,13 +366,13 @@ header,main,footer{position:relative;z-index:1}
 
 <section class="panel">
  <h2 id="dailyTitle">✦ رسالة اليوم</h2>
- <div class="section-kicker">رسالة تتجدد تلقائياً كل يوم</div>
+ <div class="section-kicker" id="dailyKicker">رسالة تتجدد تلقائياً كل يوم</div>
  <div class="daily-box" id="dailyMessage">رسالة طيبة لهذا اليوم</div>
  <button class="wide primary" id="copyDaily">نسخ رسالة اليوم</button>
 </section>
 <section class="panel">
  <h2 id="guideTitle">دليل الحياة الزوجية</h2>
- <div class="section-kicker">خطوات عملية للمودة والرحمة وحسن العشرة</div>
+ <div class="section-kicker" id="guideKicker">خطوات عملية للمودة والرحمة وحسن العشرة</div>
  <div class="advice-tabs">
   <button id="husbandTips" class="active">نصائح للزوج</button>
   <button id="wifeTips">نصائح للزوجة</button>
@@ -576,7 +576,7 @@ try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]
 function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
 function renderCats(filter=''){
  $('cats').innerHTML='';
- categories.filter(c=>c.name.includes(filter)).forEach(c=>{
+ const matches=categories.filter(c=>c.name.toLocaleLowerCase(lang).includes(filter.toLocaleLowerCase(lang)));if(!matches.length){const empty=document.createElement('p');empty.className='empty';empty.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';$('cats').append(empty);return}matches.forEach(c=>{
   const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');
   b.innerHTML=`<span class="badge">${c.icon}</span><span>${c.name}<small>${c.desc}</small></span>`;
   b.onclick=()=>{selected=c.id;renderCats($('search').value);generate()};
@@ -588,7 +588,7 @@ function generate(){
  let next=pool[Math.floor(Math.random()*pool.length)];
  if(pool.length>1&&next===current)next=pool[(pool.indexOf(next)+1)%pool.length];
  current=next;
- if(role==='wife')current=current.replaceAll('حبيبي','حبيبتي');
+ if(role==='wife'&&lang==='ar')current=current.replaceAll('حبيبي','حبيبتي');
  $('message').textContent=current;
 }
 function showFavs(){
@@ -792,76 +792,55 @@ fr:{
  adviceW:["Exprime tes besoins calmement et clairement, sans accusation ni généralisation.","Reconnais ses efforts et précise le geste qui t’a fait plaisir.","Choisis un moment adapté pour les sujets importants, loin de la fatigue et de la colère.","Écoute son point de vue et demande le même espace pour exprimer le tien.","Ne porte pas tout toute seule ; répartissez les responsabilités équitablement.","Préserve le respect pendant les désaccords et évite insultes et menaces.","Si tu fais une erreur, excuse-toi sincèrement et répare ses conséquences.","Soutiens-le dans les périodes difficiles tout en prenant soin de toi.","Fixez des objectifs financiers communs et parlez ouvertement des priorités.","Préservez votre intimité et demandez conseil à une personne digne de confiance si besoin.","Exprime ton affection par des mots doux, une prière, de l’attention ou du temps partagé.","Ne compare pas votre vie à ce que les autres montrent ; chaque foyer a son histoire.","Demande directement ce dont tu as besoin au lieu d’attendre qu’il devine.","Prenez les décisions importantes par la concertation, la compassion et le respect mutuel."]
 }
 };
-const uiKeys=["roleTitle","roleH","roleW","language","chooseCat","search","heartMsg","share","favAdd","newMsg","copyMsg","favorites","showFav","hideFav","daily","dailyDesc","copyDaily","guide","guideDesc","husbandAdvice","wifeAdvice","hint"];
-const originalMessagePools=Object.fromEntries(Object.entries(messages).map(([k,v])=>[k,v.slice()]));
+
+let activeAdvice='husband';
+const languageText={
+ar:{roleTitle:'اختر هويتك',husband:'أنا زوج',wife:'أنا زوجة',language:'لغة الواجهة',catTitle:'اختر التصنيف المناسب',search:'ابحث عن تصنيف...',heartTitle:'رسالة من القلب',share:'↗ مشاركة',favAdd:'☆ أضف للمفضلة',newMsg:'⟳ رسالة أخرى',copyMsg:'▢ نسخ الرسالة',favorites:'رسائلك المفضلة',showFav:'عرض المفضلة',hideFav:'إخفاء المفضلة',daily:'✦ رسالة اليوم',dailyDesc:'رسالة تتجدد تلقائياً كل يوم',copyDaily:'نسخ رسالة اليوم',guide:'دليل الحياة الزوجية',guideDesc:'خطوات عملية للمودة والرحمة وحسن العشرة',husbandAdvice:'نصائح للزوج',wifeAdvice:'نصائح للزوجة',hint:'رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.',empty:'لم تحفظ رسائل بعد. أضف رسالة تعجبك لتجدها هنا.',copyDone:'تم النسخ بنجاح ✓',saved:'تمت الإضافة ✓',already:'محفوظة بالفعل ✓',delete:'حذف',noCats:'لا توجد تصنيفات مطابقة لبحثك.',title:'بين قلبين',tagline:'الكلمات الجميلة تجعل الحياة أجمل',footer:'صُنع بالمحبة والاحترام'},
+en:{roleTitle:'Choose your role',husband:'I am a husband',wife:'I am a wife',language:'Interface language',catTitle:'Choose a category',search:'Search categories…',heartTitle:'A message from the heart',share:'↗ Share',favAdd:'☆ Add to favorites',newMsg:'⟳ Another message',copyMsg:'▢ Copy message',favorites:'Your favorites',showFav:'Show favorites',hideFav:'Hide favorites',daily:'✦ Message of the day',dailyDesc:'A new message every day',copyDaily:'Copy today’s message',guide:'Marriage life guide',guideDesc:'Practical steps for affection, mercy and kindness',husbandAdvice:'Advice for husbands',wifeAdvice:'Advice for wives',hint:'Messages of care, respect and support, written with grace.',empty:'You have not saved any messages yet. Add one you like and it will appear here.',copyDone:'Copied successfully ✓',saved:'Added ✓',already:'Already saved ✓',delete:'Delete',noCats:'No categories match your search.',title:'Between Two Hearts',tagline:'Beautiful words make life more beautiful',footer:'Made with love and respect'},
+fr:{roleTitle:'Choisissez votre rôle',husband:'Je suis mari',wife:'Je suis épouse',language:'Langue de l’interface',catTitle:'Choisissez une catégorie',search:'Rechercher une catégorie…',heartTitle:'Un message du cœur',share:'↗ Partager',favAdd:'☆ Ajouter aux favoris',newMsg:'⟳ Un autre message',copyMsg:'▢ Copier le message',favorites:'Vos favoris',showFav:'Afficher les favoris',hideFav:'Masquer les favoris',daily:'✦ Message du jour',dailyDesc:'Un nouveau message chaque jour',copyDaily:'Copier le message du jour',guide:'Guide de la vie conjugale',guideDesc:'Des gestes concrets pour l’affection, la compassion et le respect',husbandAdvice:'Conseils pour le mari',wifeAdvice:'Conseils pour l’épouse',hint:'Des messages d’attention, de respect et de soutien, avec élégance.',empty:'Vous n’avez encore enregistré aucun message. Ajoutez-en un pour le retrouver ici.',copyDone:'Copié avec succès ✓',saved:'Ajouté ✓',already:'Déjà enregistré ✓',delete:'Supprimer',noCats:'Aucune catégorie ne correspond à votre recherche.',title:'Entre deux cœurs',tagline:'Les belles paroles rendent la vie plus belle',footer:'Créé avec amour et respect'}
+};
 function showFavs(){
- $('favorites').innerHTML='';
- const t=lang==='ar'?null:i18n[lang];
- if(!favs.length){$('favorites').innerHTML='<p class="empty">'+(t?t.empty:'لم تحفظ رسائل بعد. أضف رسالة تعجبك لتجدها هنا.')+'</p>';return}
- favs.forEach((item,i)=>{
-  const box=document.createElement('div');box.className='favitem';
-  const p=document.createElement('div');p.textContent=item;
-  const copy=document.createElement('button');copy.textContent=lang==='ar'?'نسخ':(lang==='en'?'Copy':'Copier');copy.onclick=()=>copyText(item);
-  const del=document.createElement('button');del.textContent=t?t.del:'حذف';del.onclick=()=>{favs.splice(i,1);saveFavs();showFavs()};
-  box.append(p,copy,del);$('favorites').append(box);
- });
+ const box=$('favorites');box.innerHTML='';const t=languageText[lang]||languageText.ar;
+ if(!favs.length){const p=document.createElement('p');p.className='empty';p.textContent=t.empty;box.append(p);return}
+ favs.forEach((item,i)=>{const row=document.createElement('div');row.className='favitem';const p=document.createElement('div');p.textContent=item;const cp=document.createElement('button');cp.type='button';cp.textContent=lang==='ar'?'نسخ':lang==='en'?'Copy':'Copier';cp.onclick=()=>copyText(item);const del=document.createElement('button');del.type='button';del.textContent=t.delete;del.onclick=()=>{favs.splice(i,1);saveFavs();showFavs()};row.append(p,cp,del);box.append(row)});
 }
-
+function renderAdviceForLanguage(){
+ const t=lang==='ar'?null:i18n[lang];const list=lang==='ar'?(activeAdvice==='wife'?wifeAdvice:husbandAdvice):(activeAdvice==='wife'?t.adviceW:t.adviceH);
+ $('adviceList').innerHTML='';list.forEach((tip,i)=>{const d=document.createElement('div');d.className='advice-item';d.textContent=(i+1)+'. '+tip;$('adviceList').append(d)});
+ $('husbandTips').classList.toggle('active',activeAdvice==='husband');$('wifeTips').classList.toggle('active',activeAdvice==='wife');
+}
 function applyLanguage(){
- const t=lang==='ar'?null:i18n[lang];const ar=lang==='ar';
- document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';
- $('lang').value=lang;
+ const t=languageText[lang]||languageText.ar;const ar=lang==='ar';
+ document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';$('lang').value=lang;document.title=t.title;
  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
- if(!t){
-  set('appFooter','صُنع بالمحبة والاحترام');
-  const labels=['اختر هويتك','أنا زوج','أنا زوجة','لغة الواجهة','اختر التصنيف المناسب','ابحث عن تصنيف...','رسالة من القلب','↗ مشاركة','☆ أضف للمفضلة','⟳ رسالة أخرى','▢ نسخ الرسالة','رسائلك المفضلة','عرض المفضلة','إخفاء المفضلة','✦ رسالة اليوم','رسالة تتجدد تلقائياً كل يوم','نسخ رسالة اليوم','دليل الحياة الزوجية','خطوات عملية للمودة والرحمة وحسن العشرة','نصائح للزوج','نصائح للزوجة','رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.'];
-  const ids=['roleTitle','husband','wife','languageLabel','catTitle','search','heartTitle','shareBtn','favBtn','newBtn','copyBtn','favTitle','showFav','hideFav','dailyTitle','dailyDesc','copyDaily','guideTitle','guideDesc','husbandTips','wifeTips','hint'];
-  ids.forEach((id,n)=>{const el=$(id);if(el){if(id==='search')el.placeholder=labels[n];else el.textContent=labels[n]}});
-  set('appFooter','صُنع بالمحبة والاحترام');
- }else{
-  const ids=['roleTitle','husband','wife','languageLabel','catTitle','search','heartTitle','shareBtn','favBtn','newBtn','copyBtn','favTitle','showFav','hideFav','dailyTitle','dailyDesc','copyDaily','guideTitle','guideDesc','husbandTips','wifeTips','hint'];
-  ids.forEach((id,n)=>{const el=$(id);if(el){if(id==='search')el.placeholder=t.labels[n];else if(id==='husband'||id==='wife')el.innerHTML=(id==='husband'?'<span class="ico">♛</span>':'<span class="ico">♡</span>')+t.labels[n];else el.textContent=t.labels[n]}});
-  set('appFooter',t.footer);
- }
+ set('roleTitle',t.roleTitle);$('husband').innerHTML='<span class="ico">♛</span>'+t.husband;$('wife').innerHTML='<span class="ico">♡</span>'+t.wife;
+ set('languageLabel',t.language);set('catTitle',t.catTitle);$('search').placeholder=t.search;set('heartTitle',t.heartTitle);set('shareBtn',t.share);set('favBtn',t.favAdd);set('newBtn',t.newMsg);set('copyBtn',t.copyMsg);set('favTitle',t.favorites);set('showFav',t.showFav);set('hideFav',t.hideFav);set('dailyTitle',t.daily);set('dailyKicker',t.dailyDesc);set('copyDaily',t.copyDaily);set('guideTitle',t.guide);set('guideKicker',t.guideDesc);set('husbandTips',t.husbandAdvice);set('wifeTips',t.wifeAdvice);set('hint',t.hint);set('appFooter',t.footer);set('appTagline',t.tagline);
  categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:t.cats[i];c.desc=ar?c._desc:t.desc[i]});
- const pools=ar?null:t.msgs;
  if(ar){Object.keys(messages).forEach(id=>messages[id]=originalMessagePools[id].slice())}
- if(pools){
-  const endings=lang==='en'
-   ?["May Allah grant you goodness and peace.","I appreciate you more than words can say.","May your heart always find reassurance.","May Allah bless your steps and your home.","Let kindness guide every word between us.","I am here with care, patience and respect.","May your efforts be rewarded with good.","May our home always be filled with mercy.","Take things gently; better days can come.","May Allah keep you safe and content."]
-   :["Qu’Allah t’accorde le bien et la paix.","Je t’apprécie plus que les mots ne peuvent le dire.","Que ton cœur trouve toujours l’apaisement.","Qu’Allah bénisse tes pas et ton foyer.","Que la douceur guide toujours nos paroles.","Je suis là avec affection, patience et respect.","Qu’Allah récompense tes efforts par le bien.","Que notre foyer soit toujours rempli de miséricorde.","Avance doucement ; de meilleurs jours viendront.","Qu’Allah te garde en sécurité et en paix."];
-  Object.keys(messages).forEach((id,i)=>{const base=pools[i]||pools[0];messages[id]=base.flatMap(sentence=>endings.map(end=>sentence+' '+end))});
- }
- renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];
- if(!ar){const advice=lang==='en'?t.adviceH:t.adviceH;renderAdviceTranslated(advice,lang==='en'?t.adviceW:t.adviceW)}
- else renderAdvice('husband');
- showFavs();
+ else{const endings=lang==='en'?["May Allah grant you goodness and peace.","I appreciate you more than words can say.","May your heart always find reassurance.","May Allah bless your steps and your home.","Let kindness guide every word between us.","I am here with care, patience and respect.","May your efforts be rewarded with good.","May our home always be filled with mercy.","Take things gently; better days can come.","May Allah keep you safe and content."]:["Qu’Allah t’accorde le bien et la paix.","Je t’apprécie plus que les mots ne peuvent le dire.","Que ton cœur trouve toujours l’apaisement.","Qu’Allah bénisse tes pas et ton foyer.","Que la douceur guide toujours nos paroles.","Je suis là avec affection, patience et respect.","Qu’Allah récompense tes efforts par le bien.","Que notre foyer soit toujours rempli de miséricorde.","Avance doucement ; de meilleurs jours viendront.","Qu’Allah te garde en sécurité et en paix."];Object.keys(messages).forEach((id,i)=>{const pool=t.msgs[i]||t.msgs[0];messages[id]=pool.flatMap(sentence=>endings.map(end=>sentence+' '+end))})}
+ renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];renderAdviceForLanguage();showFavs();
 }
-function renderAdviceTranslated(list,unused){$('adviceList').innerHTML='';list.forEach((tip,i)=>{const d=document.createElement('div');d.className='advice-item';d.textContent=(i+1)+'. '+tip;$('adviceList').append(d)});$('husbandTips').classList.add('active');$('wifeTips').classList.remove('active');}
-
-/* Restore the correct language on every launch; keep saved favorites untouched. */
-$('lang').value=lang;
 $('lang').onchange=e=>{lang=e.target.value;try{localStorage.setItem('bq_language',lang)}catch(_){}applyLanguage()};
-$('husbandTips').onclick=()=>{if(lang==='ar')renderAdvice('husband');else renderAdviceTranslated(i18n[lang].adviceH,i18n[lang].adviceW)};
-$('wifeTips').onclick=()=>{if(lang==='ar')renderAdvice('wife');else renderAdviceTranslated(i18n[lang].adviceW,i18n[lang].adviceH);$('husbandTips').classList.remove('active');$('wifeTips').classList.add('active')};
-$('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'بين قلبين',text:current})}catch(_){}}else copyText(current)};
-
+$('husbandTips').onclick=()=>{activeAdvice='husband';renderAdviceForLanguage()};
+$('wifeTips').onclick=()=>{activeAdvice='wife';renderAdviceForLanguage()};
+$('showFav').onclick=()=>{$('favorites').classList.remove('hidden');showFavs()};
+$('hideFav').onclick=()=>$('favorites').classList.add('hidden');
+$('shareBtn').onclick=async()=>{if(!current)return;const title=languageText[lang].title;if(navigator.share){try{await navigator.share({title,text:current})}catch(_){}}else copyText(current)};
 saveFavs=function(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert(lang==='en'?'Could not save in browser storage.':lang==='fr'?'Impossible d’enregistrer dans le navigateur.':'تعذر الحفظ في مساحة المتصفح.')}};
 copyText=async function(value){
- try{await navigator.clipboard.writeText(value);alert(lang==='en'?i18n.en.copy:lang==='fr'?i18n.fr.copy:'تم النسخ بنجاح ✓')}
- catch(e){const t=document.createElement('textarea');t.value=value;document.body.append(t);t.select();document.execCommand('copy');t.remove();alert(lang==='en'?i18n.en.copy:lang==='fr'?i18n.fr.copy:'تم النسخ ✓')}
+ try{await navigator.clipboard.writeText(value);alert(languageText[lang].copyDone)}
+ catch(e){const t=document.createElement('textarea');t.value=value;document.body.append(t);t.select();document.execCommand('copy');t.remove();alert(languageText[lang].copyDone)}
 };
 $('favBtn').onclick=()=>{
  if(!current)return;
  const added=!favs.includes(current);
  if(added){favs.unshift(current);saveFavs()}
- $('favBtn').textContent=added?(lang==='en'?i18n.en.saved:lang==='fr'?i18n.fr.saved:'تمت الإضافة ✓'):(lang==='en'?i18n.en.already:lang==='fr'?i18n.fr.already:'محفوظة بالفعل ✓');
+ $('favBtn').textContent=added?languageText[lang].saved:languageText[lang].already;
  $('favorites').classList.remove('hidden');showFavs();
- setTimeout(()=>{$('favBtn').textContent=lang==='en'?'Add to favorites':lang==='fr'?'Ajouter aux favoris':'☆ أضف للمفضلة'},1600);
+ setTimeout(()=>{$('favBtn').textContent=languageText[lang].favAdd},1600);
 };
 
 applyLanguage();
-renderCats();generate();showFavs();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
 </script>
 </body></html>

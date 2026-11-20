@@ -361,6 +361,17 @@ body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-
  backdrop-filter:blur(5px);pointer-events:none;
 }
 
+/* V32 — stable category cards; expansion never reorders or jumps the tapped card */
+#cats{overflow-anchor:none}
+.category-item{display:flex;flex-direction:column;align-self:start;min-width:0;overflow-anchor:none}
+.category-item>.cat{width:100%;flex:0 0 auto}
+.category-item>.inline-message-panel{grid-column:auto;width:100%;min-width:0;margin:9px 0 14px;padding:11px;border-radius:19px}
+.category-item>.inline-message-panel .message-card{padding:20px 12px}
+.category-item>.inline-message-panel #message{font-size:17px;line-height:1.9}
+.category-item>.inline-message-panel .actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.category-item>.inline-message-panel .actions button{min-width:0;padding:8px 5px;font-size:12px}
+.category-item>.inline-message-panel #copyBtn{font-size:13px}
+
 /* V30 — app name placed elegantly over the couple */
 .hero-brand-overlay{
  position:absolute;z-index:4;top:69%;left:50%;transform:translate(-50%,-50%);
@@ -963,27 +974,36 @@ function prepareInlineMessage(){
 }
 function groupedRenderCats(filter=''){
  const host=$('cats');host.innerHTML='';const q=filter.trim().toLocaleLowerCase(lang);
- let count=0,selectedButton=null;
+ let count=0,selectedItem=null;
  const inline=prepareInlineMessage();
  categoryGroups.forEach(group=>{
   const matches=categories.filter(c=>group.ids.includes(c.id)&&(!q||(c.name+' '+c.desc).toLocaleLowerCase(lang).includes(q)));
   if(!matches.length)return;
   const title=document.createElement('div');title.className='category-group-title';title.textContent=group.name[lang]||group.name.ar;host.append(title);
   matches.forEach(c=>{
-   count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');b.dataset.categoryId=c.id;
+   count++;
+   const item=document.createElement('div');item.className='category-item';item.dataset.categoryId=c.id;
+   const b=document.createElement('button');b.type='button';b.className='cat'+(c.id===selected?' active':'');
+   b.setAttribute('aria-expanded',c.id===selected&&inline.parentElement===item?'true':'false');
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
    b.onclick=()=>{
-    selected=c.id;
-    generate();
-    host.querySelectorAll('.cat').forEach(item=>item.classList.toggle('active',item.dataset.categoryId===selected));
-    /* Move only the message panel: keep the tapped category node and its screen position untouched. */
-    b.insertAdjacentElement('afterend',inline);
+    const anchorTop=b.getBoundingClientRect().top;
+    selected=c.id;generate();
+    host.querySelectorAll('.cat').forEach(btn=>{
+     const active=btn.closest('.category-item')?.dataset.categoryId===selected;
+     btn.classList.toggle('active',active);btn.setAttribute('aria-expanded',active?'true':'false');
+    });
+    item.append(inline);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+     const shift=b.getBoundingClientRect().top-anchorTop;
+     if(Math.abs(shift)>0.5)window.scrollBy(0,shift);
+    }));
    };
-   host.append(b);if(c.id===selected)selectedButton=b;
+   item.append(b);host.append(item);if(c.id===selected)selectedItem=item;
   });
  });
  if(!count){const p=document.createElement('p');p.className='empty';p.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';host.append(p)}
- if(selectedButton)selectedButton.insertAdjacentElement('afterend',inline);
+ if(selectedItem)selectedItem.append(inline);
 }
 function goPage(page){
  document.querySelectorAll('.page-section').forEach(s=>s.classList.toggle('active-page',s.dataset.page===page));

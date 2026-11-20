@@ -138,6 +138,7 @@ header,main,footer{position:relative;z-index:1}
 .heart-bubble{opacity:0.12;text-shadow:0 1px 5px #ffffff88;mix-blend-mode:multiply}
 
 
+/* V13 — restore the selected interface language after reloads */
 /* V12 — force the Arabic Tajawal font across every interface element */
 html,body,body *{font-family:"Tajawal",Tahoma,Arial,sans-serif!important}
 body{font-weight:500}
@@ -395,7 +396,8 @@ support:[
 ]
 };
 const $=id=>document.getElementById(id);
-let role='husband',lang='ar',selected='morning',current='',favs=[];
+let role='husband',lang=(localStorage.getItem('bq_language')||'ar'),selected='morning',current='',favs=[];
+if(!['ar','en','fr'].includes(lang))lang='ar';
 try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]}
 function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
 function renderCats(filter=''){
@@ -445,6 +447,7 @@ $('hideFav').onclick=()=>$('favorites').classList.add('hidden');
 $('search').oninput=e=>renderCats(e.target.value);
 $('lang').onchange=e=>{
  lang=e.target.value;
+ try{localStorage.setItem('bq_language',lang)}catch(e){}
  document.documentElement.lang=lang;
  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
  // Message library remains Arabic; changing this control currently changes layout direction only.

@@ -226,6 +226,17 @@ header:before,header:after{
 
 /* V15 — remove decorative side stars around the Arabic brand name */
 .arabic-brand:before,.arabic-brand:after{content:none!important;display:none!important}
+
+/* V16 — make floating hearts clearer, richer and softly luminous */
+.heart-bubble{
+ opacity:.28!important;
+ mix-blend-mode:normal!important;
+ color:var(--tone);
+ -webkit-text-stroke:.35px #fff4f7;
+ filter:drop-shadow(0 2px 3px #7d174455) drop-shadow(0 0 7px #ffd4e388);
+ text-shadow:0 1px 2px #fff6,0 0 10px #f5a6c466;
+}
+
 </style>
 </head>
 <body>
@@ -636,7 +647,7 @@ Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.
   b.style.setProperty('--delay',(-Math.random()*32)+'s');
   b.style.setProperty('--drift',(-45+Math.random()*90)+'px');
   b.style.setProperty('--tone',i%2?'#d94f78':'#d8a84f');
-  b.style.setProperty('--alpha',(0.07+Math.random()*0.08).toFixed(2));
+  b.style.setProperty('--alpha',(0.22+Math.random()*0.12).toFixed(2));
   layer.appendChild(b);
  }
 })();

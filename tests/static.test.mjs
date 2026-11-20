@@ -16,7 +16,7 @@ test("application JavaScript parses and element IDs are unique", () => {
 
 test("core controls and existing saved-data keys remain available", () => {
   for (const id of ["cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn"]) {
-    assert.match(html, new RegExp('id=["']' + id + '["']'));
+    assert.match(html, new RegExp(`id=[\"']${id}[\"']`));
   }
   assert.match(html, /bq_favorites/);
   assert.match(html, /bq_recent_messages/);

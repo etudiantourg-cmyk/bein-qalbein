@@ -1742,8 +1742,8 @@ window.displayMessageInMain=displayMessageInMain;
   const t=e.target;
   let b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;
-   if(b.dataset.quick==='categories'){dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}
-   else if(b.dataset.quick==='surprise'){const ids=categories.map(c=>c.id);if(ids.length){selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search')?.value||'');generate()}dest=$('message')}
+   if(b.dataset.quick==='categories'){$('search').value='';groupedRenderCats('');dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}
+   else if(b.dataset.quick==='surprise'){const ids=categories.map(c=>c.id);$('search').value='';if(ids.length){selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats('');generate()}dest=$('inlineMessagePanel')||$('message')}
    else if(b.dataset.quick==='builder')dest=reveal('messageBuilder');
    else if(b.dataset.quick==='ai'){dest=reveal('aiMessagePanel');$('aiMood')?.focus({preventScroll:true})}
    else if(b.dataset.quick==='rescue'){dest=reveal('rescueCenter');showRescue()}

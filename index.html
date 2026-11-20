@@ -8,9 +8,8 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <title>BEIN QALBEIN PRO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="https://fonts.bunny.net/css?family=tajawal:400,500,600,700,800,900&display=swap" rel="stylesheet">
 
 <style>
 :root{--wine:#4c0825;--wine2:#8f1242;--wine3:#b51e52;--gold:#f0c66e;--gold2:#ffe8ad;--cream:#fff5e9;--paper:#fffaf4;--ink:#48152b;--muted:#8d6573;--shadow:0 14px 32px #43051f24}
@@ -139,8 +138,8 @@ header,main,footer{position:relative;z-index:1}
 .heart-bubble{opacity:0.12;text-shadow:0 1px 5px #ffffff88;mix-blend-mode:multiply}
 
 
-/* V11 — elegant Arabic Tajawal typography */
-body,button,select,input{font-family:"Tajawal",sans-serif}
+/* V12 — force the Arabic Tajawal font across every interface element */
+html,body,body *{font-family:"Tajawal",Tahoma,Arial,sans-serif!important}
 body{font-weight:500}
 .arabic-brand{font-weight:900;letter-spacing:0}
 .sub{font-weight:600}

@@ -571,6 +571,7 @@ button:active{transform:translateY(1px)!important;transition:none!important}
 .ai-status{margin:12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.72);color:#6d2445;line-height:1.7}
  .ai-output{width:100%;box-sizing:border-box;resize:vertical;font:inherit;white-space:pre-wrap;line-height:2;padding:16px;border:1px solid #d9bd79;border-radius:18px;background:#fffaf5;color:#48172e;min-height:150px}
 .ai-output[hidden]{display:none!important}
+.app-toast{position:fixed;z-index:9999;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));transform:translate(-50%,10px);opacity:0;pointer-events:none;max-width:calc(100vw - 28px);padding:12px 18px;border:1px solid #e6c27c;border-radius:15px;background:#4c0825;color:#fff4e2;font-weight:800;text-align:center;box-shadow:0 8px 24px #0003;transition:opacity .18s ease,transform .18s ease}.app-toast.show{opacity:1;transform:translate(-50%,0)}.app-toast[hidden]{display:none!important}
 .ai-note{display:block;margin:7px 2px;color:#765565;font-size:12px;line-height:1.7}
 body.theme-night .ai-note{color:#e7c9d5}
 .ai-result-actions{margin-top:10px}
@@ -695,7 +696,7 @@ body.theme-night .ai-note{color:#e7c9d5}
  <div id="favorites"></div>
  <h2 id="historyTitle" class="subsection-title">آخر الرسائل</h2><div id="historyList"></div>
  <h2 id="customTitle" class="subsection-title">رسائلي الخاصة</h2>
- <textarea id="customInput" rows="3" placeholder="اكتب رسالة خاصة بك..."></textarea>
+ <textarea id="customInput" rows="3" maxlength="10000" placeholder="اكتب رسالة خاصة بك..."></textarea>
  <button id="saveCustom" class="wide primary">حفظ رسالتي</button><div id="customList"></div>
 </section>
 
@@ -923,7 +924,7 @@ support:[
 const $=id=>document.getElementById(id);
 let role='husband',lang=(localStorage.getItem('bq_language')||'ar'),selected='morning',current='',favs=[];
 if(!['ar','en','fr'].includes(lang))lang='ar';
-try{favs=JSON.parse(localStorage.getItem('bq_favorites')||'[]')}catch(e){favs=[]}
+try{const storedFavs=JSON.parse(localStorage.getItem('bq_favorites')||'[]');favs=Array.isArray(storedFavs)?[...new Set(storedFavs.filter(x=>typeof x==='string'))].slice(0,1000):[]}catch(e){favs=[]}
 function saveFavs(){try{localStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
 function renderCats(filter=''){
  $('cats').innerHTML='';
@@ -1256,18 +1257,26 @@ function rememberMessage(value){
  try{localStorage.setItem('bq_recent_messages',JSON.stringify(list))}catch(_){}
 }
 function renderHistory(){
- let list=[];try{list=JSON.parse(localStorage.getItem('bq_recent_messages')||'[]')}catch(_){}
+ let list=[];try{const stored=JSON.parse(localStorage.getItem('bq_recent_messages')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string').slice(0,12):[]}catch(_){}
  const host=$('historyList');host.innerHTML='';
  if(!list.length){host.innerHTML='<p class="empty">'+(lang==='en'?'No recent messages yet.':lang==='fr'?'Aucun message récent.':'لا توجد رسائل حديثة بعد.')+'</p>';return}
  list.forEach(value=>{const d=document.createElement('div');d.className='history-item';const p=document.createElement('div');p.textContent=value;const b=document.createElement('button');b.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';b.onclick=()=>copyText(value);d.append(p,b);host.append(d)})
 }
 function renderCustomNotes(){
- let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}
+ let list=[];try{const stored=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string').slice(0,100):[]}catch(_){}
  const host=$('customList');host.innerHTML='';
  if(!list.length){host.innerHTML='<p class="empty">'+(lang==='en'?'Your private messages will appear here.':lang==='fr'?'Vos messages privés apparaîtront ici.':'ستظهر رسائلك الخاصة هنا.')+'</p>';return}
  list.forEach((value,index)=>{const d=document.createElement('div');d.className='custom-item';const p=document.createElement('div');p.textContent=value;const cp=document.createElement('button');cp.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';cp.onclick=()=>copyText(value);const del=document.createElement('button');del.textContent=languageText[lang].delete;del.onclick=()=>{list.splice(index,1);localStorage.setItem('bq_custom_notes',JSON.stringify(list));renderCustomNotes()};d.append(p,cp,del);host.append(d)})
 }
-$('saveCustom').onclick=()=>{const value=$('customInput').value.trim();if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}list.unshift(value);try{localStorage.setItem('bq_custom_notes',JSON.stringify(list.slice(0,100)))}catch(_){}$('customInput').value='';renderCustomNotes();alert(lang==='en'?'Your message was saved.':lang==='fr'?'Votre message a été enregistré.':'تم حفظ رسالتك الخاصة ✓')};
+$('saveCustom').onclick=()=>{
+ const value=$('customInput').value.trim();if(!value)return;
+ let list=[];try{const stored=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string'):[]}catch(_){}
+ list.unshift(value);
+ try{localStorage.setItem('bq_custom_notes',JSON.stringify(list.slice(0,100)))}
+ catch(_){alert(lang==='en'?'Could not save. Browser storage may be full.':'تعذر الحفظ؛ قد تكون مساحة المتصفح ممتلئة.');return}
+ $('customInput').value='';renderCustomNotes();
+ alert(lang==='en'?'Your message was saved.':lang==='fr'?'Votre message a été enregistré.':'تم حفظ رسالتك الخاصة ✓')
+};
 $('surpriseBtn').onclick=()=>{const ids=categories.map(c=>c.id);selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search').value);generate();$('message').scrollIntoView({behavior:'auto',block:'center'})};
 /* V34 smart message shortcuts */
 const smartNames={ar:{thanks:'أريد أن أشكره',miss:'أريد أن أعبّر عن اشتياقي',sorry:'أريد أن أعتذر',support:'أريد أن أشجعه',sad:'أريد أن أواسيه',upset:'حدث خلاف بيننا',dua:'أريد دعاءً جميلاً'},en:{thanks:'Thank them',miss:'Say I miss you',sorry:'Apologize',support:'Encourage them',sad:'Offer comfort',upset:'We had a disagreement',dua:'Share a prayer'},fr:{thanks:'Le remercier',miss:'Dire tu me manques',sorry:'Présenter mes excuses',support:'L’encourager',sad:'Le réconforter',upset:'Nous avons eu un désaccord',dua:'Partager une invocation'}};
@@ -1713,12 +1722,24 @@ applyLanguage();
 (function(){
  const d=document;
  function reveal(id){const box=$(id);if(!box)return null;box.hidden=false;box.querySelectorAll(':scope > *').forEach(x=>{if(x.tagName!=='H2'&&!x.classList.contains('tool-disclosure'))x.hidden=false});const b=box.querySelector(':scope > .tool-disclosure');if(b)b.setAttribute('aria-expanded','true');return box}
- function feedback(b){if(!b||b.tagName!=='BUTTON')return;if(!b.dataset.copyHtml)b.dataset.copyHtml=b.innerHTML;b.textContent=lang==='en'?'Copied ✓':lang==='fr'?'Copié ✓':'تم النسخ ✓';clearTimeout(b._copyTimer);b._copyTimer=setTimeout(()=>{if(b.isConnected)b.innerHTML=b.dataset.copyHtml},1400)}
+ function showCopyToast(success){
+ let toast=$('appToast');
+ if(!toast){toast=document.createElement('div');toast.id='appToast';toast.className='app-toast';toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');toast.hidden=true;d.body.append(toast)}
+ toast.textContent=success?(lang==='en'?'Copied to clipboard ✓':lang==='fr'?'Copié ✓':'تم النسخ بنجاح ✓'):(lang==='en'?'Copy failed. Try again.':lang==='fr'?'Échec de la copie. Réessayez.':'تعذر النسخ؛ حاول مرة أخرى.');
+ toast.hidden=false;toast.classList.add('show');clearTimeout(toast._timer);
+ toast._timer=setTimeout(()=>{toast.classList.remove('show');toast.hidden=true},1900);
+}
+function feedback(b){
+ if(!b||b.tagName!=='BUTTON'){showCopyToast(true);return}
+ if(!b.dataset.copyHtml)b.dataset.copyHtml=b.innerHTML;
+ b.textContent=lang==='en'?'Copied ✓':lang==='fr'?'Copié ✓':'تم النسخ ✓';
+ clearTimeout(b._copyTimer);b._copyTimer=setTimeout(()=>{if(b.isConnected)b.innerHTML=b.dataset.copyHtml},1400)
+}
  copyText=async function(value){
   const source=d.activeElement;let ok=false;
   try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(String(value));ok=true}else{const a=d.createElement('textarea');a.value=String(value);a.style.cssText='position:fixed;opacity:0';d.body.append(a);a.select();ok=d.execCommand('copy');a.remove()}}
   catch(_){try{const a=d.createElement('textarea');a.value=String(value);d.body.append(a);a.select();ok=d.execCommand('copy');a.remove()}catch(__){}}
-  if(ok)feedback(source);return ok;
+  if(ok)feedback(source);else showCopyToast(false);return ok;
  };
  function displayMessageInMain(value,categoryId){
  const message=String(value||'').trim();if(!message)return false;

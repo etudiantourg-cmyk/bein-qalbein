@@ -569,7 +569,7 @@ button:active{transform:translateY(1px)!important;transition:none!important}
 .ai-extra-label{display:block;margin:12px 0}
 .ai-extra-label textarea,.ai-connection input{width:100%;box-sizing:border-box;border:1px solid #d7c18a;border-radius:16px;padding:12px;background:#fff;color:#4b1830;font:inherit}
 .ai-status{margin:12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.72);color:#6d2445;line-height:1.7}
-.ai-output{white-space:pre-wrap;line-height:2;padding:16px;border:1px solid #d9bd79;border-radius:18px;background:#fffaf5;color:#48172e;min-height:60px}
+.ai-output{display:block;width:100%;box-sizing:border-box;resize:vertical;font:inherit;white-space:pre-wrap;line-height:2;padding:16px;border:1px solid #d9bd79;border-radius:18px;background:#fffaf5;color:#48172e;min-height:150px}
 .ai-result-actions{margin-top:10px}
 .ai-connection{margin-top:14px;padding:12px;border:1px dashed #c6a85c;border-radius:16px;color:#66213e}
 .ai-connection summary{cursor:pointer;font-weight:800}
@@ -1839,6 +1839,7 @@ window.displayMessageInMain=displayMessageInMain;
   };
   Object.entries(optionLabels[lang]||optionLabels.ar).forEach(([id,labels])=>{const el=$id(id);if(el)Array.from(el.options).forEach((option,index)=>{if(labels[index])option.textContent=labels[index]})});
   if($id('aiContext'))$id('aiContext').placeholder=t.placeholder;
+  if(output)output.placeholder=lang==='en'?'You can edit the message before using it…':lang==='fr'?'Vous pouvez modifier le message avant de l’utiliser…':'يمكنك تعديل الرسالة قبل استخدامها…';
   const details=document.querySelector('.ai-connection');if(details){const summary=details.querySelector('summary'),ps=details.querySelectorAll('p'),a=details.querySelector('a');if(summary)summary.textContent=t.connection;if(ps[0])ps[0].textContent=t.guideNote;if(a)a.textContent=t.guide}
   if($id('aiConnectionState')&&!localStorage.getItem('bq_ai_endpoint'))$id('aiConnectionState').textContent=t.connectionIdle;
   if(!busy)gen.textContent=t.generate;

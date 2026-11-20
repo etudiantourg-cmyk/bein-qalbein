@@ -1497,7 +1497,7 @@ applyLanguage();
   if(action==='surprise'){
    goPage('home');const b=$('surpriseBtn');if(b)b.click();return;
   }
-  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'smooth',block:'start'});$('search')?.focus({preventScroll:true});return}
+  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'smooth',block:'start'});return}
   const id=action==='builder'?'messageBuilder':'rescueCenter';
   goPage('home');toggleTool(id,true);
   requestAnimationFrame(()=>$(id)?.scrollIntoView({behavior:'smooth',block:'center'}));

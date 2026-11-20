@@ -10,6 +10,7 @@
 <title>BEIN QALBEIN PRO</title>
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=tajawal:400,500,600,700,800,900&display=swap" rel="stylesheet">
+<link href="https://fonts.bunny.net/css?family=aref-ruqaa:400,700&display=swap" rel="stylesheet">
 
 <style>
 :root{--wine:#4c0825;--wine2:#8f1242;--wine3:#b51e52;--gold:#f0c66e;--gold2:#ffe8ad;--cream:#fff5e9;--paper:#fffaf4;--ink:#48152b;--muted:#8d6573;--shadow:0 14px 32px #43051f24}
@@ -148,6 +149,79 @@ h2,label{font-weight:800}
 #message{font-weight:600;font-size:20px;line-height:2.1}
 .daily-box,.advice-item,.favitem{font-weight:500}
 .role,.cat,.actions button,.row button,.wide,.advice-tabs button{font-weight:800}
+
+
+/* V14 — framed royal header and refined Arabic wordmark */
+header{
+ margin:12px 12px 18px;
+ border:2px solid #ffe6a8;
+ border-radius:34px;
+ padding:27px 16px 30px;
+ outline:1px solid #ffffff66;
+ outline-offset:-8px;
+ box-shadow:
+  0 0 0 4px #8f1746,
+  0 0 0 6px #f6d58e,
+  0 13px 0 #74143b,
+  0 24px 36px #4b082b55,
+  inset 0 3px 0 #ffffff77,
+  inset 0 -4px 0 #f4cf85,
+  inset 0 0 0 8px #ffffff12,
+  inset 0 0 0 10px #ffe4a044;
+}
+header:before,header:after{
+ border:1.5px solid #ffe7ae;
+ opacity:.34;
+}
+.brandmark{position:relative;z-index:2;margin-bottom:13px}
+.brandmark img{
+ width:88px;height:88px;
+ border:3px solid #fff0c9;
+ border-radius:27px;
+ box-shadow:0 7px 0 #8b1b4b,0 14px 24px #39051f66,0 0 0 6px #ffffff30,inset 0 2px 6px #fff;
+}
+.arabic-brand{
+ position:relative;
+ display:table;
+ margin:5px auto 2px;
+ padding:0 23px 7px;
+ font-family:"Aref Ruqaa","Tajawal",serif!important;
+ font-size:clamp(43px,10vw,57px);
+ font-weight:700;
+ line-height:1.45;
+ letter-spacing:.3px;
+ color:#fff0b9;
+ background:linear-gradient(180deg,#fff9d9 0%,#ffe7a0 43%,#e9b85e 72%,#fff0c0 100%);
+ -webkit-background-clip:text;
+ background-clip:text;
+ -webkit-text-fill-color:transparent;
+ filter:drop-shadow(0 2px 0 #7b2140) drop-shadow(0 5px 5px #260012aa);
+ text-shadow:none;
+}
+.arabic-brand:before,.arabic-brand:after{
+ content:"✧";
+ position:absolute;
+ top:35%;
+ color:#ffe7a4;
+ -webkit-text-fill-color:#ffe7a4;
+ font-family:serif!important;
+ font-size:18px;
+ filter:drop-shadow(0 2px 2px #4b082b88);
+}
+.arabic-brand:before{right:-2px}
+.arabic-brand:after{left:-2px}
+.logo{
+ margin-top:3px;
+ font-weight:900;
+ letter-spacing:1.1px;
+ text-shadow:0 2px 0 #a52b59,0 5px 0 #64102f,0 9px 16px #24001499;
+}
+.sub{margin-top:9px;font-size:16px;font-weight:600}
+@media(max-width:420px){
+ header{margin:10px 9px 16px;border-radius:29px;padding:24px 12px 27px}
+ .arabic-brand{font-size:clamp(41px,11vw,51px)}
+ .brandmark img{width:82px;height:82px}
+}
 
 </style>
 </head>

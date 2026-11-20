@@ -345,6 +345,22 @@ body.dark-mode .bottom-nav button{color:#f7e8ee}body.dark-mode .bottom-nav butto
 body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-item{background:#211725;color:#f8eaf0;border-color:#806078}
 @media(min-width:700px){.bottom-nav{bottom:18px}}
 
+
+/* V28 — elegant title overlay on the couple artwork */
+.couple-hero-wrap{position:relative}
+.hero-title-overlay{
+ position:absolute;z-index:5;top:clamp(12px,4vw,25px);left:50%;transform:translateX(-50%);
+ width:max-content;max-width:88%;padding:9px clamp(22px,7vw,38px);
+ border:1.5px solid #ffe6a1;border-radius:999px;
+ background:linear-gradient(135deg,#4c0825ee,#9b174cee 55%,#5b0a2eee);
+ color:#fff0c5;font-family:"Aref Ruqaa","Tajawal",serif!important;
+ font-size:clamp(25px,7vw,39px);font-weight:700;line-height:1.35;
+ letter-spacing:.2px;text-align:center;white-space:nowrap;
+ text-shadow:0 2px 0 #4c0825,0 4px 10px #17000b;
+ box-shadow:0 5px 18px #25001488,inset 0 1px 0 #ffffff66,0 0 0 3px #f7d58c33;
+ backdrop-filter:blur(5px);pointer-events:none;
+}
+
 </style>
 </head>
 <body>
@@ -352,6 +368,7 @@ body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-
 <div class="heart-bubbles" id="heartBubbles" aria-hidden="true"></div>
 <header class="couple-header">
  <div class="couple-hero-wrap">
+ <div class="hero-title-overlay" aria-label="رسائل زوجية">رسائل زوجية</div>
  <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين">
  <div class="hero-motion" aria-hidden="true">
   <span class="hm hm1">♥</span><span class="hm hm2">🌹</span>

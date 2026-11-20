@@ -1353,10 +1353,12 @@ const oldShowFavs=showFavs;
 showFavs=function(){oldShowFavs();const chosen=$('favoriteFolder')?.value||'all';$('favorites').querySelectorAll('.favitem').forEach((node,i)=>{const value=favs[i];const folder=favFolders[value]||'love';node.style.display=chosen==='all'||chosen===folder?'':'none'})};
 $('favoriteFolder').onchange=showFavs;
 $('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang==='ar'?'أضف الرسالة إلى المفضلة أولاً.':'Save this message to favorites first.');return}favFolders[current]=$('favoriteFolder').value==='all'?'love':$('favoriteFolder').value;localStorage.setItem('bq_favorite_folders',JSON.stringify(favFolders));showFavs()};
-const backupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette'];
+const backupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_ai_language','bq_ai_language_manual'];
 function validBackupValue(key,raw){
  if(typeof raw!=='string'||raw.length>600000)return false;
  if(key==='bq_language')return ['ar','en','fr'].includes(raw);
+ if(key==='bq_ai_language')return ['العربية','الإنجليزية','الفرنسية'].includes(raw);
+ if(key==='bq_ai_language_manual')return ['0','1'].includes(raw);
  if(key==='bq_theme')return ['dark','light'].includes(raw);
  if(key==='bq_notifications')return ['on','off'].includes(raw);
  if(key==='bq_palette')return ['rose','royal','night'].includes(raw);
@@ -1370,7 +1372,7 @@ function validBackupValue(key,raw){
  return false;
 }
 $('exportData').onclick=()=>{
- const data={app:'bein-qalbein',version:49,exportedAt:new Date().toISOString(),data:{}};
+ const data={app:'bein-qalbein',version:57,exportedAt:new Date().toISOString(),data:{}};
  backupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});
  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob);const a=document.createElement('a');

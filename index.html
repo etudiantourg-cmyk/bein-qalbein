@@ -561,6 +561,23 @@ button:active{transform:translateY(1px)!important;transition:none!important}
 @media(hover:hover){.panel:hover,.role:hover,.cat:hover,.actions button:hover,.row button:hover,.wide:hover{transform:none!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+
+/* AI message studio */
+.ai-message-panel{position:relative;overflow:hidden;border:1px solid rgba(190,145,55,.65);background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(255,230,240,.96))}
+.ai-badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 12px;border-radius:30px;background:linear-gradient(135deg,#8b1747,#c52b70);color:#fff;font-weight:900;box-shadow:0 4px 12px #7c174533}
+.ai-message-panel h2{margin-top:10px}
+.ai-extra-label{display:block;margin:12px 0}
+.ai-extra-label textarea,.ai-connection input{width:100%;box-sizing:border-box;border:1px solid #d7c18a;border-radius:16px;padding:12px;background:#fff;color:#4b1830;font:inherit}
+.ai-status{margin:12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.72);color:#6d2445;line-height:1.7}
+.ai-output{white-space:pre-wrap;line-height:2;padding:16px;border:1px solid #d9bd79;border-radius:18px;background:#fffaf5;color:#48172e;min-height:60px}
+.ai-result-actions{margin-top:10px}
+.ai-connection{margin-top:14px;padding:12px;border:1px dashed #c6a85c;border-radius:16px;color:#66213e}
+.ai-connection summary{cursor:pointer;font-weight:800}
+.ai-connection p,.ai-connection small{display:block;line-height:1.7}
+.ai-connection button{margin-top:8px}
+[data-theme="dark"] .ai-message-panel{background:linear-gradient(145deg,#301b2b,#432036)}
+[data-theme="dark"] .ai-output,[data-theme="dark"] .ai-extra-label textarea,[data-theme="dark"] .ai-connection input{background:#241722;color:#fff}
+
 </style>
 </head>
 <body>
@@ -615,6 +632,31 @@ button:active{transform:translateY(1px)!important;transition:none!important}
   <textarea id="builtMessage" rows="3" placeholder="ستظهر رسالتك هنا ويمكنك تعديلها..."></textarea>
   <div class="row"><button id="useBuiltMessage" type="button">استخدم الرسالة</button><button id="copyBuiltMessage" type="button">نسخ</button></div>
  </div>
+
+ <section class="pro-tools panel-lite ai-message-panel" id="aiMessagePanel" aria-labelledby="aiMessageTitle">
+  <div class="ai-badge">✦ AI</div>
+  <h2 id="aiMessageTitle">استوديو الرسائل الذكي</h2>
+  <p class="section-kicker" id="aiMessageDesc">رسائل جديدة تُكتب لك حسب الموقف والشعور، مع ضوابط واضحة للاحترام والآداب الإسلامية.</p>
+  <div class="builder-grid">
+   <label><span>ماذا تريد أن تعبّر؟</span><select id="aiMood"><option value="مودة وامتنان">مودة وامتنان</option><option value="اشتياق محترم">اشتياق</option><option value="اعتذار صادق">اعتذار</option><option value="تشجيع ودعم">تشجيع</option><option value="مواساة">مواساة</option><option value="تهدئة بعد خلاف">تهدئة بعد خلاف</option><option value="دعاء طيب">دعاء</option><option value="تقدير واحترام">تقدير واحترام</option><option value="رسالة صباحية أو مسائية">صباحية أو مسائية</option></select></label>
+   <label><span>لمن الرسالة؟</span><select id="aiRecipient"><option value="للزوج">للزوج</option><option value="للزوجة">للزوجة</option><option value="محايدة">صياغة محايدة</option></select></label>
+   <label><span>طول الرسالة</span><select id="aiLength"><option value="قصيرة">قصيرة</option><option value="متوسطة" selected>متوسطة</option><option value="مطولة">مطولة</option></select></label>
+   <label><span>لغة الرسالة</span><select id="aiLanguage"><option value="العربية">العربية</option><option value="الإنجليزية">English</option><option value="الفرنسية">Français</option></select></label>
+  </div>
+  <label class="ai-extra-label"><span>تفصيل اختياري يساعد على تخصيص الرسالة</span><textarea id="aiContext" rows="2" maxlength="240" placeholder="مثلاً: أريد أن أشكره على صبره واهتمامه..."></textarea></label>
+  <button id="aiGenerateBtn" class="wide primary" type="button">✦ أنشئ رسائل بالذكاء الاصطناعي</button>
+  <div id="aiStatus" class="ai-status" role="status" aria-live="polite">يمكنك توليد رسائل جديدة كل مرة، ثم تعديلها أو استخدامها.</div>
+  <div id="aiOutput" class="ai-output" hidden></div>
+  <div class="row ai-result-actions" id="aiResultActions" hidden><button id="aiUseBtn" type="button">استخدم الرسالة</button><button id="aiCopyBtn" type="button">نسخ</button><button id="aiMoreBtn" type="button">رسائل أخرى</button></div>
+  <details class="ai-connection">
+   <summary>إعداد الاتصال بمحرك الذكاء الاصطناعي</summary>
+   <p>أدخل رابط Cloudflare Worker بعد نشره. لا تضع أي مفتاح سري هنا.</p>
+   <input id="aiEndpoint" type="url" inputmode="url" placeholder="https://اسم-الخدمة.اسمك.workers.dev">
+   <button id="saveAiEndpoint" type="button">حفظ رابط المحرك</button>
+   <small id="aiConnectionState">الاتصال غير مضبوط بعد.</small>
+  </details>
+ </section>
+
  <div class="pro-tools panel-lite" id="rescueCenter">
   <h2 id="rescueTitle">🕊 أنقذ الموقف</h2><p class="section-kicker" id="rescueDesc">خطوات هادئة لإصلاح الموقف دون لوم أو تصعيد.</p>
   <div class="builder-grid"><label><span id="rescueSituationLabel">ما الموقف؟</span><select id="rescueSituation"><option value="argument">حدث خلاف</option><option value="silence">صمت وابتعاد</option><option value="hurt">كلام جارح</option><option value="stress">ضغط وتعب</option><option value="misunderstanding">سوء فهم</option><option value="apology">أحتاج إلى الاعتذار</option></select></label></div>
@@ -1676,6 +1718,47 @@ applyLanguage();
   if(t.closest('#copyBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(current)copyText(current);return}
  },true);
  const sel=$('rescueSituation');if(sel)sel.addEventListener('change',()=>{$('rescueResult')?.classList.remove('rescue-ready')});
+})();
+
+
+/* AI Studio client. The model key stays on the server-side Worker. */
+(function(){
+ const $id=id=>document.getElementById(id);
+ const endpoint=$id('aiEndpoint'),status=$id('aiStatus'),output=$id('aiOutput'),actions=$id('aiResultActions'),gen=$id('aiGenerateBtn');
+ if(!gen||gen.dataset.ready)return;gen.dataset.ready='1';
+ let latest='';
+ const say=t=>{if(status)status.textContent=t};
+ try{const saved=localStorage.getItem('bq_ai_endpoint')||'';if(endpoint)endpoint.value=saved;if(saved)$id('aiConnectionState').textContent='تم حفظ رابط المحرك على هذا الجهاز.'}catch(_){}
+ $id('saveAiEndpoint')?.addEventListener('click',()=>{
+  const v=(endpoint.value||'').trim();
+  if(v&&!/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[^\s]*)?$/i.test(v)){say('الرابط غير صحيح. استخدم رابط HTTPS لمحركك.');return}
+  try{localStorage.setItem('bq_ai_endpoint',v)}catch(_){}
+  $id('aiConnectionState').textContent=v?'تم حفظ الرابط. يمكنك الآن تجربة التوليد.':'لم يتم ضبط رابط بعد.';
+  say(v?'تم حفظ رابط المحرك.':'أدخل رابط المحرك أولاً.');
+ });
+ async function generate(){
+  const url=(endpoint?.value||localStorage.getItem('bq_ai_endpoint')||'').trim();
+  if(!url){say('محرك الذكاء الاصطناعي لم يُربط بعد. افتح إعداد الاتصال، ثم أضف رابط Cloudflare Worker المنشور.');$id('aiConnectionState').textContent='بانتظار رابط المحرك.';return}
+  gen.disabled=true;gen.textContent='جارٍ كتابة رسائلك…';say('يكتب لك الآن رسائل جديدة مع مراجعة ضوابط المحتوى…');output.hidden=true;actions.hidden=true;
+  try{
+   const response=await fetch(url.replace(/\/$/,'')+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood:$id('aiMood').value,recipient:$id('aiRecipient').value,length:$id('aiLength').value,language:$id('aiLanguage').value,context:$id('aiContext').value.slice(0,240)})});
+   const data=await response.json().catch(()=>({}));
+   if(!response.ok)throw new Error(data.error||('تعذر الاتصال ('+response.status+')'));
+   latest=String(data.message||'').trim();if(!latest)throw new Error('لم يصل نص من المحرك. حاول مرة أخرى.');
+   output.textContent=latest;output.hidden=false;actions.hidden=false;say('تم إنشاء رسالة جديدة. يمكنك تعديلها أو استخدامها أو طلب غيرها.');
+  }catch(err){say('لم يتم إنشاء الرسالة: '+(err.message||'تعذر الاتصال')+'. تحقق من رابط المحرك ثم أعد المحاولة.')}
+  finally{gen.disabled=false;gen.textContent='✦ أنشئ رسائل بالذكاء الاصطناعي'}
+ }
+ gen.addEventListener('click',generate);
+ $id('aiMoreBtn')?.addEventListener('click',generate);
+ $id('aiUseBtn')?.addEventListener('click',()=>{
+  if(!latest)return;
+  current=latest;$id('message').textContent=latest;rememberMessage(latest);
+  const p=$id('inlineMessagePanel');if(p){p.hidden=false;p.style.display='block'}
+  say('تم نقل الرسالة إلى بطاقة رسالة من القلب.');
+  $id('message').scrollIntoView({behavior:'auto',block:'center'});
+ });
+ $id('aiCopyBtn')?.addEventListener('click',()=>{if(latest)copyText(latest)});
 })();
 
 </script>

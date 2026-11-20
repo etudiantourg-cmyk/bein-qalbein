@@ -28,6 +28,9 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /optionLabels/);
   assert.match(html, /aiPrivacyNote/);
   assert.match(html, /aiSafetyNote/);
+  assert.match(html, /rateLimited:/);
+  assert.match(html, /safetyRejected:/);
+  assert.match(html, /engineUnavailable:/);
   assert.match(html, /bq_ai_language_manual/);
   assert.match(html, /role==='wife'\?'للزوج':'للزوجة'/);
 });
@@ -56,7 +59,7 @@ test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
-  assert.match(sw, /const CACHE='bein-qalbein-royal-v59'/);
+  assert.match(sw, /const CACHE='bein-qalbein-royal-v60'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });
 

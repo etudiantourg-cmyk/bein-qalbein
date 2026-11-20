@@ -361,6 +361,16 @@ body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-
  backdrop-filter:blur(5px);pointer-events:none;
 }
 
+/* V29 — show the selected message directly beneath its category */
+.inline-message-panel{grid-column:1/-1;width:100%;margin:2px 0 14px;padding:14px;border:1.5px solid #e6c27c;border-radius:23px;background:linear-gradient(145deg,#fffdf8,#f8e2e8);box-shadow:0 6px 0 #d8adba,0 13px 22px #5b102020,inset 0 2px 0 #fff;animation:inlineReveal .24s ease-out}
+.inline-message-panel h2{margin:0 0 22px;text-align:center}
+.inline-message-panel .message-card{width:100%}
+.inline-message-panel .actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+.inline-message-panel #copyBtn{margin-top:10px}
+@keyframes inlineReveal{from{opacity:.35;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#211622);border-color:#a77b55}
+@media(max-width:360px){.inline-message-panel{padding:10px}.inline-message-panel .actions{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -921,16 +931,37 @@ const categoryGroups=[
  {name:{ar:'رسائل المشاعر',en:'Feelings',fr:'Émotions'},ids:['miss','sad','upset','sorry']},
  {name:{ar:'التقدير والدعم',en:'Appreciation & support',fr:'Reconnaissance et soutien'},ids:['thanks','dua','support']}
 ];
+let inlineMessagePanel=null;
+function prepareInlineMessage(){
+ if(inlineMessagePanel)return inlineMessagePanel;
+ const source=$('message').closest('section');
+ inlineMessagePanel=document.createElement('div');
+ inlineMessagePanel.id='inlineMessagePanel';
+ inlineMessagePanel.className='inline-message-panel';
+ ['heartTitle'].forEach(id=>inlineMessagePanel.append($(id)));
+ inlineMessagePanel.append($('message').closest('.message-card'));
+ inlineMessagePanel.append(document.querySelector('.actions'));
+ inlineMessagePanel.append($('copyBtn'));
+ source.remove();
+ return inlineMessagePanel;
+}
 function groupedRenderCats(filter=''){
  const host=$('cats');host.innerHTML='';const q=filter.trim().toLocaleLowerCase(lang);
- let count=0;
+ let count=0,selectedButton=null;
+ const inline=prepareInlineMessage();
  categoryGroups.forEach(group=>{
   const matches=categories.filter(c=>group.ids.includes(c.id)&&(!q||(c.name+' '+c.desc).toLocaleLowerCase(lang).includes(q)));
   if(!matches.length)return;
   const title=document.createElement('div');title.className='category-group-title';title.textContent=group.name[lang]||group.name.ar;host.append(title);
-  matches.forEach(c=>{count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';b.onclick=()=>{selected=c.id;groupedRenderCats($('search').value);generate()};host.append(b)});
+  matches.forEach(c=>{
+   count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');
+   b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
+   b.onclick=()=>{selected=c.id;generate();groupedRenderCats($('search').value);};
+   host.append(b);if(c.id===selected)selectedButton=b;
+  });
  });
  if(!count){const p=document.createElement('p');p.className='empty';p.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';host.append(p)}
+ if(selectedButton)selectedButton.insertAdjacentElement('afterend',inline);
 }
 function goPage(page){
  document.querySelectorAll('.page-section').forEach(s=>s.classList.toggle('active-page',s.dataset.page===page));

@@ -462,6 +462,24 @@ body.theme-night .bottom-nav button{background:linear-gradient(145deg,#302033,#2
 body.theme-night .bottom-nav button .ui-icon{stroke:#ffdfaa}
 body.theme-night .bottom-nav button.active{background:linear-gradient(145deg,#8d2851,#42152f)}
 
+
+/* V39 responsive and accessibility refinements */
+button,select,input,.import-label{min-height:48px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #c28a35;outline-offset:3px}
+#message{font-size:clamp(17px,calc(19px * var(--bq-scale)),25px)!important;line-height:1.95;overflow-wrap:anywhere}
+.cat{min-width:0;gap:9px;padding:10px;min-height:70px}
+.cat>span:last-child{min-width:0;overflow-wrap:anywhere}
+.actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.actions button,.row button,.pro-tools button{min-width:0;white-space:normal;line-height:1.35;padding:9px 7px}
+.bottom-nav{gap:5px;padding:7px}
+.bottom-nav button{min-width:0;padding:4px 2px}
+body.theme-night .panel,body.theme-night .message-card,body.theme-night .daily-box,body.theme-night .advice-item,body.theme-night .favitem,body.theme-night .inline-message-panel,body.theme-night .smart-center{background:linear-gradient(145deg,#302033,#211622);color:#f8eaf0;border-color:#987052}
+body.theme-night h2,body.theme-night label,body.theme-night .category-group-title{color:#ffe5bc}
+body.theme-night .cat{background:linear-gradient(145deg,#3a2638,#241725);border-color:#8b6376;color:#fff0e2}
+body.theme-night .cat.active{background:linear-gradient(145deg,#9d315c,#4c1837);color:#fff3dc}
+body.theme-night .favitem button,body.theme-night .advice-tabs button{background:#493044;color:#ffebd2;border-color:#9d755a}
+@media(max-width:380px){main{padding-inline:9px}.panel{padding:15px 11px;border-radius:21px}.cat{min-height:64px;padding:8px}.cat .badge{width:41px;height:41px;flex-basis:41px}.actions button{font-size:13px}.bottom-nav{left:7px;right:7px}}
+
 </style>
 </head>
 <body>
@@ -1281,6 +1299,64 @@ groupedRenderCats=function(filter=''){originalGroupedRenderCatsV38(filter);decor
 const originalApplyLanguageV38=applyLanguage;
 applyLanguage=function(){originalApplyLanguageV38();decorateAppIcons()};
 decorateAppIcons();
+
+
+/* V39: deeper quality pass */
+const bqClosings={
+ar:['أسأل الله أن يكتب لك الخير وييسر أمرك.','أنا أقدّر وجودك وجهدك، وسأظهر ذلك في أفعالي.','ولنجعل الرفق والاحترام أساس حديثنا.','حفظك الله وبارك في وقتك وصحتك.','فلنبحث معاً عن خطوة عملية نافعة.'],
+en:['May Allah guide you towards what is best.','I appreciate you and will show it through my actions.','Let gentleness and respect guide our words.','May Allah bless your time, health and efforts.','Let us choose one helpful step together.'],
+fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je le montrerai aussi par mes actes.','Que la douceur et le respect guident nos paroles.','Qu’Allah bénisse ton temps, ta santé et tes efforts.','Choisissons ensemble une étape utile.']
+};
+const bqPreviousApply=applyLanguage;
+applyLanguage=function(){
+ bqPreviousApply();
+ const endings=bqClosings[lang]||bqClosings.ar;
+ Object.keys(messages).forEach(id=>{
+  const source=messages[id].slice();
+  messages[id]=source.flatMap(sentence=>endings.map(end=>sentence+' — '+end));
+ });
+ document.documentElement.dataset.messageCount=String(Object.values(messages).reduce((n,p)=>n+p.length,0));
+ if(typeof decorateAppIcons==='function')decorateAppIcons();
+};
+const bqPreviousDecorate=decorateAppIcons;
+decorateAppIcons=function(){
+ bqPreviousDecorate();
+ const map={shareBtn:'share',favBtn:'heart',newBtn:'refresh',surpriseBtn:'spark',cardBtn:'gift',copyBtn:'copy',buildMessageBtn:'spark',useBuiltMessage:'message',copyBuiltMessage:'copy',rescueGenerate:'shield',newChallenge:'spark',showFav:'heart',hideFav:'moon',assignFolder:'book',exportData:'download',importLabel:'upload',setPrivacyPin:'lock',unlockFavorites:'lock',shareAppBtn:'share',themeToggle:'moon',notifyToggle:'heart'};
+ Object.entries(map).forEach(([id,name])=>{const el=$(id);if(el&&!el.querySelector(':scope > svg.ui-icon'))el.insertAdjacentHTML('afterbegin',svgIcon(name))});
+ const heads={rescueTitle:'shield',challengeTitle:'spark',builderTitle:'message',dailyTitle:'sun',guideTitle:'book',favTitle:'heart',settingsTitle:'settings'};
+ Object.entries(heads).forEach(([id,name])=>{const el=$(id);if(el&&!el.querySelector(':scope > svg.ui-icon'))el.insertAdjacentHTML('afterbegin',svgIcon(name))});
+};
+let bqLockTimer=null;
+const bqPreviousPrivacyRefresh=refreshFavoritesPrivacy;
+refreshFavoritesPrivacy=function(){
+ bqPreviousPrivacyRefresh();
+ if(bqLockTimer)clearTimeout(bqLockTimer);
+ if(favoritesUnlocked&&localStorage.getItem('bq_fav_pin_hash'))bqLockTimer=setTimeout(()=>{favoritesUnlocked=false;bqPreviousPrivacyRefresh()},180000);
+};
+const bqPreviousGoPage=goPage;
+goPage=function(page){
+ if(page!=='favorites'&&localStorage.getItem('bq_fav_pin_hash')){favoritesUnlocked=false;if(bqLockTimer)clearTimeout(bqLockTimer);bqPreviousPrivacyRefresh()}
+ bqPreviousGoPage(page);
+};
+const bqBackupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_fav_pin_hash','bq_last_page'];
+$('exportData').onclick=()=>{
+ const data={app:'bein-qalbein',version:39,exportedAt:new Date().toISOString(),data:{}};
+ bqBackupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bein-qalbein-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$('importData').onchange=async e=>{
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ try{
+  if(file.size>2097152)throw Error('size');
+  const data=JSON.parse(await file.text());if(data.app!=='bein-qalbein'||!data.data||typeof data.data!=='object')throw Error('format');
+  const valid={};
+  bqBackupKeys.forEach(k=>{if(typeof data.data[k]==='string'){if(['bq_favorites','bq_recent_messages','bq_custom_notes','bq_favorite_folders'].includes(k))JSON.parse(data.data[k]);valid[k]=data.data[k]}});
+  Object.entries(valid).forEach(([k,v])=>localStorage.setItem(k,v));
+  alert(lang==='ar'?'تمت استعادة البيانات. أعد تحميل التطبيق لتطبيق الإعدادات.':'Backup restored. Reload the app to apply settings.');
+ }catch(_){alert(lang==='ar'?'ملف النسخة الاحتياطية غير صالح أو يتجاوز 2 ميغابايت.':'Invalid backup file or file exceeds 2 MB.')}
+ e.target.value='';
+};
+/* Keep all major controls readable and correctly sized on compact phones. */
 
 </script>
 </body></html>

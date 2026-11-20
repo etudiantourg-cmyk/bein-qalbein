@@ -1,0 +1,9 @@
+{
+  "name": "bein-qalbein-worker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cloudflare Workers AI backend for Bein Qalbein",
+  "devDependencies": {
+    "wrangler": "4.135.0"
+  }
+}

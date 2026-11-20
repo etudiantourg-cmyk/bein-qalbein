@@ -1521,5 +1521,67 @@ applyLanguage();
  };
 })();
 
+
+/* V43 — interaction reliability pass based on real interface review.
+   Smart shortcuts now have one delegated, deterministic action. The repair plan is
+   generated on demand so its main button always produces a visible result. */
+(function(){
+ const chipHost=$('smartChips');
+ if(chipHost){
+  chipHost.addEventListener('click',function(ev){
+   const b=ev.target.closest('button[data-pick]');
+   if(!b||!chipHost.contains(b))return;
+   ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+   const id=b.dataset.pick;
+   if(!messages[id])return;
+   selected=id;
+   generate();
+   chipHost.querySelectorAll('button[data-pick]').forEach(x=>{
+    const active=x===b;x.classList.toggle('active',active);
+    x.setAttribute('aria-pressed',String(active));
+   });
+   const category=$('cats')?.querySelector('[data-category-id="'+id+'"] .cat');
+   if(category){
+    $('cats').querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x===category));
+   }
+   $('message')?.scrollIntoView({behavior:'auto',block:'center'});
+  },true);
+ }
+ const rescueResult=$('rescueResult');
+ const rescueButton=$('rescueGenerate');
+ const rescueSelect=$('rescueSituation');
+ const intro={
+  ar:'اختر الموقف ثم اضغط «اعرض خطة هادئة» للحصول على خطوات عملية ورسالة افتتاحية.',
+  en:'Choose a situation, then tap “Show a calm plan” to get practical steps and an opening message.',
+  fr:'Choisissez une situation, puis appuyez sur « Afficher un plan calme » pour obtenir des étapes pratiques.'
+ };
+ let rescueReady=false;
+ function resetRescue(){
+  rescueReady=false;
+  if(rescueResult){rescueResult.textContent=intro[lang]||intro.ar;rescueResult.classList.remove('rescue-ready')}
+ }
+ if(rescueResult)rescueResult.setAttribute('aria-live','polite');
+ if(rescueSelect)rescueSelect.addEventListener('change',resetRescue);
+ if(rescueButton){
+  rescueButton.addEventListener('click',function(){
+   showRescue();
+   rescueReady=true;
+   if(rescueResult)rescueResult.classList.add('rescue-ready');
+   const old=rescueButton.textContent;
+   rescueButton.setAttribute('aria-pressed','true');
+   rescueButton.textContent=lang==='en'?'Plan displayed ✓':lang==='fr'?'Plan affiché ✓':'ظهرت الخطة ✓';
+   if(rescueResult)rescueResult.scrollIntoView({behavior:'auto',block:'nearest'});
+   setTimeout(()=>{if(rescueButton.isConnected){rescueButton.textContent=old;rescueButton.setAttribute('aria-pressed','false')}},1800);
+  });
+ }
+ resetRescue();
+ const originalLanguageApply=applyLanguage;
+ applyLanguage=function(){
+  originalLanguageApply();
+  resetRescue();
+  if(chipHost)chipHost.querySelectorAll('button[data-pick]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.pick===selected)));
+ };
+})();
+
 </script>
 </body></html>

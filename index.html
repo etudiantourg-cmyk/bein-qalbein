@@ -361,6 +361,21 @@ body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-
  backdrop-filter:blur(5px);pointer-events:none;
 }
 
+/* V30 — app name placed elegantly over the couple */
+.hero-brand-overlay{
+ position:absolute;z-index:4;top:69%;left:50%;transform:translate(-50%,-50%);
+ width:max-content;max-width:88%;padding:5px clamp(22px,7vw,36px) 9px;
+ border:1.5px solid #ffe3a0;border-radius:18px 34px 18px 34px;
+ background:linear-gradient(135deg,#4b0828e8,#8f1746e8 52%,#4b0828e8);
+ color:#ffe8b0;font-family:"Aref Ruqaa","Tajawal",serif!important;
+ font-size:clamp(28px,8vw,43px);font-weight:800;line-height:1.25;
+ letter-spacing:.3px;text-align:center;white-space:nowrap;
+ text-shadow:0 2px 0 #4b0828,0 4px 9px #17000b;
+ box-shadow:0 5px 15px #25001488,inset 0 1px 0 #ffffff66,0 0 0 3px #f7d58c33;
+ pointer-events:none;
+}
+@media(max-width:380px){.hero-brand-overlay{top:70%;font-size:clamp(25px,7.5vw,34px);padding:4px 20px 7px}}
+
 /* V29 — show the selected message directly beneath its category */
 .inline-message-panel{grid-column:1/-1;width:100%;margin:2px 0 14px;padding:14px;border:1.5px solid #e6c27c;border-radius:23px;background:linear-gradient(145deg,#fffdf8,#f8e2e8);box-shadow:0 6px 0 #d8adba,0 13px 22px #5b102020,inset 0 2px 0 #fff;animation:inlineReveal .24s ease-out}
 .inline-message-panel h2{margin:0 0 22px;text-align:center}
@@ -379,6 +394,7 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
 <header class="couple-header">
  <div class="couple-hero-wrap">
  <div class="hero-title-overlay" aria-label="رسائل زوجية">رسائل زوجية</div>
+ <div class="hero-brand-overlay" aria-label="بين قلبين">بين قلبين</div>
  <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين">
  <div class="hero-motion" aria-hidden="true">
   <span class="hm hm1">♥</span><span class="hm hm2">🌹</span>

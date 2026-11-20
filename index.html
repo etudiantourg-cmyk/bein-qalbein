@@ -970,9 +970,15 @@ function groupedRenderCats(filter=''){
   if(!matches.length)return;
   const title=document.createElement('div');title.className='category-group-title';title.textContent=group.name[lang]||group.name.ar;host.append(title);
   matches.forEach(c=>{
-   count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');
+   count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');b.dataset.categoryId=c.id;
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
-   b.onclick=()=>{selected=c.id;generate();groupedRenderCats($('search').value);};
+   b.onclick=()=>{
+    selected=c.id;
+    generate();
+    host.querySelectorAll('.cat').forEach(item=>item.classList.toggle('active',item.dataset.categoryId===selected));
+    /* Move only the message panel: keep the tapped category node and its screen position untouched. */
+    b.insertAdjacentElement('afterend',inline);
+   };
    host.append(b);if(c.id===selected)selectedButton=b;
   });
  });

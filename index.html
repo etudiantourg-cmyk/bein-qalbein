@@ -1473,6 +1473,7 @@ applyLanguage();
   document.querySelectorAll('.tool-disclosure').forEach(b=>{b.textContent=b.getAttribute('aria-expanded')==='true'?t.close:t.open});
  }
  function setupDisclosures(){
+  document.querySelectorAll('.quick-icon[data-icon]').forEach(el=>{el.innerHTML=svgIcon(el.dataset.icon,'ui-icon')});
   ['messageBuilder','rescueCenter','kindnessChallenge'].forEach(id=>{
    const box=$(id);if(!box||box.dataset.disclosureReady)return;
    const heading=box.querySelector('h2');if(!heading)return;

@@ -97,6 +97,15 @@ function containsReligiousAttribution(value) {
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
+    const url = new URL(request.url);
+
+    // Allow direct, read-only health checks in a browser address bar (which sends no Origin).
+    // All generation routes remain restricted to the app's allowed browser origin.
+    if (url.pathname === "/health" && request.method === "GET") {
+      const ready = Boolean(env?.AI && typeof env.AI.run === "function");
+      return json({ ok: true, bindingReady: ready, model: MODEL }, 200, origin);
+    }
+
     if (origin !== ALLOWED_ORIGIN) return json({ error: "المصدر غير مسموح." }, 403, "");
 
     if (request.method === "OPTIONS") {
@@ -112,11 +121,6 @@ export default {
       });
     }
 
-    const url = new URL(request.url);
-    if (url.pathname === "/health" && request.method === "GET") {
-      const ready = Boolean(env?.AI && typeof env.AI.run === "function");
-      return json({ ok: true, bindingReady: ready, model: MODEL }, 200, origin);
-    }
     if (url.pathname !== "/generate") return json({ error: "المسار غير موجود." }, 404, origin);
     if (request.method !== "POST") return json({ error: "طريقة الطلب غير مسموحة." }, 405, origin);
     if (!(request.headers.get("Content-Type") || "").toLowerCase().startsWith("application/json")) {

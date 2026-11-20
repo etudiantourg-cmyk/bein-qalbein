@@ -26,6 +26,10 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /function validBackupValue/);
   assert.match(html, /endsWith\('\.workers\.dev'\)/);
   assert.match(html, /optionLabels/);
+  assert.match(html, /aiPrivacyNote/);
+  assert.match(html, /aiSafetyNote/);
+  assert.match(html, /bq_ai_language_manual/);
+  assert.match(html, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 
 test("existing saved data is preserved and backup import is validated", () => {

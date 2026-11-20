@@ -271,14 +271,31 @@ body{
 .floral-garden span:nth-child(8){--x:53%;--y:94%;--s:24px;--o:.15;--r:-8deg}
 header,main,footer{position:relative;z-index:1}
 
+
+/* V18 — selected couple artwork as the app's hero header */
+.couple-header{
+ margin:12px 12px 20px;padding:10px 10px 22px;
+ border:2px solid #ffe6a8;border-radius:30px;
+ background:linear-gradient(145deg,#fff0f5,#8f1746 35%,#4c0825 100%);
+ box-shadow:0 0 0 4px #8f1746,0 0 0 6px #f6d58e,0 12px 0 #74143b,0 23px 34px #4b082b55,inset 0 2px 0 #ffffff88;
+ overflow:hidden;
+}
+.couple-hero{
+ display:block;width:100%;height:auto;max-height: min(112vw,680px);
+ object-fit:contain;object-position:center;
+ border-radius:21px;border:2px solid #ffe4a1;
+ box-shadow:0 7px 18px #25001466,0 0 0 4px #ffffff25;
+}
+.couple-header .logo{margin-top:16px;font-size:clamp(17px,4vw,23px);letter-spacing:1.2px}
+.couple-header .sub{margin-top:5px}
+
 </style>
 </head>
 <body>
 <div class="floral-garden" aria-hidden="true"><span>🌸</span><span>🌹</span><span>✿</span><span>🌷</span><span>❀</span><span>🌸</span><span>♡</span><span>✿</span></div>
 <div class="heart-bubbles" id="heartBubbles" aria-hidden="true"></div>
-<header>
- <div class="brandmark"><img src="icon.svg" alt="شعار بين قلبين"></div>
- <div class="arabic-brand">بين قلبين</div>
+<header class="couple-header">
+ <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين">
  <div class="logo">BEIN QALBEIN PRO</div>
  <div class="sub">الكلمات الجميلة تصنع حياة أجمل</div>
 </header>

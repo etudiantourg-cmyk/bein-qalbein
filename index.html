@@ -1777,7 +1777,7 @@ applyLanguage();
  $id('aiCopyBtn')?.addEventListener('click',()=>{if(latest){copyText(latest);say('copied')}});
  window.applyAiStudioLanguage=function(){
   const t=pack(),set=(id,value)=>{const el=$id(id);if(el)el.textContent=value};
-  set('aiStudioTitle',t.title);set('aiMessageDesc',t.desc);set('saveAiEndpoint',t.save);
+  set('aiMessageTitle',t.title);set('aiMessageDesc',t.desc);set('saveAiEndpoint',t.save);
   set('aiUseBtn',t.use);set('aiCopyBtn',t.copy);set('aiMoreBtn',t.more);
   [['aiMood','mood'],['aiRecipient','recipient'],['aiLength','length'],['aiLanguage','language'],['aiContext','context']].forEach(([id,key])=>{const el=$id(id),span=el?.closest('label')?.querySelector('span');if(span)span.textContent=t[key]});
   if($id('aiContext'))$id('aiContext').placeholder=t.placeholder;
@@ -1788,5 +1788,8 @@ applyLanguage();
  };
 })();
 
+const applyLanguageBeforeAiStudio=applyLanguage;
+applyLanguage=function(){applyLanguageBeforeAiStudio();if(window.applyAiStudioLanguage)window.applyAiStudioLanguage()};
+if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 </script>
 </body></html>

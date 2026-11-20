@@ -58,6 +58,39 @@ footer{text-align:center;color:#805363;padding:22px 10px 32px;font-size:13px}
 .advice-tabs button.active{background:linear-gradient(145deg,#a9144b,#500820);color:#fff0c5}
 .advice-item{padding:13px 14px;margin:9px 0;border-radius:15px;background:#fff9f4;border:1px solid #e8cf9b;line-height:1.9}
 .section-kicker{color:#9b3157;font-size:13px;margin-top:-8px;margin-bottom:12px}
+
+/* V7 — premium dimensional 3D finish */
+:root{--depth:0 18px 0 #6f1735,0 25px 38px #4b082b35}
+body{background:radial-gradient(ellipse at 12% 8%,#fff 0,transparent 30%),radial-gradient(ellipse at 88% 25%,#f5b9ca 0,transparent 28%),linear-gradient(145deg,#fbeaf0,#e9c4d1 55%,#f8e8df);background-attachment:fixed}
+header{transform-style:preserve-3d;box-shadow:0 14px 0 #4b082b,0 23px 38px #4b082b55,inset 0 -4px 0 #f4d38b}
+header:after{box-shadow:0 0 0 12px #fff2,inset 0 0 35px #fff3}
+.brandmark img{transform:translateZ(28px) rotate(-3deg);box-shadow:0 9px 0 #7c153d,0 17px 25px #16000b66, inset 0 2px 4px #fff}
+.panel{transform:perspective(1000px) rotateX(.7deg);border:1px solid #e5c27e;background:linear-gradient(145deg,#fff 0%,#fff7f0 48%,#f8e1e2 100%);box-shadow:0 7px 0 #d8ad9c,0 15px 28px #6b193021,inset 0 2px 0 #fff;transition:transform .22s ease,box-shadow .22s ease}
+.panel:before{content:"";position:absolute;inset:1px;border-radius:24px;background:linear-gradient(125deg,#ffffffa8 0%,transparent 38%,#e9b7c522 100%);pointer-events:none}
+.panel>*{position:relative;z-index:1}
+h2{text-shadow:0 1px 0 #fff,0 2px 0 #edcfcc}
+.role,.cat,.actions button,.row button,.wide,.advice-tabs button{transform:translateY(0);transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}
+.role{box-shadow:0 5px 0 #d8b2bc,0 9px 15px #5b102020,inset 0 2px 0 #fff}
+.role.active{box-shadow:0 5px 0 #07172d,0 10px 18px #081a3b55,inset 0 2px 0 #ffffff55}
+.cat{box-shadow:0 5px 0 #dfc0bb,0 9px 14px #5b102018,inset 0 2px 0 #fff}
+.cat.active{box-shadow:0 5px 0 #39051b,0 10px 17px #4b082b55,inset 0 2px 0 #ffffff35}
+.cat .badge{box-shadow:0 4px 0 #39051b,0 8px 13px #4b092833,inset 0 2px 4px #ffffff65}
+.message-card{background:linear-gradient(145deg,#fff 0%,#fff6ed 52%,#f5dce3 100%);box-shadow:0 7px 0 #d7b18d,0 16px 27px #5b102022,inset 0 2px 0 #fff;transform:perspective(900px) rotateX(1deg)}
+.message-card:before{box-shadow:0 4px 0 #350419,0 8px 15px #4b082b55,inset 0 2px 4px #ffffff55}
+.actions button,.row button,.wide{box-shadow:0 5px 0 #d8b68c,0 9px 14px #5b102018,inset 0 2px 0 #fff}
+.actions .primary,.primary,.wide.primary{box-shadow:0 5px 0 #350419,0 10px 18px #570b2c44,inset 0 2px 0 #ffffff45}
+.daily-box{box-shadow:0 5px 0 #d9b2a8,0 10px 18px #6b193020,inset 0 2px 0 #fff}
+.advice-item,.favitem{box-shadow:0 4px 0 #e2c9b9,0 8px 14px #6b193012,inset 0 1px 0 #fff}
+footer{text-shadow:0 1px 0 #fff}
+@media(hover:hover){
+ .panel:hover{transform:perspective(1000px) rotateX(0) translateY(-3px);box-shadow:0 9px 0 #d8ad9c,0 22px 34px #6b19302b,inset 0 2px 0 #fff}
+ .role:hover,.cat:hover,.actions button:hover,.row button:hover,.wide:hover,.advice-tabs button:hover{transform:translateY(-3px);filter:brightness(1.035)}
+}
+.role:active,.cat:active,.actions button:active,.row button:active,.wide:active,.advice-tabs button:active{transform:translateY(3px);box-shadow:0 2px 0 #6f1735}
+@media(prefers-reduced-motion:no-preference){.brandmark img{animation:floatLogo 5s ease-in-out infinite}@keyframes floatLogo{0%,100%{transform:translateY(0) translateZ(28px) rotate(-3deg)}50%{transform:translateY(-5px) translateZ(28px) rotate(1deg)}}}
+@media(max-width:420px){.panel{border-radius:22px}.message-card{padding-inline:14px}.brandmark img{width:82px;height:82px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+
 </style>
 </head>
 <body>

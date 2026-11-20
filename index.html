@@ -372,6 +372,17 @@ body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-
 .category-item>.inline-message-panel .actions button{min-width:0;padding:8px 5px;font-size:12px}
 .category-item>.inline-message-panel #copyBtn{font-size:13px}
 
+/* V34 — smart message center and shareable quote cards */
+.smart-center{margin-top:13px;padding:13px;border:1.5px solid #dfbd79;border-radius:20px;background:linear-gradient(145deg,#fffaf4,#f8e1e8);box-shadow:0 4px 0 #dfc0bb,0 9px 16px #5b102014}
+.smart-heading{font-weight:900;color:#74143b;margin-bottom:10px;text-align:center}
+.smart-chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.smart-chips button{border:1px solid #e3bd83;border-radius:999px;padding:8px 12px;background:linear-gradient(145deg,#fff,#f7e4e8);color:#681433;font-size:13px;font-weight:800}
+.smart-chips button:active{transform:scale(.97)}
+#cardBtn{grid-column:1/-1}
+body.dark-mode .smart-center{background:linear-gradient(145deg,#302033,#241724);border-color:#a77b55}
+body.dark-mode .smart-heading{color:#ffe0a8}
+body.dark-mode .smart-chips button{background:#493044;color:#ffebd2;border-color:#9d755a}
+
 /* V30 — app name placed elegantly over the couple */
 .hero-brand-overlay{
  position:absolute;z-index:4;top:69%;left:50%;transform:translate(-50%,-50%);
@@ -428,6 +439,7 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
 <section class="panel page-section active-page" data-page="home">
  <h2 id="catTitle">اختر التصنيف المناسب</h2>
  <input id="search" placeholder="ابحث عن تصنيف...">
+ <div class="smart-center" aria-label="مركز اختيار الرسائل"><div class="smart-heading" id="smartTitle">ماذا تريد أن تقول اليوم؟</div><div class="smart-chips" id="smartChips"><button type="button" data-pick="thanks">أريد أن أشكره</button><button type="button" data-pick="miss">أريد أن أعبّر عن اشتياقي</button><button type="button" data-pick="sorry">أريد أن أعتذر</button><button type="button" data-pick="support">أريد أن أشجعه</button><button type="button" data-pick="sad">أريد أن أواسيه</button><button type="button" data-pick="upset">حدث خلاف بيننا</button><button type="button" data-pick="dua">أريد دعاءً جميلاً</button></div></div>
  <div class="grid" id="cats" style="margin-top:12px"></div>
 </section>
 <section class="panel page-section active-page" data-page="home">
@@ -438,6 +450,7 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
   <button id="favBtn">☆ أضف للمفضلة</button>
   <button id="newBtn" class="primary">⟳ رسالة أخرى</button>
   <button id="surpriseBtn">✦ فاجئني برسالة</button>
+  <button id="cardBtn" type="button">▧ حوّلها إلى بطاقة</button>
  </div>
  <button id="copyBtn" class="wide primary">▢ نسخ الرسالة</button>
 </section>
@@ -1040,11 +1053,39 @@ function renderCustomNotes(){
 }
 $('saveCustom').onclick=()=>{const value=$('customInput').value.trim();if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}list.unshift(value);try{localStorage.setItem('bq_custom_notes',JSON.stringify(list.slice(0,100)))}catch(_){}$('customInput').value='';renderCustomNotes();alert(lang==='en'?'Your message was saved.':lang==='fr'?'Votre message a été enregistré.':'تم حفظ رسالتك الخاصة ✓')};
 $('surpriseBtn').onclick=()=>{const ids=categories.map(c=>c.id);selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search').value);generate();$('message').scrollIntoView({behavior:'smooth',block:'center'})};
+/* V34 smart message shortcuts */
+const smartNames={ar:{thanks:'أريد أن أشكره',miss:'أريد أن أعبّر عن اشتياقي',sorry:'أريد أن أعتذر',support:'أريد أن أشجعه',sad:'أريد أن أواسيه',upset:'حدث خلاف بيننا',dua:'أريد دعاءً جميلاً'},en:{thanks:'Thank them',miss:'Say I miss you',sorry:'Apologize',support:'Encourage them',sad:'Offer comfort',upset:'We had a disagreement',dua:'Share a prayer'},fr:{thanks:'Le remercier',miss:'Dire tu me manques',sorry:'Présenter mes excuses',support:'L’encourager',sad:'Le réconforter',upset:'Nous avons eu un désaccord',dua:'Partager une invocation'}};
+function renderSmartChips(){
+ const host=$('smartChips');if(!host)return;host.innerHTML='';
+ const keys=['thanks','miss','sorry','support','sad','upset','dua'];
+ keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];b.onclick=()=>{selected=id;generate();host.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));$('message').scrollIntoView({behavior:'smooth',block:'center'})};host.append(b)});
+ const title=$('smartTitle');if(title)title.textContent=lang==='en'?'What would you like to say today?':lang==='fr'?'Que souhaitez-vous lui dire aujourd’hui ?':'ماذا تريد أن تقول اليوم؟';
+}
+async function createMessageCard(){
+ if(!current){alert(lang==='en'?'Choose a message first.':lang==='fr'?'Choisissez d’abord un message.':'اختر رسالة أولاً.');return}
+ const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
+ const ctx=canvas.getContext('2d');
+ const g=ctx.createLinearGradient(0,0,1080,1350);g.addColorStop(0,'#fff8ed');g.addColorStop(.48,'#f6dce5');g.addColorStop(1,'#4c0825');ctx.fillStyle=g;ctx.fillRect(0,0,1080,1350);
+ ctx.strokeStyle='#e9c477';ctx.lineWidth=12;ctx.strokeRect(42,42,996,1266);ctx.lineWidth=3;ctx.strokeRect(62,62,956,1226);
+ ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#7b1741';ctx.font='bold 78px Tajawal, sans-serif';ctx.fillText(lang==='en'?'Between Two Hearts':lang==='fr'?'Entre deux cœurs':'بين قلبين',540,205);
+ ctx.fillStyle='#b38a43';ctx.font='42px Tajawal, sans-serif';ctx.fillText('♡',540,290);
+ ctx.fillStyle='#4c0825';ctx.font='600 48px Tajawal, sans-serif';
+ const words=current.split(/s+/);const lines=[];let line='';
+ words.forEach(word=>{const test=line?line+' '+word:word;if(ctx.measureText(test).width>850&&line){lines.push(line);line=word}else line=test});if(line)lines.push(line);
+ const lineHeight=76;let y=Math.max(480,(1350-lines.length*lineHeight)/2);
+ lines.forEach(t=>{ctx.fillText(t,540,y);y+=lineHeight});
+ ctx.fillStyle='#ffe8ad';ctx.font='34px Tajawal, sans-serif';ctx.fillText(lang==='en'?'Kind words make life beautiful':lang==='fr'?'Les belles paroles embellissent la vie':'الكلمات الجميلة تجعل الحياة أجمل',540,1190);
+ canvas.toBlob(blob=>{if(!blob){alert('تعذر إنشاء البطاقة.');return}const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bein-qalbein-card.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)},'image/png');
+}
+$('cardBtn').onclick=createMessageCard;
+
 const originalGenerate=generate;
 generate=function(){originalGenerate();rememberMessage(current)};
 const originalApplyLanguage=applyLanguage;
+
 applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;['navHome','navFavorites','navGuide','navSettings','settingsTitle','surpriseBtn','customTitle','historyTitle'].forEach((id,i)=>$(id).textContent=x[i]);$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
 goPage(localStorage.getItem('bq_last_page')||'home');
+renderSmartChips();
 
 applyLanguage();applyTheme();if(localStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));

@@ -91,6 +91,36 @@ footer{text-shadow:0 1px 0 #fff}
 @media(max-width:420px){.panel{border-radius:22px}.message-card{padding-inline:14px}.brandmark img{width:82px;height:82px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 
+
+/* V8 — whimsical storybook 3D, built only from abstract non-living shapes */
+:root{--pink-light:#ffe5ed;--pink-mid:#f18aaa;--pink-deep:#8d1748;--gold-soft:#ffe5a4}
+body{background:
+ radial-gradient(ellipse at 12% 8%,#fff 0 7%,transparent 34%),
+ radial-gradient(ellipse at 88% 17%,#ffd5e3 0 5%,transparent 30%),
+ radial-gradient(ellipse at 50% 100%,#f5c5d4 0,transparent 48%),
+ linear-gradient(145deg,#fff0f4 0%,#f6d3e0 48%,#e9c5ed 100%);background-attachment:fixed}
+header{background:
+ radial-gradient(ellipse at 50% 0%,#ff8eaf 0%,#c62e68 38%,#650d32 78%,#35051a 100%);
+ border-bottom:4px solid #ffe2a0;box-shadow:0 12px 0 #7c1741,0 22px 34px #5b0b3544,inset 0 3px 0 #ffffff55}
+header:before,header:after{border:2px solid #ffe5a4;box-shadow:0 0 22px #ffe8b766}
+.logo,.arabic-brand{text-shadow:0 2px 0 #a52b59,0 5px 0 #64102f,0 9px 16px #24001499}
+.brandmark img{border:3px solid #fff0c9;border-radius:27px;box-shadow:0 7px 0 #8b1b4b,0 14px 24px #39051f66,0 0 0 7px #ffffff28,inset 0 2px 6px #fff;filter:saturate(1.12)}
+.panel{border:2px solid #f2d18c;border-radius:29px;background:linear-gradient(150deg,#fff 0%,#fff6f3 42%,#fbe0e9 100%);box-shadow:0 7px 0 #d9aebd,0 13px 0 #f7d6df,0 23px 34px #70143a24,inset 0 3px 0 #fff;overflow:hidden}
+.panel:after{content:"";position:absolute;inset:5px;border-radius:23px;border:1px solid #ffffffa8;pointer-events:none}
+h2{color:#79143d;text-shadow:0 1px 0 #fff,0 3px 0 #f1d0d8,0 5px 9px #a53b5b25}
+.role,.cat{border:1.5px solid #f0c7d4;background:linear-gradient(150deg,#fff 0%,#ffeef3 42%,#efcbd9 100%);box-shadow:0 5px 0 #d7a7b9,0 9px 15px #6d15321f,inset 0 3px 0 #fff,inset 0 -3px 5px #d89aaf44}
+.role.active,.cat.active{background:linear-gradient(150deg,#ff9fba 0%,#c92f69 45%,#700d36 100%);border-color:#ffe3a0;box-shadow:0 5px 0 #5a0829,0 11px 18px #5a082944,inset 0 3px 0 #ffffff65,inset 0 -4px 7px #39051f66;color:#fff8e8}
+.cat .badge{background:linear-gradient(145deg,#ffb8ca 0%,#e64e82 46%,#8e1748 100%);border:2px solid #ffe7ae;box-shadow:0 4px 0 #671033,0 8px 12px #4b092833,inset 0 3px 5px #ffffff88,inset 0 -4px 7px #5c092b77}
+.message-card{border:2px solid #f0cd83;border-radius:29px;background:linear-gradient(150deg,#fff 0%,#fff6f1 45%,#f8dce6 100%);box-shadow:0 8px 0 #d5a7a8,0 15px 0 #f3d0d9,0 24px 30px #68143825,inset 0 3px 0 #fff}
+.message-card:before{background:linear-gradient(145deg,#ff9db9,#d52e6b 55%,#78113d);border:3px solid #ffe5a4;box-shadow:0 5px 0 #5d0a2c,0 10px 16px #4b082b55,inset 0 3px 5px #ffffff77}
+.actions button,.row button,.wide,.advice-tabs button{border:1.5px solid #f0d49a;border-radius:19px;background:linear-gradient(150deg,#fff8e9,#f4d6bb 65%,#e9c4a5);box-shadow:0 5px 0 #c89c7f,0 10px 16px #6a1a301b,inset 0 3px 0 #fff}
+.actions .primary,.primary,.wide.primary,.advice-tabs button.active{background:linear-gradient(150deg,#ff9fba 0%,#c82c68 48%,#690d35 100%);color:#fff8e8;border-color:#ffe5a4;box-shadow:0 5px 0 #510724,0 11px 18px #570b2c44,inset 0 3px 0 #ffffff66}
+.daily-box{border:2px solid #f1d08a;border-radius:24px;background:linear-gradient(145deg,#fff9f1,#ffdce7 60%,#f3c4dc);box-shadow:0 6px 0 #d5a7ae,0 13px 20px #6b193020,inset 0 3px 0 #fff}
+.advice-item,.favitem{border:1px solid #f0d4a2;border-radius:19px;background:linear-gradient(145deg,#fffefa,#fff0e9);box-shadow:0 4px 0 #dfc2b0,0 8px 14px #6b193012,inset 0 2px 0 #fff}
+.spark{filter:drop-shadow(0 2px 2px #d49b4a)}
+@media(hover:hover){.role:hover,.cat:hover,.actions button:hover,.row button:hover,.wide:hover,.advice-tabs button:hover{transform:translateY(-4px) scale(1.012);filter:brightness(1.04)}}
+@media(prefers-reduced-motion:no-preference){.panel{animation:storybookRise .55s ease both}@keyframes storybookRise{from{opacity:.65;transform:translateY(10px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}}
+
 </style>
 </head>
 <body>
@@ -157,7 +187,7 @@ const categories=[
  {id:'travel',name:'أثناء السفر',icon:'✈️',desc:'دعاء واطمئنان واشتياق'},
  {id:'wellness',name:'العافية والمرض',icon:'♡',desc:'اهتمام وتمنيات بالعافية'},
  {id:'sad',name:'عند الحزن',icon:'🌷',desc:'مواساة واحتواء'},
- {id:'upset',name:'عند الغضب',icon:'🕊️',desc:'تهدئة وتفاهم'},
+ {id:'upset',name:'عند الغضب',icon:'♡',desc:'تهدئة وتفاهم'},
  {id:'tired',name:'عند التعب',icon:'☁️',desc:'راحة ومساندة'},
  {id:'sleep',name:'قبل النوم',icon:'🌙',desc:'طمأنينة وراحة'},
  {id:'miss',name:'الاشتياق',icon:'💌',desc:'كلمات شوق راقية'},

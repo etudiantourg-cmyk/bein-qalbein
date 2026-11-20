@@ -20,17 +20,20 @@
 - حد مؤقت بسيط للطلبات من عنوان IP. هذا الحد محلي لكل نسخة Worker ولا يُعد نظام حماية عالمياً.
 - لا يحتوي التطبيق أو هذا الملف على مفاتيح API سرية.
 
-## النشر الأول — مطلوب مرة واحدة من مالك الحساب
+## النشر الأول — ربط GitHub مرة واحدة
 
-لا يمكن نشر Worker إلى حساب Cloudflare من GitHub وحده؛ يلزم تسجيل الدخول والموافقة داخل حساب المالك. لا ترسل كلمة المرور أو مفاتيح API في المحادثة.
+جهزت المستودع بحيث يستطيع Cloudflare نشر المحرك مباشرة من GitHub، دون نسخ الأكواد يدوياً ودون وضع مفتاح API.
 
 1. افتح [Cloudflare Dashboard](https://dash.cloudflare.com/) وسجّل الدخول أو أنشئ حساباً.
-2. افتح **Workers & Pages** ثم أنشئ Worker باسم `bein-qalbein-ai`.
-3. افتح محرر الكود في Worker، واستبدل محتواه كاملاً بمحتوى [src/index.js](https://github.com/etudiantourg-cmyk/bein-qalbein/blob/main/ai-worker/src/index.js)، ثم اضغط Deploy.
-4. من إعدادات Worker افتح **Bindings** ثم **Add binding** واختر **Workers AI**. اجعل اسم المتغير `AI`، ثم احفظ وأعد النشر.
-5. انسخ عنوان Worker المنشور، ويكون عادة مثل `https://bein-qalbein-ai.<your-subdomain>.workers.dev`.
-6. افتح تطبيق [بين قلبين](https://etudiantourg-cmyk.github.io/bein-qalbein/)، ثم استوديو الرسائل الذكي > إعداد الاتصال بمحرك الذكاء الاصطناعي، والصق العنوان واحفظه.
-7. جرّب توليد رسالة قصيرة. لا يعتبر المحرك متصلاً إلا بعد ظهور رسالة فعلية.
+2. افتح **Workers & Pages** ثم **Create application** واختر **GitHub** لربط مستودع.
+3. وافق على ربط GitHub، ثم اختر المستودع `etudiantourg-cmyk/bein-qalbein`.
+4. في إعدادات المشروع اضبط **Root directory** على `ai-worker`، واسم Worker على `bein-qalbein-ai`.
+5. اترك **Build command** فارغاً، واجعل **Deploy command** هو `npx wrangler deploy`، ثم اختر **Save and Deploy**.
+6. ملف `wrangler.jsonc` داخل المجلد يعرّف Worker باسم `bein-qalbein-ai` ويربط Workers AI باسم `AI`. بعد نجاح النشر انسخ عنوان `workers.dev` الذي يعرضه Cloudflare.
+7. افتح تطبيق [بين قلبين](https://etudiantourg-cmyk.github.io/bein-qalbein/)، ثم استوديو الرسائل الذكي > إعداد الاتصال، والصق عنوان Worker واحفظه.
+8. جرّب توليد رسالة قصيرة. لا يعتبر المحرك متصلاً إلا بعد ظهور رسالة فعلية.
+
+بعد الربط الأول، كل تحديث جديد على مجلد `ai-worker` في الفرع الرئيسي يمكن أن يُنشر تلقائياً بواسطة Cloudflare Workers Builds.
 
 ## حدود التكلفة
 

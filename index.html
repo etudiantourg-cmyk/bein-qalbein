@@ -543,6 +543,24 @@ body.dark-mode .quick-grid>button{background:linear-gradient(145deg,#442033,#2b1
 body.dark-mode .tool-disclosure{background:#3b2030;color:#ffe9c9;border-color:#8e6b4c}
 @media(prefers-reduced-motion:reduce){.inline-message-panel{animation:none!important}.quick-grid>button{transition:none!important}}
 
+
+/* V42 — low-overhead interaction and rendering profile */
+html{scroll-behavior:auto}
+body{transition:none!important}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{transition:background-color .12s ease,border-color .12s ease,opacity .12s ease!important}
+button:active{transform:translateY(1px)!important;transition:none!important}
+.page-section{transform:none!important;perspective:none!important}
+.panel{transform:none!important;box-shadow:0 3px 12px #4b082c12,inset 0 1px 0 #fff}
+.panel:hover{transform:none!important}
+.heart-bubbles,.floral-garden,.hero-motion{display:none!important}
+.heart-bubble,.hm,.brandmark img{animation:none!important;filter:none!important}
+.quick-grid>button,.cat,.role,.actions button,.row button,.wide{transition:background-color .12s ease,border-color .12s ease,opacity .12s ease!important}
+.quick-grid>button:active,.cat:active,.role:active,.actions button:active,.row button:active,.wide:active{transform:translateY(1px)!important}
+.inline-message-panel{animation:none!important}
+@media(hover:hover){.panel:hover,.role:hover,.cat:hover,.actions button:hover,.row button:hover,.wide:hover{transform:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body>
@@ -552,7 +570,7 @@ body.dark-mode .tool-disclosure{background:#3b2030;color:#ffe9c9;border-color:#8
  <div class="couple-hero-wrap">
  <div class="hero-title-overlay" aria-label="رسائل زوجية">رسائل زوجية</div>
  <div class="hero-brand-overlay" aria-label="بين قلبين">بين قلبين</div>
- <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين">
+ <img class="couple-hero" src="./couple-header.jpg.png" alt="زوجان بلباس محتشم مع فسيفساء تغطي الوجهين" decoding="async" fetchpriority="high">
  <div class="hero-motion" aria-hidden="true">
   <span class="hm hm1">♥</span><span class="hm hm2">🌹</span>
   <span class="hm hm3">♥</span><span class="hm hm4">🌸</span>
@@ -1006,22 +1024,7 @@ support:['لا يشترط أن تكون الطريق سهلة حتى تكون ق
 };
 const extraClosings=['وأنا أقدّر وجودك في حياتي.','أسأل الله أن يكتب لك الخير والتوفيق.','وتذكّر أن الحوار الطيب يقرب القلوب.','ولك مني دعوة صادقة في ظهر الغيب.','فلنحافظ دائماً على الاحترام وحسن العشرة.','وإن احتجت إلى مساندة فلن أتردد في الوقوف معك.','جعل الله أيامك عامرة بالبركة والرضا.','خذ الأمور بهدوء، فلكل مشكلة باب للحل.','دمت بخير وطمأنينة وراحة بال.','فالمودة تظهر في الاهتمام والعمل والكلمة الطيبة.'];
 Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.forEach(end=>messages[id].push(base+' '+end)));});
-/* Gentle, abstract heart-shaped bubbles; no people, animals or living imagery. */
-(function(){
- const layer=$('heartBubbles');if(!layer)return;
- for(let i=0;i<22;i++){
-  const b=document.createElement('span');b.className='heart-bubble';
-  b.textContent=i%3===0?'♥':'♡';
-  b.style.setProperty('--x',(Math.random()*100)+'%');
-  b.style.setProperty('--size',(13+Math.random()*27)+'px');
-  b.style.setProperty('--duration',(15+Math.random()*19)+'s');
-  b.style.setProperty('--delay',(-Math.random()*32)+'s');
-  b.style.setProperty('--drift',(-45+Math.random()*90)+'px');
-  b.style.setProperty('--tone',i%2?'#d94f78':'#d8a84f');
-  b.style.setProperty('--alpha',(0.22+Math.random()*0.12).toFixed(2));
-  layer.appendChild(b);
- }
-})();
+/* V42 performance: decorative floating particles are intentionally disabled on mobile. */
 
 
 /* V19 — complete interface language layer (Arabic / English / French) */
@@ -1110,7 +1113,7 @@ function applyLanguage(){
  set('languageLabel',t.language);set('catTitle',t.catTitle);$('search').placeholder=t.search;set('heartTitle',t.heartTitle);set('shareBtn',t.share);set('favBtn',t.favAdd);set('newBtn',t.newMsg);set('copyBtn',t.copyMsg);set('favTitle',t.favorites);set('showFav',t.showFav);set('hideFav',t.hideFav);set('dailyTitle',t.daily);set('dailyKicker',t.dailyDesc);set('copyDaily',t.copyDaily);set('guideTitle',t.guide);set('guideKicker',t.guideDesc);set('husbandTips',t.husbandAdvice);set('wifeTips',t.wifeAdvice);set('hint',t.hint);set('appFooter',t.footer);set('appTagline',t.tagline);set('notifyNote',t.notifyNote);set('adviceHint',t.adviceHint);$('notifyToggle').textContent=localStorage.getItem('bq_notifications')==='on'?t.notifyOn:t.notifyOff;$('themeToggle').textContent=localStorage.getItem('bq_theme')==='dark'?t.day:t.night;
  const categoryTranslations=ar?null:i18n[lang];categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:categoryTranslations.cats[i];c.desc=ar?c._desc:categoryTranslations.desc[i]});
  if(ar){Object.keys(messages).forEach(id=>messages[id]=originalMessagePools[id].slice())}
- else{const endings=lang==='en'?["May Allah grant you goodness and peace.","I appreciate you more than words can say.","May your heart always find reassurance.","May Allah bless your steps and your home.","Let kindness guide every word between us.","I am here with care, patience and respect.","May your efforts be rewarded with good.","May our home always be filled with mercy.","Take things gently; better days can come.","May Allah keep you safe and content."]:["Qu’Allah t’accorde le bien et la paix.","Je t’apprécie plus que les mots ne peuvent le dire.","Que ton cœur trouve toujours l’apaisement.","Qu’Allah bénisse tes pas et ton foyer.","Que la douceur guide toujours nos paroles.","Je suis là avec affection, patience et respect.","Qu’Allah récompense tes efforts par le bien.","Que notre foyer soit toujours rempli de miséricorde.","Avance doucement ; de meilleurs jours viendront.","Qu’Allah te garde en sécurité et en paix."];const translatedLibrary=i18n[lang];Object.keys(messages).forEach((id,i)=>{const pool=translatedLibrary.msgs[i]||translatedLibrary.msgs[0];messages[id]=pool.flatMap(sentence=>endings.map(end=>sentence+' '+end))})}
+ else{const translatedLibrary=i18n[lang];Object.keys(messages).forEach((id,i)=>{const pool=translatedLibrary.msgs[i]||translatedLibrary.msgs[0];messages[id]=pool.slice()})}
  renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];renderAdviceForLanguage();showFavs();
 }
 $('lang').onchange=e=>{lang=e.target.value;try{localStorage.setItem('bq_language',lang)}catch(_){}applyLanguage()};
@@ -1174,14 +1177,8 @@ function groupedRenderCats(filter=''){
    b.setAttribute('aria-expanded',c.id===selected&&inline.parentElement===item?'true':'false');
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
    b.onclick=()=>{
-    const anchorTop=b.getBoundingClientRect().top;
-    /* Tapping the already-open category closes its message in place. */
     if(selected===c.id&&inline.parentElement===item){
-     inline.remove();
-     selected=null;
-     b.classList.remove('active');
-     b.setAttribute('aria-expanded','false');
-     return;
+     inline.remove();selected=null;b.classList.remove('active');b.setAttribute('aria-expanded','false');return;
     }
     selected=c.id;generate();
     host.querySelectorAll('.cat').forEach(btn=>{
@@ -1189,10 +1186,6 @@ function groupedRenderCats(filter=''){
      btn.classList.toggle('active',active);btn.setAttribute('aria-expanded',active?'true':'false');
     });
     item.append(inline);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-     const shift=b.getBoundingClientRect().top-anchorTop;
-     if(Math.abs(shift)>0.5)window.scrollBy(0,shift);
-    }));
    };
    item.append(b);host.append(item);if(c.id===selected)selectedItem=item;
   });
@@ -1204,7 +1197,7 @@ function goPage(page){
  document.querySelectorAll('.page-section').forEach(s=>s.classList.toggle('active-page',s.dataset.page===page));
  document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===page));
  try{localStorage.setItem('bq_last_page',page)}catch(_){}
- window.scrollTo({top:0,behavior:'smooth'});
+ window.scrollTo({top:0,behavior:'auto'});
  if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
 }
 document.querySelectorAll('.bottom-nav button').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.go)));
@@ -1226,13 +1219,13 @@ function renderCustomNotes(){
  list.forEach((value,index)=>{const d=document.createElement('div');d.className='custom-item';const p=document.createElement('div');p.textContent=value;const cp=document.createElement('button');cp.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';cp.onclick=()=>copyText(value);const del=document.createElement('button');del.textContent=languageText[lang].delete;del.onclick=()=>{list.splice(index,1);localStorage.setItem('bq_custom_notes',JSON.stringify(list));renderCustomNotes()};d.append(p,cp,del);host.append(d)})
 }
 $('saveCustom').onclick=()=>{const value=$('customInput').value.trim();if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}list.unshift(value);try{localStorage.setItem('bq_custom_notes',JSON.stringify(list.slice(0,100)))}catch(_){}$('customInput').value='';renderCustomNotes();alert(lang==='en'?'Your message was saved.':lang==='fr'?'Votre message a été enregistré.':'تم حفظ رسالتك الخاصة ✓')};
-$('surpriseBtn').onclick=()=>{const ids=categories.map(c=>c.id);selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search').value);generate();$('message').scrollIntoView({behavior:'smooth',block:'center'})};
+$('surpriseBtn').onclick=()=>{const ids=categories.map(c=>c.id);selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search').value);generate();$('message').scrollIntoView({behavior:'auto',block:'center'})};
 /* V34 smart message shortcuts */
 const smartNames={ar:{thanks:'أريد أن أشكره',miss:'أريد أن أعبّر عن اشتياقي',sorry:'أريد أن أعتذر',support:'أريد أن أشجعه',sad:'أريد أن أواسيه',upset:'حدث خلاف بيننا',dua:'أريد دعاءً جميلاً'},en:{thanks:'Thank them',miss:'Say I miss you',sorry:'Apologize',support:'Encourage them',sad:'Offer comfort',upset:'We had a disagreement',dua:'Share a prayer'},fr:{thanks:'Le remercier',miss:'Dire tu me manques',sorry:'Présenter mes excuses',support:'L’encourager',sad:'Le réconforter',upset:'Nous avons eu un désaccord',dua:'Partager une invocation'}};
 function renderSmartChips(){
  const host=$('smartChips');if(!host)return;host.innerHTML='';
  const keys=['thanks','miss','sorry','support','sad','upset','dua'];
- keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];b.onclick=()=>{selected=id;generate();host.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));$('message').scrollIntoView({behavior:'smooth',block:'center'})};host.append(b)});
+ keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];b.onclick=()=>{selected=id;generate();host.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));$('message').scrollIntoView({behavior:'auto',block:'center'})};host.append(b)});
  const title=$('smartTitle');if(title)title.textContent=lang==='en'?'What would you like to say today?':lang==='fr'?'Que souhaitez-vous lui dire aujourd’hui ?':'ماذا تريد أن تقول اليوم؟';
 }
 async function createMessageCard(){
@@ -1285,7 +1278,7 @@ function buildCustomMessage(){
  $('builtMessage').value=text;
 }
 $('buildMessageBtn').onclick=buildCustomMessage;
-$('useBuiltMessage').onclick=()=>{const v=$('builtMessage').value.trim();if(!v)return;current=v;$('message').textContent=v;rememberMessage(v);$('message').scrollIntoView({behavior:'smooth',block:'center'})};
+$('useBuiltMessage').onclick=()=>{const v=$('builtMessage').value.trim();if(!v)return;current=v;$('message').textContent=v;rememberMessage(v);$('message').scrollIntoView({behavior:'auto',block:'center'})};
 $('copyBuiltMessage').onclick=()=>{if($('builtMessage').value.trim())copyText($('builtMessage').value.trim())};
 function showRescue(){
  const k=$('rescueSituation').value;const locale=rescueText[lang];let body=locale[k]||locale.argument;
@@ -1452,7 +1445,7 @@ applyLanguage();
   item.append(panel);
   panel.hidden=false;
   panel.style.display='block';
-  requestAnimationFrame(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}));
+  requestAnimationFrame(()=>panel.scrollIntoView({behavior:'auto',block:'nearest'}));
  },true);
 })();
 
@@ -1497,10 +1490,10 @@ applyLanguage();
   if(action==='surprise'){
    goPage('home');const b=$('surpriseBtn');if(b)b.click();return;
   }
-  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'smooth',block:'start'});return}
+  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'auto',block:'start'});return}
   const id=action==='builder'?'messageBuilder':'rescueCenter';
   goPage('home');toggleTool(id,true);
-  requestAnimationFrame(()=>$(id)?.scrollIntoView({behavior:'smooth',block:'center'}));
+  requestAnimationFrame(()=>$(id)?.scrollIntoView({behavior:'auto',block:'center'}));
  }
  document.getElementById('quickHub')?.addEventListener('click',e=>{
   const b=e.target.closest('[data-quick]');if(b)goQuick(b.dataset.quick);
@@ -1509,6 +1502,23 @@ applyLanguage();
  applyLanguage=function(){previousApplyLanguage();updateQuickLanguage()};
  setupDisclosures();
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupDisclosures,{once:true});
+})();
+
+
+/* V42: debounce category search and coalesce repeated icon DOM scans into one frame. */
+(function(){
+ const search=$('search');let searchTimer=0;
+ if(search)search.oninput=e=>{
+  const value=e.target.value;
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>groupedRenderCats(value),90);
+ };
+ const fullDecorate=decorateAppIcons;let decorateQueued=false;
+ decorateAppIcons=function(){
+  if(decorateQueued)return;
+  decorateQueued=true;
+  requestAnimationFrame(()=>{decorateQueued=false;fullDecorate()});
+ };
 })();
 
 </script>

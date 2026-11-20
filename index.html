@@ -408,6 +408,30 @@ body.dark-mode .smart-chips button{background:#493044;color:#ffebd2;border-color
 body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#211622);border-color:#a77b55}
 @media(max-width:360px){.inline-message-panel{padding:10px}.inline-message-panel .actions{grid-template-columns:1fr 1fr}}
 
+
+:root{--bq-scale:1}
+body{font-size:calc(16px * var(--bq-scale));transition:background .3s ease,color .3s ease}
+.panel-lite,.pro-tools{margin:14px 0;padding:15px;border:1px solid #dfbd79;border-radius:22px;background:linear-gradient(145deg,#fffaf4,#f7e1e8);box-shadow:0 5px 0 #d8b5bd,0 10px 18px #4c082515}
+.pro-tools h2,.pro-tools h3{margin:4px 0 8px;color:#74143b}
+.builder-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.builder-grid label,.pro-tools>label{display:flex;flex-direction:column;gap:6px;font-weight:800;color:#74143b}
+.pro-tools select,.pro-tools textarea,.pro-tools input:not([type=file]){width:100%;border:1px solid #dfbd9a;border-radius:12px;padding:10px;background:#fff;color:#48152b}
+.pro-tools textarea{margin-top:10px;min-height:80px}
+.pro-tools .row,.favorite-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.pro-tools button,.favorite-tools button,.import-label{border:1px solid #d8b77f;border-radius:12px;padding:10px 13px;background:linear-gradient(145deg,#fff,#f5e2e7);color:#681433;font-weight:800}
+.rescue-result{padding:13px;border-radius:15px;background:#fff8ef;line-height:1.9;white-space:pre-line;margin:10px 0}
+.favorite-tools select{max-width:180px}
+.import-label{display:inline-flex;align-items:center}
+body.theme-rose{background:radial-gradient(ellipse at 50% 0,#fff9fc,#f4d7e4 55%,#eac3d2)}
+body.theme-royal{background:radial-gradient(ellipse at 50% 0,#fff9f4,#f1d7d9 48%,#d7b1c1)}
+body.theme-night{background:#1e1420;color:#f8e8ee}
+body.theme-night .panel-lite,body.theme-night .pro-tools{background:linear-gradient(145deg,#302033,#211622);border-color:#a77b55;color:#f8e8ee}
+body.theme-night .pro-tools h2,body.theme-night .pro-tools h3,body.theme-night .builder-grid label,body.theme-night .pro-tools>label{color:#ffe0a8}
+body.theme-night .rescue-result{background:#39283a;color:#fff0e2}
+body.theme-night .pro-tools select,body.theme-night .pro-tools textarea,body.theme-night .pro-tools input:not([type=file]){background:#261b2a;color:#fff0e2;border-color:#8f6a79}
+body.theme-night .pro-tools button,body.theme-night .favorite-tools button,body.theme-night .import-label{background:#493044;color:#ffebd2;border-color:#9d755a}
+@media(max-width:420px){.builder-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -440,7 +464,28 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
  <h2 id="catTitle">اختر التصنيف المناسب</h2>
  <input id="search" placeholder="ابحث عن تصنيف...">
  <div class="smart-center" aria-label="مركز اختيار الرسائل"><div class="smart-heading" id="smartTitle">ماذا تريد أن تقول اليوم؟</div><div class="smart-chips" id="smartChips"><button type="button" data-pick="thanks">أريد أن أشكره</button><button type="button" data-pick="miss">أريد أن أعبّر عن اشتياقي</button><button type="button" data-pick="sorry">أريد أن أعتذر</button><button type="button" data-pick="support">أريد أن أشجعه</button><button type="button" data-pick="sad">أريد أن أواسيه</button><button type="button" data-pick="upset">حدث خلاف بيننا</button><button type="button" data-pick="dua">أريد دعاءً جميلاً</button></div></div>
- <div class="grid" id="cats" style="margin-top:12px"></div>
+ <div class="grid" id="cats" style="margin-top:12px"></div> 
+ <div class="pro-tools panel-lite" id="messageBuilder">
+  <h2 id="builderTitle">اصنع رسالتك بنفسك</h2>
+  <p class="section-kicker" id="builderDesc">اختر الشعور والأسلوب لتحصل على رسالة قابلة للتعديل.</p>
+  <div class="builder-grid">
+   <label><span id="builderFeelingLabel">الشعور</span><select id="builderFeeling"><option value="love">مودة وامتنان</option><option value="miss">اشتياق</option><option value="sorry">اعتذار</option><option value="support">تشجيع</option><option value="calm">تهدئة</option><option value="dua">دعاء</option></select></label>
+   <label><span id="builderStyleLabel">الأسلوب</span><select id="builderStyle"><option value="soft">رقيق</option><option value="deep">عميق</option><option value="short">مختصر</option></select></label>
+  </div>
+  <button id="buildMessageBtn" class="wide primary" type="button">✦ أنشئ رسالتي</button>
+  <textarea id="builtMessage" rows="3" placeholder="ستظهر رسالتك هنا ويمكنك تعديلها..."></textarea>
+  <div class="row"><button id="useBuiltMessage" type="button">استخدم الرسالة</button><button id="copyBuiltMessage" type="button">نسخ</button></div>
+ </div>
+ <div class="pro-tools panel-lite" id="rescueCenter">
+  <h2 id="rescueTitle">🕊 أنقذ الموقف</h2><p class="section-kicker" id="rescueDesc">خطوات هادئة لإصلاح الموقف دون لوم أو تصعيد.</p>
+  <div class="builder-grid"><label><span id="rescueSituationLabel">ما الموقف؟</span><select id="rescueSituation"><option value="argument">حدث خلاف</option><option value="silence">صمت وابتعاد</option><option value="hurt">كلام جارح</option><option value="stress">ضغط وتعب</option><option value="misunderstanding">سوء فهم</option><option value="apology">أحتاج إلى الاعتذار</option></select></label></div>
+  <div id="rescueResult" class="rescue-result">اختر الموقف لتظهر لك خطوات عملية ورسالة افتتاحية.</div>
+  <button id="rescueGenerate" class="wide primary" type="button">اعرض خطة هادئة</button>
+ </div>
+ <div class="pro-tools panel-lite" id="kindnessChallenge">
+  <h2 id="challengeTitle">🌷 تحدي اللطف</h2><p class="section-kicker" id="challengeDesc">خطوة صغيرة اليوم تصنع فرقاً جميلاً.</p>
+  <div id="challengeTask" class="daily-box"></div><button id="newChallenge" class="wide" type="button">مهمة لطيفة أخرى</button>
+ </div>
 </section>
 <section class="panel page-section active-page" data-page="home">
  <h2 id="heartTitle">رسالة من القلب</h2>
@@ -457,6 +502,9 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
 <section class="panel page-section" data-page="favorites">
  <div class="tools-title"><h2 id="favTitle" style="margin:0">رسائلك المفضلة</h2><span class="spark">✦</span></div>
  <div class="row"><button id="showFav">عرض المفضلة</button><button id="hideFav">إخفاء المفضلة</button></div>
+ <div class="favorite-tools"><label id="folderLabel" for="favoriteFolder">مجلد المفضلة</label><select id="favoriteFolder"><option value="all">كل الرسائل</option><option value="love">مودة</option><option value="support">دعم</option><option value="prayer">أدعية</option><option value="special">مميزة</option></select><button id="assignFolder" type="button">صنّف الرسالة الحالية</button></div>
+ <div class="favorite-tools"><button id="exportData" type="button">نسخة احتياطية</button><label class="import-label" for="importData" id="importLabel">استعادة نسخة</label><input id="importData" type="file" accept="application/json" hidden></div>
+ <div class="favorite-tools" id="privacyTools"><input id="privacyPin" type="password" inputmode="numeric" maxlength="8" placeholder="رمز خصوصية من 4 إلى 8 أرقام"><button id="setPrivacyPin" type="button">تفعيل قفل المفضلة</button><button id="unlockFavorites" type="button">فتح المفضلة</button></div>
  <div id="favorites"></div>
  <h2 id="historyTitle" class="subsection-title">آخر الرسائل</h2><div id="historyList"></div>
  <h2 id="customTitle" class="subsection-title">رسائلي الخاصة</h2>
@@ -483,6 +531,11 @@ body.dark-mode .inline-message-panel{background:linear-gradient(145deg,#302033,#
  <select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
  <div class="feature-controls"><button id="themeToggle" class="feature-btn" type="button">☾ وضع الليل</button><button id="notifyToggle" class="feature-btn" type="button">♡ تفعيل الإشعارات اللطيفة</button></div>
  <p class="feature-note" id="notifyNote">إشعار رقيق واحد يومياً، ويمكنك إيقافه متى شئت.</p>
+ <div class="pro-tools panel-lite"><h3 id="appearanceTitle">المظهر والتخصيص</h3>
+ <label id="paletteLabel" for="paletteSelect">الطابع</label><select id="paletteSelect"><option value="royal">ملكي خمري</option><option value="rose">وردي هادئ</option><option value="night">ليلي أنيق</option></select>
+ <label id="fontSizeLabel" for="fontScale">حجم الخط</label><input id="fontScale" type="range" min="0.9" max="1.2" step="0.05" value="1">
+ <button id="shareAppBtn" class="wide" type="button">↗ شارك تطبيق بين قلبين</button>
+ </div>
 </section>
 <p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
 <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
@@ -1070,7 +1123,7 @@ async function createMessageCard(){
  ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#7b1741';ctx.font='bold 78px Tajawal, sans-serif';ctx.fillText(lang==='en'?'Between Two Hearts':lang==='fr'?'Entre deux cœurs':'بين قلبين',540,205);
  ctx.fillStyle='#b38a43';ctx.font='42px Tajawal, sans-serif';ctx.fillText('♡',540,290);
  ctx.fillStyle='#4c0825';ctx.font='600 48px Tajawal, sans-serif';
- const words=current.split(/s+/);const lines=[];let line='';
+ const words=current.split(/\\s+/);const lines=[];let line='';
  words.forEach(word=>{const test=line?line+' '+word:word;if(ctx.measureText(test).width>850&&line){lines.push(line);line=word}else line=test});if(line)lines.push(line);
  const lineHeight=76;let y=Math.max(480,(1350-lines.length*lineHeight)/2);
  lines.forEach(t=>{ctx.fillText(t,540,y);y+=lineHeight});
@@ -1089,5 +1142,67 @@ renderSmartChips();
 
 applyLanguage();applyTheme();if(localStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+
+/* V35 complete feature suite: builder, repair guide, organization, privacy and backup */
+const builderCopy={
+ar:{love:['أحب أن تعرف أن وجودك في حياتي نعمة أقدّرها، وأسأل الله أن يديم بيننا المودة والرحمة.','شكراً لكل ما تبذله؛ أرى جهدك وأحترم قلبك وسعيك.'],miss:['أفتقد حديثك وقربك، وأرسل لك شوقاً صادقاً ودعاءً بأن تكون بخير.','اشتقت إلى تفاصيل يومك وإلى لحظاتنا الهادئة معاً.'],sorry:['أعتذر بصدق إن آلمتك؛ أريد أن أفهم شعورك وأصلح خطئي بالفعل قبل الكلام.','حقك عليّ إن قصّرت. دعنا نتحدث بهدوء ونبدأ صفحة من التفاهم.'],support:['أنا أؤمن بقدرتك، وسأساندك بما أستطيع. خطوة هادئة كل يوم تصنع تقدماً.','لا تقلل من قيمة جهدك؛ أنا أقدّره وأسأل الله أن يبارك لك في سعيك.'],calm:['لا أريد أن ينتصر أحدنا على الآخر؛ أريد أن نفهم بعضنا ونصل إلى حل يحفظ احترامنا.','لنأخذ وقتاً للهدوء ثم نعود إلى الحديث بلطف وإنصاف.'],dua:['أسأل الله أن يشرح صدرك وييسر أمرك ويجعل أيامك عامرة بالخير والسكينة.','اللهم ألّف بين قلوبنا وارزقنا حسن العشرة والرحمة والبركة.']},
+en:{love:['I want you to know how much I value your presence and the kindness you bring into my life.','Thank you for your effort; I notice it and truly appreciate you.'],miss:['I miss our conversations and the little moments we share. I hope you are well.','You are in my thoughts, and I look forward to seeing you again.'],sorry:['I sincerely apologize if I hurt you. I want to understand and make things right through my actions.','I was wrong to hurt you. Let us talk calmly and listen to each other.'],support:['I believe in you and appreciate your effort. One steady step at a time.','Your effort matters, and I am here to support you with care.'],calm:['I do not want either of us to win an argument; I want us to understand each other.','Let us pause, calm down, and return to this conversation with respect.'],dua:['May Allah ease your affairs, bring peace to your heart, and bless your efforts.','May Allah fill our home with mercy, patience, and understanding.']},
+fr:{love:['Je veux que tu saches combien ta présence et tes attentions comptent pour moi.','Merci pour tes efforts ; je les remarque et je les apprécie sincèrement.'],miss:['Nos conversations et nos petits moments me manquent. J’espère que tu vas bien.','Je pense à toi et j’attends avec joie nos retrouvailles.'],sorry:['Je te présente mes excuses si je t’ai blessé. Je veux comprendre et réparer par mes actes.','J’ai eu tort de te blesser. Parlons calmement et écoutons-nous.'],support:['Je crois en toi et j’apprécie tes efforts. Avançons un pas après l’autre.','Tes efforts comptent et je suis là pour te soutenir avec bienveillance.'],calm:['Je ne veux pas que l’un gagne contre l’autre ; je veux que nous nous comprenions.','Prenons un moment pour nous apaiser, puis reparlons avec respect.'],dua:['Qu’Allah facilite tes affaires, apaise ton cœur et bénisse tes efforts.','Qu’Allah remplisse notre foyer de miséricorde, de patience et de compréhension.']}
+};
+const rescueText={
+ar:{argument:'1. أوقفا النقاش إذا ارتفع الصوت، واتفقا على وقت قريب للعودة إليه.
+2. يتحدث كل طرف عن شعوره واحتياجه دون اتهام أو تعميم.
+3. اختارا نقطة واحدة قابلة للحل الآن، واتفقا على خطوة عملية.',line:'يمكننا أن نختلف دون أن نجرح بعضنا. أريد أن أسمعك بهدوء ونبحث عن حل يرضينا.'},
+silence:'الصمت أحياناً حاجة للهدوء، لكنه لا ينبغي أن يتحول إلى عقاب أو إهمال. امنح مساحة مع تحديد وقت مناسب للاطمئنان والحديث.',
+hurt:'سمِّ العبارة التي آلمتك بهدوء، واطلب عدم تكرارها. اعتذار صادق يتبعه تغيير عملي أفضل من تبرير الأذى.',
+stress:'خففا المطالب غير الضرورية، واسألا: ما المساعدة العملية التي تحتاجها الآن؟ اتفقا على تقسيم المهام ووقت للراحة.',
+misunderstanding:'أعيدوا صياغة ما فهمه كل طرف، واسألوا قبل الاستنتاج. وضّحوا المقصود دون سخرية أو دفاع متسرع.',
+apology:'اذكر الخطأ بوضوح، واعترف بأثره، واعتذر دون كلمة «لكن»، ثم اقترح إصلاحاً ملموساً واحترم وقت الطرف الآخر.'},
+en:{argument:'Pause if voices rise and agree when to resume. Each person describes feelings without blame. Choose one practical next step.',line:'We can disagree without hurting each other. I want to listen calmly and find a fair solution.'},
+fr:{argument:'Faites une pause si le ton monte. Chacun exprime son ressenti sans accusation. Choisissez ensemble une action concrète.',line:'Nous pouvons être en désaccord sans nous blesser. Je veux t’écouter calmement et chercher une solution juste.'}
+};
+const challenges={
+ar:['اسأل شريكك اليوم: ما الشيء الذي يمكنني فعله ليخفف عنك؟','اشكر شريكك على عمل محدد قام به اليوم.','خصصا عشر دقائق للحديث دون هاتف أو مقاطعة.','قدّم مساعدة عملية قبل أن تُطلب منك.','استمع حتى النهاية قبل تقديم النصيحة.','ادعُ لشريكك بظهر الغيب وأخبره بدعوة طيبة.','اترك رسالة تقدير قصيرة في مكان يراه.'],
+en:['Ask your spouse what would make today easier.','Thank them for one specific thing they did.','Spend ten minutes talking without phones.','Offer practical help before being asked.','Listen fully before giving advice.','Make a sincere prayer for your spouse.','Leave a short note of appreciation.'],
+fr:['Demandez ce qui pourrait alléger sa journée.','Remerciez votre conjoint pour un geste précis.','Parlez dix minutes sans téléphone.','Proposez une aide concrète spontanément.','Écoutez jusqu’au bout avant de conseiller.','Faites une invocation sincère pour votre conjoint.','Laissez un petit mot de reconnaissance.']
+};
+function buildCustomMessage(){
+ const pool=builderCopy[lang][$('builderFeeling').value]||builderCopy[lang].love;
+ let text=pool[Math.floor(Math.random()*pool.length)];
+ const style=$('builderStyle').value;
+ if(style==='short')text=text.split(/[.!؟]/)[0]+'.';
+ if(style==='deep')text+=' '+(lang==='ar'?'فالمودة تظهر في حسن القول وصدق الفعل، وأسأل الله أن يديم بيننا الخير.':lang==='fr'?'La tendresse se voit dans les paroles et les actes sincères.':'Care is shown through kind words and sincere actions.');
+ $('builtMessage').value=text;
+}
+$('buildMessageBtn').onclick=buildCustomMessage;
+$('useBuiltMessage').onclick=()=>{const v=$('builtMessage').value.trim();if(!v)return;current=v;$('message').textContent=v;rememberMessage(v);$('message').scrollIntoView({behavior:'smooth',block:'center'})};
+$('copyBuiltMessage').onclick=()=>{if($('builtMessage').value.trim())copyText($('builtMessage').value.trim())};
+function showRescue(){
+ const k=$('rescueSituation').value;const locale=rescueText[lang];let body=locale[k]||locale.argument;
+ if(lang==='ar'&&k==='argument')body+='\n\n'+locale.line;
+ else if(k==='argument')body+='\n\n'+(locale.line||'');
+ else if(lang!=='ar')body+='\n\n'+(lang==='en'?'Try saying: “I want us to understand each other, not hurt each other.”':'Vous pouvez dire : « Je veux que nous nous comprenions sans nous blesser. »');
+ $('rescueResult').textContent=body;
+}
+$('rescueGenerate').onclick=showRescue;$('rescueSituation').onchange=showRescue;
+function nextKindness(){const list=challenges[lang];const day=Math.floor(Date.now()/86400000);const idx=(day+Math.floor(Math.random()*list.length))%list.length;$('challengeTask').textContent=list[idx]}
+$('newChallenge').onclick=nextKindness;nextKindness();showRescue();
+let favFolders={};try{favFolders=JSON.parse(localStorage.getItem('bq_favorite_folders')||'{}')}catch(_){}
+const oldShowFavs=showFavs;
+showFavs=function(){oldShowFavs();const chosen=$('favoriteFolder')?.value||'all';$('favorites').querySelectorAll('.favitem').forEach((node,i)=>{const value=favs[i];const folder=favFolders[value]||'love';node.style.display=chosen==='all'||chosen===folder?'':'none'})};
+$('favoriteFolder').onchange=showFavs;
+$('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang==='ar'?'أضف الرسالة إلى المفضلة أولاً.':'Save this message to favorites first.');return}favFolders[current]=$('favoriteFolder').value==='all'?'love':$('favoriteFolder').value;localStorage.setItem('bq_favorite_folders',JSON.stringify(favFolders));showFavs()};
+const backupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette'];
+$('exportData').onclick=()=>{const data={app:'bein-qalbein',version:35,exportedAt:new Date().toISOString(),data:{}};backupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bein-qalbein-backup.json';a.click();URL.revokeObjectURL(url)};
+$('importData').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.app!=='bein-qalbein'||!data.data)throw Error('invalid');backupKeys.forEach(k=>{if(typeof data.data[k]==='string')localStorage.setItem(k,data.data[k])});alert(lang==='ar'?'تمت استعادة النسخة. أعد تحميل التطبيق لرؤية كل التغييرات.':'Backup restored. Reload the app to apply all changes.')}catch(_){alert(lang==='ar'?'ملف النسخة الاحتياطية غير صالح.':'Invalid backup file.')}e.target.value=''};
+function updatePalette(value){document.body.classList.remove('theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+value);localStorage.setItem('bq_palette',value)}
+$('paletteSelect').onchange=e=>updatePalette(e.target.value);
+$('fontScale').oninput=e=>{document.documentElement.style.setProperty('--bq-scale',e.target.value);localStorage.setItem('bq_font_scale',e.target.value)};
+const storedScale=localStorage.getItem('bq_font_scale')||'1';$('fontScale').value=storedScale;document.documentElement.style.setProperty('--bq-scale',storedScale);
+const storedPalette=localStorage.getItem('bq_palette')||'royal';$('paletteSelect').value=storedPalette;updatePalette(storedPalette);
+$('shareAppBtn').onclick=async()=>{const data={title:'بين قلبين',text:lang==='ar'?'رسائل زوجية راقية للمودة والاحترام. جرّب تطبيق بين قلبين.':lang==='fr'?'Des messages élégants pour le couple. Découvrez Entre deux cœurs.':'Elegant messages for couples. Try Between Two Hearts.',url:location.href.split('?')[0]};if(navigator.share){try{await navigator.share(data)}catch(_){}}else copyText(data.text+' '+data.url)};
+const oldApplyLanguageV35=applyLanguage;
+applyLanguage=function(){oldApplyLanguageV35();const labels={ar:{builderTitle:'اصنع رسالتك بنفسك',builderDesc:'اختر الشعور والأسلوب لتحصل على رسالة قابلة للتعديل.',builderFeelingLabel:'الشعور',builderStyleLabel:'الأسلوب',build:'✦ أنشئ رسالتي',use:'استخدم الرسالة',copy:'نسخ',rescueTitle:'🕊 أنقذ الموقف',rescueDesc:'خطوات هادئة لإصلاح الموقف دون لوم أو تصعيد.',situation:'ما الموقف؟',rescueButton:'اعرض خطة هادئة',challengeTitle:'🌷 تحدي اللطف',challengeDesc:'خطوة صغيرة اليوم تصنع فرقاً جميلاً.',newChallenge:'مهمة لطيفة أخرى',appearanceTitle:'المظهر والتخصيص',paletteLabel:'الطابع',fontSizeLabel:'حجم الخط',shareApp:'↗ شارك تطبيق بين قلبين',folderLabel:'مجلد المفضلة',assign:'صنّف الرسالة الحالية',export:'نسخة احتياطية',import:'استعادة نسخة',pin:'رمز خصوصية من 4 إلى 8 أرقام',lock:'تفعيل قفل المفضلة',unlock:'فتح المفضلة'},en:{builderTitle:'Build your own message',builderDesc:'Choose a feeling and style, then edit your message.',builderFeelingLabel:'Feeling',builderStyleLabel:'Style',build:'✦ Create my message',use:'Use this message',copy:'Copy',rescueTitle:'🕊 Repair the moment',rescueDesc:'Calm steps to work through a difficult moment.',situation:'What happened?',rescueButton:'Show a calm plan',challengeTitle:'🌷 Kindness challenge',challengeDesc:'One small action can make today better.',newChallenge:'Another kind action',appearanceTitle:'Appearance & personalisation',paletteLabel:'Theme',fontSizeLabel:'Font size',shareApp:'↗ Share Between Two Hearts',folderLabel:'Favorites folder',assign:'Organise current message',export:'Back up data',import:'Restore backup',pin:'Privacy PIN (4–8 digits)',lock:'Lock favorites',unlock:'Unlock favorites'},fr:{builderTitle:'Créer votre message',builderDesc:'Choisissez une émotion et un style, puis modifiez le texte.',builderFeelingLabel:'Émotion',builderStyleLabel:'Style',build:'✦ Créer mon message',use:'Utiliser ce message',copy:'Copier',rescueTitle:'🕊 Apaiser la situation',rescueDesc:'Des étapes calmes pour traverser un désaccord.',situation:'Quelle situation ?',rescueButton:'Afficher un plan calme',challengeTitle:'🌷 Défi de gentillesse',challengeDesc:'Un petit geste peut embellir la journée.',newChallenge:'Un autre geste',appearanceTitle:'Apparence et personnalisation',paletteLabel:'Thème',fontSizeLabel:'Taille du texte',shareApp:'↗ Partager Entre deux cœurs',folderLabel:'Dossier des favoris',assign:'Classer le message actuel',export:'Sauvegarder',import:'Restaurer',pin:'Code privé (4 à 8 chiffres)',lock:'Verrouiller les favoris',unlock:'Déverrouiller les favoris'}}[lang];Object.entries({builderTitle:'builderTitle',builderDesc:'builderDesc',builderFeelingLabel:'builderFeelingLabel',builderStyleLabel:'builderStyleLabel',build:'buildMessageBtn',use:'useBuiltMessage',copy:'copyBuiltMessage',rescueTitle:'rescueTitle',rescueDesc:'rescueDesc',situation:'rescueSituationLabel',rescueButton:'rescueGenerate',challengeTitle:'challengeTitle',challengeDesc:'challengeDesc',newChallenge:'newChallenge',appearanceTitle:'appearanceTitle',paletteLabel:'paletteLabel',fontSizeLabel:'fontSizeLabel',shareApp:'shareAppBtn',folderLabel:'folderLabel',assign:'assignFolder',export:'exportData',import:'importLabel'}).forEach(([k,id])=>{const el=$(id);if(el)el.textContent=labels[k]});$('privacyPin').placeholder=labels.pin;$('setPrivacyPin').textContent=labels.lock;$('unlockFavorites').textContent=labels.unlock;const opts={ar:[['love','مودة'],['miss','اشتياق'],['sorry','اعتذار'],['support','تشجيع'],['calm','تهدئة'],['dua','دعاء']],en:[['love','Affection'],['miss','Missing you'],['sorry','Apology'],['support','Support'],['calm','Calm'],['dua','Prayer']],fr:[['love','Affection'],['miss','Manque'],['sorry','Excuses'],['support','Soutien'],['calm','Apaisement'],['dua','Invocation']]}[lang];$('builderFeeling').innerHTML=opts.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');const styles={ar:['رقيق','عميق','مختصر'],en:['Gentle','Deep','Short'],fr:['Doux','Profond','Court']}[lang];$('builderStyle').innerHTML=['soft','deep','short'].map((v,i)=>'<option value="'+v+'">'+styles[i]+'</option>').join('');const situations={ar:['حدث خلاف','صمت وابتعاد','كلام جارح','ضغط وتعب','سوء فهم','أحتاج إلى الاعتذار'],en:['Disagreement','Silence and distance','Hurtful words','Stress and fatigue','Misunderstanding','I need to apologise'],fr:['Désaccord','Silence et distance','Paroles blessantes','Stress et fatigue','Malentendu','Je dois présenter mes excuses']}[lang];$('rescueSituation').innerHTML=['argument','silence','hurt','stress','misunderstanding','apology'].map((v,i)=>'<option value="'+v+'">'+situations[i]+'</option>').join('');const folderOpts={ar:[['all','كل الرسائل'],['love','مودة'],['support','دعم'],['prayer','أدعية'],['special','مميزة']],en:[['all','All messages'],['love','Affection'],['support','Support'],['prayer','Prayers'],['special','Special']],fr:[['all','Tous les messages'],['love','Affection'],['support','Soutien'],['prayer','Invocations'],['special','Spéciaux']]}[lang];$('favoriteFolder').innerHTML=folderOpts.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');showRescue();nextKindness();};
+
 </script>
 </body></html>

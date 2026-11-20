@@ -16,10 +16,13 @@ test("application JavaScript parses and element IDs are unique", () => {
 });
 
 test("main controls, AI connection test and safe message display exist", () => {
-  for (const id of ["quickHub", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiTestEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
+  for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiTestEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
     assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(html, /function displayMessageInMain/);
+  assert.match(html, /data-quick="ai"/);
+  assert.match(html, /<textarea id="aiOutput"/);
+  assert.match(html, /displayMessageInMain\(finalMessage/);
   assert.match(html, /function validBackupValue/);
   assert.match(html, /endsWith\('\.workers\.dev'\)/);
   assert.match(html, /optionLabels/);

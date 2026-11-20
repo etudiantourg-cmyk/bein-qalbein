@@ -28,6 +28,8 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /endsWith\('\.workers\.dev'\)/);
   assert.match(html, /optionLabels/);
   assert.match(html, /aiPrivacyNote/);
+  assert.match(html, /Your situation details are sent to Cloudflare AI/);
+  assert.match(html, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
   assert.match(html, /aiSafetyNote/);
   assert.match(html, /rateLimited:/);
   assert.match(html, /safetyRejected:/);
@@ -60,7 +62,7 @@ test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
-  assert.match(sw, /const CACHE='bein-qalbein-royal-v61'/);
+  assert.match(sw, /const CACHE='bein-qalbein-royal-v62'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });
 

@@ -1346,13 +1346,13 @@ function validBackupValue(key,raw){
  if(key==='bq_theme')return ['dark','light'].includes(raw);
  if(key==='bq_notifications')return ['on','off'].includes(raw);
  if(key==='bq_palette')return ['rose','royal','night'].includes(raw);
- if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.7&&n<=1.5}
+ if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.9&&n<=1.2}
  if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
  let value;try{value=JSON.parse(raw)}catch(_){return false}
- if(key==='bq_favorites')return Array.isArray(value)&&value.length<=1000&&value.every(x=>typeof x==='string'&&x.length<=1800);
+ if(key==='bq_favorites')return Array.isArray(value)&&value.length<=1000&&value.every(x=>typeof x==='string'&&x.length<=10000);
  if(key==='bq_recent_messages')return Array.isArray(value)&&value.length<=12&&value.every(x=>typeof x==='string'&&x.length<=1800);
  if(key==='bq_custom_notes')return Array.isArray(value)&&value.length<=100&&value.every(x=>typeof x==='string'&&x.length<=1800);
- if(key==='bq_favorite_folders')return value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length<=1000&&Object.entries(value).every(([k,v])=>k.length<=1800&&['love','support','prayer','special'].includes(v));
+ if(key==='bq_favorite_folders')return value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length<=1000&&Object.entries(value).every(([k,v])=>k.length<=10000&&['love','support','prayer','special'].includes(v));
  return false;
 }
 $('exportData').onclick=()=>{
@@ -1482,24 +1482,6 @@ const bqPreviousGoPage=goPage;
 goPage=function(page){
  if(page!=='favorites'&&localStorage.getItem('bq_fav_pin_hash')){favoritesUnlocked=false;if(bqLockTimer)clearTimeout(bqLockTimer);bqPreviousPrivacyRefresh()}
  bqPreviousGoPage(page);
-};
-const bqBackupKeys=['bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_fav_pin_hash','bq_last_page'];
-$('exportData').onclick=()=>{
- const data={app:'bein-qalbein',version:39,exportedAt:new Date().toISOString(),data:{}};
- bqBackupKeys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.data[k]=v});
- const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bein-qalbein-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-};
-$('importData').onchange=async e=>{
- const file=e.target.files&&e.target.files[0];if(!file)return;
- try{
-  if(file.size>2097152)throw Error('size');
-  const data=JSON.parse(await file.text());if(data.app!=='bein-qalbein'||!data.data||typeof data.data!=='object')throw Error('format');
-  const valid={};
-  bqBackupKeys.forEach(k=>{if(typeof data.data[k]==='string'){if(['bq_favorites','bq_recent_messages','bq_custom_notes','bq_favorite_folders'].includes(k))JSON.parse(data.data[k]);valid[k]=data.data[k]}});
-  Object.entries(valid).forEach(([k,v])=>localStorage.setItem(k,v));
-  alert(lang==='ar'?'تمت استعادة البيانات. أعد تحميل التطبيق لتطبيق الإعدادات.':'Backup restored. Reload the app to apply settings.');
- }catch(_){alert(lang==='ar'?'ملف النسخة الاحتياطية غير صالح أو يتجاوز 2 ميغابايت.':'Invalid backup file or file exceeds 2 MB.')}
- e.target.value='';
 };
 /* Keep all major controls readable and correctly sized on compact phones. */
 
@@ -1862,7 +1844,12 @@ function useMessage(v,categoryId){
 })();
 
 const applyLanguageBeforeAiStudio=applyLanguage;
-applyLanguage=function(){applyLanguageBeforeAiStudio();if(window.applyAiStudioLanguage)window.applyAiStudioLanguage()};
+applyLanguage=function(){
+ applyLanguageBeforeAiStudio();
+ if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
+ const note=document.getElementById('privacyNote');
+ if(note)note.textContent=lang==='en'?'Note: this is a local display lock, not encryption. Messages remain readable in browser storage.':lang==='fr'?'Note : ce verrou masque l’affichage local, mais ne chiffre pas les messages stockés dans le navigateur.':'تنبيه: هذا قفل عرض محلي بسيط، وليس تشفيراً للرسائل أو حمايةً من فحص بيانات المتصفح.';
+};
 if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 </script>
 </body></html>

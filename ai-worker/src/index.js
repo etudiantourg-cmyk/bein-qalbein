@@ -201,7 +201,10 @@ export default {
         .trim()
         .slice(0, 1800);
 
-      if (!message || clearlyUnsafeOutput(message) || containsReligiousAttribution(message)) {
+      if (!message) {
+        return json({ error: "لم يُرجع محرك الذكاء الاصطناعي نصاً. حاول مجدداً بعد قليل." }, 503, origin);
+      }
+      if (clearlyUnsafeOutput(message) || containsReligiousAttribution(message)) {
         return json({ error: "لم تجتز الرسالة مراجعة الاحترام الأولية. اطلب رسالة أخرى بصياغة مختلفة." }, 422, origin);
       }
       return json({ message, model: MODEL }, 200, origin);

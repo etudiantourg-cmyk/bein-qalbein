@@ -1701,6 +1701,9 @@ applyLanguage();
     generate();
    }
    target=$('heartTitle');
+  }else if(action==='ai'){
+   target=reveal('aiMessagePanel');
+   $('aiMood')?.focus({preventScroll:true});
   }else if(action==='builder'){
    target=reveal('messageBuilder');
    $('builderFeeling')?.focus({preventScroll:true});

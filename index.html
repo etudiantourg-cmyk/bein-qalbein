@@ -325,6 +325,26 @@ header,main,footer{position:relative;z-index:1}
 .modal-backdrop{position:fixed;inset:0;z-index:1000;background:#210515b8;display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(5px)}.advice-modal{width:min(100%,560px);max-height:min(82vh,760px);overflow:auto;border:2px solid #f0cf89;border-radius:24px;padding:17px;background:linear-gradient(145deg,#fffefa,#f9dfe8);box-shadow:0 18px 55px #16000b88}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:-17px;padding:8px 0 12px;background:linear-gradient(145deg,#fffefa,#f9dfe8);z-index:2}.modal-head h2{margin:0}.modal-head button{width:42px;height:42px;border-radius:50%;border:1px solid #d8b66f;background:#fff;color:#64112f;font-size:20px}#adviceList{padding-bottom:8px}
 body.dark-mode{--ink:#f7e8ee;--muted:#c8aab7;color:var(--ink);background:radial-gradient(ellipse at 20% 0,#3b2137 0,#17101d 60%,#100c17 100%)}
 body.dark-mode .panel,body.dark-mode .message-card,body.dark-mode .advice-modal,body.dark-mode .modal-head{background:linear-gradient(145deg,#302033,#241724 65%,#1d1421);border-color:#a77b55;color:#f7e8ee}body.dark-mode h2,body.dark-mode label{color:#ffe0a8;text-shadow:none}body.dark-mode .role,body.dark-mode .cat,body.dark-mode .advice-tabs button,body.dark-mode .feature-btn,body.dark-mode .actions button,body.dark-mode .row button,body.dark-mode .wide{background:linear-gradient(145deg,#493044,#2b1b30);color:#ffebd2;border-color:#9d755a;box-shadow:0 4px 0 #170e1a}body.dark-mode .role.active,body.dark-mode .cat.active,body.dark-mode .advice-tabs button.active,body.dark-mode .actions .primary,body.dark-mode .primary,body.dark-mode .wide.primary{background:linear-gradient(145deg,#a82c62,#501b42);color:#fff0d0}body.dark-mode select,body.dark-mode input,body.dark-mode .daily-box,body.dark-mode .advice-item,body.dark-mode .favitem{background:#211725;color:#f8eaf0;border-color:#806078}body.dark-mode footer{color:#d9bdc9}@media(max-width:420px){.feature-controls{grid-template-columns:1fr}}
+
+/* V27 — organized app navigation, grouped categories and personal message tools */
+.page-section{display:none!important}.page-section.active-page{display:block!important}
+.bottom-nav{position:fixed;z-index:90;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:620px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:8px;border:1.5px solid #edcc88;border-radius:22px;background:linear-gradient(145deg,#fffaf2f5,#f4d8e5f5);box-shadow:0 9px 30px #3b071f44,0 3px 0 #8b1745;backdrop-filter:blur(14px)}
+.bottom-nav button{border:0;background:transparent;border-radius:15px;color:#671433;min-height:55px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-weight:800}
+.bottom-nav button span{font-size:22px;line-height:1.1}.bottom-nav button small{font-size:11px}
+.bottom-nav button.active{background:linear-gradient(145deg,#d63d75,#650d32);color:#fff0c9;box-shadow:0 3px 0 #42071f,inset 0 1px 0 #ffffff77}
+body{padding-bottom:calc(95px + env(safe-area-inset-bottom))}
+.subsection-title{font-size:17px;margin:20px 0 8px;padding-top:12px;border-top:1px solid #e8c88c}
+#customInput{width:100%;resize:vertical;min-height:90px;border:1.5px solid #d8b66f;border-radius:16px;padding:13px;background:#fffdfb;color:var(--ink)}
+.custom-item,.history-item{padding:12px;margin:8px 0;border:1px solid #e7c987;border-radius:15px;background:#fff8f2;line-height:1.8}
+.custom-item button,.history-item button{margin:7px 4px 0 0;padding:7px 11px;border:1px solid #e4c58c;border-radius:11px;background:#f4e2e6;color:#5b0d2b}
+.category-group-title{grid-column:1/-1;margin:13px 2px 1px;color:#9b3157;font-weight:900;font-size:14px;display:flex;align-items:center;gap:8px}
+.category-group-title:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,#e8c88c,transparent)}
+.actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.dark-mode .bottom-nav{background:linear-gradient(145deg,#302033f5,#211522f5);border-color:#a77b55}
+body.dark-mode .bottom-nav button{color:#f7e8ee}body.dark-mode .bottom-nav button.active{background:linear-gradient(145deg,#a82c62,#501b42);color:#fff0d0}
+body.dark-mode #customInput,body.dark-mode .custom-item,body.dark-mode .history-item{background:#211725;color:#f8eaf0;border-color:#806078}
+@media(min-width:700px){.bottom-nav{bottom:18px}}
+
 </style>
 </head>
 <body>
@@ -344,52 +364,66 @@ body.dark-mode .panel,body.dark-mode .message-card,body.dark-mode .advice-modal,
 </div>
 </header>
 <main>
-<section class="panel">
+<section class="panel page-section active-page" data-page="home">
  <h2 id="roleTitle">اختر هويتك</h2>
  <div class="roles">
   <button class="role active" id="husband" data-role="husband"><span class="ico">♛</span>أنا زوج</button>
   <button class="role wife" id="wife" data-role="wife"><span class="ico">♡</span>أنا زوجة</button>
  </div>
- <label id="languageLabel" for="lang">لغة الواجهة</label>
- <select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
- <div class="feature-controls"><button id="themeToggle" class="feature-btn" type="button">☾ وضع الليل</button><button id="notifyToggle" class="feature-btn" type="button">♡ تفعيل الإشعارات اللطيفة</button></div>
- <p class="feature-note" id="notifyNote">إشعار رقيق واحد يومياً، ويمكنك إيقافه متى شئت.</p>
 </section>
-<section class="panel">
+<section class="panel page-section active-page" data-page="home">
  <h2 id="catTitle">اختر التصنيف المناسب</h2>
  <input id="search" placeholder="ابحث عن تصنيف...">
  <div class="grid" id="cats" style="margin-top:12px"></div>
 </section>
-<section class="panel">
+<section class="panel page-section active-page" data-page="home">
  <h2 id="heartTitle">رسالة من القلب</h2>
  <div class="message-card"><div id="message">اختر تصنيفاً لتظهر لك رسالة جميلة هنا.</div><div class="message-foot">♥</div></div>
  <div class="actions">
   <button id="shareBtn">↗ مشاركة</button>
   <button id="favBtn">☆ أضف للمفضلة</button>
   <button id="newBtn" class="primary">⟳ رسالة أخرى</button>
+  <button id="surpriseBtn">✦ فاجئني برسالة</button>
  </div>
  <button id="copyBtn" class="wide primary">▢ نسخ الرسالة</button>
 </section>
-<section class="panel">
+<section class="panel page-section" data-page="favorites">
  <div class="tools-title"><h2 id="favTitle" style="margin:0">رسائلك المفضلة</h2><span class="spark">✦</span></div>
  <div class="row"><button id="showFav">عرض المفضلة</button><button id="hideFav">إخفاء المفضلة</button></div>
- <div id="favorites" class="hidden"></div>
+ <div id="favorites"></div>
+ <h2 id="historyTitle" class="subsection-title">آخر الرسائل</h2><div id="historyList"></div>
+ <h2 id="customTitle" class="subsection-title">رسائلي الخاصة</h2>
+ <textarea id="customInput" rows="3" placeholder="اكتب رسالة خاصة بك..."></textarea>
+ <button id="saveCustom" class="wide primary">حفظ رسالتي</button><div id="customList"></div>
 </section>
 
-<section class="panel">
+<section class="panel page-section active-page" data-page="home">
  <h2 id="dailyTitle">✦ رسالة اليوم</h2>
  <div class="section-kicker" id="dailyKicker">رسالة تتجدد تلقائياً كل يوم</div>
  <div class="daily-box" id="dailyMessage">رسالة طيبة لهذا اليوم</div>
  <button class="wide primary" id="copyDaily">نسخ رسالة اليوم</button>
 </section>
-<section class="panel">
+<section class="panel page-section" data-page="guide">
  <h2 id="guideTitle">دليل الحياة الزوجية</h2>
  <div class="section-kicker" id="guideKicker">خطوات عملية للمودة والرحمة وحسن العشرة</div>
  <div class="advice-tabs"><button id="husbandTips" class="active" type="button">نصائح للزوج</button><button id="wifeTips" type="button">نصائح للزوجة</button></div>
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
 <div class="modal-backdrop hidden" id="adviceModal" role="dialog" aria-modal="true" aria-labelledby="adviceModalTitle"><div class="advice-modal"><div class="modal-head"><h2 id="adviceModalTitle">نصائح للزوج</h2><button id="closeAdvice" type="button">✕</button></div><div id="adviceList"></div></div></div>
+<section class="panel page-section" data-page="settings">
+ <h2 id="settingsTitle">الإعدادات</h2>
+ <label id="languageLabel" for="lang">لغة الواجهة</label>
+ <select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
+ <div class="feature-controls"><button id="themeToggle" class="feature-btn" type="button">☾ وضع الليل</button><button id="notifyToggle" class="feature-btn" type="button">♡ تفعيل الإشعارات اللطيفة</button></div>
+ <p class="feature-note" id="notifyNote">إشعار رقيق واحد يومياً، ويمكنك إيقافه متى شئت.</p>
+</section>
 <p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
+<nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+ <button type="button" data-go="home" class="active"><span>⌂</span><small id="navHome">الرئيسية</small></button>
+ <button type="button" data-go="favorites"><span>♡</span><small id="navFavorites">المفضلة</small></button>
+ <button type="button" data-go="guide"><span>❖</span><small id="navGuide">الدليل</small></button>
+ <button type="button" data-go="settings"><span>⚙</span><small id="navSettings">الإعدادات</small></button>
+</nav>
 </main>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script>
@@ -861,6 +895,58 @@ $('favBtn').onclick=()=>{
  $('favorites').classList.remove('hidden');showFavs();
  setTimeout(()=>{$('favBtn').textContent=languageText[lang].favAdd},1600);
 };
+
+
+/* V27 navigation, category grouping, history and private notes */
+const categoryGroups=[
+ {name:{ar:'رسائل يومية',en:'Daily messages',fr:'Messages quotidiens'},ids:['morning','evening','sleep']},
+ {name:{ar:'رسائل المواقف',en:'Life moments',fr:'Moments de vie'},ids:['work','travel','wellness','tired']},
+ {name:{ar:'رسائل المشاعر',en:'Feelings',fr:'Émotions'},ids:['miss','sad','upset','sorry']},
+ {name:{ar:'التقدير والدعم',en:'Appreciation & support',fr:'Reconnaissance et soutien'},ids:['thanks','dua','support']}
+];
+function groupedRenderCats(filter=''){
+ const host=$('cats');host.innerHTML='';const q=filter.trim().toLocaleLowerCase(lang);
+ let count=0;
+ categoryGroups.forEach(group=>{
+  const matches=categories.filter(c=>group.ids.includes(c.id)&&(!q||(c.name+' '+c.desc).toLocaleLowerCase(lang).includes(q)));
+  if(!matches.length)return;
+  const title=document.createElement('div');title.className='category-group-title';title.textContent=group.name[lang]||group.name.ar;host.append(title);
+  matches.forEach(c=>{count++;const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';b.onclick=()=>{selected=c.id;groupedRenderCats($('search').value);generate()};host.append(b)});
+ });
+ if(!count){const p=document.createElement('p');p.className='empty';p.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';host.append(p)}
+}
+function goPage(page){
+ document.querySelectorAll('.page-section').forEach(s=>s.classList.toggle('active-page',s.dataset.page===page));
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===page));
+ try{localStorage.setItem('bq_last_page',page)}catch(_){}
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
+}
+document.querySelectorAll('.bottom-nav button').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.go)));
+function rememberMessage(value){
+ if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_recent_messages')||'[]')}catch(_){}
+ list=[value,...list.filter(x=>x!==value)].slice(0,12);
+ try{localStorage.setItem('bq_recent_messages',JSON.stringify(list))}catch(_){}
+}
+function renderHistory(){
+ let list=[];try{list=JSON.parse(localStorage.getItem('bq_recent_messages')||'[]')}catch(_){}
+ const host=$('historyList');host.innerHTML='';
+ if(!list.length){host.innerHTML='<p class="empty">'+(lang==='en'?'No recent messages yet.':lang==='fr'?'Aucun message récent.':'لا توجد رسائل حديثة بعد.')+'</p>';return}
+ list.forEach(value=>{const d=document.createElement('div');d.className='history-item';const p=document.createElement('div');p.textContent=value;const b=document.createElement('button');b.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';b.onclick=()=>copyText(value);d.append(p,b);host.append(d)})
+}
+function renderCustomNotes(){
+ let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}
+ const host=$('customList');host.innerHTML='';
+ if(!list.length){host.innerHTML='<p class="empty">'+(lang==='en'?'Your private messages will appear here.':lang==='fr'?'Vos messages privés apparaîtront ici.':'ستظهر رسائلك الخاصة هنا.')+'</p>';return}
+ list.forEach((value,index)=>{const d=document.createElement('div');d.className='custom-item';const p=document.createElement('div');p.textContent=value;const cp=document.createElement('button');cp.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';cp.onclick=()=>copyText(value);const del=document.createElement('button');del.textContent=languageText[lang].delete;del.onclick=()=>{list.splice(index,1);localStorage.setItem('bq_custom_notes',JSON.stringify(list));renderCustomNotes()};d.append(p,cp,del);host.append(d)})
+}
+$('saveCustom').onclick=()=>{const value=$('customInput').value.trim();if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_custom_notes')||'[]')}catch(_){}list.unshift(value);try{localStorage.setItem('bq_custom_notes',JSON.stringify(list.slice(0,100)))}catch(_){}$('customInput').value='';renderCustomNotes();alert(lang==='en'?'Your message was saved.':lang==='fr'?'Votre message a été enregistré.':'تم حفظ رسالتك الخاصة ✓')};
+$('surpriseBtn').onclick=()=>{const ids=categories.map(c=>c.id);selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats($('search').value);generate();$('message').scrollIntoView({behavior:'smooth',block:'center'})};
+const originalGenerate=generate;
+generate=function(){originalGenerate();rememberMessage(current)};
+const originalApplyLanguage=applyLanguage;
+applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;['navHome','navFavorites','navGuide','navSettings','settingsTitle','surpriseBtn','customTitle','historyTitle'].forEach((id,i)=>$(id).textContent=x[i]);$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
+goPage(localStorage.getItem('bq_last_page')||'home');
 
 applyLanguage();applyTheme();if(localStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));

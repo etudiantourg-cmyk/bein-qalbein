@@ -1359,5 +1359,33 @@ $('importData').onchange=async e=>{
 /* Keep all major controls readable and correctly sized on compact phones. */
 
 applyLanguage();
+
+/* V40 HOTFIX: reliable category tap handling and visible inline message panel */
+(function(){
+ const host=$('cats');if(!host)return;
+ host.addEventListener('click',function(ev){
+  const btn=ev.target.closest('button.cat');if(!btn||!host.contains(btn))return;
+  ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+  const item=btn.closest('.category-item');const id=item&&item.dataset.categoryId;
+  if(!id)return;
+  const panel=prepareInlineMessage();
+  if(selected===id&&panel.parentElement===item){
+   panel.remove();selected=null;
+   host.querySelectorAll('.cat').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-expanded','false')});
+   return;
+  }
+  selected=id;
+  generate();
+  host.querySelectorAll('.cat').forEach(x=>{
+   const active=x.closest('.category-item')?.dataset.categoryId===id;
+   x.classList.toggle('active',active);x.setAttribute('aria-expanded',active?'true':'false');
+  });
+  item.append(panel);
+  panel.hidden=false;
+  panel.style.display='block';
+  requestAnimationFrame(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}));
+ },true);
+})();
+
 </script>
 </body></html>

@@ -1583,5 +1583,60 @@ applyLanguage();
  };
 })();
 
+
+/* V44 — repair the four “What do you need now?” shortcuts.
+   Capture the tap before older delegated handlers and execute each destination
+   directly; do not depend on a generated disclosure button or synthetic click. */
+(function(){
+ const hub=$('quickHub');
+ if(!hub||hub.dataset.quickV44)return;
+ hub.dataset.quickV44='1';
+ hub.addEventListener('click',function(ev){
+  const button=ev.target.closest('button[data-quick]');
+  if(!button||!hub.contains(button))return;
+  ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+  const action=button.dataset.quick;
+  if(typeof goPage==='function')goPage('home');
+  const reveal=id=>{
+   const box=$(id);if(!box)return null;
+   box.hidden=false;
+   box.querySelectorAll(':scope > *').forEach(child=>{
+    if(child.tagName!=='H2'&&!child.classList.contains('tool-disclosure'))child.hidden=false;
+   });
+   const disclosure=box.querySelector(':scope > .tool-disclosure');
+   if(disclosure)disclosure.setAttribute('aria-expanded','true');
+   return box;
+  };
+  let target=null;
+  if(action==='categories'){
+   target=$('cats');
+   if(target){
+    const first=target.querySelector('button.cat');
+    if(first)first.click();
+   }
+  }else if(action==='surprise'){
+   const ids=categories.map(c=>c.id);
+   if(ids.length){
+    selected=ids[Math.floor(Math.random()*ids.length)];
+    groupedRenderCats($('search')?.value||'');
+    generate();
+   }
+   target=$('heartTitle');
+  }else if(action==='builder'){
+   target=reveal('messageBuilder');
+   $('builderFeeling')?.focus({preventScroll:true});
+  }else if(action==='rescue'){
+   target=reveal('rescueCenter');
+   showRescue();
+   $('rescueSituation')?.focus({preventScroll:true});
+  }
+  if(target)requestAnimationFrame(()=>target.scrollIntoView({behavior:'auto',block:'center'}));
+  hub.querySelectorAll('button[data-quick]').forEach(x=>{
+   x.classList.toggle('quick-visited',x===button);
+   x.setAttribute('aria-pressed',String(x===button));
+  });
+ },true);
+})();
+
 </script>
 </body></html>

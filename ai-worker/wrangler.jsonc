@@ -1,6 +1,6 @@
 {
   "$schema": "https://developers.cloudflare.com/workers/wrangler/config-schema.json",
-  "name": "bein-qalbein-ai",
+  "name": "bein-qalbein",
   "main": "src/index.js",
   "compatibility_date": "2026-11-20",
   "ai": {

@@ -28,13 +28,13 @@
 
 جهزت المستودع بحيث يستطيع Cloudflare نشر المحرك مباشرة من GitHub، دون نسخ الأكواد يدوياً ودون وضع مفتاح API.
 
-1. افتح [Cloudflare Dashboard](https://dash.cloudflare.com/) وسجّل الدخول أو أنشئ حساباً.
-2. افتح **Workers & Pages** ثم **Create application** واختر **GitHub** لربط مستودع.
+1. افتح Cloudflare Dashboard وسجّل الدخول.
+2. افتح **Workers & Pages** ثم **Create application** واختر **GitHub** لربط المستودع.
 3. وافق على ربط GitHub، ثم اختر المستودع `etudiantourg-cmyk/bein-qalbein`.
-4. في إعدادات المشروع اضبط **Root directory** على `ai-worker`، واسم Worker على `bein-qalbein-ai`.
+4. في إعدادات المشروع استخدم **Root directory** = `ai-worker`، واسم Worker = `bein-qalbein`.
 5. اترك **Build command** فارغاً، واجعل **Deploy command** هو `npx wrangler deploy`، ثم اختر **Save and Deploy**.
-6. ملف `wrangler.jsonc` داخل المجلد يعرّف Worker باسم `bein-qalbein-ai` ويربط Workers AI باسم `AI`. بعد نجاح النشر انسخ عنوان `workers.dev` الذي يعرضه Cloudflare.
-7. افتح تطبيق [بين قلبين](https://etudiantourg-cmyk.github.io/bein-qalbein/)، ثم استوديو الرسائل الذكي > إعداد الاتصال، والصق عنوان Worker واحفظه.
+6. ملف `wrangler.jsonc` داخل المجلد يعرّف Worker باسم `bein-qalbein` ويربط Workers AI باسم `AI`. بعد نجاح النشر انسخ عنوان `workers.dev` الذي يعرضه Cloudflare.
+7. افتح تطبيق بين قلبين، ثم استوديو الرسائل الذكي > إعداد الاتصال، والصق عنوان Worker واحفظه.
 8. جرّب توليد رسالة قصيرة. لا يعتبر المحرك متصلاً إلا بعد ظهور رسالة فعلية.
 
 بعد الربط الأول، كل تحديث جديد على مجلد `ai-worker` في الفرع الرئيسي يمكن أن يُنشر تلقائياً بواسطة Cloudflare Workers Builds.
@@ -49,6 +49,6 @@
 
 ## روابط رسمية
 
-- [Workers AI model card](https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/)
-- [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/)
-- [Workers AI getting started](https://developers.cloudflare.com/workers-ai/get-started/workers-wrangler/)
+- Workers AI model card: https://developers.cloudflare.com/workers-ai/models/gemma-4-26b-a4b-it/
+- Workers AI pricing: https://developers.cloudflare.com/workers-ai/platform/pricing/
+- Workers AI getting started: https://developers.cloudflare.com/workers-ai/get-started/workers-wrangler/

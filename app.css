@@ -45,6 +45,8 @@ h3{color:var(--wine);font-size:17px}
 .quick-grid>button[data-quick="ai"]{grid-column:1/-1;border-color:#d8b66e;background:#fffaf0}
 .quick-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:13px;background:var(--rose-soft);color:var(--wine)}
 .quick-icon svg{width:21px;height:21px}
+.quick-grid>button[data-quick="surprise"] .quick-icon{background:linear-gradient(145deg,#fff8df 0%,#f3d99a 52%,#d5ad5d 100%);color:#6b4218;border:1px solid rgba(173,128,48,.35);box-shadow:inset 0 2px 3px rgba(255,255,255,.95),inset 0 -3px 5px rgba(132,86,23,.18),0 4px 8px rgba(115,75,25,.18)}
+.quick-grid>button[data-quick="surprise"] .quick-icon svg{width:23px;height:23px;filter:drop-shadow(0 1px 1px rgba(92,55,16,.28))}
 .quick-copy{display:grid;gap:2px;min-width:0}
 .quick-copy b{font-size:14px;line-height:1.4;color:var(--wine)}
 .quick-copy small{font-size:12px;color:var(--muted);line-height:1.4}

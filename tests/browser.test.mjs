@@ -39,7 +39,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const page = await browser.newPage({ serviceWorkers: "block" });
   const pageErrors = [];
   const consoleErrors = [];
-  page.on("pageerror", error => pageErrors.push(error.message));
+  page.on("pageerror", error => pageErrors.push(error.stack || error.message));
   page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
 
   try {

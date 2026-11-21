@@ -685,3 +685,10 @@ body[data-current-page="home"] .home-top-shortcuts{
 .global-search-results>p{margin:8px 2px;color:var(--muted,#776b73)}
 .global-search-result{text-align:start;padding:12px 13px;border:1px solid var(--border,#eadde4);border-radius:12px;background:var(--soft,#faf5f8);color:inherit;font:inherit;line-height:1.55}
 .global-search-hit{outline:3px solid var(--accent,#b45b7a);outline-offset:4px;border-radius:8px}
+
+/* Manual reordering of homepage shortcuts (long-press, then drag). */
+.top-navigation>.home-top-shortcuts .home-shortcut{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.top-navigation>.home-top-shortcuts .home-shortcut.is-reordering{
+ opacity:.78;transform:scale(.96);outline:2px dashed rgba(255,255,255,.9);
+ box-shadow:0 8px 20px rgba(0,0,0,.24);z-index:5
+}

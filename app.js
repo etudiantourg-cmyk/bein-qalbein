@@ -328,14 +328,23 @@ function goPage(page){
 /* Bottom navigation is handled by the single delegated router below. */
 function rememberMessage(value){
  if(!value)return;let list=[];try{list=JSON.parse(bqStorage.getItem('bq_recent_messages')||'[]')}catch(_){}
- list=[value,...list.filter(x=>x!==value)].slice(0,12);
+ list=[value,...list.filter(x=>x!==value)].slice(0,3);
  try{bqStorage.setItem('bq_recent_messages',JSON.stringify(list))}catch(_){}
 }
 function renderHistory(){
- let list=[];try{const stored=JSON.parse(bqStorage.getItem('bq_recent_messages')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string').slice(0,12):[]}catch(_){}
+ let list=[];try{const stored=JSON.parse(bqStorage.getItem('bq_recent_messages')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string').slice(0,3):[]}catch(_){}
+ try{bqStorage.setItem('bq_recent_messages',JSON.stringify(list))}catch(_){}
  const host=$('historyList');host.innerHTML='';
  if(!list.length){host.innerHTML='<p class="empty">'+(lang==='en'?'No recent messages yet.':lang==='fr'?'Aucun message récent.':'لا توجد رسائل حديثة بعد.')+'</p>';return}
- list.forEach(value=>{const d=document.createElement('div');d.className='history-item';const p=document.createElement('div');p.textContent=value;const b=document.createElement('button');b.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';b.onclick=()=>copyText(value);d.append(p,b);host.append(d)})
+ list.forEach(value=>{
+  const d=document.createElement('div');d.className='history-item';const p=document.createElement('div');p.className='history-message';p.textContent=value;
+  const actions=document.createElement('div');actions.className='history-actions';
+  const b=document.createElement('button');b.type='button';b.textContent=lang==='en'?'Copy':lang==='fr'?'Copier':'نسخ';b.onclick=()=>copyText(value);
+  const del=document.createElement('button');del.type='button';del.className='history-delete';del.textContent=lang==='en'?'Delete':lang==='fr'?'Supprimer':'حذف';del.onclick=()=>{bqStorage.setItem('bq_recent_messages',JSON.stringify(list.filter(x=>x!==value)));renderHistory()};
+  let startX=0,startY=0;d.addEventListener('touchstart',e=>{const t=e.changedTouches[0];startX=t.clientX;startY=t.clientY},{passive:true});
+  d.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-startX,dy=t.clientY-startY;if(Math.abs(dx)>75&&Math.abs(dx)>Math.abs(dy)*1.3){bqStorage.setItem('bq_recent_messages',JSON.stringify(list.filter(x=>x!==value)));renderHistory()}},{passive:true});
+  actions.append(b,del);d.append(p,actions);host.append(d);
+ });
 }
 function renderCustomNotes(){
  let list=[];try{const stored=JSON.parse(bqStorage.getItem('bq_custom_notes')||'[]');list=Array.isArray(stored)?stored.filter(x=>typeof x==='string').slice(0,100):[]}catch(_){}

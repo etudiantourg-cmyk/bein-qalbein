@@ -186,17 +186,42 @@ support:[
 ]
 };
 const $=id=>document.getElementById(id);
-/* Safe storage adapter: persistent when available, in-memory fallback when blocked. */
+/* Storage adapter: persistent when possible, with a correct shadow layer for quota/security failures. */
 const bqStorage=(()=>{
- let native=null;const memory=new Map();
+ let native=null,cleared=false;
+ const memory=new Map(),removed=new Set();
  try{native=window.localStorage;native.getItem('__bq_probe__')}catch(_){native=null}
+ const keys=()=>{
+  const result=new Set();
+  if(native&&!cleared){try{for(let i=0;i<native.length;i++){const key=native.key(i);if(key!==null&&!removed.has(key))result.add(key)}}catch(_){}}
+  memory.forEach((_,key)=>result.add(key));
+  removed.forEach(key=>result.delete(key));
+  return [...result];
+ };
  return {
-  getItem(key){try{const value=native?.getItem(key);if(value!==null&&value!==undefined)return value}catch(_){}return memory.has(String(key))?memory.get(String(key)):null},
-  setItem(key,value){const k=String(key),v=String(value);memory.set(k,v);try{native?.setItem(k,v)}catch(_){}},
-  removeItem(key){const k=String(key);memory.delete(k);try{native?.removeItem(k)}catch(_){}},
-  clear(){memory.clear();try{native?.clear()}catch(_){}},
-  key(index){try{return native?.key(index)??Array.from(memory.keys())[index]??null}catch(_){return Array.from(memory.keys())[index]??null}},
-  get length(){try{return native?.length??memory.size}catch(_){return memory.size}}
+  getItem(key){
+   const k=String(key);
+   if(memory.has(k))return memory.get(k);
+   if(cleared||removed.has(k))return null;
+   try{return native?.getItem(k)??null}catch(_){return null}
+  },
+  setItem(key,value){
+   const k=String(key),v=String(value);
+   if(native&&!cleared){try{native.setItem(k,v);memory.delete(k);removed.delete(k);return}catch(_){}}
+   memory.set(k,v);removed.delete(k);
+  },
+  removeItem(key){
+   const k=String(key);memory.delete(k);
+   if(native&&!cleared){try{native.removeItem(k);removed.delete(k);return}catch(_){}}
+   removed.add(k);
+  },
+  clear(){
+   memory.clear();removed.clear();
+   if(native){try{native.clear();cleared=false;return}catch(_){}}
+   cleared=true;
+  },
+  key(index){const i=Number(index);return Number.isInteger(i)&&i>=0?keys()[i]??null:null},
+  get length(){return keys().length}
  };
 })();
 

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
+const aiStudio = await readFile(new URL("../ai-studio.js", import.meta.url), "utf8");
 const css = await readFile(new URL("../app.css", import.meta.url), "utf8");
 const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
@@ -14,6 +15,9 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.match(html, /<link rel="stylesheet" href="\.\/app\.css">/);
   assert.doesNotMatch(html, /<script>([\s\S]*?)<\/script>/);
   new Function(app);
+  new Function(aiStudio);
+  assert.match(html, /<script src="\.\/ai-studio\.js" defer><\/script>/);
+  assert.doesNotMatch(app, /AI Studio client/);
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, "duplicate HTML IDs found");
 });
@@ -86,7 +90,7 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.match(html, /<meta name="theme-color" content="#64132f">/);
   assert.equal(manifest.start_url, "./");
-  assert.ok(sw.includes("'./app.js'") && sw.includes("'./app.css'"));
+  assert.ok(sw.includes("'./app.js'") && sw.includes("'./ai-studio.js'") && sw.includes("'./app.css'"));
   assert.doesNotMatch(sw, /couple-header\.jpg\.png/);
   assert.match(sw, /navigationPreload/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);

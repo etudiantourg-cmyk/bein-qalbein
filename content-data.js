@@ -397,4 +397,183 @@ fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je l
       "Que les prochains instants soient plus doux et plus paisibles."
     ]
   }
+,
+  translatedBaseExpansions: {
+    "en": [
+      [],
+      [],
+      [
+        "Your dedication is visible, even when results take time.",
+        "I pray your efforts lead to beneficial work and honest success.",
+        "You can ask for help; you do not have to carry everything alone.",
+        "May each challenge teach you without taking away your peace.",
+        "I admire the care you put into doing your work well."
+      ],
+      [
+        "May every road be safe and every stop bring you ease.",
+        "Keep your essentials close and do not rush for anyone.",
+        "I will be thinking of you and praying for your protection.",
+        "May your plans go smoothly and your return be joyful.",
+        "Your safety matters more to me than arriving quickly."
+      ],
+      [
+        "Please be gentle with yourself while your body regains strength.",
+        "Small improvements are worth celebrating; healing takes patience.",
+        "May you find the right care and the strength to follow it.",
+        "You are not a burden when you need help.",
+        "I wish you a day with less discomfort and more calm."
+      ],
+      [
+        "I will stay beside you without forcing you to speak.",
+        "You are allowed to take your time with what hurts.",
+        "Let us make room for hope without denying what you feel.",
+        "You are valued on difficult days just as much as joyful ones.",
+        "May you find a little light and relief today."
+      ],
+      [
+        "I want to understand your point before I explain mine.",
+        "Let us pause if we need to, then return with gentler words.",
+        "Your dignity matters more than winning an argument.",
+        "I am willing to listen and take responsibility for my part.",
+        "We can protect our bond while working through a disagreement."
+      ],
+      [
+        "You deserve a fair share of rest, not only more responsibilities.",
+        "Tell me what I can take off your shoulders today.",
+        "We can leave less urgent tasks for another time.",
+        "Your energy is precious; let us spend it wisely.",
+        "Thank you for continuing, and please allow yourself to pause."
+      ],
+      [
+        "Put aside what can wait until tomorrow and let your heart settle.",
+        "May your sleep restore your strength and quiet your thoughts.",
+        "You have permission to rest; tomorrow can begin with fresh hope.",
+        "May Allah guard you and make your night peaceful.",
+        "I pray you wake with renewed energy and gratitude."
+      ],
+      [
+        "I look forward to the next time we can sit and talk together.",
+        "A small message from you can brighten an ordinary day.",
+        "I carry warm memories of our time together.",
+        "May the distance pass gently until we meet again.",
+        "You are in my thoughts and prayers, wherever you are."
+      ],
+      [
+        "I will listen to how this affected you without becoming defensive.",
+        "Your trust matters, and I know it is rebuilt through consistent actions.",
+        "I should have chosen kinder words, and I regret that I did not.",
+        "Please tell me what repair would look like for you.",
+        "I want my future actions to reflect the respect I owe you."
+      ],
+      [
+        "Your kindness makes our shared life lighter.",
+        "I am grateful for the ways you show up each day.",
+        "Your contribution matters, whether large or small.",
+        "Thank you for making room for understanding and teamwork.",
+        "I never want your efforts to feel invisible."
+      ],
+      [
+        "O Allah, place mercy between us and guide our choices.",
+        "O Allah, grant us patience, wisdom and beautiful character.",
+        "O Allah, protect our family and bless our lawful provision.",
+        "O Allah, make our home a place of safety and remembrance.",
+        "O Allah, help us forgive, repair and grow in goodness."
+      ],
+      [
+        "Your progress does not need to look like anyone else's.",
+        "Keep going at a pace that protects your health and values.",
+        "I believe steady effort can open a path forward.",
+        "May you meet helpful people and useful opportunities.",
+        "Whatever the result, I will respect your sincere effort."
+      ]
+    ],
+    "fr": [
+      [],
+      [],
+      [
+        "Ton sérieux se voit, même lorsque les résultats prennent du temps.",
+        "Je souhaite que tes efforts mènent à un travail utile et à une réussite honnête.",
+        "Tu peux demander de l’aide ; tu n’as pas à tout porter seul.",
+        "Que chaque difficulté t’apprenne quelque chose sans voler ta paix.",
+        "J’admire le soin que tu apportes à ton travail."
+      ],
+      [
+        "Que chaque route soit sûre et chaque étape facile.",
+        "Garde tes affaires importantes près de toi et ne te presse pas.",
+        "Je penserai à toi et prierai pour ta protection.",
+        "Que tes projets se déroulent bien et que ton retour soit joyeux.",
+        "Ta sécurité compte davantage pour moi que la rapidité du trajet."
+      ],
+      [
+        "Prends soin de toi avec douceur pendant que tu retrouves tes forces.",
+        "Chaque petite amélioration mérite d’être appréciée ; la guérison demande de la patience.",
+        "Qu’Allah te facilite les bons soins et te donne la force de les suivre.",
+        "Tu n’es jamais un poids lorsque tu as besoin d’aide.",
+        "Je te souhaite moins d’inconfort et davantage de sérénité aujourd’hui."
+      ],
+      [
+        "Je resterai près de toi sans te forcer à parler.",
+        "Tu as le droit de prendre le temps nécessaire pour ce qui te fait mal.",
+        "Faisons une place à l’espoir sans nier ce que tu ressens.",
+        "Tu comptes autant les jours difficiles que les jours heureux.",
+        "Qu’Allah t’accorde aujourd’hui un peu de lumière et de soulagement."
+      ],
+      [
+        "Je veux comprendre ton point de vue avant d’expliquer le mien.",
+        "Faisons une pause si nécessaire, puis reprenons avec des paroles plus douces.",
+        "Ta dignité compte davantage que le fait de gagner une dispute.",
+        "Je suis prêt à écouter et à reconnaître ma part de responsabilité.",
+        "Nous pouvons protéger notre lien tout en traversant un désaccord."
+      ],
+      [
+        "Tu mérites un vrai temps de repos, pas seulement davantage de responsabilités.",
+        "Dis-moi ce que je peux prendre en charge pour t’alléger aujourd’hui.",
+        "Nous pouvons reporter les tâches moins urgentes.",
+        "Ton énergie est précieuse ; dépensons-la avec sagesse.",
+        "Merci pour tes efforts, et permets-toi aussi de faire une pause."
+      ],
+      [
+        "Laisse pour demain ce qui peut attendre et apaise ton cœur.",
+        "Qu’Allah fasse de ton sommeil une source de force et de tranquillité.",
+        "Tu as le droit de te reposer ; demain apportera un nouvel espoir.",
+        "Qu’Allah veille sur toi et rende ta nuit paisible.",
+        "Je prie pour que tu te réveilles avec une énergie renouvelée."
+      ],
+      [
+        "J’attends avec joie le moment où nous pourrons parler ensemble.",
+        "Un petit message de toi peut illuminer une journée ordinaire.",
+        "Je garde de beaux souvenirs de nos moments partagés.",
+        "Qu’Allah rende cette distance légère jusqu’à nos retrouvailles.",
+        "Tu restes dans mes pensées et mes prières, où que tu sois."
+      ],
+      [
+        "Je t’écouterai sans me mettre sur la défensive pour comprendre ce que tu as vécu.",
+        "Ta confiance compte ; je sais qu’elle se reconstruit par des actes constants.",
+        "J’aurais dû choisir des paroles plus douces et je le regrette.",
+        "Dis-moi ce qui pourrait réparer les choses à tes yeux.",
+        "Je veux que mes actes futurs reflètent le respect que je te dois."
+      ],
+      [
+        "Ta bienveillance rend notre vie commune plus légère.",
+        "Je suis reconnaissant pour ta présence et tes efforts au quotidien.",
+        "Ta contribution compte, qu’elle soit grande ou petite.",
+        "Merci de faire une place à l’écoute et à l’esprit d’équipe.",
+        "Je ne veux jamais que tes efforts passent inaperçus."
+      ],
+      [
+        "Ô Allah, place la miséricorde entre nous et guide nos choix.",
+        "Ô Allah, accorde-nous patience, sagesse et noblesse de caractère.",
+        "Ô Allah, protège notre famille et bénis nos ressources licites.",
+        "Ô Allah, fais de notre foyer un lieu de paix et de rappel.",
+        "Ô Allah, aide-nous à pardonner, réparer et progresser dans le bien."
+      ],
+      [
+        "Ton progrès n’a pas besoin de ressembler à celui des autres.",
+        "Avance à un rythme qui protège ta santé et tes valeurs.",
+        "Je crois que des efforts réguliers peuvent ouvrir une voie.",
+        "Qu’Allah mette sur ton chemin des personnes utiles et de belles occasions.",
+        "Quel que soit le résultat, je respecterai tes efforts sincères."
+      ]
+    ]
+  }
 };

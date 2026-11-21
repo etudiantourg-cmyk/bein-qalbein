@@ -744,3 +744,13 @@ body[data-visual-style="luxury"] .panel,body[data-visual-style="luxury"] .pro-to
 body[data-visual-style="neon"] .top-navigation{background:linear-gradient(100deg,#201631,#312047);border-color:#6b4d8a}
 body[data-visual-style="pixar"] .top-navigation{background:linear-gradient(100deg,#9e4c2d,#d17b42)}
 body[data-visual-style="disney"] .top-navigation{background:linear-gradient(100deg,#284c85,#536db0)}
+
+/* Appearance editor: separate husband/wife panels and safe factory reset. */
+.identity-editor-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 12px}
+.identity-editor-tab{min-height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:700;padding:8px}
+.identity-editor-tab.is-active{background:var(--wine);border-color:var(--wine);color:#fff;box-shadow:0 4px 12px rgba(40,20,30,.15)}
+.identity-editor-panel{padding:10px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.identity-editor-panel[hidden]{display:none!important}
+.identity-editor-panel h4{margin:0 0 10px}
+#resetAppearanceBtn{margin:12px 0;background:var(--surface-2);border:1px solid var(--line);color:var(--ink);font-weight:700}
+#resetAppearanceBtn:active{transform:scale(.99)}

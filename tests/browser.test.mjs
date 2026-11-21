@@ -78,6 +78,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.waitForTimeout(150);
     assert.equal(await page.locator("#cats .cat").count(), 14);
 
+    const dailyChallenge = await page.locator("#challengeTask").innerText();
+    await page.reload({ waitUntil: "domcontentloaded" });
+    assert.equal(await page.locator("#challengeTask").innerText(), dailyChallenge, "daily kindness challenge should remain stable for the day");
+    await page.locator("#cats .cat").first().click();
+    const downloadPromise = page.waitForEvent("download");
+    await page.locator("#cardBtn").click();
+    const cardDownload = await downloadPromise;
+    assert.equal(cardDownload.suggestedFilename(), "bein-qalbein-card.png");
+
     await page.locator("#favBtn").click();
     await page.locator('#bottomNav button[data-go="favorites"]').click();
     await page.locator("#favorites .favitem").first().waitFor();

@@ -136,8 +136,9 @@
   <div class="card-studio-layout">
    <div class="card-studio-controls">
     <label for="cardMessageInput" id="cardTextLabel">نص البطاقة</label>
-    <textarea id="cardMessageInput" rows="5" maxlength="3000"></textarea>
-    <div class="card-control-head"><span id="cardDesignLabel">اختر التصميم</span><span>08</span></div>
+    <textarea id="cardMessageInput" rows="5" maxlength="900" aria-describedby="cardMessageMeta"></textarea>
+    <div class="card-message-meta" id="cardMessageMeta"><small id="cardCharCount" aria-live="polite">0 / 900</small><button id="cardSmartSuggest" type="button">✦ اقترح التصميم الأنسب</button></div>
+    <div class="card-control-head"><span id="cardDesignLabel">اختر التصميم</span><span id="cardDesignCount">12 تصميماً فنياً</span></div>
     <div id="cardDesigns" class="card-design-grid" role="group" aria-labelledby="cardDesignLabel">
      <button type="button" data-card-style="royal" aria-pressed="true"><i class="swatch swatch-royal" aria-hidden="true"></i><span>ملكي مخملي</span></button>
      <button type="button" data-card-style="rose" aria-pressed="false"><i class="swatch swatch-rose" aria-hidden="true"></i><span>وردي رقيق</span></button>
@@ -147,6 +148,10 @@
      <button type="button" data-card-style="mosaic" aria-pressed="false"><i class="swatch swatch-mosaic" aria-hidden="true"></i><span>فسيفساء هندسية</span></button>
      <button type="button" data-card-style="velvet" aria-pressed="false"><i class="swatch swatch-velvet" aria-hidden="true"></i><span>عنابي ملكي</span></button>
      <button type="button" data-card-style="sand" aria-pressed="false"><i class="swatch swatch-sand" aria-hidden="true"></i><span>دفء الورق</span></button>
+     <button type="button" data-card-style="pearl" aria-pressed="false"><i class="swatch swatch-pearl" aria-hidden="true"></i><span>لؤلؤة عاجية</span></button>
+     <button type="button" data-card-style="emerald" aria-pressed="false"><i class="swatch swatch-emerald" aria-hidden="true"></i><span>زمرد وذهب</span></button>
+     <button type="button" data-card-style="copper" aria-pressed="false"><i class="swatch swatch-copper" aria-hidden="true"></i><span>نحاس دافئ</span></button>
+     <button type="button" data-card-style="ink" aria-pressed="false"><i class="swatch swatch-ink" aria-hidden="true"></i><span>حبر ليلي</span></button>
     </div>
     <label for="cardFormat" id="cardFormatLabel">مقاس البطاقة</label>
     <select id="cardFormat"><option value="portrait">عمودي أنيق</option><option value="square">مربع للمشاركة</option><option value="story">قصة هاتف</option></select>

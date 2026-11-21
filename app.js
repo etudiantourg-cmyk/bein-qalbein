@@ -1024,3 +1024,68 @@ function advanceMiniGame(){
   }
  });
 })();
+
+
+/* Sweet Keyboard v1: isolated, reversible on-screen typing layer. */
+(()=>{
+ const panel=document.getElementById('sweetKeyboard'),host=document.getElementById('sweetKeyboardKeys');
+ if(!panel||!host)return;
+ const mobile=()=>window.matchMedia('(pointer:coarse)').matches||window.matchMedia('(max-width:760px)').matches;
+ const eligible=el=>el instanceof HTMLElement&&(el.matches('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]'))&&!el.disabled&&!el.readOnly&&!el.closest('#sweetKeyboard');
+ let target=null,kbLang='ar';
+ const rows={
+  ar:['ض ص ث ق ف غ ع ه خ ح ج','ش س ي ب ل ا ت ن م ك ط','ئ ء ؤ ر لا ى ة و ز ظ د'],
+  en:['q w e r t y u i o p','a s d f g h j k l','z x c v b n m'],
+  fr:['a z e r t y u i o p','q s d f g h j k l m','w x c v b n é è à ç']
+ };
+ function insert(value){
+  if(!target)return;
+  target.focus({preventScroll:true});
+  const start=Number.isInteger(target.selectionStart)?target.selectionStart:target.value.length;
+  const end=Number.isInteger(target.selectionEnd)?target.selectionEnd:start;
+  if(typeof target.setRangeText==='function'){target.setRangeText(value,start,end,'end')}
+  else target.value=target.value.slice(0,start)+value+target.value.slice(end);
+  target.dispatchEvent(new Event('input',{bubbles:true}));
+ }
+ function key(label,action,extra=''){
+  const b=document.createElement('button');b.type='button';b.className='sweet-key'+(extra?' '+extra:'');b.textContent=label;
+  b.addEventListener('pointerdown',e=>e.preventDefault());
+  b.addEventListener('click',()=>action());return b;
+ }
+ function draw(){
+  host.innerHTML='';
+  rows[kbLang].forEach(row=>{
+   const line=document.createElement('div');line.className='sweet-keyboard-row';
+   row.split(' ').forEach(ch=>line.append(key(ch,()=>insert(ch))));
+   host.append(line);
+  });
+  const line=document.createElement('div');line.className='sweet-keyboard-row';
+  line.append(key('؟',()=>insert(kbLang==='en'?'?':'؟'),'special'));
+  line.append(key('،',()=>insert(kbLang==='en'?',':'،'),'special'));
+  line.append(key('مسافة',()=>insert(' '),'space'));
+  line.append(key('⌫',()=>{if(!target)return;const s=target.selectionStart??target.value.length,e=target.selectionEnd??s;if(s!==e){target.setRangeText('',s,e,'end')}else if(s>0){target.setRangeText('',s-1,s,'end')}target.dispatchEvent(new Event('input',{bubbles:true}))},'special'));
+  line.append(key('↵',()=>insert('\n'),'enter'));
+  host.append(line);
+  panel.querySelector('.sweet-kb-lang').textContent=kbLang==='ar'?'عربي · EN · FR':kbLang==='en'?'EN · FR · عربي':'FR · عربي · EN';
+ }
+ function show(el){
+  target=el;panel.hidden=false;draw();
+  requestAnimationFrame(()=>{const r=el.getBoundingClientRect();if(r.bottom>window.innerHeight-panel.offsetHeight)window.scrollBy({top:r.bottom-(window.innerHeight-panel.offsetHeight)+12,behavior:'smooth'})});
+ }
+ document.addEventListener('focusin',e=>{
+  if(!mobile()||!eligible(e.target))return;
+  const el=e.target;el.setAttribute('readonly','readonly');show(el);
+ },true);
+ document.addEventListener('pointerdown',e=>{
+  if(!mobile())return;const el=e.target.closest('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]');
+  if(el&&eligible(el))el.setAttribute('readonly','readonly');
+ },true);
+ document.addEventListener('click',e=>{
+  const action=e.target.closest('[data-kb-action]')?.dataset.kbAction;if(!action)return;
+  if(action==='hide'||action==='done'){panel.hidden=true;if(target)target.blur();target=null}
+  if(action==='language'){kbLang=kbLang==='ar'?'en':kbLang==='en'?'fr':'ar';draw();if(target)target.focus({preventScroll:true})}
+ });
+ document.addEventListener('focusout',e=>{if(e.target===target)setTimeout(()=>{if(!panel.contains(document.activeElement)&&document.activeElement!==target)panel.hidden=true},120)},true);
+ window.addEventListener('resize',()=>{if(!mobile())panel.hidden=true});
+ if(mobile())document.querySelectorAll('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]').forEach(el=>{if(eligible(el))el.setAttribute('readonly','readonly')});
+})();

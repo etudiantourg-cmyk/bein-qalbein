@@ -18,6 +18,7 @@ test("external app assets parse and HTML IDs are unique", () => {
   new Function(aiStudio);
   assert.match(html, /<script src="\.\/ai-studio\.js" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
+  assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, "duplicate HTML IDs found");
 });

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=103">
+<link rel="stylesheet" href="./app.css?v=106">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -28,7 +28,7 @@
   <button type="button" data-go="home" class="active" aria-current="page"><span aria-hidden="true">⌂</span><small id="navHome">الرئيسية</small></button>
   <button type="button" data-go="favorites"><span aria-hidden="true">♡</span><small id="navFavorites">المفضلة</small></button>
   <button type="button" data-go="guide"><span aria-hidden="true">❖</span><small id="navGuide">الدليل</small></button>
-  <button type="button" class="menu-tab" data-go="settings" aria-label="القائمة" title="القائمة"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
+  <button type="button" class="menu-tab" data-menu-toggle aria-expanded="false" aria-controls="settingsDrawer" aria-label="القائمة" title="القائمة"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
  </div>
 </nav>
 <header class="couple-header">
@@ -180,8 +180,15 @@
  </div>
 </div>
 <div class="modal-backdrop hidden" id="adviceModal" role="dialog" aria-modal="true" aria-labelledby="adviceModalTitle"><div class="advice-modal"><div class="modal-head"><h2 id="adviceModalTitle">نصائح للزوج</h2><button id="closeAdvice" type="button">✕</button></div><div id="adviceList"></div></div></div>
-<section class="panel page-section" data-page="settings">
- <h2 id="settingsTitle">الإعدادات</h2>
+
+<p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
+
+</main>
+<div id="settingsDrawer" class="settings-drawer" hidden>
+ <button class="settings-drawer-backdrop" type="button" data-settings-close aria-label="إغلاق القائمة"></button>
+ <aside class="settings-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" tabindex="-1">
+ <section class="panel settings-drawer-content">
+ <div class="settings-drawer-heading"><h2 id="settingsTitle">الإعدادات</h2><button id="settingsCloseBtn" class="settings-close-btn" type="button" aria-label="إغلاق القائمة">×</button></div>
  <label id="languageLabel" for="lang">لغة الواجهة</label>
  <select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
  <div class="feature-controls"><button id="themeToggle" class="feature-btn" type="button">☾ وضع الليل</button><button id="notifyToggle" class="feature-btn" type="button">♡ تفعيل الإشعارات اللطيفة</button></div>
@@ -193,11 +200,11 @@
  <button id="shareAppBtn" class="wide" type="button">↗ شارك تطبيق بين قلبين</button>
  </div>
 </section>
-<p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
+ </aside>
+</div>
 
-</main>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=99" defer></script>
+<script src="./app.js?v=100" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

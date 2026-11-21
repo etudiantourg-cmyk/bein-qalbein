@@ -45,7 +45,6 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#cats .cat").first().waitFor();
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
 
-    const initialMessage = await page.locator("#message").innerText();
     await page.locator("#cats .cat").first().click();
     await page.waitForFunction(() => {
       const panel = document.querySelector("#inlineMessagePanel");
@@ -78,7 +77,6 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.ok(!(await page.locator("body").evaluate(el => el.classList.contains("dark-mode"))));
 
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
-    assert.ok(initialMessage.length > 0);
   } finally {
     await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));

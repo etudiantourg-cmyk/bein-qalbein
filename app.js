@@ -859,6 +859,8 @@ if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 
 
 
+document.documentElement.dataset.messageCount=String(Object.values(messages).reduce((n,p)=>n+p.length,0));
+
 /* Settings open as an overlay drawer; never replace the current page. */
 (function(){
  const drawer=$('settingsDrawer');

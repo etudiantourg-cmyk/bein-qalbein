@@ -134,8 +134,10 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(cardCanvas.width, 1080);
     assert.ok(cardCanvas.height >= 1080 && cardCanvas.height <= 2700);
     assert.equal(cardCanvas.pixel, true);
+    await page.locator("#cardMessageInput").fill("دعاء جميل يملأ القلب طمأنينة");
     await page.locator("#cardSmartSuggest").click();
     assert.equal(await page.locator('[data-card-style="noor"]').getAttribute("aria-pressed"), "true");
+    await page.locator("#cardMessageInput").fill("رسالة عربية جميلة\\nبسطر ثانٍ لاختبار تنسيق البطاقة");
     const downloadPromise = page.waitForEvent("download");
     await page.locator("#cardDownload").click();
     const cardDownload = await downloadPromise;

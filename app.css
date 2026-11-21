@@ -1,4 +1,3 @@
-/* BEIN QALBEIN — clean, lightweight design system */
 :root{
  --wine:#64132f;--wine-2:#8c2149;--rose:#bd5274;--rose-soft:#f8e8ed;
  --gold:#d8b66e;--gold-soft:#f4e6c7;--paper:#fffdf9;--surface:#ffffff;
@@ -157,7 +156,6 @@ body.theme-night .top-navigation{background:#51243a}
 .top-tabs button small{font-size:12px;white-space:nowrap}
 .top-tabs button.active{color:var(--wine);background:var(--rose-soft)}
 .top-tabs button.active:after{content:"";position:absolute;bottom:0;left:22%;right:22%;height:3px;border-radius:4px 4px 0 0;background:var(--wine)}
-
 @media(max-width:420px){.top-brand-row{min-height:49px;padding:5px 12px}.top-brand{font-size:16px}.top-tabs{padding:0 5px;gap:2px}.top-tabs button{min-height:46px;gap:4px}.top-tabs button small{font-size:11px}.top-tool-btn{width:35px;height:35px}}
 footer{max-width:920px;margin:0 auto;padding:8px 16px 25px;text-align:center;color:var(--muted);font-size:12px}
 body.theme-blue{--wine:#285b86;--wine-2:#397eae;--rose:#68a9d5;--rose-soft:#e5f3fc;--gold:#d8bd83;--surface-2:#f3faff}
@@ -187,8 +185,6 @@ button:active{transform:translateY(1px)}
 @media(max-width:420px){main{width:calc(100% - 20px);margin-top:13px}.couple-header{padding:0 10px}.couple-hero-wrap{border-radius:18px}.quick-grid{gap:8px}.quick-grid>button{min-height:72px;padding:9px}.quick-icon{width:35px;height:35px;flex-basis:35px}.quick-copy b{font-size:12px}.quick-copy small{font-size:11px}.panel{padding:15px;border-radius:18px}.actions{gap:7px}.actions button{padding:9px 7px;font-size:13px}.bottom-nav{left:8px;right:8px;width:calc(100% - 16px)}}
 @media(max-width:340px){.grid,#cats,.builder-grid{grid-template-columns:1fr}.quick-grid{grid-template-columns:1fr}.quick-grid>button[data-quick="ai"]{grid-column:auto}.feature-controls{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-
-/* Card Atelier — editorial-grade responsive studio */
 body.modal-open{overflow:hidden}
 .card-studio-backdrop{z-index:1200;overflow-y:auto;align-items:flex-start;padding:clamp(8px,2vw,24px)}
 .card-studio{width:min(1120px,100%);max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:clamp(14px,2.2vw,26px);border:1px solid rgba(216,182,110,.65);border-radius:26px;background:var(--surface);box-shadow:0 28px 100px rgba(22,8,17,.38);color:var(--ink)}
@@ -231,8 +227,6 @@ body.theme-night .card-design-grid button,body.dark-mode .card-design-grid butto
 body.theme-night .card-studio-preview,body.dark-mode .card-studio-preview{background:#302431;border-color:#60495a}
 @media(max-width:760px){.card-studio{max-height:calc(100dvh - 16px);border-radius:19px}.card-studio-layout{grid-template-columns:1fr;gap:13px}.card-studio-preview{order:-1}.card-studio-controls{gap:7px}#cardPreview{width:min(100%,290px);max-height:38dvh}.card-design-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:360px){.card-design-grid button{font-size:11px;padding:6px}.swatch{width:32px;height:32px;flex-basis:32px}}
-
-/* Card Atelier refinement */
 .card-message-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:-3px}
 .card-message-meta small{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
 .card-message-meta small.near-limit{color:#a33d37;font-weight:800}
@@ -245,8 +239,6 @@ body.theme-night .card-studio-preview,body.dark-mode .card-studio-preview{backgr
 .card-design-grid button{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
 .card-design-grid button:active{transform:scale(.985)}
 @media(max-width:420px){.card-message-meta{align-items:flex-start;flex-direction:column}.card-message-meta button{width:100%}}
-
-/* Royal typography + dimensional icon atelier — graceful system-font fallbacks remain available offline. */
 :root{--font-ui:"Alexandria",system-ui,sans-serif;--font-display:"Amiri",Georgia,serif;--font-latin-display:"Playfair Display",Georgia,serif}
 h1,h2,h3,.hero-title-overlay,.quick-eyebrow,.quick-copy b,.category-group-title,.tools-title,.card-studio-head h2{font-family:var(--font-ui);font-weight:800;letter-spacing:-.35px}
 h2{line-height:1.5} h3{line-height:1.55}
@@ -268,26 +260,16 @@ h2{line-height:1.5} h3{line-height:1.55}
 body.theme-night .cat .badge,body.dark-mode .cat .badge{background:linear-gradient(145deg,#f7e9c9,#c6a36a 60%,#80603a);color:#493016}
 body.theme-night .bottom-nav button>span,body.dark-mode .bottom-nav button>span{background:linear-gradient(145deg,#604253,#3c2938);color:#f5dce6;box-shadow:inset 0 2px 3px rgba(255,255,255,.18),0 3px 0 #241824,0 5px 8px rgba(0,0,0,.3)}
 body.theme-night .bottom-nav button.active>span,body.dark-mode .bottom-nav button.active>span{background:linear-gradient(145deg,#b96b8d,#702344 65%,#43152d);color:#fff0d0}
-
 body.theme-blue .bottom-nav button.active{color:#285b86}
 body.theme-blue .bottom-nav button .ui-icon{filter:drop-shadow(0 1px 0 rgba(255,255,255,.8))}
 @media(prefers-reduced-motion:reduce){.bottom-nav button>span,.quick-grid>button{transition:none}}
-
-/* Keep bottom navigation labels readable in dark mode. */
 body.theme-night .bottom-nav button,body.dark-mode .bottom-nav button{color:#fff}
 body.theme-night .bottom-nav button.active,body.dark-mode .bottom-nav button.active{color:#fff}
-
-/* First-paint identity theme: avoid the default wine flash before app.js runs. */
 html[data-start-role="husband"] body{--wine:#285b86;--wine-2:#397eae;--rose:#68a9d5;--rose-soft:#e5f3fc;--gold:#d8bd83;--surface-2:#f3faff}
 html[data-start-role="wife"] body{--wine:#7b2147;--wine-2:#a43a62;--rose:#d16e91;--rose-soft:#fceaf0;--gold:#e2bd83;--surface-2:#fff6f8}
-
-/* Compact hamburger menu tab, replacing the visible Settings label */
 .top-tabs button.menu-tab{gap:0;min-width:48px}
 .top-tabs button.menu-tab>span{display:grid;place-items:center;width:28px;height:28px}
 .top-tabs button.menu-tab svg{display:block;width:25px;height:25px}
-
-
-/* Settings side drawer: overlays the current page and preserves its scroll/state. */
 .settings-drawer{position:fixed;inset:0;z-index:1400}
 .settings-drawer-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:rgba(20,12,20,.48);backdrop-filter:blur(3px)}
 .settings-drawer-panel{position:absolute;inset-block-start:10px;inset-inline-end:10px;width:min(82vw,310px);max-width:calc(100% - 20px);height:auto;max-height:min(78vh,620px);overflow-y:auto;overscroll-behavior:contain;padding:12px 12px calc(14px + env(safe-area-inset-bottom));border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 12px 38px rgba(0,0,0,.24);transform:translateX(110%);transition:transform .24s ease;outline:none}
@@ -308,11 +290,7 @@ html[dir="rtl"] .settings-drawer-panel{transform:translateX(-110%)}
 .settings-close-btn{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--ink);font-size:27px;line-height:1}
 body.settings-drawer-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.settings-drawer-panel{transition:none}}
-
-/* Keep the short copy controls large enough for reliable touch interaction. */
 .history-item button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
-
-/* Compact icon-only primary navigation. */
 .top-navigation .top-tabs button{color:rgba(255,255,255,.9)}
 .top-navigation .top-tabs button.active{color:#fff;background:rgba(255,255,255,.17)}
 .top-navigation .top-tabs button.active>span{background:rgba(255,255,255,.13)}
@@ -327,8 +305,6 @@ body.settings-drawer-open{overflow:hidden}
 .game-answers button.wrong-answer{border-color:#bd5265;background:#fff0f1;color:#8b263b}
 .game-feedback{min-height:54px;padding:10px 12px;border-radius:12px;background:var(--surface);color:var(--muted)}
 @media(max-width:360px){.top-tabs{padding-inline:4px;gap:2px}.top-tabs button{min-height:44px}.top-tabs button>span{width:30px;height:30px}.top-navigation .top-tabs button svg{width:21px;height:21px}}
-
-/* Favorites category strip directly under the official top navigation. */
 .favorites-subnav{position:sticky;top:104px;z-index:1250;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;max-width:980px;margin:0 auto;padding:7px 10px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 4px 12px rgba(20,20,30,.08)}
 .favorites-subnav[hidden]{display:none}
 .favorites-subnav button{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:38px;padding:6px 4px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--ink);font-size:12px;font-weight:750;white-space:nowrap}
@@ -347,17 +323,11 @@ body.settings-drawer-open{overflow:hidden}
 .advice-item p{flex:1;line-height:1.8}
 @media(max-width:420px){.favorites-subnav{top:100px;padding:6px 7px;gap:3px}.favorites-subnav button{gap:3px;font-size:11px;min-height:36px}.settings-drawer-panel{inset-inline-end:6px;inset-block-start:6px;width:min(84vw,300px);max-height:80vh;padding:10px}}
 body[data-current-page="favorites"] .couple-header{display:none}
-
-
-/* Recent messages: compact actions and clear swipe affordance. */
 .history-item{touch-action:pan-y;display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
 .history-message{flex:1;min-width:0}
 .history-actions{display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0}
 .history-actions button{min-height:38px;padding:7px 10px}
 .history-actions .history-delete{border-color:#d7a5ad;color:#8b263d}
-
-
-/* One-piece two-position rocker switch: joined halves, lamp-switch mechanics. */
 .top-navigation .top-tools .bq-identity-control{
  position:relative;isolation:isolate;
  display:flex;align-items:stretch;justify-content:stretch;gap:0;
@@ -388,13 +358,8 @@ body[data-current-page="favorites"] .couple-header{display:none}
  .top-navigation .top-tools .bq-identity-choice .bq-identity-label{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.top-navigation .top-tools .bq-identity-choice{transition:none}}
-
-/* Fine alignment: nudge the connected identity rocker right by 2 mm and enlarge search glyph slightly. */
 .top-navigation .top-tools .bq-identity-control{transform:translateX(2mm)}
 #topSearchBtn>span{font-size:26px;line-height:1}
-
-
-/* Main navigation captions: clear labels directly beneath every icon. */
 .top-tabs button{
   min-height:66px;
   flex-direction:column;
@@ -431,9 +396,6 @@ body[data-current-page="favorites"] .couple-header{display:none}
   .top-tabs{gap:2px;padding-inline:5px}
   .top-tabs button .nav-label{font-size:9.5px}
 }
-
-
-/* Horizontal home shortcuts with expandable feature content beneath. */
 body[data-current-page]:not([data-current-page="home"]) .home-top-shortcuts,
 body[data-current-page]:not([data-current-page="home"]) .home-shortcut-content{display:none!important}
 .home-top-shortcuts{display:flex;flex-direction:row;align-items:stretch;gap:7px;width:100%;margin:0 0 10px;direction:rtl}
@@ -446,7 +408,6 @@ body[data-current-page]:not([data-current-page="home"]) .home-shortcut-content{d
 .home-shortcut-content[hidden],.home-shortcut-pane[hidden]{display:none!important}
 body[data-home-shortcuts-open="true"] .bq-shortcut-force-hidden{display:none!important}
 .bq-shortcut-force-hidden{display:none!important}
-
 .home-shortcut-pane>.panel,.home-shortcut-pane>.panel-lite{margin-top:0}
 .home-shortcut-pane .favorites-subnav{margin:0 0 10px}
 .home-shortcut-pane .page-section{display:block}
@@ -455,9 +416,6 @@ body[data-home-shortcuts-open="true"] .bq-shortcut-force-hidden{display:none!imp
 .channels-empty svg{width:54px;height:54px;color:var(--wine-2);margin-bottom:3px}
 .channels-empty strong{font-size:16px;color:var(--ink)}
 .channels-empty p{margin:0;font-size:12px}
-
-
-/* Sticky homepage shortcut bar: lives directly below the main navigation tabs. */
 .top-navigation>.home-top-shortcuts{
  position:relative;
  z-index:101;
@@ -502,9 +460,6 @@ body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
  .top-navigation>.home-top-shortcuts{padding:6px 6px 8px;gap:4px}
  .top-navigation>.home-top-shortcuts .home-shortcut{min-height:41px}
 }
-
-
-/* Header menu now occupies the former logo position; Learn joins the primary tabs. */
 .top-brand-row{justify-content:flex-start}
 .top-brand{margin-inline-end:auto}
 .top-navigation .top-menu-trigger{
@@ -516,9 +471,6 @@ body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
 .top-navigation .top-menu-trigger svg{display:block;width:25px;height:25px}
 .top-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
 .top-tabs button.menu-tab{display:none!important}
-
-
-/* RTL settings drawer: anchor to the physical right edge and slide in from right to left. */
 .settings-drawer-panel{
  right:10px;
  left:auto;
@@ -532,9 +484,6 @@ html[dir="rtl"] .settings-drawer-panel{
  transform:translateX(calc(100% + 20px));
 }
 .settings-drawer.is-open .settings-drawer-panel{transform:translateX(0)}
-
-
-/* Separate sticky homepage shortcuts: distinct surface, spacing and rounded card. */
 .home-top-shortcuts{
  position:sticky!important;
  top:102px;
@@ -566,9 +515,6 @@ html[dir="rtl"] .settings-drawer-panel{
  .home-top-shortcuts{top:102px;padding:7px 6px!important;gap:4px}
  .home-top-shortcuts .home-shortcut{min-height:41px}
 }
-
-
-/* Keep the homepage shortcut strip pinned to the viewport while scrolling. */
 body[data-current-page="home"] .home-top-shortcuts{
  position:fixed!important;
  top:130px!important;
@@ -589,20 +535,11 @@ body[data-current-page]:not([data-current-page="home"]) .home-top-shortcuts{
  body[data-current-page="home"] .home-top-shortcuts{top:126px!important}
  body[data-current-page="home"] main#mainContent{padding-top:82px}
 }
-
-
-/* Learn opens as a standalone page: keep guide content, hide homepage shortcut strip. */
 body[data-current-page="guide"] .home-top-shortcuts{display:none!important}
 body[data-current-page="guide"] .home-shortcut-content{display:block!important}
-
-
-/* Visible breathing room between the main nav and the fixed home shortcuts. */
 body[data-current-page="home"] .home-top-shortcuts{
  margin-top:0!important;
 }
-
-
-/* Copy protection for navigation chrome only: page content and explicit copy actions remain available. */
 #topNavigation,
 #topNavigation *,
 #settingsDrawer .settings-drawer-heading,
@@ -617,7 +554,6 @@ body[data-current-page="home"] .home-top-shortcuts{
   user-select:none!important;
   -webkit-touch-callout:none;
 }
-/* Keep editable settings fields usable, and do not affect copy buttons in page content. */
 #settingsDrawer input,
 #settingsDrawer textarea,
 #settingsDrawer select,
@@ -626,8 +562,6 @@ body[data-current-page="home"] .home-top-shortcuts{
   user-select:text!important;
   -webkit-touch-callout:default;
 }
-
-/* Make the selected main navigation destination unmistakable, including Home on first launch. */
 .top-navigation .top-tabs button.active{
  color:#fff!important;
  background:rgba(255,255,255,.24)!important;
@@ -644,8 +578,6 @@ body[data-current-page="home"] .home-top-shortcuts{
  height:4px!important;border-radius:5px 5px 0 0!important;
  background:#f1d59b!important;
 }
-
-/* Six compact shortcuts: icon above label keeps every destination readable on phones. */
 .home-top-shortcuts .home-shortcut{
  flex-direction:column!important;
  gap:2px!important;
@@ -658,9 +590,6 @@ body[data-current-page="home"] .home-top-shortcuts{
  .home-top-shortcuts .home-shortcut b{font-size:8px}
  .home-top-shortcuts .home-shortcut{min-height:43px}
 }
-
-
-/* Global app-wide search opened from the top-bar magnifier. */
 .global-search-overlay{position:fixed;inset:0;z-index:3000;background:rgba(20,12,18,.58);display:none;align-items:flex-start;justify-content:center;padding: max(18px,env(safe-area-inset-top)) 14px 24px;overflow:auto}
 .global-search-overlay.is-open{display:flex}
 .global-search-box{width:min(680px,100%);margin-top:5vh;background:var(--panel,#fff);color:var(--text,#29212a);border:1px solid var(--border,#eadde4);border-radius:20px;padding:16px;box-shadow:0 22px 70px rgba(0,0,0,.28)}
@@ -672,15 +601,11 @@ body[data-current-page="home"] .home-top-shortcuts{
 .global-search-results>p{margin:8px 2px;color:var(--muted,#776b73)}
 .global-search-result{text-align:start;padding:12px 13px;border:1px solid var(--border,#eadde4);border-radius:12px;background:var(--soft,#faf5f8);color:inherit;font:inherit;line-height:1.55}
 .global-search-hit{outline:3px solid var(--accent,#b45b7a);outline-offset:4px;border-radius:8px}
-
-/* Manual reordering of homepage shortcuts (long-press, then drag). */
 .top-navigation>.home-top-shortcuts .home-shortcut{touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .top-navigation>.home-top-shortcuts .home-shortcut.is-reordering{
  opacity:.78;transform:scale(.96);outline:2px dashed rgba(255,255,255,.9);
  box-shadow:0 8px 20px rgba(0,0,0,.24);z-index:5
 }
-
-/* Prevent selecting/copying the hamburger menu icon and its decorative bars. */
 #topNavigation .top-menu-trigger,
 #topNavigation .top-menu-trigger *,
 #topNavigation .top-menu-trigger svg,
@@ -694,8 +619,6 @@ body[data-current-page="home"] .home-top-shortcuts{
  -webkit-user-drag:none;
  user-drag:none;
 }
-
-/* User-selected identity colors and full-app visual presets. */
 .identity-color-customizer{margin:12px 0 16px;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--surface-2)}
 .identity-color-customizer h4{margin:5px 0 8px;color:var(--wine);font-size:12px}
 .color-swatch-row{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 12px}
@@ -703,12 +626,8 @@ body[data-current-page="home"] .home-top-shortcuts{
 .color-swatch.is-active{outline:3px solid var(--wine);outline-offset:2px;transform:scale(1.12)}
 .top-navigation .top-tools .bq-identity-choice{background:linear-gradient(155deg,color-mix(in srgb,var(--identity-custom-color,#3298d3),white 30%),var(--identity-custom-color,#3298d3) 54%,color-mix(in srgb,var(--identity-custom-color,#3298d3),black 32%))}
 .top-navigation .top-tools .bq-identity-choice[data-bq-role="wife"]{background:linear-gradient(155deg,color-mix(in srgb,var(--identity-custom-color,#d16e91),white 30%),var(--identity-custom-color,#d16e91) 54%,color-mix(in srgb,var(--identity-custom-color,#d16e91),black 32%))}
-
-/* Appearance editor: separate husband/wife panels and safe factory reset. */
 #resetAppearanceBtn{margin:12px 0;background:var(--surface-2);border:1px solid var(--line);color:var(--ink);font-weight:700}
 #resetAppearanceBtn:active{transform:scale(.99)}
-
-/* Full-screen, standalone appearance customization page. */
 .style-card-preview{height:52px;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:9px;overflow:hidden;background:linear-gradient(135deg,#f3e7ed,#fff)}
 .style-card-preview i{display:block;width:20%;height:26px;border-radius:7px;background:#9d5d78;box-shadow:0 3px 6px #0002}
 .style-card-preview i:nth-child(2){height:36px;background:#d9a0b4}.style-card-preview i:nth-child(3){height:18px;background:#e7c985}
@@ -729,14 +648,9 @@ body[data-current-page="home"] .home-top-shortcuts{
 .style-preview-desert{background:#f5e3c6}.style-preview-desert i{background:#ae7544!important}
 .style-selected-mark{display:none;position:absolute;top:5px;inset-inline-end:5px;width:20px;height:20px;border-radius:50%;background:var(--wine);color:white;text-align:center;font-size:13px}
 .palette-dots{display:flex;gap:3px}.palette-dots i{width:15px;height:30px;border-radius:5px}
-
-/* Palette is the source of truth for all shared interface accents, regardless of visual preset. */
-/* User-selectable icon language applied consistently to navigation, shortcuts and service cards. */
 .icon-preview-rounded svg{stroke-linecap:round;stroke-linejoin:round}
 .icon-preview-bold svg{stroke-width:2.8}
 .icon-preview-duotone{background:linear-gradient(135deg,var(--rose-soft),var(--gold-soft))}
-
-/* Premium world-inspired themes: complete surface, typography, controls and card atmosphere. */
 .style-preview-midnight{background:var(--preview-midnight,linear-gradient(135deg,#eee,#fff))}
 .style-preview-emerald{background:var(--preview-emerald,linear-gradient(135deg,#eee,#fff))}
 .style-preview-champagne{background:var(--preview-champagne,linear-gradient(135deg,#eee,#fff))}
@@ -761,8 +675,6 @@ body[data-current-page="home"] .home-top-shortcuts{
 .style-preview-copper{background:linear-gradient(135deg,#f3e5d8,#85503a)}.style-preview-copper i{background:#c6a15c!important}
 .style-preview-ivory{background:linear-gradient(135deg,#fffef8,#77716a)}.style-preview-ivory i{background:#b99a61!important}
 .style-preview-cyber{background:linear-gradient(135deg,#171326,#583f83)}.style-preview-cyber i{background:#ed78d2!important;box-shadow:0 0 9px #ed78d2}
-
-/* Icon themes v2: target the actual SVG artwork and its real interface containers. */
  stroke-linecap:round!important;stroke-linejoin:round!important;
 }
  stroke-width:2.65!important;

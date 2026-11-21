@@ -156,7 +156,9 @@ body.theme-night .top-navigation{background:#51243a}
 .top-tool-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--wine);font-size:23px}
 .top-tabs{max-width:980px;margin:auto;padding:0 8px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
 .top-tabs button{position:relative;display:flex;min-width:0;min-height:48px;align-items:center;justify-content:center;gap:0;padding:7px 2px 9px;border:0;border-radius:11px 11px 0 0;background:transparent;color:var(--muted);font-weight:750}
-.top-tabs button>span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;font-size:19px;line-height:1}\n.top-tabs button>span svg{display:block;width:23px;height:23px;stroke:currentColor}\n.top-tabs button small{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.top-tabs button>span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;font-size:19px;line-height:1}
+.top-tabs button>span svg{display:block;width:23px;height:23px;stroke:currentColor}
+.top-tabs button small{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .top-tabs button small{font-size:12px;white-space:nowrap}
 .top-tabs button.active{color:var(--wine);background:var(--rose-soft)}
 .top-tabs button.active:after{content:"";position:absolute;bottom:0;left:22%;right:22%;height:3px;border-radius:4px 4px 0 0;background:var(--wine)}
@@ -307,7 +309,16 @@ html[data-start-role="wife"] body{--wine:#7b2147;--wine-2:#a43a62;--rose:#d16e91
 html[dir="rtl"] .settings-drawer-panel{transform:translateX(-110%)}
 .settings-drawer.is-open .settings-drawer-panel{transform:translateX(0)}
 .settings-drawer-content{display:block!important;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
-.settings-drawer-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 9px}\n.settings-drawer-heading h2{font-size:18px}\n.settings-drawer-panel label{display:block;margin:8px 0 4px;font-size:12px}\n.settings-drawer-panel select,.settings-drawer-panel input:not([type=range]){min-height:36px;padding:6px 9px;font-size:13px}\n.settings-drawer-panel .feature-controls{gap:6px;margin:8px 0}\n.settings-drawer-panel .feature-btn{min-height:38px;padding:7px 9px;font-size:12px}\n.settings-drawer-panel .feature-note{margin:6px 0;font-size:11px;line-height:1.5}\n.settings-drawer-panel .pro-tools{margin-top:9px;padding:10px}\n.settings-drawer-panel .pro-tools h3{margin:0 0 7px;font-size:14px}\n.settings-drawer-panel .wide{min-height:38px;padding:8px 10px;font-size:12px}
+.settings-drawer-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 9px}
+.settings-drawer-heading h2{font-size:18px}
+.settings-drawer-panel label{display:block;margin:8px 0 4px;font-size:12px}
+.settings-drawer-panel select,.settings-drawer-panel input:not([type=range]){min-height:36px;padding:6px 9px;font-size:13px}
+.settings-drawer-panel .feature-controls{gap:6px;margin:8px 0}
+.settings-drawer-panel .feature-btn{min-height:38px;padding:7px 9px;font-size:12px}
+.settings-drawer-panel .feature-note{margin:6px 0;font-size:11px;line-height:1.5}
+.settings-drawer-panel .pro-tools{margin-top:9px;padding:10px}
+.settings-drawer-panel .pro-tools h3{margin:0 0 7px;font-size:14px}
+.settings-drawer-panel .wide{min-height:38px;padding:8px 10px;font-size:12px}
 .settings-drawer-heading h2{margin:0}
 .settings-close-btn{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--ink);font-size:27px;line-height:1}
 body.settings-drawer-open{overflow:hidden}

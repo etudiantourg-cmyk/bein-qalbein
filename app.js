@@ -550,7 +550,7 @@ function validBackupValue(key,raw){
  if(key==='bq_ai_language_manual')return ['0','1'].includes(raw);
  if(key==='bq_theme')return ['dark','light'].includes(raw);
  if(key==='bq_notifications')return ['on','off'].includes(raw);
- if(key==='bq_palette')return ['rose','royal','night'].includes(raw);
+ if(key==='bq_palette')return ['blue','rose','royal','night'].includes(raw);
  if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.9&&n<=1.2}
  if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
  let value;try{value=JSON.parse(raw)}catch(_){return false}

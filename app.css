@@ -401,3 +401,7 @@ body[data-current-page="favorites"] .couple-header{display:none}
  .top-navigation .top-tools .bq-identity-choice .bq-identity-label{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.top-navigation .top-tools .bq-identity-choice{transition:none}}
+
+/* Fine alignment: nudge the connected identity rocker right by 2 mm and enlarge search glyph slightly. */
+.top-navigation .top-tools .bq-identity-control{transform:translateX(2mm)}
+#topSearchBtn>span{font-size:26px;line-height:1}

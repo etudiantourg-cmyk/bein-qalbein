@@ -182,11 +182,14 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
     const fallbackPage = await browser.newPage({ serviceWorkers: "block" });
     await fallbackPage.addInitScript(() => {
+      localStorage.setItem("bq_favorites", JSON.stringify(["رسالة موجودة قبل تعطل التخزين"]));
       Storage.prototype.setItem = function () { throw new DOMException("Storage unavailable", "QuotaExceededError"); };
     });
     await fallbackPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await fallbackPage.locator("#cats .cat").first().waitFor();
     await fallbackPage.locator("#favBtn").click();
+    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
+    await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
     await fallbackPage.locator('#bottomNav button[data-go="settings"]').click();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);

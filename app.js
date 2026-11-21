@@ -304,7 +304,6 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const requestedPage=page;
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
  if(page==='guide'&&typeof window.openHomeShortcut==='function'){

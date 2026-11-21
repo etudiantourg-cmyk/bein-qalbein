@@ -933,11 +933,7 @@ window.displayMessageInMain=displayMessageInMain;
   if(t.closest('#copyBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(current)copyText(current);return}
  },true);
  document.querySelectorAll('#topNav button[data-go]').forEach(button=>button.addEventListener('click',()=>goPage(button.dataset.go)));
- document.querySelectorAll('[data-home-go]').forEach(button=>button.addEventListener('click',()=>{
-  const target=button.dataset.homeGo;
-  if(target==='favorites'){goPage('favorites');return}
-  if(target==='ai'){const panel=document.getElementById('aiMessagePanel');if(panel){panel.scrollIntoView({behavior:'smooth',block:'start'});panel.classList.add('ai-shortcut-focus');setTimeout(()=>panel.classList.remove('ai-shortcut-focus'),1400)}}
- }));
+ // Homepage shortcut clicks are handled by the expandable tab controller below.
  const homeGuideShortcut=document.getElementById('homeGuideShortcut');
  if(homeGuideShortcut)homeGuideShortcut.addEventListener('click',()=>goPage('guide'));
  const sel=$('rescueSituation');if(sel)sel.addEventListener('change',()=>{$('rescueResult')?.classList.remove('rescue-ready')});

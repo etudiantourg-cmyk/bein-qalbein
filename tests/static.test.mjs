@@ -29,24 +29,24 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(app, /function displayMessageInMain/);
   assert.match(app, /applyLanguage\(\);\s*\};/);
   assert.match(html, /data-quick="ai"/);
-  assert.ok(app.includes("https://bein-qalbein.etudiantourg.workers.dev"));
+  assert.ok(aiStudio.includes("https://bein-qalbein.etudiantourg.workers.dev"));
   assert.match(html, /<textarea id="aiOutput"/);
   assert.match(app, /displayMessageInMain\(finalMessage/);
   assert.match(app, /function validBackupValue/);
-  assert.match(app, /endsWith\('\.workers\.dev'\)/);
-  assert.match(app, /optionLabels/);
-  assert.match(app, /aiPrivacyNote/);
-  assert.match(app, /Live generation test passed/);
-  assert.ok(app.includes("url+'/generate'"));
+  assert.match(aiStudio, /endsWith\('\.workers\.dev'\)/);
+  assert.match(aiStudio, /optionLabels/);
+  assert.match(aiStudio, /aiPrivacyNote/);
+  assert.match(aiStudio, /Live generation test passed/);
+  assert.ok(aiStudio.includes("url+'/generate'"));
   assert.ok(app.includes("Unified interaction router"));
-  assert.match(app, /Your situation details are sent to Cloudflare AI/);
-  assert.match(app, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
-  assert.match(app, /aiSafetyNote/);
-  assert.match(app, /rateLimited:/);
-  assert.match(app, /safetyRejected:/);
-  assert.match(app, /engineUnavailable:/);
-  assert.match(app, /bq_ai_language_manual/);
-  assert.match(app, /role==='wife'\?'للزوج':'للزوجة'/);
+  assert.match(aiStudio, /Your situation details are sent to Cloudflare AI/);
+  assert.match(aiStudio, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
+  assert.match(aiStudio, /aiSafetyNote/);
+  assert.match(aiStudio, /rateLimited:/);
+  assert.match(aiStudio, /safetyRejected:/);
+  assert.match(aiStudio, /engineUnavailable:/);
+  assert.match(aiStudio, /bq_ai_language_manual/);
+  assert.match(aiStudio, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 
 test("saved user data remains compatible and backup import is validated", () => {
@@ -96,7 +96,7 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);
   assert.match(sw, /await fetch\(request\)/);
   assert.match(sw, /caches\.match\(request\)/);
-  for (const file of ["./index.html", "./app.js", "./app.css", "./manifest.json", "./icon.svg"]) assert.ok(sw.includes(file));
+  for (const file of ["./index.html", "./app.js", "./ai-studio.js", "./app.css", "./manifest.json", "./icon.svg"]) assert.ok(sw.includes(file));
 });
 
 test("AI worker exposes a health route and bounded request processing", () => {
@@ -108,7 +108,7 @@ test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(worker, /chat_template_kwargs/);
   assert.match(worker, /max_completion_tokens/);
   assert.match(worker, /result\?\.choices\?\.\[0\]\?\.message\?\.content/);
-  assert.match(app, /data\.error&&status/);
+  assert.match(aiStudio, /data\.error&&status/);
 });
 
 test("language initialization uses the real category renderer (regression: no undefined renderCats)", () => {

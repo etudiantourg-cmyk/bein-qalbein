@@ -44,7 +44,11 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#topNav button[data-go="home"]').click();
     await page.locator('.home-top-shortcuts [data-home-go="favorites"]').click();
   };
-  const auditAccessibility = async label => {
+
+  const openAiStudio = async () => {
+    await page.locator('#topNav button[data-go="home"]').click();
+    await page.locator('.home-top-shortcuts [data-home-go="ai"]').click();
+  };  const auditAccessibility = async label => {
     await page.addScriptTag({ content: axe.source });
     const result = await page.evaluate(async () => axe.run(document, {
       runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] }
@@ -138,6 +142,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     }));
     assert.ok(categoryState.parent === "category-item", `category click did not mount message panel: ${JSON.stringify({ categoryState, pageErrors, consoleErrors })}`);
     assert.notEqual(await page.locator("#message").innerText(), "اختر تصنيفاً لتظهر لك رسالة جميلة هنا.");
+    await openAiStudio();
     await page.locator("#aiGenerateBtn").click();
     await page.waitForFunction(() => !document.querySelector("#aiOutput")?.hidden);
     assert.equal(await page.locator("#aiOutput").inputValue(), "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام.");

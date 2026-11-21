@@ -102,6 +102,12 @@ test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(app, /data\.error&&status/);
 });
 
+test("language initialization uses the real category renderer (regression: no undefined renderCats)", () => {
+  assert.doesNotMatch(app, /\\brenderCats\\s*\\(/);
+  assert.match(app, /groupedRenderCats\\(\\$\\('search'\\)\\.value\\);generate\\(\\)/);
+  assert.ok(app.indexOf("function groupedRenderCats") < app.indexOf("applyLanguage();applyTheme();"));
+});
+
 test("category taps always generate a visible message, including the initially selected category", () => {
   const grouped = app.slice(app.indexOf("function groupedRenderCats"), app.indexOf("function goPage"));
   assert.match(grouped, /messageWasOpen=!!inline\.parentElement\?\.classList\.contains\('category-item'\)/);

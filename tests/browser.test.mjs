@@ -201,6 +201,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await fallbackPage.locator('#bottomNav button[data-go="settings"]').click();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
+    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
     const fallbackChooserPromise = fallbackPage.waitForEvent("filechooser");
     await fallbackPage.locator("#importLabel").click();
     const fallbackChooser = await fallbackChooserPromise;

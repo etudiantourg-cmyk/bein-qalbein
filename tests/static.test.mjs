@@ -83,3 +83,13 @@ test("AI worker has a real health route and bounded request processing", () => {
   assert.match(worker, /result\?\.choices\?\.\[0\]\?\.message\?\.content/);
   assert.match(html, /data\.error&&status/);
 });
+
+test("legacy competing click routers were consolidated", () => {
+  assert.ok(html.includes("Unified interaction router"));
+  assert.ok(html.includes("#bottomNav button[data-go]"));
+  assert.ok(!html.includes("V40 HOTFIX") && !html.includes("V44 — repair the four") && !html.includes("V46 — reliable bottom navigation"));
+  assert.ok(!html.includes("hub.addEventListener('click'"));
+  assert.match(html, /bq_favorites/);
+  assert.match(html, /bq_recent_messages/);
+  assert.match(html, /bq_custom_notes/);
+});

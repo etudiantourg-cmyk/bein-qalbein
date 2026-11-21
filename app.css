@@ -798,3 +798,37 @@ body.appearance-page-open{overflow:hidden!important}
 .identity-editor-panel{margin-top:10px}.identity-editor-tabs{margin-bottom:10px}
 .appearance-reset-btn{min-height:48px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:800}
 @media(max-width:420px){.visual-style-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.appearance-page-header h2{font-size:16px}}
+
+/* Palette is the source of truth for all shared interface accents, regardless of visual preset. */
+body[data-bq-palette="blue"]{--wine:#285b86;--wine-2:#397eae;--rose:#68a9d5;--rose-soft:#e5f3fc;--gold:#d8bd83;--surface-2:#f3faff;--bq-accent:#285b86;--bq-accent-strong:#17466d;--bq-accent-soft:#e5f3fc;--bq-accent-border:#c6e0f2}
+body[data-bq-palette="rose"]{--wine:#7b2147;--wine-2:#a43a62;--rose:#d16e91;--rose-soft:#fceaf0;--gold:#e2bd83;--surface-2:#fff6f8;--bq-accent:#7b2147;--bq-accent-strong:#58152f;--bq-accent-soft:#fceaf0;--bq-accent-border:#efcbd8}
+body[data-bq-palette="royal"]{--wine:#64132f;--wine-2:#8c2149;--rose:#bd5274;--rose-soft:#f8e8ed;--gold:#d8b66e;--surface-2:#fff6f1;--bq-accent:#64132f;--bq-accent-strong:#451024;--bq-accent-soft:#f8e8ed;--bq-accent-border:#e7c4d0}
+body[data-bq-palette="night"]{--wine:#51243a;--wine-2:#80516a;--rose:#b27b94;--rose-soft:#f0e4eb;--gold:#c9a66b;--surface-2:#f5edf2;--bq-accent:#51243a;--bq-accent-strong:#351627;--bq-accent-soft:#f0e4eb;--bq-accent-border:#ddc5d1}
+body[data-bq-palette] .top-navigation{background:linear-gradient(110deg,var(--bq-accent-strong),var(--bq-accent))!important;border-color:var(--bq-accent)!important}
+body[data-bq-palette] .top-tabs button.active{background:rgba(255,255,255,.19)!important;color:#fff!important}
+body[data-bq-palette] .top-tabs button.active:after{background:var(--gold)!important}
+body[data-bq-palette] .top-tabs button:not(.active){color:rgba(255,255,255,.82)!important}
+body[data-bq-palette] .top-tool-btn{border-color:rgba(255,255,255,.38)!important;background:rgba(255,255,255,.13)!important;color:#fff!important}
+body[data-bq-palette] .top-brand,body[data-bq-palette] .top-brand small{color:#fff!important}
+body[data-bq-palette] .home-shortcut.is-selected,body[data-bq-palette] .favorites-subnav button.active{background:var(--bq-accent)!important;color:#fff!important;border-color:var(--bq-accent)!important}
+body[data-bq-palette] .primary,body[data-bq-palette] .actions .primary,body[data-bq-palette] .wide.primary,body[data-bq-palette] .feature-btn.is-active{background:linear-gradient(145deg,var(--bq-accent),var(--bq-accent-strong))!important;border-color:var(--bq-accent)!important;color:#fff!important}
+body[data-bq-palette] .top-tabs button.active svg,body[data-bq-palette] .home-shortcut.is-selected svg{color:#fff!important}
+body[data-bq-palette] .quick-grid>button:focus-visible,body[data-bq-palette] .smart-chips button:focus-visible{outline-color:var(--bq-accent)!important}
+body[data-bq-palette] .appearance-section h3,body[data-bq-palette] .visual-style-card.is-selected,body[data-bq-palette] .palette-choice-grid button.is-selected{border-color:var(--bq-accent)}
+body[data-bq-palette] .identity-editor-tab.is-active,body[data-bq-palette] #resetAppearanceBtn{border-color:var(--bq-accent)}
+/* User-selectable icon language applied consistently to navigation, shortcuts and service cards. */
+body[data-icon-style="rounded"] :is(.top-tabs svg,.home-shortcut svg,.quick-icon svg,.top-tool-btn svg){stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.12))}
+body[data-icon-style="bold"] :is(.top-tabs svg,.home-shortcut svg,.quick-icon svg,.top-tool-btn svg){stroke-width:2.45!important}
+body[data-icon-style="duotone"] :is(.top-tabs button>span,.home-shortcut>svg,.quick-icon){background:color-mix(in srgb,var(--wine),transparent 90%);border-radius:12px}
+body[data-icon-style="duotone"] :is(.top-tabs button.active>span,.home-shortcut.is-selected>svg){background:color-mix(in srgb,var(--wine),transparent 78%)}
+body[data-icon-style="duotone"] :is(.top-tabs svg,.home-shortcut svg,.quick-icon svg){filter:drop-shadow(0 1px 0 color-mix(in srgb,var(--gold),transparent 45%))}
+.icon-style-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.icon-style-card{display:flex;align-items:center;gap:10px;min-height:74px;padding:10px;border:2px solid var(--line);border-radius:14px;background:var(--surface-2);color:var(--ink);text-align:start;flex-wrap:wrap}
+.icon-style-card.is-selected{border-color:var(--wine);box-shadow:0 0 0 2px color-mix(in srgb,var(--wine),transparent 84%)}
+.icon-style-card strong{font-size:12px}.icon-style-card small{width:100%;padding-inline-start:48px;color:var(--muted);font-size:10px}
+.icon-style-preview{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--rose-soft);color:var(--wine)}
+.icon-style-preview svg{width:25px;height:25px}
+.icon-preview-rounded svg{stroke-linecap:round;stroke-linejoin:round}
+.icon-preview-bold svg{stroke-width:2.8}
+.icon-preview-duotone{background:linear-gradient(135deg,var(--rose-soft),var(--gold-soft))}
+@media(max-width:360px){.icon-style-grid{grid-template-columns:1fr}}

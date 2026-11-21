@@ -241,7 +241,8 @@ test("primary navigation is moved to a two-row sticky top bar", () => {
   assert.match(css, /\.top-navigation\{position:sticky;top:0/);
   assert.match(css, /\.top-tabs button\.active:after/);
   assert.match(app, /#topNav button\[data-go\]/);
-  assert.match(app, /goPage\('home'\);requestAnimationFrame\(\(\)=>\{\$\('search'\)/);
+  assert.match(app, /goPage\('home'\);/);
+  assert.match(app, /page==='library'\|\|page==='favorites'/);
 });
 
 test("top navigation uses strong identity colors with high-contrast labels", () => {

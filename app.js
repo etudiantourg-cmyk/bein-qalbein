@@ -1031,3 +1031,43 @@ function advanceMiniGame(){
   }
  });
 })();
+
+
+/* Homepage shortcut tabs: show each feature's real content directly beneath the strip. */
+(function setupHomeShortcutTabs(){
+ const strip=document.querySelector('.home-top-shortcuts');
+ const host=document.getElementById('homeShortcutContent');
+ const fav=document.getElementById('favoritesPage');
+ const guide=document.querySelector('.page-section[data-page="guide"]');
+ const ai=document.getElementById('aiMessagePanel');
+ const favNav=document.getElementById('favoritesSubnav');
+ if(!strip||!host||!fav||!guide||!ai||strip.dataset.tabsReady)return;
+ strip.dataset.tabsReady='1';
+ const panes={favorites:document.createElement('div'),guide:document.createElement('div'),ai:document.createElement('div')};
+ Object.entries(panes).forEach(([key,pane])=>{pane.className='home-shortcut-pane';pane.dataset.shortcutPane=key;pane.hidden=true;host.appendChild(pane)});
+ // Move the existing live UI nodes, preserving their IDs, data, and event handlers.
+ if(favNav)panes.favorites.appendChild(favNav);
+ while(fav.firstChild)panes.favorites.appendChild(fav.firstChild);
+ while(guide.firstChild)panes.guide.appendChild(guide.firstChild);
+ panes.ai.appendChild(ai);
+ function activate(key){
+  const pane=panes[key];if(!pane)return;
+  host.hidden=false;
+  Object.entries(panes).forEach(([name,node])=>{node.hidden=name!==key});
+  strip.querySelectorAll('.home-shortcut').forEach(button=>{
+   const active=(key==='favorites'&&button.dataset.homeGo==='favorites')||(key==='ai'&&button.dataset.homeGo==='ai')||(key==='guide'&&button.id==='homeGuideShortcut');
+   button.classList.toggle('is-selected',active);
+   button.setAttribute('aria-expanded',String(active));
+  });
+  if(favNav)favNav.hidden=key!=='favorites';
+  if(key==='favorites'){if(typeof renderHistory==='function')renderHistory();if(typeof renderCustomNotes==='function')renderCustomNotes();}
+  if(key==='ai')ai.scrollIntoView({block:'nearest',behavior:'smooth'});
+ }
+ strip.querySelectorAll('.home-shortcut').forEach(button=>button.addEventListener('click',()=>{
+  const key=button.id==='homeGuideShortcut'?'guide':button.dataset.homeGo;
+  if(!key)return;
+  const alreadyOpen=!host.hidden&&!panes[key].hidden;
+  if(alreadyOpen){host.hidden=true;Object.values(panes).forEach(p=>p.hidden=true);strip.querySelectorAll('.home-shortcut').forEach(b=>{b.classList.remove('is-selected');b.setAttribute('aria-expanded','false')});if(favNav)favNav.hidden=true;return;}
+  activate(key);
+ }));
+})();

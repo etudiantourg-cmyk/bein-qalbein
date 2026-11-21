@@ -253,6 +253,6 @@ test("official app icon is displayed in the top brand header", () => {
   assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
   assert.match(css, /\.top-brand-logo\{[^}]*width:42px/);
   assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
-  assert.match(appIcon, /data:image\\/png;base64,/);
-  assert.match(maskableIcon, /x="51.2" y="51.2" width="409.6" height="409.6"/);
+  assert.ok(appIcon.includes('data:image/png;base64,'));
+  assert.ok(maskableIcon.includes('x="51.2" y="51.2" width="409.6" height="409.6"'));
 });

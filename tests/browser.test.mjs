@@ -91,6 +91,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#lang").selectOption("en");
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100");
+    assert.match(await page.locator("#message").innerText(), /[A-Za-z]/);
+    assert.doesNotMatch(await page.locator("#message").innerText(), /[\u0600-\u06FF]/);
     assert.equal(await page.locator("#aiMessageTitle").innerText(), "AI Message Studio");
     assert.equal(await page.locator("#cats .cat").count(), 14);
     await page.locator("#lang").selectOption("fr");

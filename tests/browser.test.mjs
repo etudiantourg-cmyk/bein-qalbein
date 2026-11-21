@@ -99,7 +99,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#aiUseBtn").click();
     assert.equal(await page.locator("#message").innerText(), "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام.");
 
-    await page.locator('#bottomNav button[data-go="settings"]').click();
+    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator("#settingsDrawer:not([hidden])").waitFor();
     await page.locator("#lang").selectOption("en");
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100");
@@ -115,7 +116,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await page.locator("#aiMessageTitle").innerText(), "Studio de messages IA");
     await page.locator("#lang").selectOption("ar");
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");
-    await page.locator('#bottomNav button[data-go="home"]').click();
+    await page.locator("#settingsCloseBtn").click();
+    await page.locator('#topNav button[data-go="home"]').click();
     await page.locator("#wife").click();
     assert.equal(await page.locator("#wife").getAttribute("aria-pressed"), "true");
     await page.locator("#husband").click();
@@ -157,7 +159,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#cardStudio").waitFor({ state: "hidden" });
 
     await page.locator("#favBtn").click();
-    await page.locator('#bottomNav button[data-go="favorites"]').click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
     await page.locator("#favorites .favitem").first().waitFor();
     await auditAccessibility("favorites");
     await page.reload({ waitUntil: "domcontentloaded" });
@@ -170,8 +172,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#privacyPin").fill("1234");
     page.once("dialog", dialog => dialog.accept());
     await page.locator("#setPrivacyPin").click();
-    await page.locator('#bottomNav button[data-go="home"]').click();
-    await page.locator('#bottomNav button[data-go="favorites"]').click();
+    await page.locator('#topNav button[data-go="home"]').click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
     assert.equal(await page.locator("#favorites").isVisible(), false, "PIN should hide the favorites list after leaving it");
     await page.locator("#privacyPin").fill("1234");
     await page.locator("#unlockFavorites").click();
@@ -194,26 +196,28 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     page.once("dialog", dialog => dialog.accept());
     await chooser.setFiles({ name: "bein-qalbein-backup.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(backup)) });
     await navigationPromise;
-    await page.locator('#bottomNav button[data-go="favorites"]').click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
     await page.locator(".custom-item").filter({ hasText: "رسالة استعيدت من النسخة الاحتياطية" }).waitFor();
     await page.locator("#privacyPin").fill("1234");
     await page.locator("#unlockFavorites").click();
     await page.locator("#favorites .favitem").first().waitFor();
 
-    await page.locator('#bottomNav button[data-go="guide"]').click();
+    await page.locator('#topNav button[data-go="guide"]').click();
     await page.locator("#husbandTips").click();
     await page.locator("#adviceModal:not(.hidden)").waitFor();
     await auditAccessibility("marriage guide dialog");
     assert.ok((await page.locator("#adviceList").innerText()).trim().length > 0);
     await page.locator("#closeAdvice").click();
 
-    await page.locator('#bottomNav button[data-go="settings"]').click();
+    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator("#settingsDrawer:not([hidden])").waitFor();
     await auditAccessibility("settings");
     await page.locator("#themeToggle").click();
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")));
     await auditAccessibility("settings dark theme");
     await page.reload({ waitUntil: "domcontentloaded" });
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")), "theme should persist after reload");
+    await page.locator('#topNav button[data-menu-toggle]').click();
     await page.locator("#themeToggle").click();
     assert.ok(!(await page.locator("body").evaluate(el => el.classList.contains("dark-mode"))));
 
@@ -235,12 +239,14 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await fallbackPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await fallbackPage.locator("#cats .cat").first().waitFor();
     await fallbackPage.locator("#favBtn").click();
-    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
+    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
     await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
-    await fallbackPage.locator('#bottomNav button[data-go="settings"]').click();
+    await fallbackPage.locator('#topNav button[data-menu-toggle]').click();
+    await fallbackPage.locator("#settingsDrawer:not([hidden])").waitFor();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
-    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
+    await fallbackPage.locator("#settingsCloseBtn").click();
+    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
     const fallbackChooserPromise = fallbackPage.waitForEvent("filechooser");
     await fallbackPage.locator("#importLabel").click();
     const fallbackChooser = await fallbackChooserPromise;
@@ -258,7 +264,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const fallbackDialog = await fallbackDialogPromise;
     assert.match(fallbackDialog.message(), /التخزين الدائم غير متاح/);
     await fallbackDialog.accept();
-    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
+    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
     await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
     await fallbackPage.close();
 

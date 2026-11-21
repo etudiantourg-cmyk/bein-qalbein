@@ -43,7 +43,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const auditAccessibility = async label => {
     await page.addScriptTag({ content: axe.source });
     const result = await page.evaluate(async () => axe.run(document, {
-      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] }
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] }
     }));
     assert.deepEqual(
       result.violations.map(item => ({ id: item.id, impact: item.impact, help: item.help, nodes: item.nodes.map(node => node.target) })),
@@ -172,14 +172,20 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await auditAccessibility("settings");
     await page.locator("#themeToggle").click();
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")));
+    await auditAccessibility("settings dark theme");
     await page.reload({ waitUntil: "domcontentloaded" });
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")), "theme should persist after reload");
     await page.locator("#themeToggle").click();
     assert.ok(!(await page.locator("body").evaluate(el => el.classList.contains("dark-mode"))));
 
-    await page.setViewportSize({ width: 360, height: 800 });
-    const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
-    assert.ok(mobileWidth.document <= mobileWidth.viewport, `mobile layout must not overflow horizontally: ${JSON.stringify(mobileWidth)}`);
+    for (const width of [320, 360, 390, 412, 768, 1024]) {
+      await page.setViewportSize({ width, height: 800 });
+      const dimensions = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
+      assert.ok(dimensions.document <= dimensions.viewport, `layout overflow at ${width}px: ${JSON.stringify(dimensions)}`);
+    }
+    await page.setViewportSize({ width: 844, height: 390 });
+    const landscape = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
+    assert.ok(landscape.document <= landscape.viewport, `landscape layout overflow: ${JSON.stringify(landscape)}`);
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
     assert.deepEqual(consoleErrors, [], `browser console errors: ${consoleErrors.join(" | ")}`);
     const fallbackPage = await browser.newPage({ serviceWorkers: "block" });

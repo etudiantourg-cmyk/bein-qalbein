@@ -362,3 +362,11 @@ body.settings-drawer-open{overflow:hidden}
 .advice-item p{flex:1;line-height:1.8}
 @media(max-width:420px){.favorites-subnav{top:100px;padding:6px 7px;gap:3px}.favorites-subnav button{gap:3px;font-size:11px;min-height:36px}.settings-drawer-panel{inset-inline-end:6px;inset-block-start:6px;width:min(84vw,300px);max-height:80vh;padding:10px}}
 body[data-current-page="favorites"] .couple-header{display:none}
+
+
+/* Recent messages: compact actions and clear swipe affordance. */
+.history-item{touch-action:pan-y;display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+.history-message{flex:1;min-width:0}
+.history-actions{display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0}
+.history-actions button{min-height:38px;padding:7px 10px}
+.history-actions .history-delete{border-color:#d7a5ad;color:#8b263d}

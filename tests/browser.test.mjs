@@ -48,7 +48,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const openAiStudio = async () => {
     await page.locator('#topNav button[data-go="home"]').click();
     await page.locator('.home-top-shortcuts [data-home-go="ai"]').click();
-  };  const auditAccessibility = async label => {
+  };
+  const auditAccessibility = async label => {
     await page.addScriptTag({ content: axe.source });
     const result = await page.evaluate(async () => axe.run(document, {
       runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] }

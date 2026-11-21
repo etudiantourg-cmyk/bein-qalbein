@@ -832,3 +832,54 @@ body[data-icon-style="duotone"] :is(.top-tabs svg,.home-shortcut svg,.quick-icon
 .icon-preview-bold svg{stroke-width:2.8}
 .icon-preview-duotone{background:linear-gradient(135deg,var(--rose-soft),var(--gold-soft))}
 @media(max-width:360px){.icon-style-grid{grid-template-columns:1fr}}
+
+/* Premium world-inspired themes: complete surface, typography, controls and card atmosphere. */
+body[data-visual-style="midnight"]{--wine:#a9b9d1;--wine-2:#d0d9e7;--rose:#8195b6;--rose-soft:#28364c;--gold:#d7bd82;--gold-soft:#403a31;--paper:#111b2b;--surface:#19263a;--surface-2:#22324a;--ink:#f0f3f8;--muted:#aab8cc;--line:#344760;--radius:18px;background:radial-gradient(ellipse at top right,#263a57,transparent 55%),#101a29;color:var(--ink);color-scheme:dark}
+body[data-visual-style="emerald"]{--wine:#145b46;--wine-2:#277b5d;--rose:#75a98a;--rose-soft:#e4f0e8;--gold:#c8a75c;--gold-soft:#f5eedc;--paper:#f3f7f0;--surface:#fff;--surface-2:#eaf2e9;--ink:#243b31;--muted:#718579;--line:#d2e0d4;--radius:19px;background:linear-gradient(145deg,#e6f0e7,#f8f6ec)}
+body[data-visual-style="champagne"]{--wine:#80633c;--wine-2:#aa8958;--rose:#c5a989;--rose-soft:#f3eadd;--gold:#c8a45e;--gold-soft:#f7efd9;--paper:#faf7ef;--surface:#fffdf8;--surface-2:#f3eee3;--ink:#453b30;--muted:#887d6c;--line:#e5dac7;--radius:17px;background:linear-gradient(145deg,#f3ecdc,#fffdf7)}
+body[data-visual-style="rosegold"]{--wine:#96546b;--wine-2:#b9788d;--rose:#d7a0ad;--rose-soft:#f8e9ed;--gold:#c99583;--gold-soft:#f6e9e2;--paper:#fff8f7;--surface:#fff;--surface-2:#f8edef;--ink:#513944;--muted:#987e88;--line:#efd9df;--radius:22px;background:linear-gradient(140deg,#f9e9e8,#fff8f5)}
+body[data-visual-style="sapphire"]{--wine:#17477e;--wine-2:#2868a5;--rose:#77a9d4;--rose-soft:#e6f0fa;--gold:#d7b96d;--gold-soft:#f7f0dc;--paper:#f2f7fc;--surface:#fff;--surface-2:#eaf2fa;--ink:#263b55;--muted:#71849a;--line:#d4e1ef;--radius:18px;background:linear-gradient(145deg,#e2edf8,#f9fbff)}
+body[data-visual-style="amethyst"]{--wine:#593b7d;--wine-2:#8060a5;--rose:#b59acb;--rose-soft:#f0e9f6;--gold:#d3b775;--gold-soft:#f6f0df;--paper:#f8f5fb;--surface:#fff;--surface-2:#f0eaf6;--ink:#3d304b;--muted:#83758f;--line:#e1d8eb;--radius:21px;background:linear-gradient(145deg,#eee7f6,#fbf8ff)}
+body[data-visual-style="arctic"]{--wine:#3e718e;--wine-2:#609bb7;--rose:#9dc9d9;--rose-soft:#e9f5f8;--gold:#c6b77d;--gold-soft:#f5f1df;--paper:#f4fbfd;--surface:#fff;--surface-2:#eaf6f8;--ink:#294653;--muted:#76909a;--line:#d7e9ed;--radius:23px;background:linear-gradient(145deg,#e2f3f7,#fbfdff)}
+body[data-visual-style="mediterranean"]{--wine:#17647a;--wine-2:#258ba0;--rose:#83bdc3;--rose-soft:#e5f3f2;--gold:#d8b96e;--gold-soft:#f8f0d9;--paper:#f8fbf7;--surface:#fff;--surface-2:#edf6f2;--ink:#29464a;--muted:#748d8a;--line:#d6e8e2;--radius:18px;background:linear-gradient(145deg,#e1f0ed,#fffaf0)}
+body[data-visual-style="sakura"]{--wine:#a34d73;--wine-2:#c87999;--rose:#e5a9c0;--rose-soft:#fff0f5;--gold:#d6b77b;--gold-soft:#fbf4df;--paper:#fff8fa;--surface:#fff;--surface-2:#fff0f5;--ink:#573849;--muted:#987b8a;--line:#f1dce5;--radius:24px;background:linear-gradient(145deg,#fceaf1,#fff9fb)}
+body[data-visual-style="copper"]{--wine:#85503a;--wine-2:#ad6b4b;--rose:#ca9274;--rose-soft:#f6e9e1;--gold:#c6a15c;--gold-soft:#f5ecd9;--paper:#faf5ef;--surface:#fffdf9;--surface-2:#f3e9df;--ink:#49372e;--muted:#89776d;--line:#e6d6c9;--radius:16px;background:linear-gradient(145deg,#f1e4d9,#fcf8f2)}
+body[data-visual-style="ivory"]{--wine:#4d4b48;--wine-2:#77716a;--rose:#aaa197;--rose-soft:#efede8;--gold:#b99a61;--gold-soft:#f4eedf;--paper:#faf9f5;--surface:#fffefa;--surface-2:#f1efe9;--ink:#343330;--muted:#817e77;--line:#e3e0d7;--radius:14px;background:#f4f2ec}
+body[data-visual-style="cyber"]{--wine:#c0a0ff;--wine-2:#6ee7f4;--rose:#ff78c8;--rose-soft:#322448;--gold:#f3d26b;--gold-soft:#453b2b;--paper:#10101d;--surface:#1a1a2b;--surface-2:#25253a;--ink:#f4f0ff;--muted:#b7b0ce;--line:#48405f;--radius:16px;background:radial-gradient(ellipse at 15% 0%,#302044,transparent 45%),#10101d;color:var(--ink);color-scheme:dark}
+body[data-visual-style="midnight"] .panel,body[data-visual-style="cyber"] .panel{box-shadow:0 12px 32px rgba(0,0,0,.22);border-color:var(--line)}
+body[data-visual-style="midnight"] .top-navigation{background:linear-gradient(110deg,#0b1422,#253955);border-color:#435873}
+body[data-visual-style="emerald"] .top-navigation{background:linear-gradient(110deg,#104331,#276c52)}
+body[data-visual-style="champagne"] .top-navigation{background:linear-gradient(110deg,#6d5435,#a88958)}
+body[data-visual-style="rosegold"] .top-navigation{background:linear-gradient(110deg,#793c55,#b47789)}
+body[data-visual-style="sapphire"] .top-navigation{background:linear-gradient(110deg,#10365f,#2868a5)}
+body[data-visual-style="amethyst"] .top-navigation{background:linear-gradient(110deg,#3e285f,#775a9c)}
+body[data-visual-style="arctic"] .top-navigation{background:linear-gradient(110deg,#315c78,#6da7c0)}
+body[data-visual-style="mediterranean"] .top-navigation{background:linear-gradient(110deg,#11546a,#258a99)}
+body[data-visual-style="sakura"] .top-navigation{background:linear-gradient(110deg,#853d62,#c47b99)}
+body[data-visual-style="copper"] .top-navigation{background:linear-gradient(110deg,#683d2c,#a66a4b)}
+body[data-visual-style="ivory"] .top-navigation{background:linear-gradient(110deg,#3d3b38,#77716a)}
+body[data-visual-style="cyber"] .top-navigation{background:linear-gradient(110deg,#181329,#302448)}
+.style-preview-midnight{background:var(--preview-midnight,linear-gradient(135deg,#eee,#fff))}
+.style-preview-emerald{background:var(--preview-emerald,linear-gradient(135deg,#eee,#fff))}
+.style-preview-champagne{background:var(--preview-champagne,linear-gradient(135deg,#eee,#fff))}
+.style-preview-rosegold{background:var(--preview-rosegold,linear-gradient(135deg,#eee,#fff))}
+.style-preview-sapphire{background:var(--preview-sapphire,linear-gradient(135deg,#eee,#fff))}
+.style-preview-amethyst{background:var(--preview-amethyst,linear-gradient(135deg,#eee,#fff))}
+.style-preview-arctic{background:var(--preview-arctic,linear-gradient(135deg,#eee,#fff))}
+.style-preview-mediterranean{background:var(--preview-mediterranean,linear-gradient(135deg,#eee,#fff))}
+.style-preview-sakura{background:var(--preview-sakura,linear-gradient(135deg,#eee,#fff))}
+.style-preview-copper{background:var(--preview-copper,linear-gradient(135deg,#eee,#fff))}
+.style-preview-ivory{background:var(--preview-ivory,linear-gradient(135deg,#eee,#fff))}
+.style-preview-cyber{background:var(--preview-cyber,linear-gradient(135deg,#eee,#fff))}
+.style-preview-midnight{background:linear-gradient(135deg,#101a2b,#526987)}.style-preview-midnight i{background:#c2d0e2!important}
+.style-preview-emerald{background:linear-gradient(135deg,#d9ebdc,#145b46)}.style-preview-emerald i{background:#c8a75c!important}
+.style-preview-champagne{background:linear-gradient(135deg,#fff8e8,#bda06d)}.style-preview-champagne i{background:#9b7c4f!important}
+.style-preview-rosegold{background:linear-gradient(135deg,#f9e5e8,#a65c76)}.style-preview-rosegold i{background:#d5a18e!important}
+.style-preview-sapphire{background:linear-gradient(135deg,#e1edf9,#17477e)}.style-preview-sapphire i{background:#d7b96d!important}
+.style-preview-amethyst{background:linear-gradient(135deg,#eee5f8,#593b7d)}.style-preview-amethyst i{background:#c8b3df!important}
+.style-preview-arctic{background:linear-gradient(135deg,#f3fdff,#3e718e)}.style-preview-arctic i{background:#a6d4e3!important}
+.style-preview-mediterranean{background:linear-gradient(135deg,#e2f2ed,#17647a)}.style-preview-mediterranean i{background:#d8b96e!important}
+.style-preview-sakura{background:linear-gradient(135deg,#fff0f5,#a34d73)}.style-preview-sakura i{background:#e5b1c4!important}
+.style-preview-copper{background:linear-gradient(135deg,#f3e5d8,#85503a)}.style-preview-copper i{background:#c6a15c!important}
+.style-preview-ivory{background:linear-gradient(135deg,#fffef8,#77716a)}.style-preview-ivory i{background:#b99a61!important}
+.style-preview-cyber{background:linear-gradient(135deg,#171326,#583f83)}.style-preview-cyber i{background:#ed78d2!important;box-shadow:0 0 9px #ed78d2}

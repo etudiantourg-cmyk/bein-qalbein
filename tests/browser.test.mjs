@@ -40,6 +40,16 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const page = await browser.newPage({ serviceWorkers: "block" });
   const pageErrors = [];
   const consoleErrors = [];
+  const auditAccessibility = async label => {
+    const result = await page.evaluate(async () => axe.run(document, {
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] }
+    }));
+    assert.deepEqual(
+      result.violations.map(item => ({ id: item.id, impact: item.impact, help: item.help, nodes: item.nodes.map(node => node.target) })),
+      [],
+      `WCAG accessibility violations on ${label}`
+    );
+  };
   page.on("pageerror", error => pageErrors.push(error.stack || error.message));
   page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
 
@@ -55,14 +65,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
     await page.addScriptTag({ content: axe.source });
-    const accessibility = await page.evaluate(async () => axe.run(document, {
-      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] }
-    }));
-    assert.deepEqual(
-      accessibility.violations.map(item => ({ id: item.id, impact: item.impact, help: item.help, nodes: item.nodes.map(node => node.target) })),
-      [],
-      "WCAG accessibility violations detected"
-    );
+    await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
 
@@ -116,6 +119,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#favBtn").click();
     await page.locator('#bottomNav button[data-go="favorites"]').click();
     await page.locator("#favorites .favitem").first().waitFor();
+    await auditAccessibility("favorites");
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator("#favorites .favitem").first().waitFor();
 
@@ -159,10 +163,12 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#bottomNav button[data-go="guide"]').click();
     await page.locator("#husbandTips").click();
     await page.locator("#adviceModal:not(.hidden)").waitFor();
+    await auditAccessibility("marriage guide dialog");
     assert.ok((await page.locator("#adviceList").innerText()).trim().length > 0);
     await page.locator("#closeAdvice").click();
 
     await page.locator('#bottomNav button[data-go="settings"]').click();
+    await auditAccessibility("settings");
     await page.locator("#themeToggle").click();
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")));
     await page.reload({ waitUntil: "domcontentloaded" });

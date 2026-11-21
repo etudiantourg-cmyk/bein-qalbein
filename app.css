@@ -158,6 +158,7 @@ body.theme-night .cat,body.dark-mode .cat,body.theme-night .role,body.dark-mode 
 body.theme-night .cat.active,body.dark-mode .cat.active,body.theme-night .role.active,body.dark-mode .role.active{background:#563348;border-color:#d6a5b9;color:#fff}
 body.theme-night .actions button,body.theme-night .row button,body.theme-night .wide,body.dark-mode .actions button,body.dark-mode .row button,body.dark-mode .wide{background:#40313f;color:#fff;border-color:#745968}
 body.theme-night .actions .primary,body.theme-night .primary,body.dark-mode .actions .primary,body.dark-mode .primary{background:#7f294d;color:#fff;border-color:#d6a5b9}
+body.theme-night .feature-btn,body.dark-mode .feature-btn{background:#40313f;color:#fff;border-color:#745968}
 body.theme-night .bottom-nav button,body.dark-mode .bottom-nav button{color:#dfcbd4}
 body.theme-night .bottom-nav button.active,body.dark-mode .bottom-nav button.active{background:#7f294d;color:#fff}
 body.theme-night .advice-modal,body.dark-mode .advice-modal,body.theme-night .modal-head,body.dark-mode .modal-head{background:var(--surface)}

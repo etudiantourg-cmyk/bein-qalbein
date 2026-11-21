@@ -102,13 +102,15 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.match(html, /<meta name="theme-color" content="#64132f">/);
   assert.equal(manifest.start_url, "./");
+  assert.ok(manifest.icons.some(icon => icon.src === "icon-maskable.svg" && icon.purpose === "maskable"));
+  assert.ok(manifest.icons.some(icon => icon.src === "icon.svg" && icon.purpose === "any"));
   assert.ok(sw.includes("'./app.js'") && sw.includes("'./ai-studio.js'") && sw.includes("'./app.css'"));
   assert.doesNotMatch(sw, /couple-header\.jpg\.png/);
   assert.match(sw, /navigationPreload/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);
   assert.match(sw, /await fetch\(request\)/);
   assert.match(sw, /caches\.match\(request\)/);
-  for (const file of ["./index.html", "./content-data.js", "./app.js", "./ai-studio.js", "./app.css", "./manifest.json", "./icon.svg"]) assert.ok(sw.includes(file));
+  for (const file of ["./index.html", "./content-data.js", "./app.js", "./ai-studio.js", "./app.css", "./manifest.json", "./icon.svg", "./icon-maskable.svg"]) assert.ok(sw.includes(file));
 });
 
 test("AI worker exposes a health route and bounded request processing", () => {

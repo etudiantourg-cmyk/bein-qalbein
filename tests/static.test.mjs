@@ -252,5 +252,5 @@ test("top navigation uses strong identity colors with high-contrast labels", () 
 test("official app icon is displayed in the top brand header", () => {
   assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
   assert.match(css, /\.top-brand-logo\{[^}]*width:40px/);
-  assert.match(manifest.icons.some(icon => icon.src === "icon.svg"), /true/);
+  assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
 });

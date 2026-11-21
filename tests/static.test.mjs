@@ -149,7 +149,8 @@ test("category taps always generate a visible message, including the initially s
 
 test("competing legacy click routers and inline bindings stay removed", () => {
   assert.ok(app.includes("Unified interaction router"));
-  assert.ok(app.includes("#bottomNav button[data-go]"));
+  assert.ok(app.includes("#topNav button[data-go]"));
+  assert.ok(!html.includes("bottom-nav") && html.includes("top-navigation"));
   assert.ok(!app.includes("V40 HOTFIX") && !app.includes("V44 — repair the four") && !app.includes("V46 — reliable bottom navigation"));
   assert.ok(!app.includes("hub.addEventListener('click'"));
   for (const oldHandler of ["rescueSituation').onchange=showRescue", "buildMessageBtn').onclick", "useBuiltMessage').onclick", "copyBuiltMessage').onclick", "copyBtn').onclick", "b.onclick=()=>{selected=c.id"]) {
@@ -206,7 +207,7 @@ test("identity selector precedes quick actions and offers matching blue/rose pal
   assert.match(html, /<option value="blue">/);
   assert.match(css, /\.theme-blue\{--wine:#285b86/);
   assert.match(app, /updatePalette\(role==='husband'\?'blue':'rose'\)/);
-  assert.match(app, /\['blue','royal','rose','night'\]/);
+  assert.match(app, /\['blue','rose','royal','night'\]/);
 });
 
 test("Islamic visual constraint: no cross glyphs or cross-shaped icon ornament", () => {
@@ -224,4 +225,16 @@ test("saved husband or wife identity restores its matching theme on first load",
   assert.match(app, /const rolePalette=role==='wife'\?'rose':'blue'/);
   assert.match(css, /data-start-role="wife"/);
   assert.match(css, /data-start-role="husband"/);
+});
+
+test("primary navigation is moved to a two-row sticky top bar", () => {
+  assert.match(html, /id="topNavigation"/);
+  assert.match(html, /id="topNav"/);
+  assert.match(html, /id="topSearchBtn"/);
+  assert.match(html, /id="topThemeBtn"/);
+  assert.doesNotMatch(html, /bottom-nav|id="bottomNav"/);
+  assert.match(css, /\.top-navigation\{position:sticky;top:0/);
+  assert.match(css, /\.top-tabs button\.active:after/);
+  assert.match(app, /#topNav button\[data-go\]/);
+  assert.match(app, /goPage\('home'\);requestAnimationFrame\(\(\)=>\{\$\('search'\)/);
 });

@@ -12,8 +12,8 @@ const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.me
 const worker = await readFile(new URL("../ai-worker/src/index.js", import.meta.url), "utf8");
 
 test("external app assets parse and HTML IDs are unique", () => {
-  assert.match(html, /<script src="\.\/app\.js" defer><\/script>/);
-  assert.match(html, /<link rel="stylesheet" href="\.\/app\.css">/);
+  assert.match(html, /<script src="\.\/app\.js(?:\?v=\d+)?" defer><\/script>/);
+  assert.match(html, /<link rel="stylesheet" href="\.\/app\.css(?:\?v=\d+)?"\s*>/);
   assert.doesNotMatch(html, /<script>([\s\S]*?)<\/script>/);
   new Function(app);
   new Function(contentData);
@@ -23,7 +23,7 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.ok(app.includes("} = window.BQ_DATA;"));
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);
-  assert.match(html, /<script src="\.\/ai-studio\.js" defer><\/script>/);
+  assert.match(html, /<script src="\.\/ai-studio\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
   assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
@@ -39,7 +39,7 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(html, /data-quick="ai"/);
   assert.ok(aiStudio.includes("https://bein-qalbein.etudiantourg.workers.dev"));
   assert.match(html, /<textarea id="aiOutput"/);
-  assert.match(aiStudio, /displayMessageInMain\(finalMessage/);
+  assert.match(aiStudio, /displayMessageInMain\(value/);
   assert.match(app, /function validBackupValue/);
   assert.match(aiStudio, /const ENDPOINT=/);
   assert.match(aiStudio, /const labels=/);

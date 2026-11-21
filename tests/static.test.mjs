@@ -189,5 +189,5 @@ test("luxury typography and dimensional icon design remain available", () => {
 test("surprise shortcut uses a clear lightbulb icon, not the old sparkle glyph", () => {
   assert.match(html, /data-quick="surprise"[^>]*><span class="quick-icon" data-icon="bulb"/);
   assert.match(contentData, /bulb:'<path d="M9 18h6/);
-  assert.match(css, /data-quick="surprise"\] \.quick-icon\{background:linear-gradient/);
+  assert.doesNotMatch(css, /data-quick="surprise"\] \.quick-icon\{background:linear-gradient/);
 });

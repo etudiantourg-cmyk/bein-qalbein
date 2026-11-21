@@ -10,6 +10,8 @@ const css = await readFile(new URL("../app.css", import.meta.url), "utf8");
 const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
 const worker = await readFile(new URL("../ai-worker/src/index.js", import.meta.url), "utf8");
+const appIcon = await readFile(new URL("../icon.svg", import.meta.url), "utf8");
+const maskableIcon = await readFile(new URL("../icon-maskable.svg", import.meta.url), "utf8");
 
 test("external app assets parse and HTML IDs are unique", () => {
   assert.match(html, /<script src="\.\/app\.js(?:\?v=\d+)?" defer><\/script>/);
@@ -205,4 +207,11 @@ test("identity selector precedes quick actions and offers matching blue/rose pal
   assert.match(css, /\.theme-blue\{--wine:#285b86/);
   assert.match(app, /updatePalette\(role==='husband'\?'blue':'rose'\)/);
   assert.match(app, /\['blue','royal','rose','night'\]/);
+});
+
+test("Islamic visual constraint: no cross glyphs or cross-shaped icon ornament", () => {
+  const forbidden = [0x271d,0x271e,0x2626,0x271f,0x2020,0x2021,0x2670,0x2671,0x2720].map(code => String.fromCodePoint(code));
+  const visibleSource = html + app + contentData + appIcon + maskableIcon;
+  for (const mark of forbidden) assert.ok(!visibleSource.includes(mark), "forbidden cross-like glyph found");
+  assert.doesNotMatch(appIcon + maskableIcon, /M256 173v-51m-18 26h36/);
 });

@@ -871,3 +871,31 @@ body[data-visual-style="midnight"] .panel,body[data-visual-style="cyber"] .panel
 .style-preview-copper{background:linear-gradient(135deg,#f3e5d8,#85503a)}.style-preview-copper i{background:#c6a15c!important}
 .style-preview-ivory{background:linear-gradient(135deg,#fffef8,#77716a)}.style-preview-ivory i{background:#b99a61!important}
 .style-preview-cyber{background:linear-gradient(135deg,#171326,#583f83)}.style-preview-cyber i{background:#ed78d2!important;box-shadow:0 0 9px #ed78d2}
+
+/* Icon themes v2: target the actual SVG artwork and its real interface containers. */
+body[data-icon-style="rounded"] :is(#topNav svg,.home-top-shortcuts svg,.quick-icon svg,.top-tool-btn svg,.cat .badge svg,.feature-btn svg,.actions button svg,.pro-tools button svg,.favorites-subnav svg,.icon-style-preview svg),
+body[data-icon-style="rounded"] :is(#topNav svg,.home-top-shortcuts svg,.quick-icon svg,.top-tool-btn svg,.cat .badge svg,.feature-btn svg,.actions button svg,.pro-tools button svg,.favorites-subnav svg,.icon-style-preview svg) *{
+ stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+body[data-icon-style="bold"] :is(#topNav svg,.home-top-shortcuts svg,.quick-icon svg,.top-tool-btn svg,.cat .badge svg,.feature-btn svg,.actions button svg,.pro-tools button svg,.favorites-subnav svg,.icon-style-preview svg) *{
+ stroke-width:2.65!important;
+}
+body[data-icon-style="bold"] :is(#topNav svg,.home-top-shortcuts svg,.quick-icon svg,.top-tool-btn svg,.cat .badge svg,.feature-btn svg,.actions button svg,.pro-tools button svg,.favorites-subnav svg){
+ filter:drop-shadow(0 1px 0 color-mix(in srgb,var(--wine),transparent 55%));
+}
+body[data-icon-style="duotone"] :is(#topNav button>span,.home-shortcut>svg,.quick-icon,.cat .badge,.feature-btn,.top-tool-btn,.favorites-subnav button){
+ background:linear-gradient(145deg,var(--rose-soft),var(--gold-soft))!important;
+ border:1px solid color-mix(in srgb,var(--gold),transparent 48%)!important;
+ border-radius:13px!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 3px 9px rgba(45,25,35,.08)!important;
+}
+body[data-icon-style="duotone"] :is(#topNav button.active>span,.home-shortcut.is-selected>svg,.favorites-subnav button.active){
+ background:linear-gradient(145deg,var(--wine),var(--wine-2))!important;color:#fff!important;
+}
+body[data-icon-style="duotone"] :is(#topNav svg,.home-top-shortcuts svg,.quick-icon svg,.cat .badge svg,.feature-btn svg,.actions button svg,.pro-tools button svg,.favorites-subnav svg){
+ filter:drop-shadow(1px 1px 0 color-mix(in srgb,var(--gold),transparent 18%)) drop-shadow(-1px -1px 0 color-mix(in srgb,var(--rose),transparent 35%));
+}
+body[data-icon-style="duotone"] .quick-icon{display:grid;place-items:center}
+body[data-icon-style="duotone"] .home-shortcut>svg{padding:5px}
+body[data-icon-style="duotone"] #topNav button>span{display:grid;place-items:center;min-width:34px;min-height:34px}
+body[data-icon-style="duotone"] .cat .badge{border-radius:12px!important}

@@ -1808,7 +1808,7 @@ window.displayMessageInMain=displayMessageInMain;
   if(u.protocol!=='https:'||!u.hostname.endsWith('.workers.dev')||u.username||u.password||u.pathname!=='/'||u.search||u.hash)throw new Error('url');
   return u.origin;
  }
- try{const saved=localStorage.getItem('bq_ai_endpoint')||'';if(endpoint)endpoint.value=saved;if(saved&&$id('aiConnectionState'))$id('aiConnectionState').textContent=pack().saved}catch(_){}
+ try{const saved=localStorage.getItem('bq_ai_endpoint')||'https://bein-qalbein.etudiantourg.workers.dev';if(endpoint)endpoint.value=saved;if(localStorage.getItem('bq_ai_endpoint')&&$id('aiConnectionState'))$id('aiConnectionState').textContent=pack().saved}catch(_){if(endpoint)endpoint.value='https://bein-qalbein.etudiantourg.workers.dev'}
  async function testConnection(){
   let url;try{url=parseEndpoint(endpoint?.value||localStorage.getItem('bq_ai_endpoint')||'')}catch(_){say('notSet');return}
   const button=$id('aiTestEndpoint');if(button)button.disabled=true;say('checking');

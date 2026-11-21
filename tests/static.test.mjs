@@ -103,8 +103,8 @@ test("AI worker exposes a health route and bounded request processing", () => {
 });
 
 test("language initialization uses the real category renderer (regression: no undefined renderCats)", () => {
-  assert.doesNotMatch(app, /\\brenderCats\\s*\\(/);
-  assert.match(app, /groupedRenderCats\\(\\$\\('search'\\)\\.value\\);generate\\(\\)/);
+  assert.doesNotMatch(app, /\brenderCats\s*\(/);
+  assert.match(app, /groupedRenderCats\(\$\('search'\)\.value\);generate\(\)/);
   assert.ok(app.indexOf("function groupedRenderCats") < app.indexOf("applyLanguage();applyTheme();"));
 });
 

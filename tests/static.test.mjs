@@ -93,3 +93,12 @@ test("legacy competing click routers were consolidated", () => {
   assert.match(html, /bq_recent_messages/);
   assert.match(html, /bq_custom_notes/);
 });
+
+test("delegated actions have no competing legacy inline handlers", () => {
+  assert.ok(!html.includes("rescueSituation').onchange=showRescue"));
+  assert.ok(!html.includes("buildMessageBtn').onclick"));
+  assert.ok(!html.includes("useBuiltMessage').onclick"));
+  assert.ok(!html.includes("copyBuiltMessage').onclick"));
+  assert.ok(!html.includes("copyBtn').onclick"));
+  assert.ok(!html.includes("b.onclick=()=>{selected=c.id"));
+});

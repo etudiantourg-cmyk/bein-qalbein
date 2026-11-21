@@ -63,7 +63,7 @@ test("saved user data remains compatible and backup import is validated", () => 
   assert.match(storage, /if\(cleared\|\|removed\.has\(k\)\)return null/);
   assert.match(storage, /const keys=\(\)=>/);
   assert.match(storage, /get persistent\(\)/);
-  assert.match(app, /if\\(page===\\'settings\\'\\)updateStorageStatus\\(\\)/);
+  assert.match(app, /if\(page==='settings'\)updateStorageStatus\(\)/);
   assert.match(html, /id="storageWarning" role="status"/);
 });
 

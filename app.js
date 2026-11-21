@@ -106,7 +106,17 @@ function setIdentityEditor(selected){
 document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventListener('click',()=>setIdentityEditor(tab.dataset.identityEditor)));
 document.querySelectorAll('[data-visual-style-card]').forEach(card=>card.addEventListener('click',()=>{applyVisualStyle(card.dataset.visualStyleCard);syncAppearanceChoices()}));
 document.querySelectorAll('[data-palette-choice]').forEach(card=>card.addEventListener('click',()=>{updatePalette(card.dataset.paletteChoice);$('paletteSelect').value=card.dataset.paletteChoice;syncAppearanceChoices()}));
+function applyIconStyle(value){
+ const allowed=['classic','rounded','bold','duotone'];
+ const style=allowed.includes(value)?value:'classic';
+ document.body.dataset.iconStyle=style;
+ bqStorage.setItem('bq_icon_style',style);
+ document.querySelectorAll('[data-icon-style-choice]').forEach(card=>{const active=card.dataset.iconStyleChoice===style;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
+}
+document.querySelectorAll('[data-icon-style-choice]').forEach(card=>card.addEventListener('click',()=>applyIconStyle(card.dataset.iconStyleChoice)));
+applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');
 function syncAppearanceChoices(){
+ applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');
  document.querySelectorAll('[data-visual-style-card]').forEach(card=>{const active=card.dataset.visualStyleCard===(document.body.dataset.visualStyle||'classic');card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
  const palette=['blue','rose','royal','night'].find(x=>document.body.classList.contains('theme-'+x))||'blue';
  document.querySelectorAll('[data-palette-choice]').forEach(card=>{const active=card.dataset.paletteChoice===palette;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
@@ -121,8 +131,8 @@ function syncAppearanceChoices(){
 })();
 $('resetAppearanceBtn').addEventListener('click',()=>{
  // Restore the original appearance only; never delete user content or personal data.
- bqStorage.removeItem('bq_visual_style');bqStorage.removeItem('bq_identity_color_husband');bqStorage.removeItem('bq_identity_color_wife');
- applyVisualStyle('classic');applyIdentityColor('husband','#3298d3');applyIdentityColor('wife','#d16e91');
+ bqStorage.removeItem('bq_visual_style');bqStorage.removeItem('bq_icon_style');bqStorage.removeItem('bq_identity_color_husband');bqStorage.removeItem('bq_identity_color_wife');
+ applyVisualStyle('classic');applyIconStyle('classic');applyIdentityColor('husband','#3298d3');applyIdentityColor('wife','#d16e91');
  const defaultPalette=role==='wife'?'rose':'blue';$('paletteSelect').value=defaultPalette;updatePalette(defaultPalette);
  setIdentityEditor('husband');syncAppearanceChoices();
 });
@@ -136,7 +146,7 @@ function applyVisualStyle(value){
 }
 $('visualStyleSelect').onchange=e=>applyVisualStyle(e.target.value);
 applyVisualStyle(bqStorage.getItem('bq_visual_style')||'classic');
-document.querySelectorAll('.bq-identity-choice').forEach(button=>button.addEventListener('click',()=>{const nextRole=button.dataset.bqRole;if(!['husband','wife'].includes(nextRole))return;role=nextRole;bqStorage.setItem('bq_role',role);document.querySelectorAll('.bq-identity-choice').forEach(item=>{const selected=item===button;item.classList.toggle('is-selected',selected);item.setAttribute('aria-pressed',String(selected))});const palette=role==='husband'?'blue':'rose';updatePalette(palette);$('paletteSelect').value=palette;generate()}));
+document.querySelectorAll('.bq-identity-choice').forEach(button=>button.addEventListener('click',()=>{const nextRole=button.dataset.bqRole;if(!['husband','wife'].includes(nextRole))return;role=nextRole;bqStorage.setItem('bq_role',role);document.querySelectorAll('.bq-identity-choice').forEach(item=>{const selected=item===button;item.classList.toggle('is-selected',selected);item.setAttribute('aria-pressed',String(selected))});generate()}));
 $('newBtn').onclick=generate;
 $('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'BEIN QALBEIN PRO',text:current})}catch(e){}}else copyText(current)};
 $('favBtn').onclick=()=>{
@@ -774,7 +784,7 @@ $('importData').onchange=async e=>{
  }
  e.target.value='';
 };
-function updatePalette(value){const palette=['blue','rose','royal','night'].includes(value)?value:'blue';document.body.classList.remove('theme-blue','theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+palette);bqStorage.setItem('bq_palette',palette);const meta=document.querySelector('meta[name=theme-color]');if(meta)meta.content=palette==='blue'?'#285b86':palette==='rose'?'#7b2147':palette==='night'?'#211923':'#64132f'}
+function updatePalette(value){const palette=['blue','rose','royal','night'].includes(value)?value:'blue';document.body.classList.remove('theme-blue','theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+palette);document.body.dataset.bqPalette=palette;bqStorage.setItem('bq_palette',palette);const meta=document.querySelector('meta[name=theme-color]');if(meta)meta.content=palette==='blue'?'#285b86':palette==='rose'?'#7b2147':palette==='night'?'#211923':'#64132f'}
 $('paletteSelect').onchange=e=>updatePalette(e.target.value);
 $('fontScale').oninput=e=>{document.documentElement.style.setProperty('--bq-scale',e.target.value);bqStorage.setItem('bq_font_scale',e.target.value)};
 const savedScale=Number(bqStorage.getItem('bq_font_scale')||'1');const storedScale=Number.isFinite(savedScale)?Math.min(1.2,Math.max(0.9,savedScale)):1;$('fontScale').value=String(storedScale);document.documentElement.style.setProperty('--bq-scale',String(storedScale));

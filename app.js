@@ -480,9 +480,9 @@ function prepareInlineMessage(){
 }
 function groupedRenderCats(filter=''){
  const host=$('cats');
- const inline=prepareInlineMessage();
- // Keep the message card attached only after the user has explicitly opened a category.
- const messageWasOpen=!!inline.parentElement?.classList.contains('category-item');
+ const inline=inlineMessagePanel;
+ // Do not detach the live message node during initial rendering; generate() needs it in the DOM.
+ const messageWasOpen=!!inline?.parentElement?.classList.contains('category-item');
  host.innerHTML='';
  const q=filter.trim().toLocaleLowerCase(lang);
  let count=0,selectedItem=null;
@@ -865,8 +865,9 @@ function feedback(b){
  if(categoryId&&messages[categoryId])selected=categoryId;
  if(!messages[selected])selected='morning';
  const search=$('search');if(search)search.value='';
- goPage('home');groupedRenderCats('');
- const panel=$('inlineMessagePanel');
+ goPage('home');
+ const panel=prepareInlineMessage();
+ groupedRenderCats('');
  const target=$('cats')?.querySelector('.category-item[data-category-id="'+selected+'"]');
  if(panel&&target){target.append(panel);panel.hidden=false;panel.style.display='block'}
  requestAnimationFrame(()=>panel?.scrollIntoView({behavior:'auto',block:'nearest'}));

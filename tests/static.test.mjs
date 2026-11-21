@@ -162,7 +162,10 @@ test("Card Atelier renders high-resolution cards with robust multilingual layout
   assert.match(app, /const cardThemes=/);
   assert.match(app, /function renderCardPreview\(/);
   assert.match(worker, /\.filter\(Boolean\)\.join\("\\n"\)/);
-  for (const style of ["royal","rose","noor","midnight","minimal","mosaic","velvet","sand"]) assert.ok(app.includes(style));
+  for (const style of ["royal","rose","noor","midnight","minimal","mosaic","velvet","sand","pearl","emerald","copper","ink"]) assert.ok(app.includes(style));
+  assert.match(html, /id="cardSmartSuggest"/);
+  assert.match(app, /function suggestCardDesign\(\)/);
+  assert.match(app, /overflow:contentHeight>areaBottom-areaTop/);
 });
 test("daily kindness challenge is stable per local calendar day", () => {
   assert.match(app, /function renderDailyChallenge\(\)/);

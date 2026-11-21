@@ -26,6 +26,11 @@
 <main id="mainContent">
 <section class="panel page-section active-page" data-page="home">
 
+ <h2 id="roleTitle">اختر هويتك</h2>
+ <div class="roles">
+  <button class="role active" id="husband" data-role="husband" aria-pressed="true"><span class="ico">♛</span>أنا زوج</button>
+  <button class="role wife" id="wife" data-role="wife" aria-pressed="false"><span class="ico">♡</span>أنا زوجة</button>
+ </div>
  <div class="quick-hub" id="quickHub" aria-label="الوصول السريع">
   <div class="quick-hub-head"><span class="quick-eyebrow" id="quickEyebrow">ابدأ من هنا</span><h2 id="quickTitle">ماذا تحتاج الآن؟</h2><p id="quickDesc">اختر ما يناسب لحظتك، وسنوصلك مباشرة.</p></div>
   <div class="quick-grid">
@@ -35,11 +40,6 @@
    <button type="button" data-quick="rescue"><span class="quick-icon" data-icon="shield"></span><span class="quick-copy"><b data-quick-label="rescue">ساعدني في موقف</b><small data-quick-sub="rescue">خطوات هادئة وعملية</small></span><span class="quick-arrow">‹</span></button>
    <button type="button" data-quick="ai"><span class="quick-icon" data-icon="spark"></span><span class="quick-copy"><b data-quick-label="ai">اكتب رسالة بالذكاء الاصطناعي</b><small data-quick-sub="ai">رسالة جديدة على مقاسك</small></span><span class="quick-arrow">‹</span></button>
   </div>
- </div>
- <h2 id="roleTitle">اختر هويتك</h2>
- <div class="roles">
-  <button class="role active" id="husband" data-role="husband" aria-pressed="true"><span class="ico">♛</span>أنا زوج</button>
-  <button class="role wife" id="wife" data-role="wife" aria-pressed="false"><span class="ico">♡</span>أنا زوجة</button>
  </div>
 </section>
 <section class="panel page-section active-page" data-page="home">
@@ -179,7 +179,7 @@
  <p class="feature-note" id="notifyNote">إشعار رقيق واحد يومياً، ويمكنك إيقافه متى شئت.</p>
  <p class="feature-note" id="storageWarning" role="status" aria-live="polite" hidden></p>
  <div class="pro-tools panel-lite"><h3 id="appearanceTitle">المظهر والتخصيص</h3>
- <label id="paletteLabel" for="paletteSelect">الطابع</label><select id="paletteSelect"><option value="royal">ملكي خمري</option><option value="rose">وردي هادئ</option><option value="night">ليلي أنيق</option></select>
+ <label id="paletteLabel" for="paletteSelect">الطابع</label><select id="paletteSelect"><option value="blue">أزرق سماوي (للزوج)</option><option value="rose">وردي هادئ (للزوجة)</option><option value="royal">ملكي خمري</option><option value="night">ليلي أنيق</option></select>
  <label id="fontSizeLabel" for="fontScale">حجم الخط</label><input id="fontScale" type="range" min="0.9" max="1.2" step="0.05" value="1">
  <button id="shareAppBtn" class="wide" type="button">↗ شارك تطبيق بين قلبين</button>
  </div>

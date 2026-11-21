@@ -68,9 +68,20 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#lang").selectOption("ar");
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");
     await page.locator('#bottomNav button[data-go="home"]').click();
+    await page.locator("#wife").click();
+    assert.equal(await page.locator("#wife").getAttribute("aria-pressed"), "true");
+    await page.locator("#husband").click();
+    await page.locator("#search").fill("صباح");
+    await page.waitForTimeout(150);
+    assert.equal(await page.locator("#cats .cat").count(), 1, "category search should filter results");
+    await page.locator("#search").fill("");
+    await page.waitForTimeout(150);
+    assert.equal(await page.locator("#cats .cat").count(), 14);
 
     await page.locator("#favBtn").click();
     await page.locator('#bottomNav button[data-go="favorites"]').click();
+    await page.locator("#favorites .favitem").first().waitFor();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator("#favorites .favitem").first().waitFor();
 
     await page.locator('#bottomNav button[data-go="guide"]').click();
@@ -82,9 +93,14 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#bottomNav button[data-go="settings"]').click();
     await page.locator("#themeToggle").click();
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")));
+    await page.reload({ waitUntil: "domcontentloaded" });
+    assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")), "theme should persist after reload");
     await page.locator("#themeToggle").click();
     assert.ok(!(await page.locator("body").evaluate(el => el.classList.contains("dark-mode"))));
 
+    await page.setViewportSize({ width: 360, height: 800 });
+    const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
+    assert.ok(mobileWidth.document <= mobileWidth.viewport, `mobile layout must not overflow horizontally: ${JSON.stringify(mobileWidth)}`);
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
   } finally {
     await browser.close();

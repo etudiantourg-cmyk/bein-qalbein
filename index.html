@@ -12,10 +12,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=98">
+<link rel="stylesheet" href="./app.css?v=99">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
+<nav class="top-navigation" id="topNavigation" aria-label="التنقل الرئيسي">
+ <div class="top-brand-row">
+  <a class="top-brand" href="./" aria-label="بين قلبين برو - الرئيسية"><span class="top-brand-mark" aria-hidden="true">♡</span><span>بين قلبين <small>PRO</small></span></a>
+  <div class="top-tools">
+   <button type="button" id="topSearchBtn" class="top-tool-btn" aria-label="بحث" title="بحث"><span aria-hidden="true">⌕</span></button>
+   <button type="button" id="topThemeBtn" class="top-tool-btn" aria-label="تبديل الوضع الليلي" title="تبديل الوضع الليلي"><span aria-hidden="true">☾</span></button>
+  </div>
+ </div>
+ <div class="top-tabs" id="topNav" role="tablist" aria-label="أقسام التطبيق">
+  <button type="button" data-go="home" class="active" aria-current="page"><span aria-hidden="true">⌂</span><small id="navHome">الرئيسية</small></button>
+  <button type="button" data-go="favorites"><span aria-hidden="true">♡</span><small id="navFavorites">المفضلة</small></button>
+  <button type="button" data-go="guide"><span aria-hidden="true">❖</span><small id="navGuide">الدليل</small></button>
+  <button type="button" data-go="settings"><span aria-hidden="true">⚙</span><small id="navSettings">الإعدادات</small></button>
+ </div>
+</nav>
 <header class="couple-header">
  <div class="couple-hero-wrap">
  <div class="hero-title-overlay" aria-label="رسائل زوجية">رسائل زوجية</div>
@@ -179,15 +194,10 @@
  </div>
 </section>
 <p class="hint" id="hint">رسائل مودة واحترام ودعم، بكلمات راقية ومحتوى مناسب.</p>
-<nav class="bottom-nav" id="bottomNav" aria-label="التنقل الرئيسي">
- <button type="button" data-go="home" class="active" aria-current="page"><span>⌂</span><small id="navHome">الرئيسية</small></button>
- <button type="button" data-go="favorites"><span>♡</span><small id="navFavorites">المفضلة</small></button>
- <button type="button" data-go="guide"><span>❖</span><small id="navGuide">الدليل</small></button>
- <button type="button" data-go="settings"><span>⚙</span><small id="navSettings">الإعدادات</small></button>
-</nav>
+
 </main>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=98" defer></script>
+<script src="./app.js?v=99" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

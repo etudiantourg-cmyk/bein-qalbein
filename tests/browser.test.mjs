@@ -136,6 +136,17 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
     assert.ok(mobileWidth.document <= mobileWidth.viewport, `mobile layout must not overflow horizontally: ${JSON.stringify(mobileWidth)}`);
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
+    const fallbackPage = await browser.newPage({ serviceWorkers: "block" });
+    await fallbackPage.addInitScript(() => {
+      Storage.prototype.setItem = function () { throw new DOMException("Storage unavailable", "QuotaExceededError"); };
+    });
+    await fallbackPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
+    await fallbackPage.locator("#cats .cat").first().waitFor();
+    await fallbackPage.locator("#favBtn").click();
+    await fallbackPage.locator('#bottomNav button[data-go="settings"]').click();
+    assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
+    assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
+    await fallbackPage.close();
   } finally {
     await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));

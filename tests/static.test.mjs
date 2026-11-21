@@ -31,7 +31,7 @@ test("external app assets parse and HTML IDs are unique", () => {
 });
 
 test("core features, AI studio and safe message display are present", () => {
-  for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
+  for (const id of ["quickHub", "cats", "message", "favorites", "aiGenerateBtn", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
     assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(app, /function displayMessageInMain/);
@@ -41,19 +41,19 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(html, /<textarea id="aiOutput"/);
   assert.match(aiStudio, /displayMessageInMain\(finalMessage/);
   assert.match(app, /function validBackupValue/);
-  assert.match(aiStudio, /endsWith\('\.workers\.dev'\)/);
+  assert.match(aiStudio, /const ENDPOINT=/);
   assert.match(aiStudio, /optionLabels/);
   assert.match(aiStudio, /aiPrivacyNote/);
-  assert.match(aiStudio, /Live generation test passed/);
+  assert.doesNotMatch(html, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|aiConnectionState|ai-connection|إعداد الاتصال بمحرك/);
   assert.ok(aiStudio.includes("url+'/generate'"));
   assert.ok(app.includes("Unified interaction router"));
-  assert.match(aiStudio, /Your situation details are sent to Cloudflare AI/);
-  assert.match(aiStudio, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
+  assert.match(aiStudio, /Your situation description is sent to the AI service/);
+  assert.match(aiStudio, /يُرسل وصف الموقف إلى خدمة الذكاء الاصطناعي/);
   assert.match(aiStudio, /aiSafetyNote/);
   assert.match(aiStudio, /rateLimited:/);
   assert.match(aiStudio, /safetyRejected:/);
   assert.match(aiStudio, /engineUnavailable:/);
-  assert.match(aiStudio, /bq_ai_language_manual/);
+  assert.match(aiStudio, /bq_ai_language_manual/);\n  assert.doesNotMatch(aiStudio, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|bq_ai_endpoint|Cloudflare Worker|رابط المحرك/);
   assert.match(aiStudio, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 

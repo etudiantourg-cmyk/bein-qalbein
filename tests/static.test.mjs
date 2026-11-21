@@ -133,3 +133,14 @@ test("competing legacy click routers and inline bindings stay removed", () => {
     assert.ok(!app.includes(oldHandler), `obsolete handler remains: ${oldHandler}`);
   }
 });
+
+test("image-card wrapping uses whitespace and worker text arrays use real newlines", () => {
+  assert.match(app, /current\.trim\(\)\.split\(\/\\s\+\/u\)/);
+  assert.doesNotMatch(app, /current\.split\(\/\\\\s\+\//);
+  assert.match(worker, /\.filter\(Boolean\)\.join\("\\n"\)/);
+});
+test("daily kindness challenge is stable per local calendar day", () => {
+  assert.match(app, /function renderDailyChallenge\(\)/);
+  assert.match(app, /day=now\.getFullYear\(\)\*10000\+\(now\.getMonth\(\)\+1\)\*100\+now\.getDate\(\)/);
+  assert.match(app, /newChallenge'\)\.onclick=nextKindness;renderDailyChallenge\(\)/);
+});

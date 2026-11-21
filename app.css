@@ -613,3 +613,29 @@ body[data-current-page="guide"] .home-shortcut-content{display:block!important}
 body[data-current-page="home"] .home-top-shortcuts{
  margin-top:0!important;
 }
+
+
+/* Copy protection for navigation chrome only: page content and explicit copy actions remain available. */
+#topNavigation,
+#topNavigation *,
+#settingsDrawer .settings-drawer-heading,
+#settingsDrawer .settings-drawer-heading *,
+#settingsDrawer .settings-drawer-content > label,
+#settingsDrawer .settings-drawer-content > .feature-controls,
+#settingsDrawer .settings-drawer-content > .feature-controls *,
+#settingsDrawer .settings-drawer-content > .feature-note,
+#settingsDrawer .settings-drawer-content > .pro-tools,
+#settingsDrawer .settings-drawer-content > .pro-tools *{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none;
+}
+/* Keep editable settings fields usable, and do not affect copy buttons in page content. */
+#settingsDrawer input,
+#settingsDrawer textarea,
+#settingsDrawer select,
+#settingsDrawer option{
+  -webkit-user-select:text!important;
+  user-select:text!important;
+  -webkit-touch-callout:default;
+}

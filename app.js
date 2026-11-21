@@ -1083,7 +1083,7 @@ function advanceMiniGame(){
   const key=button.id==='homeGuideShortcut'?'guide':button.dataset.homeGo;
   if(!key)return;
   const alreadyOpen=!host.hidden&&!panes[key].hidden;
-  if(alreadyOpen){host.hidden=true;Object.values(panes).forEach(p=>p.hidden=true);strip.querySelectorAll('.home-shortcut').forEach(b=>{b.classList.remove('is-selected');b.setAttribute('aria-expanded','false')});if(favNav)favNav.hidden=true;return;}
+  if(alreadyOpen){resetView();return;}
   activate(key);
  }));
 })();

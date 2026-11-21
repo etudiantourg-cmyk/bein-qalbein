@@ -158,7 +158,12 @@ function renderSavedCards(hostId,list,kind){
   const title=document.createElement('h4');title.textContent=item.title||item.question||item.text;
   const body=document.createElement('p');body.textContent=item.summary||item.answer||item.text;
   const del=document.createElement('button');del.type='button';del.textContent='إزالة من المفضلة';
-  del.addEventListener('click',()=>{list.splice(index,1);const key={advice:'bq_favorite_tips',books:'bq_favorite_books',games:'bq_favorite_games'}[kind];if(persistFavoriteList(key,list))renderFavoriteCollections()});
+  del.addEventListener('click',()=>{
+   const source=kind==='advice'?favoriteTips:kind==='games'?favoriteGames:favoriteBooks;
+   source.splice(index,1);
+   const key={advice:'bq_favorite_tips',books:'bq_favorite_books',games:'bq_favorite_games'}[kind];
+   if(persistFavoriteList(key,source))renderFavoriteCollections();
+  });
   row.append(title,body,del);host.append(row);
  });
 }

@@ -857,3 +857,45 @@ applyLanguage=function(){
 };
 if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 
+
+
+/* Settings open as an overlay drawer; never replace the current page. */
+(function(){
+ const drawer=$('settingsDrawer');
+ const trigger=document.querySelector('[data-menu-toggle]');
+ if(!drawer||!trigger)return;
+ const panel=drawer.querySelector('.settings-drawer-panel');
+ let previousFocus=null;
+ function setOpen(open){
+  if(open){
+   if(!drawer.hidden)return;
+   previousFocus=document.activeElement;
+   drawer.hidden=false;
+   trigger.setAttribute('aria-expanded','true');
+   document.body.classList.add('settings-drawer-open');
+   requestAnimationFrame(()=>{drawer.classList.add('is-open');panel?.focus();});
+   updateStorageStatus();
+  }else{
+   if(drawer.hidden)return;
+   drawer.classList.remove('is-open');
+   trigger.setAttribute('aria-expanded','false');
+   document.body.classList.remove('settings-drawer-open');
+   drawer.hidden=true;
+   if(previousFocus?.isConnected)previousFocus.focus();
+   else trigger.focus();
+  }
+ }
+ trigger.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setOpen(true)});
+ drawer.addEventListener('click',e=>{if(e.target.closest('[data-settings-close]')||e.target.closest('#settingsCloseBtn')){e.preventDefault();setOpen(false)}});
+ document.addEventListener('keydown',e=>{
+  if(drawer.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();setOpen(false);return}
+  if(e.key==='Tab'&&panel){
+   const items=[...panel.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);
+   if(!items.length){e.preventDefault();panel.focus();return}
+   const first=items[0],last=items[items.length-1];
+   if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+   else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+  }
+ });
+})();

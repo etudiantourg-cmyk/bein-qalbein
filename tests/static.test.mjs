@@ -102,6 +102,16 @@ test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(app, /data\.error&&status/);
 });
 
+test("category taps always generate a visible message, including the initially selected category", () => {
+  const grouped = app.slice(app.indexOf("function groupedRenderCats"), app.indexOf("function goPage"));
+  assert.match(grouped, /messageWasOpen=!!inline\.parentElement\?\.classList\.contains\('category-item'\)/);
+  assert.match(grouped, /if\(messageWasOpen&&selectedItem\)\{selectedItem\.append\(inline\)/);
+  const router = app.slice(app.indexOf("b=t.closest('#cats button.cat')"), app.indexOf("b=t.closest('#smartChips"));
+  assert.match(router, /if\(!id\|\|!messages\[id\]\)return/);
+  assert.match(router, /selected=id;generate\(\)/);
+  assert.doesNotMatch(router, /if\(selected===id&&p\.parentElement===item\)/);
+});
+
 test("competing legacy click routers and inline bindings stay removed", () => {
   assert.ok(app.includes("Unified interaction router"));
   assert.ok(app.includes("#bottomNav button[data-go]"));

@@ -248,3 +248,9 @@ test("top navigation uses strong identity colors with high-contrast labels", () 
   assert.match(css, /\.top-navigation \.top-tabs button\.active:after\{background:#f1d59b\}/);
   assert.doesNotMatch(css, /body\.dark-mode \.top-navigation,body\.theme-night \.top-navigation\{background:rgba/);
 });
+
+test("official app icon is displayed in the top brand header", () => {
+  assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
+  assert.match(css, /\.top-brand-logo\{[^}]*width:40px/);
+  assert.match(manifest.icons.some(icon => icon.src === "icon.svg"), /true/);
+});

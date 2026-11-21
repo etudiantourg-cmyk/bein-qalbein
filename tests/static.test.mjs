@@ -154,10 +154,15 @@ test("competing legacy click routers and inline bindings stay removed", () => {
   }
 });
 
-test("image-card wrapping uses whitespace and worker text arrays use real newlines", () => {
-  assert.match(app, /current\.trim\(\)\.split\(\/\\s\+\/u\)/);
-  assert.doesNotMatch(app, /current\.split\(\/\\\\s\+\//);
+test("Card Atelier renders high-resolution cards with robust multilingual layout", () => {
+  assert.match(app, /function cardWrap\(/);
+  assert.match(app, /Intl\.Segmenter/);
+  assert.match(app, /function drawCardArtwork\(/);
+  assert.match(app, /drawCardArtwork\(canvas,2\)/);
+  assert.match(app, /const cardThemes=/);
+  assert.match(app, /function renderCardPreview\(/);
   assert.match(worker, /\.filter\(Boolean\)\.join\("\\n"\)/);
+  for (const style of ["royal","rose","noor","midnight","minimal","mosaic","velvet","sand"]) assert.ok(app.includes(style));
 });
 test("daily kindness challenge is stable per local calendar day", () => {
   assert.match(app, /function renderDailyChallenge\(\)/);

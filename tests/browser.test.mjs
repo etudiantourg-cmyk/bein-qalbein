@@ -103,7 +103,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#favoriteBooksList").getByText("فن الحوار الهادئ").waitFor();
     await page.locator('[data-fav-tab="messages"]').click();
     await page.locator('#topNav button[data-go="guide"]').click();
-    await page.locator("#bqIdentityHusbandTips").click();
+    await page.locator("#husbandTips").click();
     await page.locator('#adviceList [data-save-tip]').first().click();
     await page.locator("#closeAdvice").click();
     await openFavorites();
@@ -254,7 +254,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#favorites .favitem").first().waitFor();
 
     await page.locator('#topNav button[data-go="guide"]').click();
-    await page.locator("#bqIdentityHusbandTips").click();
+    await page.locator("#husbandTips").click();
     await page.locator("#adviceModal:not(.hidden)").waitFor();
     await auditAccessibility("marriage guide dialog");
     assert.ok((await page.locator("#adviceList").innerText()).trim().length > 0);

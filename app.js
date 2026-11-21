@@ -52,6 +52,13 @@ function updateStorageStatus(){
 }
 if(!['ar','en','fr'].includes(lang))lang='ar';
 try{const storedFavs=JSON.parse(bqStorage.getItem('bq_favorites')||'[]');favs=Array.isArray(storedFavs)?[...new Set(storedFavs.filter(x=>typeof x==='string'))].slice(0,1000):[]}catch(e){favs=[]}
+function loadFavoriteList(key){try{const value=JSON.parse(bqStorage.getItem(key)||'[]');return Array.isArray(value)?value:[]}catch(_){return []}}
+let favoriteTips=loadFavoriteList('bq_favorite_tips').filter(x=>x&&typeof x.text==='string'&&['husband','wife'].includes(x.audience)).slice(0,500);
+let favoriteBooks=loadFavoriteList('bq_favorite_books').filter(x=>x&&typeof x.id==='string'&&typeof x.title==='string'&&typeof x.summary==='string').slice(0,100);
+let favoriteGames=loadFavoriteList('bq_favorite_games').filter(x=>x&&typeof x.question==='string'&&typeof x.answer==='string').slice(0,100);
+let activeFavoriteTab='messages';
+function persistFavoriteList(key,list){try{bqStorage.setItem(key,JSON.stringify(list));return true}catch(_){alert('تعذر الحفظ في مساحة المتصفح.');return false}}
+
 function saveFavs(){try{bqStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
 /* Categories use the grouped, accessible renderer defined in the current app flow. */
 function generate(){
@@ -143,9 +150,66 @@ function showFavs(){
  if(!favs.length){const p=document.createElement('p');p.className='empty';p.textContent=t.empty;box.append(p);return}
  favs.forEach((item,i)=>{const row=document.createElement('div');row.className='favitem';const p=document.createElement('div');p.textContent=item;const cp=document.createElement('button');cp.type='button';cp.textContent=lang==='ar'?'نسخ':lang==='en'?'Copy':'Copier';cp.onclick=()=>copyText(item);const del=document.createElement('button');del.type='button';del.textContent=t.delete;del.onclick=()=>{favs.splice(i,1);saveFavs();showFavs()};row.append(p,cp,del);box.append(row)});
 }
+function renderSavedCards(hostId,list,kind){
+ const host=$(hostId);host.innerHTML='';
+ if(!list.length){const p=document.createElement('p');p.className='empty';p.textContent='لا توجد عناصر محفوظة في هذا القسم بعد.';host.append(p);return}
+ list.forEach((item,index)=>{
+  const row=document.createElement('article');row.className='saved-collection-item';
+  const title=document.createElement('h4');title.textContent=item.title||item.question||item.text;
+  const body=document.createElement('p');body.textContent=item.summary||item.answer||item.text;
+  const del=document.createElement('button');del.type='button';del.textContent='إزالة من المفضلة';
+  del.addEventListener('click',()=>{list.splice(index,1);const key={advice:'bq_favorite_tips',books:'bq_favorite_books',games:'bq_favorite_games'}[kind];if(persistFavoriteList(key,list))renderFavoriteCollections()});
+  row.append(title,body,del);host.append(row);
+ });
+}
+function renderFavoriteCollections(){
+ showFavs();
+ renderSavedCards('favoriteTipsList',favoriteTips.map(x=>({title:x.audience==='wife'?'نصيحة للزوجة':'نصيحة للزوج',text:x.text})), 'advice');
+ renderSavedCards('favoriteBooksList',favoriteBooks,'books');
+ renderSavedCards('favoriteGamesList',favoriteGames.map(x=>({title:x.question,answer:x.answer+(x.why?' — '+x.why:'')})),'games');
+}
+function setFavoriteTab(tab){
+ if(!['messages','advice','books','games'].includes(tab))tab='messages';
+ activeFavoriteTab=tab;
+ document.querySelectorAll('[data-fav-tab]').forEach(b=>{const active=b.dataset.favTab===tab;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+ document.querySelectorAll('[data-fav-panel]').forEach(p=>p.hidden=p.dataset.favPanel!==tab);
+ const titles={messages:'رسائلك المفضلة',advice:'نصائحك المفضلة',books:'كتبك المفضلة',games:'ألعابك المفضلة'};
+ $('favTitle').textContent=titles[tab];
+ renderFavoriteCollections();
+}
+document.querySelectorAll('[data-fav-tab]').forEach(b=>b.addEventListener('click',()=>setFavoriteTab(b.dataset.favTab)));
+function saveFavoriteTip(text,audience){
+ if(!text||!['husband','wife'].includes(audience))return;
+ if(!favoriteTips.some(x=>x.text===text&&x.audience===audience)){favoriteTips.unshift({text,audience});favoriteTips=favoriteTips.slice(0,500);persistFavoriteList('bq_favorite_tips',favoriteTips)}
+ renderAdviceForLanguage();renderSavedCards('favoriteTipsList',favoriteTips.map(x=>({title:x.audience==='wife'?'نصيحة للزوجة':'نصيحة للزوج',text:x.text})),'advice');
+}
+const bookCatalog={
+ 'kind-dialogue':{id:'kind-dialogue',title:'فن الحوار الهادئ',summary:'مبادئ الإصغاء، اختيار الوقت المناسب، التعبير عن الاحتياج دون لوم، وإنهاء الحوار باتفاق واضح.'},
+ 'daily-kindness':{id:'daily-kindness',title:'المودة في التفاصيل اليومية',summary:'أفكار صغيرة للتقدير، والكلمة الطيبة، وتقاسم المسؤوليات، وصناعة لحظات امتنان متجددة.'},
+ 'repair-trust':{id:'repair-trust',title:'ترميم الثقة بعد الخلاف',summary:'خطوات عملية للاعتذار الصادق، والوفاء بالوعود، وتجنب تكرار الأذى، وبناء الأمان بالتدرج.'},
+ 'shared-life':{id:'shared-life',title:'شراكة الحياة والمسؤولية',summary:'التعاون في شؤون البيت، والإنصاف في توزيع الأعباء، واحترام الاختلاف، والتخطيط المشترك.'}
+};
+function saveFavoriteBook(id){
+ const book=bookCatalog[id];if(!book)return;
+ if(!favoriteBooks.some(x=>x.id===id)){favoriteBooks.unshift(book);favoriteBooks=favoriteBooks.slice(0,100);persistFavoriteList('bq_favorite_books',favoriteBooks)}
+ const b=document.querySelector('[data-save-book="'+id+'"]');if(b)b.textContent='✓ محفوظ في المفضلة';
+}
+function saveFavoriteGame(){
+ const q=miniGameQuestions[miniGameIndex];if(!q)return;
+ if(!favoriteGames.some(x=>x.question===q.q)){favoriteGames.unshift({question:q.q,answer:q.a[q.correct],why:q.why});favoriteGames=favoriteGames.slice(0,100);persistFavoriteList('bq_favorite_games',favoriteGames)}
+ $('saveGameBtn').textContent='✓ اللعبة محفوظة';
+ renderSavedCards('favoriteGamesList',favoriteGames.map(x=>({title:x.question,answer:x.answer+(x.why?' — '+x.why:'')})),'games');
+}
+
 function renderAdviceForLanguage(){
  const t=lang==='ar'?null:i18n[lang];const list=lang==='ar'?(activeAdvice==='wife'?wifeAdvice:husbandAdvice):(activeAdvice==='wife'?t.adviceW:t.adviceH);
- $('adviceList').innerHTML='';list.forEach((tip,i)=>{const d=document.createElement('div');d.className='advice-item';d.textContent=(i+1)+'. '+tip;$('adviceList').append(d)});
+ $('adviceList').innerHTML='';list.forEach((tip,i)=>{
+  const d=document.createElement('div');d.className='advice-item';
+  const p=document.createElement('p');p.textContent=(i+1)+'. '+tip;
+  const save=document.createElement('button');save.type='button';save.className='save-tip-btn';save.dataset.saveTip='';save.dataset.tipAudience=activeAdvice;save.dataset.tipText=tip;
+  save.textContent=favoriteTips.some(x=>x.text===tip&&x.audience===activeAdvice)?'✓ محفوظة':'♡ احفظ النصيحة';
+  d.append(p,save);$('adviceList').append(d);
+ });
  $('adviceModalTitle').textContent=activeAdvice==='wife'?languageText[lang].wifeAdvice:languageText[lang].husbandAdvice;
  $('husbandTips').classList.toggle('active',activeAdvice==='husband');$('wifeTips').classList.toggle('active',activeAdvice==='wife');
 }
@@ -173,6 +237,7 @@ function openAdvice(which){activeAdvice=which;renderAdviceForLanguage();$('advic
 $('husbandTips').onclick=()=>openAdvice('husband');$('wifeTips').onclick=()=>openAdvice('wife');
 $('closeAdvice').onclick=()=>{$('adviceModal').classList.add('hidden');document.body.style.overflow=''};
 $('adviceModal').addEventListener('click',e=>{if(e.target===$('adviceModal'))$('closeAdvice').click()});
+$('adviceList').addEventListener('click',e=>{const b=e.target.closest('[data-save-tip]');if(b)saveFavoriteTip(b.dataset.tipText,b.dataset.tipAudience)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('adviceModal').classList.contains('hidden'))$('closeAdvice').click()});
 $('showFav').onclick=()=>{$('favorites').classList.remove('hidden');showFavs()};
 $('hideFav').onclick=()=>$('favorites').classList.add('hidden');
@@ -236,9 +301,9 @@ function groupedRenderCats(filter=''){
 function goPage(page){
  const allowed=['home','library','favorites','guide','games'];
  if(!allowed.includes(page))page='home';
- const contentPage=page==='library'?'home':page;
+ document.body.dataset.currentPage=page;
  document.querySelectorAll('.page-section').forEach(section=>{
-  const active=section.dataset.page===contentPage;
+  const active=section.dataset.page===page;
   section.classList.toggle('active-page',active);
   section.setAttribute('aria-hidden',String(!active));
   section.inert=!active;
@@ -248,10 +313,10 @@ function goPage(page){
   button.classList.toggle('active',active);
   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
  });
+ $('favoritesSubnav').hidden=page!=='favorites';
  try{bqStorage.setItem('bq_last_page',page)}catch(_){}
  window.scrollTo({top:0,behavior:'auto'});
- if(page==='library')requestAnimationFrame(()=>$('catTitle')?.scrollIntoView({behavior:'auto',block:'start'}));
- if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
+ if(page==='favorites'){setFavoriteTab(activeFavoriteTab);renderHistory();renderCustomNotes()}
  if(page==='games')setTimeout(renderMiniGame,0);
  if(page==='settings')updateStorageStatus();
 }
@@ -546,7 +611,7 @@ const oldShowFavs=showFavs;
 showFavs=function(){oldShowFavs();const chosen=$('favoriteFolder')?.value||'all';$('favorites').querySelectorAll('.favitem').forEach((node,i)=>{const value=favs[i];const folder=favFolders[value]||'love';node.style.display=chosen==='all'||chosen===folder?'':'none'})};
 $('favoriteFolder').onchange=showFavs;
 $('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang==='ar'?'أضف الرسالة إلى المفضلة أولاً.':'Save this message to favorites first.');return}favFolders[current]=$('favoriteFolder').value==='all'?'love':$('favoriteFolder').value;bqStorage.setItem('bq_favorite_folders',JSON.stringify(favFolders));showFavs()};
-const backupKeys=['bq_role','bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_ai_language','bq_ai_language_manual'];
+const backupKeys=['bq_role','bq_favorites','bq_favorite_tips','bq_favorite_books','bq_favorite_games','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_ai_language','bq_ai_language_manual'];
 function validBackupValue(key,raw){
  if(typeof raw!=='string'||raw.length>1500000)return false;
  if(key==='bq_role')return ['husband','wife'].includes(raw);
@@ -560,6 +625,10 @@ function validBackupValue(key,raw){
  if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
  let value;try{value=JSON.parse(raw)}catch(_){return false}
  if(key==='bq_favorites')return Array.isArray(value)&&value.length<=1000&&value.every(x=>typeof x==='string'&&x.length<=10000);
+ if(key==='bq_favorite_tips')return Array.isArray(value)&&value.length<=500&&value.every(x=>x&&typeof x.text==='string'&&x.text.length<=5000&&['husband','wife'].includes(x.audience));
+ if(key==='bq_favorite_books')return Array.isArray(value)&&value.length<=100&&value.every(x=>x&&typeof x.id==='string'&&typeof x.title==='string'&&typeof x.summary==='string');
+ if(key==='bq_favorite_games')return Array.isArray(value)&&value.length<=100&&value.every(x=>x&&typeof x.question==='string'&&typeof x.answer==='string');
+
  if(key==='bq_recent_messages')return Array.isArray(value)&&value.length<=12&&value.every(x=>typeof x==='string'&&x.length<=1800);
  if(key==='bq_custom_notes')return Array.isArray(value)&&value.length<=100&&value.every(x=>typeof x==='string'&&x.length<=10000);
  if(key==='bq_favorite_folders')return value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length<=1000&&Object.entries(value).every(([k,v])=>k.length<=10000&&['love','support','prayer','special'].includes(v));
@@ -843,6 +912,9 @@ window.displayMessageInMain=displayMessageInMain;
   if(t.closest('#useBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v){useMessage(v);$('message')?.scrollIntoView({behavior:'auto',block:'center'})}else $('builtMessage')?.focus();return}
   if(t.closest('#copyBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v)copyText(v);return}
   if(t.closest('#rescueGenerate')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();showRescue();const r=$('rescueResult');if(r){r.classList.add('rescue-ready');r.scrollIntoView({behavior:'auto',block:'nearest'})}return}
+  b=t.closest('[data-save-book]');
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();saveFavoriteBook(b.dataset.saveBook);return}
+  if(t.closest('#saveGameBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();saveFavoriteGame();return}
   b=t.closest('#gameAnswers button[data-game-answer]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();answerMiniGame(Number(b.dataset.gameAnswer));return}
   if(t.closest('#nextGameQuestion')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();advanceMiniGame();return}
@@ -890,7 +962,7 @@ function answerMiniGame(index){
  miniGameAnswered=true;const buttons=[...$('gameAnswers').querySelectorAll('button')];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add('correct-answer');else if(i===index)b.classList.add('wrong-answer')});
  if(index===q.correct)miniGameScore++;
  $('gameScore').textContent=String(miniGameScore);
- $('gameFeedback').textContent=(index===q.correct?'أحسنت! ':'ليس تماماً. ')+q.why;
+ $('gameFeedback').textContent=(index===q.correct?'أحسنت! ':'ليس تماماً. ')+q.why;$('saveGameBtn').textContent='♡ احفظ اللعبة';
  $('nextGameQuestion').textContent=miniGameIndex===miniGameQuestions.length-1?'العب من جديد':'السؤال التالي';
  $('nextGameQuestion').hidden=false;
 }

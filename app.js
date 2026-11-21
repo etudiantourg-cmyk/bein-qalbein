@@ -387,6 +387,7 @@ $('exportData').onclick=()=>{
 };
 $('importData').onchange=async e=>{
  const file=e.target.files?.[0];if(!file)return;
+ let rollbackFailed=false;
  try{
   if(file.size>2*1024*1024)throw Error('size');
   const data=JSON.parse(await file.text());
@@ -394,12 +395,33 @@ $('importData').onchange=async e=>{
   const staged={};
   backupKeys.forEach(k=>{if(Object.prototype.hasOwnProperty.call(data.data,k)){const raw=data.data[k];if(!validBackupValue(k,raw))throw Error('invalid '+k);staged[k]=raw}});
   if(!Object.keys(staged).length)throw Error('empty');
+  if(!bqStorage.persistent)throw Error('storage-unavailable');
   const previous={};Object.keys(staged).forEach(k=>previous[k]=bqStorage.getItem(k));
-  try{Object.entries(staged).forEach(([k,v])=>bqStorage.setItem(k,v))}
-  catch(error){Object.entries(previous).forEach(([k,v])=>{try{if(v===null)bqStorage.removeItem(k);else bqStorage.setItem(k,v)}catch(_){}});throw error}
+  try{
+   for(const [k,v] of Object.entries(staged)){
+    bqStorage.setItem(k,v);
+    if(!bqStorage.persistent||bqStorage.getItem(k)!==v)throw Error('storage-unavailable');
+   }
+  }catch(error){
+   try{
+    for(const [k,v] of Object.entries(previous))if(v===null)bqStorage.removeItem(k);
+    for(const [k,v] of Object.entries(previous))if(v!==null)bqStorage.setItem(k,v);
+    for(const [k,v] of Object.entries(previous))if(bqStorage.getItem(k)!==v)rollbackFailed=true;
+   }catch(_){rollbackFailed=true}
+   if(rollbackFailed)throw Error('rollback-incomplete');
+   throw error;
+  }
   alert(lang==='ar'?'تمت استعادة النسخة الاحتياطية والتحقق من بياناتها. سيُعاد تحميل التطبيق الآن.':'Backup validated and restored. The app will now reload.');
   location.reload();
- }catch(_){alert(lang==='ar'?'لم تُستعد النسخة: الملف تالف أو يحتوي بيانات غير صالحة. لم نغيّر بياناتك الحالية.':'Backup was not restored: the file is invalid. Your current data was left unchanged.')}
+ }catch(error){
+  const reason=error?.message;
+  const message=reason==='storage-unavailable'
+   ?(lang==='ar'?'تعذرت الاستعادة لأن التخزين الدائم غير متاح أو ممتلئ. لم نُعد تحميل الصفحة ولم نُلغِ بياناتك الحالية.':'Restore stopped because persistent browser storage is unavailable or full. The page was not reloaded and your current data was preserved.')
+   :reason==='rollback-incomplete'
+   ?(lang==='ar'?'توقفت الاستعادة وتعذر التحقق من التراجع الكامل. لا تغلق الصفحة؛ صدّر نسخة احتياطية من البيانات الحالية أولاً.':'Restore stopped and rollback could not be fully verified. Keep this page open and export your current data before leaving.')
+   :(lang==='ar'?'لم تُستعد النسخة: الملف تالف أو يحتوي بيانات غير صالحة. لم نغيّر بياناتك الحالية.':'Backup was not restored: the file is invalid. Your current data was left unchanged.');
+  alert(message);
+ }
  e.target.value='';
 };
 function updatePalette(value){document.body.classList.remove('theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+value);bqStorage.setItem('bq_palette',value)}

@@ -1058,6 +1058,14 @@ function advanceMiniGame(){
   if(key==='favorites'){if(typeof renderHistory==='function')renderHistory();if(typeof renderCustomNotes==='function')renderCustomNotes();}
   if(key==='ai')ai.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
+ const homeReset=strip.querySelector('[data-home-reset]');
+ if(homeReset)homeReset.addEventListener('click',()=>{
+  host.hidden=true;
+  Object.values(panes).forEach(p=>p.hidden=true);
+  strip.querySelectorAll('.home-shortcut').forEach(button=>{button.classList.remove('is-selected');button.setAttribute('aria-expanded','false')});
+  if(favNav)favNav.hidden=true;
+  window.scrollTo({top:0,behavior:'smooth'});
+ });
  strip.querySelectorAll('.home-shortcut').forEach(button=>button.addEventListener('click',()=>{
   const key=button.id==='homeGuideShortcut'?'guide':button.dataset.homeGo;
   if(!key)return;

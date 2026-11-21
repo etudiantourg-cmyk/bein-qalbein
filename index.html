@@ -1248,7 +1248,7 @@ function goPage(page){
  window.scrollTo({top:0,behavior:'auto'});
  if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
 }
-document.querySelectorAll('.bottom-nav button').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.go)));
+/* Bottom navigation is handled by the single delegated router below. */
 function rememberMessage(value){
  if(!value)return;let list=[];try{list=JSON.parse(localStorage.getItem('bq_recent_messages')||'[]')}catch(_){}
  list=[value,...list.filter(x=>x!==value)].slice(0,12);
@@ -1501,34 +1501,6 @@ goPage=function(page){
 
 applyLanguage();
 
-/* V40 HOTFIX: reliable category tap handling and visible inline message panel */
-(function(){
- const host=$('cats');if(!host)return;
- host.addEventListener('click',function(ev){
-  const btn=ev.target.closest('button.cat');if(!btn||!host.contains(btn))return;
-  ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
-  const item=btn.closest('.category-item');const id=item&&item.dataset.categoryId;
-  if(!id)return;
-  const panel=prepareInlineMessage();
-  if(selected===id&&panel.parentElement===item){
-   panel.remove();selected=null;
-   host.querySelectorAll('.cat').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-expanded','false')});
-   return;
-  }
-  selected=id;
-  generate();
-  host.querySelectorAll('.cat').forEach(x=>{
-   const active=x.closest('.category-item')?.dataset.categoryId===id;
-   x.classList.toggle('active',active);x.setAttribute('aria-expanded',active?'true':'false');
-  });
-  item.append(panel);
-  panel.hidden=false;
-  panel.style.display='block';
-  requestAnimationFrame(()=>panel.scrollIntoView({behavior:'auto',block:'nearest'}));
- },true);
-})();
-
-
 /* V41 — quick hub, progressive disclosure, and language-safe labels */
 (function(){
  const translations={
@@ -1565,18 +1537,6 @@ applyLanguage();
   [...box.children].forEach(child=>{if(child!==box.querySelector('h2')&&child!==b)child.hidden=!open});
   updateQuickLanguage();
  }
- function goQuick(action){
-  if(action==='surprise'){
-   goPage('home');const b=$('surpriseBtn');if(b)b.click();return;
-  }
-  if(action==='categories'){goPage('home');$('catTitle')?.scrollIntoView({behavior:'auto',block:'start'});return}
-  const id=action==='builder'?'messageBuilder':'rescueCenter';
-  goPage('home');toggleTool(id,true);
-  requestAnimationFrame(()=>$(id)?.scrollIntoView({behavior:'auto',block:'center'}));
- }
- document.getElementById('quickHub')?.addEventListener('click',e=>{
-  const b=e.target.closest('[data-quick]');if(b)goQuick(b.dataset.quick);
- });
  const previousApplyLanguage=applyLanguage;
  applyLanguage=function(){previousApplyLanguage();updateQuickLanguage()};
  setupDisclosures();
@@ -1601,127 +1561,14 @@ applyLanguage();
 })();
 
 
-/* V43 — interaction reliability pass based on real interface review.
-   Smart shortcuts now have one delegated, deterministic action. The repair plan is
-   generated on demand so its main button always produces a visible result. */
+/* Rescue feedback state: one click owner lives in the unified router below. */
 (function(){
- const chipHost=$('smartChips');
- if(chipHost){
-  chipHost.addEventListener('click',function(ev){
-   const b=ev.target.closest('button[data-pick]');
-   if(!b||!chipHost.contains(b))return;
-   ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
-   const id=b.dataset.pick;
-   if(!messages[id])return;
-   selected=id;
-   generate();
-   chipHost.querySelectorAll('button[data-pick]').forEach(x=>{
-    const active=x===b;x.classList.toggle('active',active);
-    x.setAttribute('aria-pressed',String(active));
-   });
-   const category=$('cats')?.querySelector('[data-category-id="'+id+'"] .cat');
-   if(category){
-    $('cats').querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x===category));
-   }
-   $('message')?.scrollIntoView({behavior:'auto',block:'center'});
-  },true);
- }
- const rescueResult=$('rescueResult');
- const rescueButton=$('rescueGenerate');
- const rescueSelect=$('rescueSituation');
- const intro={
-  ar:'اختر الموقف ثم اضغط «اعرض خطة هادئة» للحصول على خطوات عملية ورسالة افتتاحية.',
-  en:'Choose a situation, then tap “Show a calm plan” to get practical steps and an opening message.',
-  fr:'Choisissez une situation, puis appuyez sur « Afficher un plan calme » pour obtenir des étapes pratiques.'
- };
- let rescueReady=false;
- function resetRescue(){
-  rescueReady=false;
-  if(rescueResult){rescueResult.textContent=intro[lang]||intro.ar;rescueResult.classList.remove('rescue-ready')}
- }
- if(rescueResult)rescueResult.setAttribute('aria-live','polite');
- if(rescueSelect)rescueSelect.addEventListener('change',resetRescue);
- if(rescueButton){
-  rescueButton.addEventListener('click',function(){
-   showRescue();
-   rescueReady=true;
-   if(rescueResult)rescueResult.classList.add('rescue-ready');
-   const old=rescueButton.textContent;
-   rescueButton.setAttribute('aria-pressed','true');
-   rescueButton.textContent=lang==='en'?'Plan displayed ✓':lang==='fr'?'Plan affiché ✓':'ظهرت الخطة ✓';
-   if(rescueResult)rescueResult.scrollIntoView({behavior:'auto',block:'nearest'});
-   setTimeout(()=>{if(rescueButton.isConnected){rescueButton.textContent=old;rescueButton.setAttribute('aria-pressed','false')}},1800);
-  });
- }
- resetRescue();
- const originalLanguageApply=applyLanguage;
- applyLanguage=function(){
-  originalLanguageApply();
-  resetRescue();
-  if(chipHost)chipHost.querySelectorAll('button[data-pick]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.pick===selected)));
- };
+ const result=$('rescueResult'),select=$('rescueSituation');
+ if(result)result.setAttribute('aria-live','polite');
+ if(select)select.addEventListener('change',()=>result?.classList.remove('rescue-ready'));
 })();
 
-
-/* V44 — repair the four “What do you need now?” shortcuts.
-   Capture the tap before older delegated handlers and execute each destination
-   directly; do not depend on a generated disclosure button or synthetic click. */
-(function(){
- const hub=$('quickHub');
- if(!hub||hub.dataset.quickV44)return;
- hub.dataset.quickV44='1';
- hub.addEventListener('click',function(ev){
-  const button=ev.target.closest('button[data-quick]');
-  if(!button||!hub.contains(button))return;
-  ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
-  const action=button.dataset.quick;
-  if(typeof goPage==='function')goPage('home');
-  const reveal=id=>{
-   const box=$(id);if(!box)return null;
-   box.hidden=false;
-   box.querySelectorAll(':scope > *').forEach(child=>{
-    if(child.tagName!=='H2'&&!child.classList.contains('tool-disclosure'))child.hidden=false;
-   });
-   const disclosure=box.querySelector(':scope > .tool-disclosure');
-   if(disclosure)disclosure.setAttribute('aria-expanded','true');
-   return box;
-  };
-  let target=null;
-  if(action==='categories'){
-   target=$('cats');
-   if(target){
-    const first=target.querySelector('button.cat');
-    if(first)first.click();
-   }
-  }else if(action==='surprise'){
-   const ids=categories.map(c=>c.id);
-   if(ids.length){
-    selected=ids[Math.floor(Math.random()*ids.length)];
-    groupedRenderCats($('search')?.value||'');
-    generate();
-   }
-   target=$('heartTitle');
-  }else if(action==='ai'){
-   target=reveal('aiMessagePanel');
-   $('aiMood')?.focus({preventScroll:true});
-  }else if(action==='builder'){
-   target=reveal('messageBuilder');
-   $('builderFeeling')?.focus({preventScroll:true});
-  }else if(action==='rescue'){
-   target=reveal('rescueCenter');
-   showRescue();
-   $('rescueSituation')?.focus({preventScroll:true});
-  }
-  if(target)requestAnimationFrame(()=>target.scrollIntoView({behavior:'auto',block:'center'}));
-  hub.querySelectorAll('button[data-quick]').forEach(x=>{
-   x.classList.toggle('quick-visited',x===button);
-   x.setAttribute('aria-pressed',String(x===button));
-  });
- },true);
-})();
-
-
-/* V45: deterministic controls + silent copy feedback */
+/* Unified interaction router: one capture-phase owner for navigation and quick actions. */
 (function(){
  const d=document;
  function reveal(id){const box=$(id);if(!box)return null;box.hidden=false;box.querySelectorAll(':scope > *').forEach(x=>{if(x.tagName!=='H2'&&!x.classList.contains('tool-disclosure'))x.hidden=false});const b=box.querySelector(':scope > .tool-disclosure');if(b)b.setAttribute('aria-expanded','true');return box}
@@ -1764,7 +1611,9 @@ function useMessage(v,categoryId){
 window.displayMessageInMain=displayMessageInMain;
  d.addEventListener('click',function(e){
   const t=e.target;
-  let b=t.closest('#quickHub button[data-quick]');
+  let b=t.closest('#bottomNav button[data-go]');
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage(b.dataset.go);return}
+  b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;
    if(b.dataset.quick==='categories'){$('search').value='';groupedRenderCats('');dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}
    else if(b.dataset.quick==='surprise'){const ids=categories.map(c=>c.id);$('search').value='';if(ids.length){selected=ids[Math.floor(Math.random()*ids.length)];groupedRenderCats('');generate()}dest=$('inlineMessagePanel')||$('message')}
@@ -1900,18 +1749,5 @@ applyLanguage=function(){
 };
 if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 
-/* V46 — reliable bottom navigation in capture phase, independent of button handlers. */
-(function(){
- const nav=$('bottomNav');if(!nav||nav.dataset.navV46)return;nav.dataset.navV46='1';
- document.addEventListener('click',function(event){
-  const button=event.target.closest('#bottomNav button[data-go]');
-  if(!button||!nav.contains(button))return;
-  event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
-  try{goPage(button.dataset.go)}catch(error){
-   const note=lang==='en'?'Navigation failed. Please reload the app.':lang==='fr'?'La navigation a échoué. Rechargez l’application.':'تعذر التنقل. أعد تحميل التطبيق.';
-   const status=$('aiStatus');if(status)status.textContent=note;
-  }
- },true);
-})();
 </script>
 </body></html>

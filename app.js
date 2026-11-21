@@ -1033,6 +1033,10 @@ function advanceMiniGame(){
 (function setupHomeShortcutTabs(){
  const strip=document.querySelector('.home-top-shortcuts');
  const host=document.getElementById('homeShortcutContent');
+ // Keep the homepage shortcut bar inside the sticky top navigation while scrolling.
+ const topNavigation=document.getElementById('topNavigation');
+ const topTabs=document.getElementById('topNav');
+ if(strip&&topNavigation&&topTabs&&strip.parentElement!==topNavigation)topTabs.insertAdjacentElement('afterend',strip);
  const fav=document.getElementById('favoritesPage');
  const guide=document.querySelector('.page-section[data-page="guide"]');
  const ai=document.getElementById('aiMessagePanel');

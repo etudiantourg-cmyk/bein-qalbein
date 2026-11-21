@@ -639,3 +639,21 @@ body[data-current-page="home"] .home-top-shortcuts{
   user-select:text!important;
   -webkit-touch-callout:default;
 }
+
+/* Make the selected main navigation destination unmistakable, including Home on first launch. */
+.top-navigation .top-tabs button.active{
+ color:#fff!important;
+ background:rgba(255,255,255,.24)!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.42),0 2px 8px rgba(0,0,0,.12)!important;
+}
+.top-navigation .top-tabs button.active>span{
+ background:rgba(255,255,255,.20)!important;
+ border-radius:12px;
+}
+.top-navigation .top-tabs button.active:after{
+ content:""!important;
+ position:absolute!important;
+ bottom:0!important;left:18%!important;right:18%!important;
+ height:4px!important;border-radius:5px 5px 0 0!important;
+ background:#f1d59b!important;
+}

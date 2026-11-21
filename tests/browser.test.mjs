@@ -181,6 +181,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const mobileWidth = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth }));
     assert.ok(mobileWidth.document <= mobileWidth.viewport, `mobile layout must not overflow horizontally: ${JSON.stringify(mobileWidth)}`);
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
+    assert.deepEqual(consoleErrors, [], `browser console errors: ${consoleErrors.join(" | ")}`);
     const fallbackPage = await browser.newPage({ serviceWorkers: "block" });
     await fallbackPage.addInitScript(() => {
       localStorage.setItem("bq_favorites", JSON.stringify(["رسالة موجودة قبل تعطل التخزين"]));

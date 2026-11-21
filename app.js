@@ -545,7 +545,8 @@ $('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang=
 const backupKeys=['bq_role','bq_favorites','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_ai_language','bq_ai_language_manual'];
 function validBackupValue(key,raw){
  if(typeof raw!=='string'||raw.length>1500000)return false;
- if(key==='bq_role')return ['husband','wife'].includes(raw);\n if(key==='bq_language')return ['ar','en','fr'].includes(raw);
+ if(key==='bq_role')return ['husband','wife'].includes(raw);
+ if(key==='bq_language')return ['ar','en','fr'].includes(raw);
  if(key==='bq_ai_language')return ['العربية','الإنجليزية','الفرنسية'].includes(raw);
  if(key==='bq_ai_language_manual')return ['0','1'].includes(raw);
  if(key==='bq_theme')return ['dark','light'].includes(raw);

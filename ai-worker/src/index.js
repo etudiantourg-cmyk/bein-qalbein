@@ -88,7 +88,7 @@ function extractText(result) {
     if (typeof value === "string" && value.trim()) return value;
     if (Array.isArray(value)) {
       const text = value.map(part => typeof part === "string" ? part : part?.text || "")
-        .filter(Boolean).join("\\n");
+        .filter(Boolean).join("\n");
       if (text.trim()) return text;
     }
   }

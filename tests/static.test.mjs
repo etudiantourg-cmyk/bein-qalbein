@@ -251,10 +251,10 @@ test("top navigation uses strong identity colors with high-contrast labels", () 
 
 test("official app icon is displayed in the top brand header", () => {
   assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
-  assert.match(css, /\.top-brand-logo\{[^}]*width:40px/);
+  assert.match(css, /\.top-brand-logo\{[^}]*width:42px/);
   assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
   assert.match(appIcon, /linearGradient/);
   assert.match(appIcon, /#25aaff/);
   assert.match(appIcon, /#ff70b7/);
-  assert.match(maskableIcon, /translate\\(51\\.2 51\\.2\\) scale\\(\\.8\\)/);
+  assert.ok(maskableIcon.includes('translate(51.2 51.2) scale(.8)'));
 });

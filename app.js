@@ -1116,8 +1116,9 @@ function advanceMiniGame(){
   activate('guide');
  }
  // Restore the saved destination only after live content has moved into its panes.
- const savedPage=bqStorage.getItem('bq_last_page');
- goPage(['home','library','favorites','guide','games','channels'].includes(savedPage)?savedPage:'home');
+ // A fresh direct app open always lands on Home and visibly marks its navigation tab.
+ // Other destinations remain available through their own navigation buttons.
+ goPage('home');
  const homeReset=strip.querySelector('[data-home-reset]');
  if(homeReset)homeReset.addEventListener('click',()=>{
   resetView();

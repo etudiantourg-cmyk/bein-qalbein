@@ -208,8 +208,8 @@ test("blue identity colors the active top navigation and backup accepts blue", (
 });
 
 test("identity selector precedes quick actions and offers matching blue/rose palettes", () => {
-  assert.ok(html.indexOf('id="roleTitle"') < html.indexOf('id="quickHub"'));
-  assert.match(html, /<option value="blue">/);
+  assert.ok(html.indexOf('class="bq-identity-control"') < html.indexOf('id="quickHub"'));
+  assert.match(html, /data-bq-role="husband"/);
   assert.match(css, /\.theme-blue\{--wine:#285b86/);
   assert.match(app, /updatePalette\(role==='husband'\?'blue':'rose'\)/);
   assert.match(app, /\['blue','rose','royal','night'\]/);
@@ -236,7 +236,7 @@ test("primary navigation is moved to a two-row sticky top bar", () => {
   assert.match(html, /id="topNavigation"/);
   assert.match(html, /id="topNav"/);
   assert.match(html, /id="topSearchBtn"/);
-  assert.match(html, /id="topThemeBtn"/);
+  assert.match(html, /id="themeToggle"/);
   assert.doesNotMatch(html, /bottom-nav|id="bottomNav"/);
   assert.match(css, /\.top-navigation\{position:sticky;top:0/);
   assert.match(css, /\.top-tabs button\.active:after/);
@@ -253,8 +253,8 @@ test("top navigation uses strong identity colors with high-contrast labels", () 
 });
 
 test("official app icon is displayed in the top brand header", () => {
-  assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
-  assert.match(css, /\.top-brand-logo\{[^}]*width:42px/);
+  assert.match(html, /class="top-brand"[^>]*aria-label="بين قلبين برو - الرئيسية"/);
+  assert.match(html, /<link rel="icon" href="icon\.svg"/);
   assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
   assert.ok(appIcon.includes('data:image/png;base64,'));
   assert.ok(maskableIcon.includes('x="51.2" y="51.2" width="409.6" height="409.6"'));

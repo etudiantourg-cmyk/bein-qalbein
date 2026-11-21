@@ -931,7 +931,6 @@ function renderCats(filter=''){
  const matches=categories.filter(c=>c.name.toLocaleLowerCase(lang).includes(filter.toLocaleLowerCase(lang)));if(!matches.length){const empty=document.createElement('p');empty.className='empty';empty.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';$('cats').append(empty);return}matches.forEach(c=>{
   const b=document.createElement('button');b.className='cat'+(c.id===selected?' active':'');
   b.innerHTML=`<span class="badge">${c.icon}</span><span>${c.name}<small>${c.desc}</small></span>`;
-  b.onclick=()=>{selected=c.id;renderCats($('search').value);generate()};
   $('cats').append(b);
  });
 }
@@ -960,7 +959,6 @@ async function copyText(text){
 }
 document.querySelectorAll('.role').forEach(b=>b.onclick=()=>{role=b.dataset.role;document.querySelectorAll('.role').forEach(x=>x.classList.toggle('active',x===b));generate()});
 $('newBtn').onclick=generate;
-$('copyBtn').onclick=()=>current&&copyText(current);
 $('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'BEIN QALBEIN PRO',text:current})}catch(e){}}else copyText(current)};
 $('favBtn').onclick=()=>{
  if(!current)return;
@@ -1224,17 +1222,6 @@ function groupedRenderCats(filter=''){
    const b=document.createElement('button');b.type='button';b.className='cat'+(c.id===selected?' active':'');
    b.setAttribute('aria-expanded',c.id===selected&&inline.parentElement===item?'true':'false');
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
-   b.onclick=()=>{
-    if(selected===c.id&&inline.parentElement===item){
-     inline.remove();selected=null;b.classList.remove('active');b.setAttribute('aria-expanded','false');return;
-    }
-    selected=c.id;generate();
-    host.querySelectorAll('.cat').forEach(btn=>{
-     const active=btn.closest('.category-item')?.dataset.categoryId===selected;
-     btn.classList.toggle('active',active);btn.setAttribute('aria-expanded',active?'true':'false');
-    });
-    item.append(inline);
-   };
    item.append(b);host.append(item);if(c.id===selected)selectedItem=item;
   });
  });
@@ -1281,7 +1268,7 @@ const smartNames={ar:{thanks:'أريد أن أشكره',miss:'أريد أن أع
 function renderSmartChips(){
  const host=$('smartChips');if(!host)return;host.innerHTML='';
  const keys=['thanks','miss','sorry','support','sad','upset','dua'];
- keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];b.onclick=()=>{selected=id;generate();host.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));$('message').scrollIntoView({behavior:'auto',block:'center'})};host.append(b)});
+ keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];host.append(b)});
  const title=$('smartTitle');if(title)title.textContent=lang==='en'?'What would you like to say today?':lang==='fr'?'Que souhaitez-vous lui dire aujourd’hui ?':'ماذا تريد أن تقول اليوم؟';
 }
 async function createMessageCard(){
@@ -1333,9 +1320,6 @@ function buildCustomMessage(){
  if(style==='deep')text+=' '+(lang==='ar'?'فالمودة تظهر في حسن القول وصدق الفعل، وأسأل الله أن يديم بيننا الخير.':lang==='fr'?'La tendresse se voit dans les paroles et les actes sincères.':'Care is shown through kind words and sincere actions.');
  $('builtMessage').value=text;
 }
-$('buildMessageBtn').onclick=buildCustomMessage;
-$('useBuiltMessage').onclick=()=>{const v=$('builtMessage').value.trim();if(!v)return;current=v;$('message').textContent=v;rememberMessage(v);$('message').scrollIntoView({behavior:'auto',block:'center'})};
-$('copyBuiltMessage').onclick=()=>{if($('builtMessage').value.trim())copyText($('builtMessage').value.trim())};
 function showRescue(){
  const k=$('rescueSituation').value;const locale=rescueText[lang];let body=locale[k]||locale.argument;
  if(k==='argument')body+='\n\n'+(locale.line||'');
@@ -1343,7 +1327,6 @@ function showRescue(){
  if(lang==='fr'&&k!=='argument')body+='\n\nÉvitez les reproches et les menaces. Convenez d’une prochaine étape respectueuse.';
  $('rescueResult').textContent=body;
 }
-$('rescueGenerate').onclick=showRescue;$('rescueSituation').onchange=showRescue;
 function nextKindness(){const list=challenges[lang];const day=Math.floor(Date.now()/86400000);const idx=(day+Math.floor(Math.random()*list.length))%list.length;$('challengeTask').textContent=list[idx]}
 $('newChallenge').onclick=nextKindness;nextKindness();showRescue();
 let favFolders={};try{const savedFolders=JSON.parse(localStorage.getItem('bq_favorite_folders')||'{}');favFolders=savedFolders&&typeof savedFolders==='object'&&!Array.isArray(savedFolders)?savedFolders:{}}catch(_){}

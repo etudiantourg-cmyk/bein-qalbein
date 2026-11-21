@@ -84,6 +84,7 @@ test("design system supports responsive layouts, focus and reduced motion", () =
 
 test("PWA cache and manifest remain coherent and avoid heavy first-install downloads", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
+  assert.match(html, /<meta name="theme-color" content="#64132f">/);
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes("'./app.js'") && sw.includes("'./app.css'"));
   assert.doesNotMatch(sw, /couple-header\.jpg\.png/);

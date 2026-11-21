@@ -215,3 +215,13 @@ test("Islamic visual constraint: no cross glyphs or cross-shaped icon ornament",
   for (const mark of forbidden) assert.ok(!visibleSource.includes(mark), "forbidden cross-like glyph found");
   assert.doesNotMatch(appIcon + maskableIcon, /M256 173v-51m-18 26h36/);
 });
+
+test("saved husband or wife identity restores its matching theme on first load", () => {
+  assert.match(html, /localStorage\.getItem\("bq_role"\)/);
+  assert.match(html, /data-start-role/);
+  assert.match(app, /bqStorage\.getItem\('bq_role'\)/);
+  assert.match(app, /bqStorage\.setItem\('bq_role',role\)/);
+  assert.match(app, /const rolePalette=role==='wife'\?'rose':'blue'/);
+  assert.match(css, /data-start-role="wife"/);
+  assert.match(css, /data-start-role="husband"/);
+});

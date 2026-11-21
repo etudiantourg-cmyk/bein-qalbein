@@ -54,6 +54,7 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(aiStudio, /safetyRejected:/);
   assert.match(aiStudio, /unavailable:/);
   assert.match(aiStudio, /bq_ai_language_manual/);
+  assert.doesNotMatch(aiStudio, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|bq_ai_endpoint|Cloudflare Worker|رابط المحرك/);
   assert.match(aiStudio, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 

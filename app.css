@@ -515,3 +515,17 @@ body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
  .top-navigation>.home-top-shortcuts{padding:6px 6px 8px;gap:4px}
  .top-navigation>.home-top-shortcuts .home-shortcut{min-height:41px}
 }
+
+
+/* Header menu now occupies the former logo position; Learn joins the primary tabs. */
+.top-brand-row{justify-content:flex-start}
+.top-brand{margin-inline-end:auto}
+.top-navigation .top-menu-trigger{
+ display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;
+ padding:0;border:1px solid rgba(255,255,255,.35);border-radius:12px;
+ background:rgba(255,255,255,.12);color:#fff;
+}
+.top-navigation .top-menu-trigger>span{display:grid;place-items:center;width:28px;height:28px}
+.top-navigation .top-menu-trigger svg{display:block;width:25px;height:25px}
+.top-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+.top-tabs button.menu-tab{display:none!important}

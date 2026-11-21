@@ -468,3 +468,50 @@ body[data-home-shortcuts-open="true"] .bq-shortcut-force-hidden{display:none!imp
 .channels-empty svg{width:54px;height:54px;color:var(--wine-2);margin-bottom:3px}
 .channels-empty strong{font-size:16px;color:var(--ink)}
 .channels-empty p{margin:0;font-size:12px}
+
+
+/* Sticky homepage shortcut bar: lives directly below the main navigation tabs. */
+.top-navigation>.home-top-shortcuts{
+ position:relative;
+ z-index:101;
+ margin:0 auto;
+ padding:7px 10px 9px;
+ max-width:980px;
+ background:inherit;
+ border-top:1px solid rgba(255,255,255,.16);
+}
+.top-navigation>.home-top-shortcuts .home-shortcut{
+ min-height:43px;
+ border:1px solid rgba(255,255,255,.3);
+ background:rgba(255,255,255,.11);
+ color:#fff;
+ box-shadow:0 2px 7px rgba(0,0,0,.08);
+ transition:background .18s,border-color .18s,box-shadow .18s,transform .18s;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut svg{color:rgba(255,255,255,.86)}
+.top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
+ color:#fff;
+ border-color:rgba(255,255,255,.92);
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.24),0 3px 10px rgba(0,0,0,.16);
+ transform:translateY(-1px);
+}
+body.theme-blue .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
+ background:#58a9e8;
+ border-color:#c8eaff;
+}
+body.theme-rose .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
+ background:#d65b91;
+ border-color:#ffd0e2;
+}
+body.theme-royal .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
+ background:#a52e5c;
+ border-color:#ffd2e2;
+}
+body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
+ background:#98506f;
+ border-color:#f0c7d9;
+}
+@media(max-width:370px){
+ .top-navigation>.home-top-shortcuts{padding:6px 6px 8px;gap:4px}
+ .top-navigation>.home-top-shortcuts .home-shortcut{min-height:41px}
+}

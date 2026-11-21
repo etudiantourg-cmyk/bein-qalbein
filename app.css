@@ -449,3 +449,20 @@ body[data-current-page="favorites"] .couple-header{display:none}
  .top-navigation .top-tools .role-switch .role{width:43px!important;min-width:43px!important;max-width:43px!important;height:30px!important;min-height:30px!important;max-height:30px!important}
  .top-navigation .top-tools .role-switch .role .role-switch-icon{width:21px!important;height:21px!important}
 }
+
+
+/* Clean icon faces: remove decorative top strokes/highlights. */
+.top-navigation .top-tools .role-switch .role{
+ border-top-color:transparent!important;
+ box-shadow:0 2px 0 rgba(0,0,0,.26),0 3px 5px rgba(0,0,0,.2)!important;
+}
+.top-navigation .top-tools .role-switch .role.active{
+ box-shadow:0 3px 0 #10466f,0 4px 7px rgba(0,0,0,.32)!important;
+}
+.top-navigation .top-tools .role-switch .role.wife.active{
+ box-shadow:0 3px 0 #51172f,0 4px 7px rgba(0,0,0,.32)!important;
+}
+.top-navigation .top-tools .role-switch .role .role-switch-icon{
+ width:23px!important;height:23px!important;fill:#fff!important;stroke:none!important;
+ overflow:visible!important;
+}

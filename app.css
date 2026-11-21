@@ -692,3 +692,18 @@ body[data-current-page="home"] .home-top-shortcuts{
  opacity:.78;transform:scale(.96);outline:2px dashed rgba(255,255,255,.9);
  box-shadow:0 8px 20px rgba(0,0,0,.24);z-index:5
 }
+
+/* Prevent selecting/copying the hamburger menu icon and its decorative bars. */
+#topNavigation .top-menu-trigger,
+#topNavigation .top-menu-trigger *,
+#topNavigation .top-menu-trigger svg,
+#topNavigation .top-menu-trigger svg *{
+ -webkit-user-select:none!important;
+ user-select:none!important;
+ -webkit-touch-callout:none!important;
+ -webkit-tap-highlight-color:transparent;
+}
+#topNavigation .top-menu-trigger{
+ -webkit-user-drag:none;
+ user-drag:none;
+}

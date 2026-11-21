@@ -129,7 +129,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await page.locator("#cardPreview").evaluate(canvas => canvas.width / canvas.height), 1);
     await page.locator("#cardFormat").selectOption("portrait");
     await page.locator("#cardMessageInput").fill("رسالة عربية جميلة\nبسطر ثانٍ لاختبار تنسيق البطاقة");
-    assert.equal(await page.locator("#cardCharCount").innerText(), "47 / 900");
+    assert.equal(await page.locator("#cardCharCount").innerText(), "49 / 900");
     const cardCanvas = await page.locator("#cardPreview").evaluate(canvas => ({ width: canvas.width, height: canvas.height, pixel: [...canvas.getContext("2d").getImageData(540, 675, 1, 1).data].some(value => value > 0) }));
     assert.equal(cardCanvas.width, 1080);
     assert.ok(cardCanvas.height >= 1080 && cardCanvas.height <= 2700);

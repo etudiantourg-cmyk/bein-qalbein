@@ -76,9 +76,23 @@ async function readBoundedBody(request) {
 
 function extractText(result) {
   if (typeof result === "string") return result;
-  const value = result?.response ?? result?.result?.response ??
-    result?.output_text ?? result?.choices?.[0]?.message?.content ?? "";
-  return typeof value === "string" ? value : "";
+  const candidates = [
+    result?.response,
+    result?.result?.response,
+    result?.output_text,
+    result?.choices?.[0]?.message?.content,
+    result?.result?.choices?.[0]?.message?.content,
+    result?.content
+  ];
+  for (const value of candidates) {
+    if (typeof value === "string" && value.trim()) return value;
+    if (Array.isArray(value)) {
+      const text = value.map(part => typeof part === "string" ? part : part?.text || "")
+        .filter(Boolean).join("\\n");
+      if (text.trim()) return text;
+    }
+  }
+  return "";
 }
 
 function clearlyUnsafeOutput(value) {
@@ -193,7 +207,10 @@ export default {
           },
           { role: "user", content: prompt }
         ],
-        max_completion_tokens: length === "قصيرة" ? 140 : length === "مطولة" ? 360 : 240,
+        // Gemma 4 enables thinking by default; disable it so a short message
+        // budget is not consumed by reasoning tokens before the user-facing answer.
+        chat_template_kwargs: { enable_thinking: false, clear_thinking: true },
+        max_completion_tokens: length === "قصيرة" ? 256 : length === "مطولة" ? 640 : 448,
         temperature: 0.7,
         top_p: 0.85
       });
@@ -212,8 +229,10 @@ export default {
         return json({ error: "لم تجتز الرسالة مراجعة الاحترام الأولية. اطلب رسالة أخرى بصياغة مختلفة." }, 422, origin);
       }
       return json({ message, model: MODEL }, 200, origin);
-    } catch (_) {
-      return json({ error: "تعذر التوليد الآن. تحقق من تفعيل Workers AI وربط AI binding، ثم حاول مجدداً." }, 503, origin);
+    } catch (error) {
+      // Keep provider details out of the public response; retain them in Worker logs for diagnosis.
+      console.error("Workers AI generation failed:", error?.message || String(error));
+      return json({ error: "تعذر التوليد الآن. تحقق من حصة Workers AI وربط النموذج، ثم حاول مجدداً." }, 503, origin);
     }
   }
 };

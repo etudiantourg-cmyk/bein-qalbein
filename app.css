@@ -446,13 +446,16 @@ body[data-current-page="favorites"] .couple-header{display:none}
 }
 
 
-/* Homepage shortcut strip: guide, favorites, and AI. */
-.home-top-shortcuts{display:flex;justify-content:stretch;gap:9px;margin:0 0 14px}
-.home-shortcut{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:66px;padding:8px 5px;border:1px solid rgba(216,182,110,.62);border-radius:14px;background:linear-gradient(145deg,var(--surface),var(--surface-2));color:var(--wine);box-shadow:0 3px 12px rgba(62,22,39,.07);font:700 11px/1.25 inherit;cursor:pointer}
+/* Premium horizontal shortcuts on the home page. */
+.home-top-shortcuts{display:flex;flex-direction:row;align-items:stretch;gap:8px;width:100%;margin:0 0 15px;direction:rtl}
+.home-shortcut{flex:1 1 0;min-width:0;min-height:68px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;padding:9px 8px;border:1px solid rgba(216,182,110,.55);border-radius:14px;background:linear-gradient(145deg,var(--surface),var(--surface-2));color:var(--wine);box-shadow:0 4px 14px rgba(62,22,39,.065);text-align:right;cursor:pointer}
 .home-shortcut svg{width:25px;height:25px;flex:0 0 25px;color:var(--gold)}
+.home-shortcut>span{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.home-shortcut b{font-size:12px;line-height:1.25;white-space:nowrap}
+.home-shortcut small{font-size:9px;line-height:1.25;color:var(--muted);white-space:nowrap}
 .home-shortcut:active{transform:translateY(1px)}
 .ai-message-panel.ai-shortcut-focus{outline:2px solid var(--gold);outline-offset:4px;transition:outline-color .3s}
-@media(max-width:360px){.home-top-shortcuts{gap:6px}.home-shortcut{font-size:10px;min-height:62px}}
+@media(max-width:370px){.home-top-shortcuts{gap:5px}.home-shortcut{gap:5px;padding:8px 5px}.home-shortcut svg{width:22px;height:22px;flex-basis:22px}.home-shortcut b{font-size:10px}.home-shortcut small{font-size:8px}}
 .channels-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:190px;margin-top:16px;padding:24px 16px;border:1px dashed var(--line);border-radius:18px;background:var(--surface-2);text-align:center;color:var(--muted)}
 .channels-empty svg{width:54px;height:54px;color:var(--wine-2);margin-bottom:3px}
 .channels-empty strong{font-size:16px;color:var(--ink)}

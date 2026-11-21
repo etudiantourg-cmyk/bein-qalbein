@@ -132,7 +132,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const downloadPromise = page.waitForEvent("download");
     await page.locator("#cardDownload").click();
     const cardDownload = await downloadPromise;
-    assert.match(cardDownload.suggestedFilename(), /^bein-qalbein-card-noor\.png$/);
+    assert.equal(cardDownload.suggestedFilename(), "bein-qalbein-card-noor.png");
     await page.locator("#cardClose").click();
     await page.locator("#cardStudio").waitFor({ state: "hidden" });
 

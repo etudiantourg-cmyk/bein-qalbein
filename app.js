@@ -234,7 +234,7 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const allowed=['home','favorites','guide','settings'];
+ const allowed=['home','favorites','guide'];
  if(!allowed.includes(page))page='home';
  document.querySelectorAll('.page-section').forEach(section=>{
   const active=section.dataset.page===page;
@@ -500,8 +500,8 @@ const originalGenerate=generate;
 generate=function(){originalGenerate();rememberMessage(current)};
 const originalApplyLanguage=applyLanguage;
 
-applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();renderSmartChips();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;['navHome','navFavorites','navGuide','navSettings','settingsTitle','surpriseBtn','customTitle','historyTitle'].forEach((id,i)=>$(id).textContent=x[i]);$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
-goPage(['home','favorites','guide','settings'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
+applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();renderSmartChips();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;[['navHome',x[0]],['navFavorites',x[1]],['navGuide',x[2]],['settingsTitleText',x[4]],['surpriseBtn',x[5]],['customTitle',x[6]],['historyTitle',x[7]]].forEach(([id,value])=>{const el=$(id);if(el)el.textContent=value});$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
+goPage(['home','favorites','guide'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
 renderSmartChips();
 
 applyLanguage();applyTheme();updateStorageStatus();if(bqStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();

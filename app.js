@@ -306,6 +306,8 @@ function groupedRenderCats(filter=''){
 function goPage(page){
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
+ const shortcutStrip=document.querySelector('.home-top-shortcuts');
+ if(shortcutStrip){shortcutStrip.hidden=page!=='home';shortcutStrip.style.display=page==='home'?'':'none';}
  if(page==='guide'&&typeof window.openHomeShortcut==='function'){
   // The guide content is hosted inside the first home section, but is a
   // standalone destination: always reset stale shortcut state before opening it.
@@ -608,7 +610,7 @@ generate=function(){originalGenerate();rememberMessage(current)};
 const originalApplyLanguage=applyLanguage;
 
 applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();renderSmartChips();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;[['navHome',x[0]],['navFavorites',x[1]],['navGuide',x[2]],['settingsTitleText',x[4]],['surpriseBtn',x[5]],['customTitle',x[6]],['historyTitle',x[7]]].forEach(([id,value])=>{const el=$(id);if(el)el.textContent=value});$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
-goPage(['home','library','favorites','guide','games'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
+// Initial routing runs once, after the shortcut controller has initialized.
 renderSmartChips();
 
 applyLanguage();applyTheme();updateStorageStatus();if(bqStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
@@ -1113,6 +1115,9 @@ function advanceMiniGame(){
   });
   activate('guide');
  }
+ // Restore the saved destination only after live content has moved into its panes.
+ const savedPage=bqStorage.getItem('bq_last_page');
+ goPage(['home','library','favorites','guide','games','channels'].includes(savedPage)?savedPage:'home');
  const homeReset=strip.querySelector('[data-home-reset]');
  if(homeReset)homeReset.addEventListener('click',()=>{
   resetView();

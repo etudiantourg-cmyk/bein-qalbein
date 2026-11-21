@@ -113,7 +113,7 @@ function applyIconStyle(value){
  bqStorage.setItem('bq_icon_style',style);
  document.querySelectorAll('[data-icon-style-choice]').forEach(card=>{const active=card.dataset.iconStyleChoice===style;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
 }
-document.querySelectorAll('[data-icon-style-choice]').forEach(card=>card.addEventListener('click',()=>applyIconStyle(card.dataset.iconStyleChoice)));
+document.addEventListener('click',event=>{const card=event.target.closest('[data-icon-style-choice]');if(card)applyIconStyle(card.dataset.iconStyleChoice);});
 applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');
 function syncAppearanceChoices(){
  applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');

@@ -405,3 +405,42 @@ body[data-current-page="favorites"] .couple-header{display:none}
 /* Fine alignment: nudge the connected identity rocker right by 2 mm and enlarge search glyph slightly. */
 .top-navigation .top-tools .bq-identity-control{transform:translateX(2mm)}
 #topSearchBtn>span{font-size:26px;line-height:1}
+
+
+/* Main navigation captions: clear labels directly beneath every icon. */
+.top-tabs button{
+  min-height:66px;
+  flex-direction:column;
+  justify-content:center;
+  gap:1px;
+  padding:5px 1px 7px;
+}
+.top-tabs button>span{
+  flex:0 0 31px;
+  width:32px;
+  height:31px;
+}
+.top-tabs button>span svg{width:22px;height:22px}
+.top-tabs button .nav-label{
+  position:static!important;
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  clip:auto!important;
+  white-space:nowrap!important;
+  border:0!important;
+  font-size:10.5px;
+  line-height:1.35;
+  font-weight:650;
+  letter-spacing:0;
+  opacity:.96;
+}
+.top-tabs button.menu-tab{min-width:0;gap:1px}
+.top-tabs button.menu-tab>span{width:32px;height:31px}
+@media(max-width:380px){
+  .top-tabs{gap:2px;padding-inline:5px}
+  .top-tabs button .nav-label{font-size:9.5px}
+}

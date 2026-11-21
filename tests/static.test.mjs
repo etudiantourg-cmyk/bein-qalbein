@@ -53,6 +53,10 @@ test("saved user data remains compatible and backup import is validated", () => 
   assert.match(app, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);
   assert.match(app, /const bqStorage=\(\(\)=>/);
   assert.ok(app.includes("window.localStorage"));
+  const storage = app.slice(app.indexOf("const bqStorage=(()=>"), app.indexOf("let role="));
+  assert.match(storage, /if\(memory\.has\(k\)\)return memory\.get\(k\)/);
+  assert.match(storage, /if\(cleared\|\|removed\.has\(k\)\)return null/);
+  assert.match(storage, /const keys=\(\)=>/);
 });
 
 test("HTML is accessible and unnecessary visual effects are removed", () => {

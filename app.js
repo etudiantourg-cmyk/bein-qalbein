@@ -934,8 +934,7 @@ window.displayMessageInMain=displayMessageInMain;
  },true);
  document.querySelectorAll('#topNav button[data-go]').forEach(button=>button.addEventListener('click',()=>goPage(button.dataset.go)));
  // Homepage shortcut clicks are handled by the expandable tab controller below.
- const homeGuideShortcut=document.getElementById('homeGuideShortcut');
- if(homeGuideShortcut)homeGuideShortcut.addEventListener('click',()=>goPage('guide'));
+ // The guide shortcut is handled by the expandable homepage tab controller.
  const sel=$('rescueSituation');if(sel)sel.addEventListener('change',()=>{$('rescueResult')?.classList.remove('rescue-ready')});
 })();
 

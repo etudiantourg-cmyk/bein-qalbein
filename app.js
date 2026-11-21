@@ -307,6 +307,9 @@ function goPage(page){
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
  if(page==='guide'&&typeof window.openHomeShortcut==='function'){
+  // The guide content is hosted inside the first home section, but is a
+  // standalone destination: always reset stale shortcut state before opening it.
+  if(typeof window.resetHomeShortcutView==='function')window.resetHomeShortcutView();
   document.body.dataset.currentPage='guide';
   document.querySelectorAll('.page-section').forEach(section=>{
    const active=section.dataset.page==='home';
@@ -319,9 +322,11 @@ function goPage(page){
    button.classList.toggle('active',active);
    if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
   });
-  $('favoritesSubnav').hidden=true;
+  const subnav=$('favoritesSubnav');if(subnav)subnav.hidden=true;
   try{bqStorage.setItem('bq_last_page','guide')}catch(_){}
   window.openHomeShortcut('guide');
+  const guideHost=$('homeShortcutContent');
+  if(guideHost)guideHost.hidden=false;
   window.scrollTo({top:0,behavior:'auto'});
   return;
  }
@@ -1099,6 +1104,15 @@ function advanceMiniGame(){
   if(key==='ai')ai.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
  window.openHomeShortcut=activate;
+ // Restore the guide correctly when it was the last page before reload.
+ if(document.body.dataset.currentPage==='guide'){
+  homeSections.forEach(section=>{
+   section.classList.toggle('active-page',section.dataset.page==='home');
+   section.setAttribute('aria-hidden',String(section.dataset.page!=='home'));
+   section.inert=section.dataset.page!=='home';
+  });
+  activate('guide');
+ }
  const homeReset=strip.querySelector('[data-home-reset]');
  if(homeReset)homeReset.addEventListener('click',()=>{
   resetView();

@@ -71,4 +71,9 @@ test("AI worker has a real health route and bounded request processing", () => {
   assert.match(worker, /readBoundedBody/);
   assert.match(worker, /clearlyUnsafeOutput/);
   assert.match(worker, /containsReligiousAttribution/);
+  assert.match(worker, /enable_thinking:\s*false/);
+  assert.match(worker, /chat_template_kwargs/);
+  assert.match(worker, /max_completion_tokens/);
+  assert.match(worker, /result\?\.choices\?\.\[0\]\?\.message\?\.content/);
+  assert.match(html, /data\.error&&status/);
 });

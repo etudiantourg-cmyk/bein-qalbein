@@ -30,7 +30,7 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /optionLabels/);
   assert.match(html, /aiPrivacyNote/);
   assert.match(html, /Live generation test passed/);
-  assert.match(html, /url\\+'\\/generate'/);
+  assert.ok(html.includes("url+'/generate'"));
   assert.match(html, /navV46/);
   assert.match(html, /Your situation details are sent to Cloudflare AI/);
   assert.match(html, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);

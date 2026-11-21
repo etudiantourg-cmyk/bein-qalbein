@@ -1,4 +1,4 @@
-const CACHE='bein-qalbein-royal-v74';
+const CACHE='bein-qalbein-royal-v76';
 const PRECACHE=['./','./index.html','./app.css','./app.js','./manifest.json','./icon.svg'];
 
 self.addEventListener('install',event=>{

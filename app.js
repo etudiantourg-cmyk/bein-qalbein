@@ -190,7 +190,8 @@ const $=id=>document.getElementById(id);
 const bqStorage=(()=>{
  let native=null,cleared=false,shadowOnly=false;
  const memory=new Map(),removed=new Set();
- try{native=window.localStorage;const probe='__bq_probe__';native.setItem(probe,'1');native.removeItem(probe)}catch(_){native=null}
+ try{native=window.localStorage;native.getItem('__bq_probe__')}catch(_){native=null}
+ if(native){const probe='__bq_probe__';try{native.setItem(probe,'1');native.removeItem(probe)}catch(_){shadowOnly=true;try{native.removeItem(probe)}catch(__){}}}
  const keys=()=>{
   const result=new Set();
   if(native&&!cleared){try{for(let i=0;i<native.length;i++){const key=native.key(i);if(key!==null&&!removed.has(key))result.add(key)}}catch(_){}}

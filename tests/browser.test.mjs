@@ -90,10 +90,12 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#bottomNav button[data-go="settings"]').click();
     await page.locator("#lang").selectOption("en");
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
+    assert.equal(await page.locator("html").getAttribute("data-message-count"), "140");
     assert.equal(await page.locator("#aiMessageTitle").innerText(), "AI Message Studio");
     assert.equal(await page.locator("#cats .cat").count(), 14);
     await page.locator("#lang").selectOption("fr");
     assert.equal(await page.locator("html").getAttribute("lang"), "fr");
+    assert.equal(await page.locator("html").getAttribute("data-message-count"), "140");
     assert.equal(await page.locator("#aiMessageTitle").innerText(), "Studio de messages IA");
     await page.locator("#lang").selectOption("ar");
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");

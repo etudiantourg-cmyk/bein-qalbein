@@ -17,5 +17,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Run automated quality tests
+      - name: Install pinned browser test runtime
+        run: npm install --no-save --no-package-lock playwright@1.56.1
+      - name: Install Chromium for real DOM tests
+        run: npx playwright install --with-deps chromium
+      - name: Run static, worker and real-browser tests
         run: node --test tests/*.test.mjs

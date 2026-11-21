@@ -396,3 +396,10 @@ body[data-current-page="favorites"] .couple-header{display:none}
 .top-navigation .top-tools .role-switch .role .role-switch-icon{font-size:9px!important;line-height:1!important}
 .top-navigation .top-tools{gap:4px!important;align-items:center!important}
 @media(max-width:380px){.top-navigation .top-tools .role-switch{height:27px!important;padding:1px!important}.top-navigation .top-tools .role-switch .role{width:36px!important;min-width:36px!important;max-width:36px!important;height:22px!important;min-height:22px!important;max-height:22px!important;font-size:7px!important}.top-navigation .top-tools .role-switch .role .role-switch-icon{font-size:8px!important}.top-navigation .top-tools{gap:3px!important}}
+
+
+/* Balanced icon-only identity selector. */
+.top-navigation .top-tools .role-switch{height:38px!important;min-height:38px!important;padding:3px!important;gap:3px!important;border-radius:10px!important}
+.top-navigation .top-tools .role-switch .role{width:42px!important;min-width:42px!important;max-width:42px!important;height:30px!important;min-height:30px!important;max-height:30px!important;padding:3px!important;border-radius:7px!important}
+.top-navigation .top-tools .role-switch .role .role-switch-icon{display:block!important;width:19px!important;height:19px!important;font-size:19px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+@media(max-width:380px){.top-navigation .top-tools .role-switch{height:36px!important;min-height:36px!important}.top-navigation .top-tools .role-switch .role{width:39px!important;min-width:39px!important;max-width:39px!important;height:28px!important;min-height:28px!important;max-height:28px!important}.top-navigation .top-tools .role-switch .role .role-switch-icon{width:18px!important;height:18px!important}}

@@ -1,5 +1,5 @@
 
-const { categories, messages, categoryClosings, husbandAdvice, wifeAdvice, extraBases, extraClosings, i18n, languageText, categoryGroups, smartNames, builderCopy, rescueText, challenges, iconPaths, categoryIconMap, bqClosings } = window.BQ_DATA;
+const { categories, messages, categoryClosings, husbandAdvice, wifeAdvice, extraBases, extraClosings, i18n, languageText, categoryGroups, smartNames, builderCopy, rescueText, challenges, iconPaths, categoryIconMap, bqClosings, translatedClosings } = window.BQ_DATA;
 
 
 const $=id=>document.getElementById(id);
@@ -162,7 +162,7 @@ function applyLanguage(){
  set('languageLabel',t.language);set('catTitle',t.catTitle);$('search').placeholder=t.search;set('heartTitle',t.heartTitle);set('shareBtn',t.share);set('favBtn',t.favAdd);set('newBtn',t.newMsg);set('copyBtn',t.copyMsg);set('favTitle',t.favorites);set('showFav',t.showFav);set('hideFav',t.hideFav);set('dailyTitle',t.daily);set('dailyKicker',t.dailyDesc);set('copyDaily',t.copyDaily);set('guideTitle',t.guide);set('guideKicker',t.guideDesc);set('husbandTips',t.husbandAdvice);set('wifeTips',t.wifeAdvice);set('hint',t.hint);set('appFooter',t.footer);set('appTagline',t.tagline);set('notifyNote',t.notifyNote);set('adviceHint',t.adviceHint);$('notifyToggle').textContent=bqStorage.getItem('bq_notifications')==='on'?t.notifyOn:t.notifyOff;$('themeToggle').textContent=bqStorage.getItem('bq_theme')==='dark'?t.day:t.night;
  const categoryTranslations=ar?null:i18n[lang];categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:categoryTranslations.cats[i];c.desc=ar?c._desc:categoryTranslations.desc[i]});
  if(ar){Object.keys(messages).forEach(id=>messages[id]=originalMessagePools[id].slice())}
- else{const translatedLibrary=i18n[lang];Object.keys(messages).forEach((id,i)=>{const pool=translatedLibrary.msgs[i]||translatedLibrary.msgs[0];messages[id]=pool.slice()})}
+ else{const translatedLibrary=i18n[lang],endings=translatedClosings[lang]||[];Object.keys(messages).forEach((id,i)=>{const pool=translatedLibrary.msgs[i]||translatedLibrary.msgs[0];messages[id]=endings.length?pool.flatMap(base=>endings.map(ending=>base+' '+ending)):pool.slice()})}
  groupedRenderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];renderAdviceForLanguage();showFavs();
 }
 $('lang').onchange=e=>{lang=e.target.value;try{bqStorage.setItem('bq_language',lang)}catch(_){}applyLanguage()};

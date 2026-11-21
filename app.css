@@ -847,18 +847,6 @@ body[data-visual-style="copper"]{--wine:#85503a;--wine-2:#ad6b4b;--rose:#ca9274;
 body[data-visual-style="ivory"]{--wine:#4d4b48;--wine-2:#77716a;--rose:#aaa197;--rose-soft:#efede8;--gold:#b99a61;--gold-soft:#f4eedf;--paper:#faf9f5;--surface:#fffefa;--surface-2:#f1efe9;--ink:#343330;--muted:#817e77;--line:#e3e0d7;--radius:14px;background:#f4f2ec}
 body[data-visual-style="cyber"]{--wine:#c0a0ff;--wine-2:#6ee7f4;--rose:#ff78c8;--rose-soft:#322448;--gold:#f3d26b;--gold-soft:#453b2b;--paper:#10101d;--surface:#1a1a2b;--surface-2:#25253a;--ink:#f4f0ff;--muted:#b7b0ce;--line:#48405f;--radius:16px;background:radial-gradient(ellipse at 15% 0%,#302044,transparent 45%),#10101d;color:var(--ink);color-scheme:dark}
 body[data-visual-style="midnight"] .panel,body[data-visual-style="cyber"] .panel{box-shadow:0 12px 32px rgba(0,0,0,.22);border-color:var(--line)}
-body[data-visual-style="midnight"] .top-navigation{background:linear-gradient(110deg,#0b1422,#253955);border-color:#435873}
-body[data-visual-style="emerald"] .top-navigation{background:linear-gradient(110deg,#104331,#276c52)}
-body[data-visual-style="champagne"] .top-navigation{background:linear-gradient(110deg,#6d5435,#a88958)}
-body[data-visual-style="rosegold"] .top-navigation{background:linear-gradient(110deg,#793c55,#b47789)}
-body[data-visual-style="sapphire"] .top-navigation{background:linear-gradient(110deg,#10365f,#2868a5)}
-body[data-visual-style="amethyst"] .top-navigation{background:linear-gradient(110deg,#3e285f,#775a9c)}
-body[data-visual-style="arctic"] .top-navigation{background:linear-gradient(110deg,#315c78,#6da7c0)}
-body[data-visual-style="mediterranean"] .top-navigation{background:linear-gradient(110deg,#11546a,#258a99)}
-body[data-visual-style="sakura"] .top-navigation{background:linear-gradient(110deg,#853d62,#c47b99)}
-body[data-visual-style="copper"] .top-navigation{background:linear-gradient(110deg,#683d2c,#a66a4b)}
-body[data-visual-style="ivory"] .top-navigation{background:linear-gradient(110deg,#3d3b38,#77716a)}
-body[data-visual-style="cyber"] .top-navigation{background:linear-gradient(110deg,#181329,#302448)}
 .style-preview-midnight{background:var(--preview-midnight,linear-gradient(135deg,#eee,#fff))}
 .style-preview-emerald{background:var(--preview-emerald,linear-gradient(135deg,#eee,#fff))}
 .style-preview-champagne{background:var(--preview-champagne,linear-gradient(135deg,#eee,#fff))}

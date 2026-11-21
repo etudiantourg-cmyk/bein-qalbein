@@ -304,8 +304,28 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
+ const requestedPage=page;
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
+ if(page==='guide'&&typeof window.openHomeShortcut==='function'){
+  document.body.dataset.currentPage='home';
+  document.querySelectorAll('.page-section').forEach(section=>{
+   const active=section.dataset.page==='home';
+   section.classList.toggle('active-page',active);
+   section.setAttribute('aria-hidden',String(!active));
+   section.inert=!active;
+  });
+  document.querySelectorAll('#topNav button[data-go]').forEach(button=>{
+   const active=button.dataset.go==='guide';
+   button.classList.toggle('active',active);
+   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+  });
+  $('favoritesSubnav').hidden=true;
+  try{bqStorage.setItem('bq_last_page','home')}catch(_){}
+  window.openHomeShortcut('guide');
+  window.scrollTo({top:0,behavior:'auto'});
+  return;
+ }
  document.body.dataset.currentPage=page;
  if(page==='home'&&typeof window.resetHomeShortcutView==='function')window.resetHomeShortcutView();
  document.querySelectorAll('.page-section').forEach(section=>{
@@ -1079,6 +1099,7 @@ function advanceMiniGame(){
   if(key==='favorites'){if(typeof renderHistory==='function')renderHistory();if(typeof renderCustomNotes==='function')renderCustomNotes();}
   if(key==='ai')ai.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
+ window.openHomeShortcut=activate;
  const homeReset=strip.querySelector('[data-home-reset]');
  if(homeReset)homeReset.addEventListener('click',()=>{
   resetView();

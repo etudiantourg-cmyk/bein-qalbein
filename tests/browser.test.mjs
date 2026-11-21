@@ -40,6 +40,10 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const page = await browser.newPage({ serviceWorkers: "block" });
   const pageErrors = [];
   const consoleErrors = [];
+  const openFavorites = async () => {
+    await page.locator('#topNav button[data-go="home"]').click();
+    await page.locator('.home-top-shortcuts [data-home-go="favorites"]').click();
+  };
   const auditAccessibility = async label => {
     await page.addScriptTag({ content: axe.source });
     const result = await page.evaluate(async () => axe.run(document, {
@@ -71,9 +75,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
     for (const [tab, section] of [["library", "#libraryTitle"], ["favorites", "#favTitle"], ["guide", "#guideTitle"], ["games", "#gamesPage"]]) {
-      await page.locator(`#topNav button[data-go="${tab}"]`).click();
-      await page.locator(section).waitFor({ state: "visible" });
-      assert.equal(await page.locator(`#topNav button[data-go="${tab}"]`).getAttribute("aria-current"), "page");
+      if (tab === "favorites") {
+        await openFavorites();
+        await page.locator(section).waitFor({ state: "visible" });
+        assert.equal(await page.locator('.home-top-shortcuts [data-home-go="favorites"]').getAttribute("aria-expanded"), "true");
+      } else {
+        await page.locator(`#topNav button[data-go="${tab}"]`).click();
+        await page.locator(section).waitFor({ state: "visible" });
+        assert.equal(await page.locator(`#topNav button[data-go="${tab}"]`).getAttribute("aria-current"), "page");
+      }
     }
     await page.locator('#topNav button[data-go="games"]').click();
     await page.locator('#gameAnswers button[data-game-answer="1"]').click();
@@ -83,7 +93,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
 
     await page.locator('#topNav button[data-go="library"]').click();
     await page.locator('[data-save-book="kind-dialogue"]').click();
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     await page.locator('[data-fav-tab="books"]').click();
     await page.locator("#favoriteBooksList").getByText("فن الحوار الهادئ").waitFor();
     await page.locator('[data-fav-tab="messages"]').click();
@@ -91,12 +101,12 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#husbandTips").click();
     await page.locator('#adviceList [data-save-tip]').first().click();
     await page.locator("#closeAdvice").click();
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     await page.locator('[data-fav-tab="advice"]').click();
     await page.locator("#favoriteTipsList .saved-collection-item").first().waitFor();
     await page.locator('#topNav button[data-go="games"]').click();
     await page.locator("#saveGameBtn").click();
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     await page.locator('[data-fav-tab="games"]').click();
     await page.locator("#favoriteGamesList .saved-collection-item").first().waitFor();
     await page.locator('#topNav button[data-menu-toggle]').click();
@@ -194,7 +204,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#cardStudio").waitFor({ state: "hidden" });
 
     await page.locator("#favBtn").click();
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     await page.locator("#favorites .favitem").first().waitFor();
     await auditAccessibility("favorites");
     await page.reload({ waitUntil: "domcontentloaded" });
@@ -208,7 +218,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     page.once("dialog", dialog => dialog.accept());
     await page.locator("#setPrivacyPin").click();
     await page.locator('#topNav button[data-go="home"]').click();
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     assert.equal(await page.locator("#favorites").isVisible(), false, "PIN should hide the favorites list after leaving it");
     await page.locator("#privacyPin").fill("1234");
     await page.locator("#unlockFavorites").click();
@@ -231,7 +241,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     page.once("dialog", dialog => dialog.accept());
     await chooser.setFiles({ name: "bein-qalbein-backup.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(backup)) });
     await navigationPromise;
-    await page.locator('#topNav button[data-go="favorites"]').click();
+    await openFavorites();
     await page.locator(".custom-item").filter({ hasText: "رسالة استعيدت من النسخة الاحتياطية" }).waitFor();
     await page.locator("#privacyPin").fill("1234");
     await page.locator("#unlockFavorites").click();

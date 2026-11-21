@@ -298,3 +298,17 @@ html[data-start-role="wife"] body{--wine:#7b2147;--wine-2:#a43a62;--rose:#d16e91
 .top-tabs button.menu-tab{gap:0;min-width:48px}
 .top-tabs button.menu-tab>span{display:grid;place-items:center;width:28px;height:28px}
 .top-tabs button.menu-tab svg{display:block;width:25px;height:25px}
+
+
+/* Settings side drawer: overlays the current page and preserves its scroll/state. */
+.settings-drawer{position:fixed;inset:0;z-index:1400}
+.settings-drawer-backdrop{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:rgba(20,12,20,.48);backdrop-filter:blur(3px)}
+.settings-drawer-panel{position:absolute;inset-block:0;inset-inline-end:0;width:min(88vw,390px);max-width:100%;height:100%;overflow-y:auto;overscroll-behavior:contain;padding:20px 16px calc(28px + env(safe-area-inset-bottom));border:0;border-radius:0;background:var(--surface);box-shadow:0 0 38px rgba(0,0,0,.22);transform:translateX(110%);transition:transform .24s ease;outline:none}
+html[dir="rtl"] .settings-drawer-panel{transform:translateX(-110%)}
+.settings-drawer.is-open .settings-drawer-panel{transform:translateX(0)}
+.settings-drawer-content{display:block!important;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.settings-drawer-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
+.settings-drawer-heading h2{margin:0}
+.settings-close-btn{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--ink);font-size:27px;line-height:1}
+body.settings-drawer-open{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.settings-drawer-panel{transition:none}}

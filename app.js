@@ -98,21 +98,35 @@ document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventLis
  document.querySelectorAll('[data-identity-editor]').forEach(item=>{const active=item===tab;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active))});
  document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel===selected;panel.classList.toggle('is-active',active);panel.hidden=!active});
 }));
+
+function setIdentityEditor(selected){
+ document.querySelectorAll('[data-identity-editor]').forEach(tab=>{const active=tab.dataset.identityEditor===selected;tab.classList.toggle('is-active',active);tab.setAttribute('aria-pressed',String(active))});
+ document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel===selected;panel.classList.toggle('is-active',active);panel.hidden=!active});
+}
+document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventListener('click',()=>setIdentityEditor(tab.dataset.identityEditor)));
+document.querySelectorAll('[data-visual-style-card]').forEach(card=>card.addEventListener('click',()=>{applyVisualStyle(card.dataset.visualStyleCard);syncAppearanceChoices()}));
+document.querySelectorAll('[data-palette-choice]').forEach(card=>card.addEventListener('click',()=>{updatePalette(card.dataset.paletteChoice);$('paletteSelect').value=card.dataset.paletteChoice;syncAppearanceChoices()}));
+function syncAppearanceChoices(){
+ document.querySelectorAll('[data-visual-style-card]').forEach(card=>{const active=card.dataset.visualStyleCard===(document.body.dataset.visualStyle||'classic');card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
+ const palette=['blue','rose','royal','night'].find(x=>document.body.classList.contains('theme-'+x))||'blue';
+ document.querySelectorAll('[data-palette-choice]').forEach(card=>{const active=card.dataset.paletteChoice===palette;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
+}
+(function(){
+ const page=$('appearancePage'),open=$('openAppearancePage'),close=$('closeAppearancePage');
+ if(!page||!open||!close)return;
+ open.addEventListener('click',()=>{page.hidden=false;document.body.classList.add('appearance-page-open');syncAppearanceChoices();setIdentityEditor('husband');close.focus();window.scrollTo(0,0)});
+ function closePage(){page.hidden=true;document.body.classList.remove('appearance-page-open');open.focus()}
+ close.addEventListener('click',closePage);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!page.hidden)closePage()});
+})();
 $('resetAppearanceBtn').addEventListener('click',()=>{
- // Reset appearance only; keep favorites, messages, history, role, and all personal data intact.
- bqStorage.removeItem('bq_visual_style');
- bqStorage.removeItem('bq_identity_color_husband');
- bqStorage.removeItem('bq_identity_color_wife');
- applyVisualStyle('classic');
- applyIdentityColor('husband','#3298d3');
- applyIdentityColor('wife','#d16e91');
- const defaultPalette=role==='wife'?'rose':'blue';
- $('paletteSelect').value=defaultPalette;
- updatePalette(defaultPalette);
- document.querySelectorAll('[data-identity-editor]').forEach(tab=>{const active=tab.dataset.identityEditor==='husband';tab.classList.toggle('is-active',active);tab.setAttribute('aria-pressed',String(active))});
- document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel==='husband';panel.classList.toggle('is-active',active);panel.hidden=!active});
- const styleSelect=$('visualStyleSelect');if(styleSelect)styleSelect.value='classic';
+ // Restore the original appearance only; never delete user content or personal data.
+ bqStorage.removeItem('bq_visual_style');bqStorage.removeItem('bq_identity_color_husband');bqStorage.removeItem('bq_identity_color_wife');
+ applyVisualStyle('classic');applyIdentityColor('husband','#3298d3');applyIdentityColor('wife','#d16e91');
+ const defaultPalette=role==='wife'?'rose':'blue';$('paletteSelect').value=defaultPalette;updatePalette(defaultPalette);
+ setIdentityEditor('husband');syncAppearanceChoices();
 });
+
 
 ['husband','wife'].forEach(targetRole=>applyIdentityColor(targetRole,bqStorage.getItem('bq_identity_color_'+targetRole)||(targetRole==='wife'?'#d16e91':'#3298d3')));
 function applyVisualStyle(value){

@@ -18,7 +18,8 @@ const mime = {
 test("real browser smoke: startup, categories, language, favorites, guide and settings", { timeout: 90000 }, async () => {
   const server = createServer(async (req, res) => {
     try {
-      const pathname = decodeURIComponent(new URL(req.url, "http://127.0.0.1").pathname);
+      const requestedPath = decodeURIComponent(new URL(req.url, "http://127.0.0.1").pathname);
+      const pathname = requestedPath === "/" ? "/index.html" : requestedPath;
       const file = resolve(root, "." + pathname);
       if (file !== root && !file.startsWith(root + sep)) {
         res.writeHead(403).end("Forbidden");

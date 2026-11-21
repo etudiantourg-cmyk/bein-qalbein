@@ -213,3 +213,17 @@ body.theme-night .card-design-grid button,body.dark-mode .card-design-grid butto
 body.theme-night .card-studio-preview,body.dark-mode .card-studio-preview{background:#302431;border-color:#60495a}
 @media(max-width:760px){.card-studio{max-height:calc(100dvh - 16px);border-radius:19px}.card-studio-layout{grid-template-columns:1fr;gap:13px}.card-studio-preview{order:-1}.card-studio-controls{gap:7px}#cardPreview{width:min(100%,290px);max-height:38dvh}.card-design-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:360px){.card-design-grid button{font-size:11px;padding:6px}.swatch{width:32px;height:32px;flex-basis:32px}}
+
+/* Card Atelier refinement */
+.card-message-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:-3px}
+.card-message-meta small{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.card-message-meta small.near-limit{color:#a33d37;font-weight:800}
+#cardSmartSuggest{min-height:36px;padding:6px 11px;border:1px solid rgba(184,139,69,.55);border-radius:999px;background:linear-gradient(135deg,#fffaf0,#f6e8cd);color:#6b4823;font-size:11px;font-weight:850}
+#cardSmartSuggest:disabled{opacity:.5}
+.swatch-pearl{background:linear-gradient(135deg,#fffefa,#e8ddca)}
+.swatch-emerald{background:linear-gradient(135deg,#203b32 0 48%,#c6a45e 49% 100%)}
+.swatch-copper{background:linear-gradient(135deg,#fff4e9,#bd8053)}
+.swatch-ink{background:linear-gradient(135deg,#182432,#d6b66e)}
+.card-design-grid button{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.card-design-grid button:active{transform:scale(.985)}
+@media(max-width:420px){.card-message-meta{align-items:flex-start;flex-direction:column}.card-message-meta button{width:100%}}

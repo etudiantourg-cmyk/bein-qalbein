@@ -38,18 +38,25 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const browser = await chromium.launch({ headless: true, channel: "chrome" });
   const page = await browser.newPage({ serviceWorkers: "block" });
   const pageErrors = [];
+  const consoleErrors = [];
   page.on("pageerror", error => pageErrors.push(error.message));
+  page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
 
   try {
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
 
+    assert.deepEqual(pageErrors, [], `uncaught startup errors: ${pageErrors.join(" | ")}`);
     await page.locator("#cats .cat").first().click();
-    await page.waitForFunction(() => {
-      const panel = document.querySelector("#inlineMessagePanel");
-      return panel && panel.closest(".category-item") && document.querySelector("#message")?.textContent.trim();
-    });
+    await page.waitForTimeout(150);
+    const categoryState = await page.evaluate(() => ({
+      panel: !!document.querySelector("#inlineMessagePanel"),
+      parent: document.querySelector("#inlineMessagePanel")?.parentElement?.className || null,
+      categoryId: document.querySelector("#inlineMessagePanel")?.parentElement?.dataset?.categoryId || null,
+      message: document.querySelector("#message")?.textContent || null
+    }));
+    assert.ok(categoryState.parent === "category-item", `category click did not mount message panel: ${JSON.stringify({ categoryState, pageErrors, consoleErrors })}`);
     assert.notEqual(await page.locator("#message").innerText(), "اختر تصنيفاً لتظهر لك رسالة جميلة هنا.");
 
     await page.locator("#lang").selectOption("en");

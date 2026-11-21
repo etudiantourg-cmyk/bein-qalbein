@@ -201,6 +201,25 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await fallbackPage.locator('#bottomNav button[data-go="settings"]').click();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
+    const fallbackChooserPromise = fallbackPage.waitForEvent("filechooser");
+    await fallbackPage.locator("#importLabel").click();
+    const fallbackChooser = await fallbackChooserPromise;
+    const fallbackDialogPromise = fallbackPage.waitForEvent("dialog");
+    await fallbackChooser.setFiles({
+      name: "backup.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify({
+        app: "bein-qalbein",
+        version: 62,
+        exportedAt: new Date().toISOString(),
+        data: { bq_favorites: JSON.stringify(["رسالة بديلة لا يجب استيرادها"]) }
+      }))
+    });
+    const fallbackDialog = await fallbackDialogPromise;
+    assert.match(fallbackDialog.message(), /التخزين الدائم غير متاح/);
+    await fallbackDialog.accept();
+    await fallbackPage.locator('#bottomNav button[data-go="favorites"]').click();
+    await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
     await fallbackPage.close();
 
     const pwaContext = await browser.newContext({ serviceWorkers: "allow" });

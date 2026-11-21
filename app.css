@@ -370,3 +370,13 @@ body[data-current-page="favorites"] .couple-header{display:none}
 .history-actions{display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0}
 .history-actions button{min-height:38px;padding:7px 10px}
 .history-actions .history-delete{border-color:#d7a5ad;color:#8b263d}
+
+/* Compact raised two-position identity rocker in the top bar. */
+.top-tools{display:flex;align-items:center;gap:9px}
+.role-switch{display:flex;align-items:stretch;gap:3px;padding:4px;border-radius:13px;background:rgba(10,22,38,.32);border:1px solid rgba(255,255,255,.34);box-shadow:inset 0 3px 6px rgba(0,0,0,.28),0 2px 5px rgba(0,0,0,.18)}
+.top-navigation .role-switch .role{display:flex;align-items:center;justify-content:center;gap:5px;min-width:62px;min-height:37px;padding:5px 9px;border:1px solid transparent;border-radius:9px;background:transparent;color:rgba(255,255,255,.83);font-size:12px;font-weight:850;line-height:1;box-shadow:none;transition:background .16s,transform .16s,box-shadow .16s}
+.top-navigation .role-switch .role .role-switch-icon{font-size:15px;line-height:1}
+.top-navigation .role-switch .role.active{color:#fff;background:linear-gradient(180deg,#76bce9,#286b9e);border-color:rgba(255,255,255,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 3px 0 #17466d,0 4px 7px rgba(0,0,0,.3);transform:translateY(-1px)}
+.top-navigation .role-switch .role.active.wife{background:linear-gradient(180deg,#f4a6c5,#a83e70);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 3px 0 #692344,0 4px 7px rgba(0,0,0,.3)}
+.top-navigation .role-switch .role:active{transform:translateY(1px);box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
+@media(max-width:380px){.top-brand-row{padding-inline:9px}.top-tools{gap:6px}.role-switch{gap:2px;padding:3px}.top-navigation .role-switch .role{min-width:54px;padding-inline:6px;font-size:11px}.top-tool-btn{width:38px;height:38px}}

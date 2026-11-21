@@ -44,6 +44,14 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   page.on("console", message => { if (message.type() === "error") consoleErrors.push(message.text()); });
 
   try {
+    await page.route("https://bein-qalbein.etudiantourg.workers.dev/**", async route => {
+      const path = new URL(route.request().url()).pathname;
+      if (path === "/generate") {
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ message: "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام." }) });
+      } else {
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, bindingReady: true }) });
+      }
+    });
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
     await page.addScriptTag({ content: axe.source });
@@ -68,6 +76,11 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     }));
     assert.ok(categoryState.parent === "category-item", `category click did not mount message panel: ${JSON.stringify({ categoryState, pageErrors, consoleErrors })}`);
     assert.notEqual(await page.locator("#message").innerText(), "اختر تصنيفاً لتظهر لك رسالة جميلة هنا.");
+    await page.locator("#aiGenerateBtn").click();
+    await page.waitForFunction(() => !document.querySelector("#aiOutput")?.hidden);
+    assert.equal(await page.locator("#aiOutput").inputValue(), "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام.");
+    await page.locator("#aiUseBtn").click();
+    assert.equal(await page.locator("#message").innerText(), "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام.");
 
     await page.locator('#bottomNav button[data-go="settings"]').click();
     await page.locator("#lang").selectOption("en");

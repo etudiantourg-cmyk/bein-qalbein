@@ -1842,7 +1842,7 @@ window.displayMessageInMain=displayMessageInMain;
   try{
    const response=await fetch(url+'/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood:$id('aiMood').value,recipient:$id('aiRecipient').value,length:$id('aiLength').value,language:$id('aiLanguage').value,context:$id('aiContext').value.slice(0,240)}),signal:controller?.signal});
    const data=await response.json().catch(()=>({}));
-   if(!response.ok){const key=response.status===429?'rateLimited':response.status===422?'safetyRejected':response.status===413?'contextTooLong':response.status===503?'engineUnavailable':'failed';say(key);const error=new Error('server');error.feedbackShown=true;throw error;}
+   if(!response.ok){const key=response.status===429?'rateLimited':response.status===422?'safetyRejected':response.status===413?'contextTooLong':response.status===503?'engineUnavailable':'failed';say(key);if(data.error&&status)status.textContent+=' '+String(data.error).slice(0,220);const error=new Error('server');error.feedbackShown=true;throw error;}
    latest=String(data.message||'').trim().slice(0,1800);if(!latest)throw new Error('empty');
    output.value=latest;output.hidden=false;actions.hidden=false;say('done');
   }catch(err){if(err?.feedbackShown){}else if(err?.name==='AbortError')say('timeout');else say('failed')}

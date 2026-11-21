@@ -550,6 +550,7 @@ function goPage(page){
  try{bqStorage.setItem('bq_last_page',page)}catch(_){}
  window.scrollTo({top:0,behavior:'auto'});
  if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
+ if(page==='settings')updateStorageStatus();
 }
 /* Bottom navigation is handled by the single delegated router below. */
 function rememberMessage(value){

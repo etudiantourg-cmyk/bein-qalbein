@@ -128,6 +128,7 @@ renderAdvice('husband');
 
 
 Object.keys(extraBases).forEach(id=>{extraBases[id].forEach(base=>extraClosings.forEach(end=>messages[id].push(base+' '+end)));});
+document.documentElement.dataset.messageCount=String(Object.values(messages).reduce((n,p)=>n+p.length,0));
 /* V42 performance: decorative floating particles are intentionally disabled on mobile. */
 
 

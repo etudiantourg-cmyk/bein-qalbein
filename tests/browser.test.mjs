@@ -69,6 +69,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
+    assert.deepEqual(await page.evaluate(() => Object.values(window.BQ_DATA.messages).map(pool => pool.length)), Array(14).fill(150));
 
     assert.deepEqual(pageErrors, [], `uncaught startup errors: ${pageErrors.join(" | ")}`);
     await page.locator("#cats .cat").first().click();

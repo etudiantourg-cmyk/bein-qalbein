@@ -1114,7 +1114,11 @@ function advanceMiniGame(){
   homeSections.forEach(section=>section.classList.remove('bq-shortcut-force-hidden'));
   library.classList.remove('bq-shortcut-force-hidden');
   if(quickHub)quickHub.classList.remove('bq-shortcut-force-hidden');
-  strip.querySelectorAll('.home-shortcut').forEach(button=>{button.classList.remove('is-selected');button.setAttribute('aria-expanded','false')});
+  strip.querySelectorAll('.home-shortcut').forEach(button=>{
+   const isHome=button.hasAttribute('data-home-reset');
+   button.classList.toggle('is-selected',isHome);
+   button.setAttribute('aria-expanded',String(isHome));
+  });
   if(favNav)favNav.hidden=true;
  }
  window.resetHomeShortcutView=resetView;

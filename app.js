@@ -304,7 +304,7 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const allowed=['home','library','favorites','guide','games'];
+ const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
  document.body.dataset.currentPage=page;
  document.querySelectorAll('.page-section').forEach(section=>{
@@ -933,6 +933,8 @@ window.displayMessageInMain=displayMessageInMain;
   if(t.closest('#copyBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(current)copyText(current);return}
  },true);
  document.querySelectorAll('#topNav button[data-go]').forEach(button=>button.addEventListener('click',()=>goPage(button.dataset.go)));
+ const homeGuideShortcut=document.getElementById('homeGuideShortcut');
+ if(homeGuideShortcut)homeGuideShortcut.addEventListener('click',()=>goPage('guide'));
  const sel=$('rescueSituation');if(sel)sel.addEventListener('change',()=>{$('rescueResult')?.classList.remove('rescue-ready')});
 })();
 

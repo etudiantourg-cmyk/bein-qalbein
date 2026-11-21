@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=109">
+<link rel="stylesheet" href="./app.css?v=110">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -20,6 +20,10 @@
  <div class="top-brand-row">
   <a class="top-brand" href="./" aria-label="بين قلبين برو - الرئيسية"><img class="top-brand-logo" src="./icon.svg" alt="" width="42" height="42"><span>بين قلبين <small>PRO</small></span></a>
   <div class="top-tools">
+   <div class="role-switch" role="group" aria-label="اختيار الهوية">
+    <button type="button" class="role active" id="husband" data-role="husband" aria-pressed="true"><span class="role-switch-icon" aria-hidden="true">♛</span><span>زوج</span></button>
+    <button type="button" class="role wife" id="wife" data-role="wife" aria-pressed="false"><span class="role-switch-icon" aria-hidden="true">♡</span><span>زوجة</span></button>
+   </div>
    <button type="button" id="topSearchBtn" class="top-tool-btn" aria-label="بحث" title="بحث"><span aria-hidden="true">⌕</span></button>
   </div>
  </div>
@@ -42,11 +46,7 @@
 <main id="mainContent">
 <section class="panel page-section active-page" data-page="home">
 
- <h2 id="roleTitle">اختر هويتك</h2>
- <div class="roles">
-  <button class="role active" id="husband" data-role="husband" aria-pressed="true"><span class="ico">♛</span>أنا زوج</button>
-  <button class="role wife" id="wife" data-role="wife" aria-pressed="false"><span class="ico">♡</span>أنا زوجة</button>
- </div>
+
  <div class="quick-hub" id="quickHub" aria-label="الوصول السريع">
   <div class="quick-hub-head"><span class="quick-eyebrow" id="quickEyebrow">ابدأ من هنا</span><h2 id="quickTitle">ماذا تحتاج الآن؟</h2><p id="quickDesc">اختر ما يناسب لحظتك، وسنوصلك مباشرة.</p></div>
   <div class="quick-grid">
@@ -237,6 +237,6 @@
 
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=105" defer></script>
+<script src="./app.js?v=106" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

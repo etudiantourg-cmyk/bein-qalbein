@@ -59,6 +59,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.ok(categoryState.parent === "category-item", `category click did not mount message panel: ${JSON.stringify({ categoryState, pageErrors, consoleErrors })}`);
     assert.notEqual(await page.locator("#message").innerText(), "اختر تصنيفاً لتظهر لك رسالة جميلة هنا.");
 
+    await page.locator('#bottomNav button[data-go="settings"]').click();
     await page.locator("#lang").selectOption("en");
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
     assert.equal(await page.locator("#cats .cat").count(), 14);
@@ -66,6 +67,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await page.locator("html").getAttribute("lang"), "fr");
     await page.locator("#lang").selectOption("ar");
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");
+    await page.locator('#bottomNav button[data-go="home"]').click();
 
     await page.locator("#favBtn").click();
     await page.locator('#bottomNav button[data-go="favorites"]').click();

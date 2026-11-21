@@ -95,7 +95,9 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await page.locator("#cats .cat").count(), 14);
     await page.locator("#lang").selectOption("fr");
     assert.equal(await page.locator("html").getAttribute("lang"), "fr");
-    assert.equal(await page.locator("html").getAttribute("data-message-count"), "140");
+    assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100");
+    assert.match(await page.locator("#message").innerText(), /[A-Za-zÀ-ÿ]/);
+    assert.doesNotMatch(await page.locator("#message").innerText(), /[\u0600-\u06FF]/);
     assert.equal(await page.locator("#aiMessageTitle").innerText(), "Studio de messages IA");
     await page.locator("#lang").selectOption("ar");
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");

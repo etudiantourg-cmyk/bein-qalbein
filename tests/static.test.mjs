@@ -172,3 +172,15 @@ test("daily kindness challenge is stable per local calendar day", () => {
   assert.match(app, /day=now\.getFullYear\(\)\*10000\+\(now\.getMonth\(\)\+1\)\*100\+now\.getDate\(\)/);
   assert.match(app, /newChallenge'\)\.onclick=nextKindness;renderDailyChallenge\(\)/);
 });
+
+test("luxury typography and dimensional icon design remain available", () => {
+  assert.match(html, /fonts\.googleapis\.com\/css2\?family=Alexandria/);
+  assert.match(css, /--font-ui:"Alexandria"/);
+  assert.match(css, /--font-display:"Amiri"/);
+  assert.match(css, /--font-latin-display:"Playfair Display"/);
+  assert.match(css, /inset 0 2px 3px/);
+  assert.match(css, /drop-shadow\(/);
+  assert.match(css, /bottom-nav button\.active>span/);
+  assert.match(app, /"Amiri", "Noto Naskh Arabic", serif/);
+  assert.match(app, /"Playfair Display", Georgia, serif/);
+});

@@ -380,3 +380,11 @@ body[data-current-page="favorites"] .couple-header{display:none}
 .top-navigation .role-switch .role.active.wife{background:linear-gradient(180deg,#f4a6c5,#a83e70);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 3px 0 #692344,0 4px 7px rgba(0,0,0,.3)}
 .top-navigation .role-switch .role:active{transform:translateY(1px);box-shadow:inset 0 2px 5px rgba(0,0,0,.25)}
 @media(max-width:380px){.top-brand-row{padding-inline:9px}.top-tools{gap:6px}.role-switch{gap:2px;padding:3px}.top-navigation .role-switch .role{min-width:54px;padding-inline:6px;font-size:11px}.top-tool-btn{width:38px;height:38px}}
+
+
+/* Final size correction: compact identity switch beside search. */
+.top-tools{gap:6px}
+.role-switch{gap:2px;padding:2px;border-radius:10px}
+.top-navigation .role-switch .role{min-width:46px;min-height:32px;padding:3px 6px;gap:3px;border-radius:7px;font-size:10px;font-weight:750}
+.top-navigation .role-switch .role .role-switch-icon{font-size:12px;line-height:1}
+@media(max-width:380px){.top-tools{gap:5px}.role-switch{gap:2px;padding:2px}.top-navigation .role-switch .role{min-width:42px;min-height:30px;padding:3px 5px;font-size:9px}.top-navigation .role-switch .role .role-switch-icon{font-size:11px}.top-tool-btn{width:35px;height:35px}}

@@ -193,7 +193,7 @@ test("luxury typography and dimensional icon design remain available", () => {
 test("surprise shortcut uses a refined lightbulb and the shared icon palette", () => {
   assert.match(html, /data-quick="surprise"[^>]*><span class="quick-icon" data-icon="bulb"/);
   assert.match(contentData, /bulb:'<path d="M9 17\.2c/);
-  assert.match(css, /\.quick-icon\{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:13px;background:var\(--rose-soft\);color:var\(--wine\)\}/);
+  assert.match(css, /\.quick-icon\{display:grid;place-items:center;flex:0 0 40px;width:42px;height:40px;border-radius:13px;background:var\(--rose-soft\);color:var\(--wine\)\}/);
   assert.doesNotMatch(css, /data-quick="surprise"[^}]*background:linear-gradient\(145deg,#fff8df/);
 });
 
@@ -253,4 +253,8 @@ test("official app icon is displayed in the top brand header", () => {
   assert.match(html, /class="top-brand-logo" src="\.\/icon\.svg"/);
   assert.match(css, /\.top-brand-logo\{[^}]*width:40px/);
   assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
+  assert.match(appIcon, /linearGradient/);
+  assert.match(appIcon, /#25aaff/);
+  assert.match(appIcon, /#ff70b7/);
+  assert.match(maskableIcon, /translate\\(51\\.2 51\\.2\\) scale\\(\\.8\\)/);
 });

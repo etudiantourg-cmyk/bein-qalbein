@@ -312,3 +312,6 @@ html[dir="rtl"] .settings-drawer-panel{transform:translateX(-110%)}
 .settings-close-btn{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--ink);font-size:27px;line-height:1}
 body.settings-drawer-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.settings-drawer-panel{transition:none}}
+
+/* Keep the short copy controls large enough for reliable touch interaction. */
+.history-item button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}

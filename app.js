@@ -140,7 +140,7 @@ $('resetAppearanceBtn').addEventListener('click',()=>{
 
 ['husband','wife'].forEach(targetRole=>applyIdentityColor(targetRole,bqStorage.getItem('bq_identity_color_'+targetRole)||(targetRole==='wife'?'#d16e91':'#3298d3')));
 function applyVisualStyle(value){
- const allowed=['classic','pixar','disney','anime','watercolor','glass','minimal','luxury','pastel','ocean','forest','sunset','retro','neon','paper','monochrome','lavender','desert'];
+ const allowed=['classic','pixar','disney','anime','watercolor','glass','minimal','luxury','pastel','ocean','forest','sunset','retro','neon','paper','monochrome','lavender','desert','midnight','emerald','champagne','rosegold','sapphire','amethyst','arctic','mediterranean','sakura','copper','ivory','cyber'];
  const style=allowed.includes(value)?value:'classic';document.body.dataset.visualStyle=style;bqStorage.setItem('bq_visual_style',style);
  const selector=$('visualStyleSelect');if(selector)selector.value=style;
 }

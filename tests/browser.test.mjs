@@ -109,7 +109,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await openFavorites();
     await page.locator('[data-fav-tab="games"]').click();
     await page.locator("#favoriteGamesList .saved-collection-item").first().waitFor();
-    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator('button[data-menu-toggle]').click();
     const drawerBox = await page.locator("#settingsDrawer .settings-drawer-panel").boundingBox();
     assert.ok(drawerBox.width <= 320 && drawerBox.height < 650, "settings drawer should stay compact");
     await page.locator("#settingsCloseBtn").click();
@@ -144,7 +144,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#aiUseBtn").click();
     assert.equal(await page.locator("#message").innerText(), "رسالة اختبارية رقيقة تعبّر عن المودة والاحترام.");
 
-    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator('button[data-menu-toggle]').click();
     await page.locator("#settingsDrawer:not([hidden])").waitFor();
     await page.locator("#lang").selectOption("en");
     assert.equal(await page.locator("html").getAttribute("lang"), "en");
@@ -254,7 +254,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.ok((await page.locator("#adviceList").innerText()).trim().length > 0);
     await page.locator("#closeAdvice").click();
 
-    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator('button[data-menu-toggle]').click();
     await page.locator("#settingsDrawer:not([hidden])").waitFor();
     await auditAccessibility("settings");
     await page.locator("#themeToggle").click();
@@ -262,7 +262,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await auditAccessibility("settings dark theme");
     await page.reload({ waitUntil: "domcontentloaded" });
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")), "theme should persist after reload");
-    await page.locator('#topNav button[data-menu-toggle]').click();
+    await page.locator('button[data-menu-toggle]').click();
     await page.locator("#themeToggle").click();
     assert.ok(!(await page.locator("body").evaluate(el => el.classList.contains("dark-mode"))));
 
@@ -286,7 +286,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await fallbackPage.locator("#favBtn").click();
     await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
     await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
-    await fallbackPage.locator('#topNav button[data-menu-toggle]').click();
+    await fallbackPage.locator('button[data-menu-toggle]').click();
     await fallbackPage.locator("#settingsDrawer:not([hidden])").waitFor();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);

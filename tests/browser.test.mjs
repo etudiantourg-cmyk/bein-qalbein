@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 import { chromium } from "playwright";
+import axe from "axe-core";
 
 const root = resolve(process.cwd());
 const mime = {
@@ -45,6 +46,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   try {
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
+    await page.addScriptTag({ content: axe.source });
+    const accessibility = await page.evaluate(async () => axe.run(document, {
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] }
+    }));
+    assert.deepEqual(
+      accessibility.violations.map(item => ({ id: item.id, impact: item.impact, help: item.help, nodes: item.nodes.map(node => node.target) })),
+      [],
+      "WCAG accessibility violations detected"
+    );
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
 
     assert.deepEqual(pageErrors, [], `uncaught startup errors: ${pageErrors.join(" | ")}`);

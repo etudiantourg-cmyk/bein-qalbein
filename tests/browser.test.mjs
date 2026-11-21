@@ -70,7 +70,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.addScriptTag({ content: axe.source });
     await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
-    for (const [tab, section] of [["library", "#catTitle"], ["favorites", "#favTitle"], ["guide", "#guideTitle"], ["games", "#gamesPage"]]) {
+    for (const [tab, section] of [["library", "#libraryTitle"], ["favorites", "#favTitle"], ["guide", "#guideTitle"], ["games", "#gamesPage"]]) {
       await page.locator(`#topNav button[data-go="${tab}"]`).click();
       await page.locator(section).waitFor({ state: "visible" });
       assert.equal(await page.locator(`#topNav button[data-go="${tab}"]`).getAttribute("aria-current"), "page");

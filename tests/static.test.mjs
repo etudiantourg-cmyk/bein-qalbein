@@ -211,7 +211,7 @@ test("identity selector precedes quick actions and offers matching blue/rose pal
   assert.ok(html.indexOf('class="bq-identity-control"') < html.indexOf('id="quickHub"'));
   assert.match(html, /data-bq-role="husband"/);
   assert.match(css, /\.theme-blue\{--wine:#285b86/);
-  assert.match(app, /updatePalette\(role==='husband'\?'blue':'rose'\)/);
+  assert.match(app, /const rolePalette=role==='wife'\?'rose':'blue';updatePalette\(rolePalette\)/);
   assert.match(app, /\['blue','rose','royal','night'\]/);
 });
 

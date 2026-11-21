@@ -296,12 +296,16 @@ const cardThemes={
  minimal:{paper:'#fffefd',paper2:'#f4efeb',ink:'#39232c',muted:'#806d72',gold:'#bd9a65',accent:'#70233f',edge:'#e6d9d1'},
  mosaic:{paper:'#fbf4e9',paper2:'#eadcc8',ink:'#482b32',muted:'#80606a',gold:'#bd9252',accent:'#762d4a',edge:'#d9c09a'},
  velvet:{paper:'#4b1733',paper2:'#241525',ink:'#fff4e8',muted:'#e9cad4',gold:'#e1c17c',accent:'#bd718c',edge:'#b38a61'},
- sand:{paper:'#f7ead8',paper2:'#ead0b8',ink:'#57352d',muted:'#906b5c',gold:'#b18a50',accent:'#984d48',edge:'#d5b18e'}
+ sand:{paper:'#f7ead8',paper2:'#ead0b8',ink:'#57352d',muted:'#906b5c',gold:'#b18a50',accent:'#984d48',edge:'#d5b18e'},
+ pearl:{paper:'#fffefa',paper2:'#f2eee6',ink:'#40313a',muted:'#887780',gold:'#c7a96b',accent:'#7b4358',edge:'#e8ddcb'},
+ emerald:{paper:'#f4f2e8',paper2:'#dce4d8',ink:'#203b32',muted:'#60776c',gold:'#c6a45e',accent:'#315c4c',edge:'#b7c5b5'},
+ copper:{paper:'#fff4e9',paper2:'#ecd3c0',ink:'#56332d',muted:'#956b5b',gold:'#bd8053',accent:'#98543e',edge:'#dfb89d'},
+ ink:{paper:'#182432',paper2:'#26384a',ink:'#f8f0df',muted:'#d4c5aa',gold:'#d6b66e',accent:'#e3c98c',edge:'#738296'}
 };
 const cardNames={
- ar:{royal:'ملكي مخملي',rose:'وردي رقيق',noor:'محراب النور',midnight:'ليل فاخر',minimal:'أناقة هادئة',mosaic:'فسيفساء هندسية',velvet:'عنابي ملكي',sand:'دفء الورق'},
- en:{royal:'Royal velvet',rose:'Soft rose',noor:'Noor arch',midnight:'Midnight',minimal:'Quiet minimal',mosaic:'Geometric mosaic',velvet:'Burgundy',sand:'Warm paper'},
- fr:{royal:'Velours royal',rose:'Rose tendre',noor:'Arche lumineuse',midnight:'Nuit élégante',minimal:'Minimal chic',mosaic:'Mosaïque',velvet:'Bordeaux',sand:'Papier chaud'}
+ ar:{royal:'ملكي مخملي',rose:'وردي رقيق',noor:'محراب النور',midnight:'ليل فاخر',minimal:'أناقة هادئة',mosaic:'فسيفساء هندسية',velvet:'عنابي ملكي',sand:'دفء الورق',pearl:'لؤلؤة عاجية',emerald:'زمرد وذهب',copper:'نحاس دافئ',ink:'حبر ليلي'},
+ en:{royal:'Royal velvet',rose:'Soft rose',noor:'Noor arch',midnight:'Midnight',minimal:'Quiet minimal',mosaic:'Geometric mosaic',velvet:'Burgundy',sand:'Warm paper',pearl:'Ivory pearl',emerald:'Emerald & gold',copper:'Warm copper',ink:'Midnight ink'},
+ fr:{royal:'Velours royal',rose:'Rose tendre',noor:'Arche lumineuse',midnight:'Nuit élégante',minimal:'Minimal chic',mosaic:'Mosaïque',velvet:'Bordeaux',sand:'Papier chaud',pearl:'Perle ivoire',emerald:'Émeraude et or',copper:'Cuivre chaud',ink:'Encre de nuit'}
 };
 let activeCardTheme='royal',activeCardFormat='portrait',cardPreviousFocus=null;
 const cardCopy={
@@ -314,7 +318,8 @@ function openCardStudio(){
  if(!current){alert(lang==='en'?'Choose a message first.':lang==='fr'?'Choisissez d’abord un message.':'اختر رسالة أولاً.');return}
  const modal=$('cardStudio');if(!modal)return;
  cardPreviousFocus=document.activeElement;
- $('cardMessageInput').value=current;
+ $('cardMessageInput').value=current.slice(0,900);
+ updateCardMessageMeta();
  $('cardDesigns').querySelectorAll('[data-card-style]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cardStyle===activeCardTheme)));
  $('cardFormat').value=activeCardFormat;$('cardBrandToggle').checked=true;
  applyCardStudioLanguage();
@@ -336,6 +341,8 @@ function applyCardStudioLanguage(){
  $('cardPreviewLabel').textContent=labels.preview;$('cardPrivacyHint').textContent=labels.hint;
  $('cardFormat').options[0].text=labels.portrait;$('cardFormat').options[1].text=labels.square;$('cardFormat').options[2].text=labels.story;
  $('cardDesigns').querySelectorAll('[data-card-style]').forEach(button=>{button.querySelector('span').textContent=(cardNames[lang]||cardNames.ar)[button.dataset.cardStyle]});
+ $('cardDesignCount').textContent=lang==='en'?'12 crafted styles':lang==='fr'?'12 styles créatifs':'12 تصميماً فنياً';
+ $('cardSmartSuggest').textContent=lang==='en'?'✦ Suggest a fitting design':lang==='fr'?'✦ Suggérer un style adapté':'✦ اقترح التصميم الأنسب';
 }
 function cardRoundRect(ctx,x,y,w,h,r){
  const radius=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+radius,y);ctx.arcTo(x+w,y,x+w,y+h,radius);ctx.arcTo(x+w,y+h,x,y+h,radius);ctx.arcTo(x,y+h,x,y,radius);ctx.arcTo(x,y,x+w,y,radius);ctx.closePath();
@@ -360,50 +367,67 @@ function cardWrap(ctx,text,maxWidth,font){
 }
 function drawCardArtwork(canvas,scale=1){
  const text=$('cardMessageInput').value.trim(),theme=cardThemes[activeCardTheme]||cardThemes.royal;
+ if(!text)throw new Error('A card message is required');
  const format=activeCardFormat,w=1080,baseH=format==='square'?1080:format==='story'?1920:1350;
+ const top=activeCardTheme==='noor'||activeCardTheme==='emerald'?390:330,maxWidth=790;
  canvas.width=w*scale;canvas.height=baseH*scale;
- let ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');ctx.setTransform(scale,0,0,scale,0,0);
+ let ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');
+ ctx.setTransform(scale,0,0,scale,0,0);
  const isAr=lang==='ar',direction=isAr?'rtl':'ltr',brand=$('cardBrandToggle').checked;
- const maxWidth=790,top=activeCardTheme==='noor'?425:330,bottom=baseH-250;
- let size=format==='story'?53:49,lines=[],lineHeight=0;
+ let size=format==='story'?55:52,lines=[],lineHeight=0;
  const fit=()=>{
-  lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.68;
-  while(lines.length*lineHeight>bottom-top&&size>31){size-=2;lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.68}
+  lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');
+  lineHeight=size*1.72;
+  while(lines.length*lineHeight>baseH-top-300&&size>36){size-=2;lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.72}
  };
  fit();
- const height=Math.max(baseH,Math.min(3000,top+lines.length*lineHeight+250));
+ const contentHeight=lines.reduce((sum,line)=>sum+(line===''?lineHeight*.52:lineHeight),0);
+ const height=Math.max(baseH,Math.min(2700,top+contentHeight+310));
  if(height!==baseH){canvas.height=height*scale;ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0)}
  const h=height,gradient=ctx.createLinearGradient(0,0,w,h);
  gradient.addColorStop(0,theme.paper);gradient.addColorStop(.52,theme.paper2);gradient.addColorStop(1,theme.paper);
  ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
- ctx.save();ctx.globalAlpha=.045;ctx.fillStyle=theme.ink;
- for(let y=18;y<h;y+=31)for(let x=17;x<w;x+=37)ctx.fillRect(x+((y*7+x*3)%11),y,1.5,1.5);
+ ctx.save();ctx.globalAlpha=.035;ctx.fillStyle=theme.ink;
+ for(let y=22;y<h;y+=34)for(let x=20;x<w;x+=41)ctx.fillRect(x+((y*7+x*3)%13),y,1.3,1.3);
  ctx.restore();
- if(activeCardTheme==='midnight'||activeCardTheme==='velvet'){const glow=ctx.createRadialGradient(540,250,30,540,250,680);glow.addColorStop(0,'rgba(255,220,185,.12)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h)}
- ctx.strokeStyle=theme.gold;ctx.lineWidth=4;cardRoundRect(ctx,38,38,w-76,h-76,34);ctx.stroke();
- ctx.strokeStyle=theme.edge;ctx.lineWidth=2;cardRoundRect(ctx,57,57,w-114,h-114,27);ctx.stroke();
- [[105,105],[w-105,105],[105,h-105],[w-105,h-105]].forEach(([x,y])=>cardRosette(ctx,x,y,27,theme.gold));
- if(activeCardTheme==='noor'){
-  ctx.save();ctx.strokeStyle=theme.gold;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(285,405);ctx.lineTo(285,260);ctx.bezierCurveTo(285,95,795,95,795,260);ctx.lineTo(795,405);ctx.stroke();ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(310,405);ctx.lineTo(310,270);ctx.bezierCurveTo(310,135,770,135,770,270);ctx.lineTo(770,405);ctx.stroke();ctx.restore();
- }else if(activeCardTheme==='mosaic'){
-  ctx.save();ctx.globalAlpha=.35;for(let x=155;x<=925;x+=110){cardRosette(ctx,x,300,24,theme.gold);cardRosette(ctx,x,h-300,24,theme.gold)}ctx.restore();
- }else if(activeCardTheme==='rose'){
-  ctx.save();ctx.strokeStyle=theme.edge;ctx.lineWidth=3;for(let i=0;i<5;i++){const y=230+i*24;ctx.beginPath();ctx.moveTo(115,y);ctx.bezierCurveTo(230,y-90,280,y+90,390,y);ctx.stroke();ctx.beginPath();ctx.moveTo(690,y);ctx.bezierCurveTo(800,y-90,850,y+90,965,y);ctx.stroke()}ctx.restore();
- }else if(activeCardTheme==='minimal'){
-  ctx.strokeStyle=theme.gold;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(330,270);ctx.lineTo(750,270);ctx.stroke();ctx.beginPath();ctx.moveTo(330,h-250);ctx.lineTo(750,h-250);ctx.stroke();
+ if(['midnight','velvet','ink'].includes(activeCardTheme)){
+  const glow=ctx.createRadialGradient(540,210,20,540,210,720);glow.addColorStop(0,'rgba(255,220,185,.14)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
  }
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;
- ctx.fillStyle=theme.accent;ctx.font='700 67px Georgia, Tahoma, serif';ctx.fillText(isAr?'بين قلبين':lang==='fr'?'Entre deux cœurs':'Between Two Hearts',540,175,800);
- ctx.fillStyle=theme.gold;ctx.font='34px Georgia, serif';ctx.fillText('✦  ❦  ✦',540,245);
- if(activeCardTheme==='velvet'){ctx.fillStyle='rgba(255,248,237,.94)';cardRoundRect(ctx,105,320,870,h-640,26);ctx.fill();ctx.strokeStyle=theme.gold;ctx.lineWidth=2;cardRoundRect(ctx,125,340,830,h-680,19);ctx.stroke()}
- const areaTop=activeCardTheme==='noor'?425:activeCardTheme==='velvet'?400:330,areaBottom=h-250,blockHeight=lines.length*lineHeight;
+ ctx.save();
+ if(activeCardTheme==='minimal'||activeCardTheme==='pearl'){
+  ctx.strokeStyle=theme.edge;ctx.lineWidth=2;cardRoundRect(ctx,54,54,w-108,h-108,24);ctx.stroke();
+  ctx.strokeStyle=theme.gold;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(300,285);ctx.lineTo(780,285);ctx.stroke();
+ }else if(activeCardTheme==='noor'||activeCardTheme==='emerald'){
+  ctx.strokeStyle=theme.gold;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(260,top);ctx.lineTo(260,245);ctx.bezierCurveTo(260,70,820,70,820,245);ctx.lineTo(820,top);ctx.stroke();
+  ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(286,top);ctx.lineTo(286,250);ctx.bezierCurveTo(286,112,794,112,794,250);ctx.lineTo(794,top);ctx.stroke();cardRosette(ctx,540,180,22,theme.gold);
+ }else if(activeCardTheme==='mosaic'||activeCardTheme==='ink'){
+  ctx.strokeStyle=theme.gold;ctx.lineWidth=3;cardRoundRect(ctx,42,42,w-84,h-84,12);ctx.stroke();ctx.globalAlpha=.42;
+  for(let x=125;x<=955;x+=92){cardRosette(ctx,x,255,18,theme.gold);cardRosette(ctx,x,h-255,18,theme.gold)}
+ }else if(activeCardTheme==='rose'||activeCardTheme==='copper'){
+  ctx.strokeStyle=theme.edge;ctx.lineWidth=3;
+  for(let i=0;i<5;i++){const y=210+i*25;ctx.beginPath();ctx.moveTo(105,y);ctx.bezierCurveTo(230,y-65,310,y+65,420,y);ctx.stroke();ctx.beginPath();ctx.moveTo(660,y);ctx.bezierCurveTo(770,y-65,850,y+65,975,y);ctx.stroke()}
+  if(activeCardTheme==='copper'){ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(100,h-250);ctx.lineTo(300,h-430);ctx.lineTo(430,h-300);ctx.stroke()}
+ }else if(activeCardTheme==='midnight'){
+  ctx.fillStyle=theme.accent;ctx.fillRect(78,78,16,h-156);ctx.strokeStyle=theme.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(130,100);ctx.lineTo(130,h-100);ctx.stroke();
+ }else{
+  ctx.strokeStyle=theme.gold;ctx.lineWidth=4;cardRoundRect(ctx,38,38,w-76,h-76,34);ctx.stroke();ctx.strokeStyle=theme.edge;ctx.lineWidth=2;cardRoundRect(ctx,58,58,w-116,h-116,27);ctx.stroke();
+  [[105,105],[w-105,105],[105,h-105],[w-105,h-105]].forEach(([x,y])=>cardRosette(ctx,x,y,27,theme.gold));
+ }
+ ctx.restore();
+ if(activeCardTheme==='velvet'){
+  ctx.fillStyle='rgba(255,248,237,.96)';cardRoundRect(ctx,105,320,870,h-640,26);ctx.fill();ctx.strokeStyle=theme.gold;ctx.lineWidth=2;cardRoundRect(ctx,125,340,830,h-680,19);ctx.stroke();
+ }
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;ctx.fillStyle=theme.accent;ctx.font='700 66px Georgia, Tahoma, serif';
+ ctx.fillText(isAr?'بين قلبين':lang==='fr'?'Entre deux cœurs':'Between Two Hearts',540,170,820);
+ ctx.fillStyle=theme.gold;ctx.font='30px Georgia, serif';ctx.fillText('✦  ❦  ✦',540,238);
+ const areaTop=activeCardTheme==='noor'||activeCardTheme==='emerald'?top+10:activeCardTheme==='velvet'?390:315,areaBottom=h-260,blockHeight=contentHeight;
  let y=Math.max(areaTop+lineHeight,(areaTop+areaBottom-blockHeight)/2+lineHeight/2);
  ctx.fillStyle=activeCardTheme==='velvet'?'#4b1733':theme.ink;ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;
  ctx.font='600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif';
- lines.forEach(line=>{if(line===''){y+=lineHeight*.58;return}ctx.fillText(line,540,y,maxWidth);y+=lineHeight});
- const sealY=h-155;ctx.strokeStyle=theme.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(250,sealY-48);ctx.lineTo(830,sealY-48);ctx.stroke();cardRosette(ctx,540,sealY,22,theme.gold);
- if(brand){ctx.fillStyle=theme.muted;ctx.font='500 27px system-ui, Tahoma, serif';ctx.fillText(cardText('footer'),540,h-100,820)}
- return {width:w,height:h,lines:lines.length,fontSize:size};
+ lines.forEach(line=>{if(line===''){y+=lineHeight*.52;return}ctx.fillText(line,540,y,maxWidth);y+=lineHeight});
+ const sealY=h-155;ctx.strokeStyle=theme.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(300,sealY-48);ctx.lineTo(780,sealY-48);ctx.stroke();cardRosette(ctx,540,sealY,22,theme.gold);
+ if(brand){ctx.fillStyle=theme.muted;ctx.font='500 25px system-ui, Tahoma, serif';ctx.fillText(cardText('footer'),540,h-100,820)}
+ return {width:w,height:h,lines:lines.length,fontSize:size,overflow:contentHeight>areaBottom-areaTop};
 }
 function renderCardPreview(){
  const canvas=$('cardPreview');if(!canvas)return;
@@ -427,7 +451,29 @@ async function downloadMessageCard(){
 $('cardBtn').onclick=openCardStudio;
 $('cardClose').onclick=closeCardStudio;
 $('cardDownload').onclick=downloadMessageCard;
-$('cardMessageInput').addEventListener('input',renderCardPreview);
+function updateCardMessageMeta(){
+ const input=$('cardMessageInput'),count=input.value.length;
+ $('cardCharCount').textContent=count+' / 900';$('cardCharCount').classList.toggle('near-limit',count>780);
+ $('cardSmartSuggest').disabled=!input.value.trim();
+}
+function suggestCardDesign(){
+ const text=$('cardMessageInput').value.toLocaleLowerCase();
+ const rules=[
+  {id:'noor',words:['دعاء','الله','اللهم','بركة','رحمة','آمين','خير']},
+  {id:'rose',words:['آسف','أعتذر','سامح','زعل','جرحت','sorry','pardon']},
+  {id:'midnight',words:['أشتاق','اشتقت','بعيد','غياب','miss','manque']},
+  {id:'emerald',words:['شكراً','شكرا','أقدر','أقدّر','امتنان','تعبك','جهدك','merci','thank']},
+  {id:'pearl',words:['أحب','أحبك','مودة','قلبي','حياتي','love','amour']},
+  {id:'sand',words:['صباح','مساء','يومك','طمأنينة','راحة']}
+ ];
+ const match=rules.find(rule=>rule.words.some(word=>text.includes(word)));
+ activeCardTheme=match?.id||'royal';
+ $('cardDesigns').querySelectorAll('[data-card-style]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cardStyle===activeCardTheme)));
+ renderCardPreview();
+ $('cardOverflowNote').textContent=lang==='en'?'Suggested style: '+cardNames.en[activeCardTheme]:lang==='fr'?'Style suggéré : '+cardNames.fr[activeCardTheme]:'التصميم المقترح: '+cardNames.ar[activeCardTheme];
+}
+$('cardMessageInput').addEventListener('input',()=>{updateCardMessageMeta();renderCardPreview()});
+$('cardSmartSuggest').addEventListener('click',suggestCardDesign);
 $('cardFormat').addEventListener('change',event=>{activeCardFormat=event.target.value;renderCardPreview()});
 $('cardBrandToggle').addEventListener('change',renderCardPreview);
 $('cardDesigns').addEventListener('click',event=>{

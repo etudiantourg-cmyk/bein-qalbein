@@ -31,7 +31,7 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /aiPrivacyNote/);
   assert.match(html, /Live generation test passed/);
   assert.ok(html.includes("url+'/generate'"));
-  assert.match(html, /navV46/);
+  assert.ok(html.includes("Unified interaction router"));
   assert.match(html, /Your situation details are sent to Cloudflare AI/);
   assert.match(html, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
   assert.match(html, /aiSafetyNote/);

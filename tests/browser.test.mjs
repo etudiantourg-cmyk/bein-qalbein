@@ -64,6 +64,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
       "WCAG accessibility violations detected"
     );
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
+    assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
 
     assert.deepEqual(pageErrors, [], `uncaught startup errors: ${pageErrors.join(" | ")}`);
     await page.locator("#cats .cat").first().click();
@@ -116,6 +117,43 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#bottomNav button[data-go="favorites"]').click();
     await page.locator("#favorites .favitem").first().waitFor();
     await page.reload({ waitUntil: "domcontentloaded" });
+    await page.locator("#favorites .favitem").first().waitFor();
+
+    await page.locator("#customInput").fill("ملاحظة خاصة يجب أن تبقى محفوظة");
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator("#saveCustom").click();
+    await page.locator(".custom-item").filter({ hasText: "ملاحظة خاصة يجب أن تبقى محفوظة" }).waitFor();
+    await page.locator("#privacyPin").fill("1234");
+    page.once("dialog", dialog => dialog.accept());
+    await page.locator("#setPrivacyPin").click();
+    await page.locator('#bottomNav button[data-go="home"]').click();
+    await page.locator('#bottomNav button[data-go="favorites"]').click();
+    assert.equal(await page.locator("#favorites").isVisible(), false, "PIN should hide the favorites list after leaving it");
+    await page.locator("#privacyPin").fill("1234");
+    await page.locator("#unlockFavorites").click();
+    await page.locator("#favorites .favitem").first().waitFor();
+
+    const backupPromise = page.waitForEvent("download");
+    await page.locator("#exportData").click();
+    const backupDownload = await backupPromise;
+    assert.equal(backupDownload.suggestedFilename(), "bein-qalbein-backup.json");
+    const backupPath = await backupDownload.path();
+    const backup = JSON.parse(await readFile(backupPath, "utf8"));
+    assert.ok(JSON.parse(backup.data.bq_custom_notes).includes("ملاحظة خاصة يجب أن تبقى محفوظة"));
+    assert.ok(!Object.hasOwn(backup.data, "bq_fav_pin_hash"), "PIN verifier must not be exported");
+    assert.ok(!Object.hasOwn(backup.data, "bq_ai_endpoint"), "private engine endpoint must not be exported");
+    backup.data.bq_custom_notes = JSON.stringify(["رسالة استعيدت من النسخة الاحتياطية"]);
+    const chooserPromise = page.waitForEvent("filechooser");
+    await page.locator("#importLabel").click();
+    const chooser = await chooserPromise;
+    const navigationPromise = page.waitForNavigation({ waitUntil: "domcontentloaded" });
+    page.once("dialog", dialog => dialog.accept());
+    await chooser.setFiles({ name: "bein-qalbein-backup.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify(backup)) });
+    await navigationPromise;
+    await page.locator('#bottomNav button[data-go="favorites"]').click();
+    await page.locator(".custom-item").filter({ hasText: "رسالة استعيدت من النسخة الاحتياطية" }).waitFor();
+    await page.locator("#privacyPin").fill("1234");
+    await page.locator("#unlockFavorites").click();
     await page.locator("#favorites .favitem").first().waitFor();
 
     await page.locator('#bottomNav button[data-go="guide"]').click();

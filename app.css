@@ -579,3 +579,26 @@ html[dir="rtl"] .settings-drawer-panel{
  .home-top-shortcuts{top:102px;padding:7px 6px!important;gap:4px}
  .home-top-shortcuts .home-shortcut{min-height:41px}
 }
+
+
+/* Keep the homepage shortcut strip pinned to the viewport while scrolling. */
+body[data-current-page="home"] .home-top-shortcuts{
+ position:fixed!important;
+ top:116px!important;
+ left:50%!important;
+ right:auto!important;
+ transform:translateX(-50%);
+ width:min(980px,calc(100% - 20px))!important;
+ margin:0!important;
+ z-index:950!important;
+}
+body[data-current-page="home"] main#mainContent{
+ padding-top:70px;
+}
+body[data-current-page]:not([data-current-page="home"]) .home-top-shortcuts{
+ display:none!important;
+}
+@media(max-width:600px){
+ body[data-current-page="home"] .home-top-shortcuts{top:112px!important}
+ body[data-current-page="home"] main#mainContent{padding-top:68px}
+}

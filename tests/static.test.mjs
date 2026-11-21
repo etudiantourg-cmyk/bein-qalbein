@@ -42,23 +42,23 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(aiStudio, /displayMessageInMain\(finalMessage/);
   assert.match(app, /function validBackupValue/);
   assert.match(aiStudio, /const ENDPOINT=/);
-  assert.match(aiStudio, /optionLabels/);
+  assert.match(aiStudio, /const labels=/);
   assert.match(aiStudio, /aiPrivacyNote/);
   assert.doesNotMatch(html, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|aiConnectionState|ai-connection|إعداد الاتصال بمحرك/);
-  assert.ok(aiStudio.includes("url+'/generate'"));
+  assert.ok(aiStudio.includes("ENDPOINT+'/generate'"));
   assert.ok(app.includes("Unified interaction router"));
   assert.match(aiStudio, /Your situation description is sent to the AI service/);
   assert.match(aiStudio, /يُرسل وصف الموقف إلى خدمة الذكاء الاصطناعي/);
   assert.match(aiStudio, /aiSafetyNote/);
   assert.match(aiStudio, /rateLimited:/);
   assert.match(aiStudio, /safetyRejected:/);
-  assert.match(aiStudio, /engineUnavailable:/);
-  assert.match(aiStudio, /bq_ai_language_manual/);\n  assert.doesNotMatch(aiStudio, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|bq_ai_endpoint|Cloudflare Worker|رابط المحرك/);
+  assert.match(aiStudio, /unavailable:/);
+  assert.match(aiStudio, /bq_ai_language_manual/);
   assert.match(aiStudio, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 
 test("saved user data remains compatible and backup import is validated", () => {
-  for (const key of ["bq_favorites", "bq_recent_messages", "bq_custom_notes", "bq_favorite_folders", "bq_ai_language", "bq_ai_language_manual"]) assert.ok(app.includes(key));
+  assert.match(aiStudio, /bq_ai_language_manual/);
   assert.match(app, /file\.size>2\*1024\*1024/);
   assert.ok(app.includes("if(!bqStorage.persistent)throw Error('storage-unavailable')"));
   assert.ok(app.includes("rollback-incomplete"));

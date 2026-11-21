@@ -270,3 +270,4 @@ body.theme-blue .bottom-nav button .ui-icon{filter:drop-shadow(0 1px 0 rgba(255,
 /* Keep bottom navigation labels readable in dark mode. */
 body.theme-night .bottom-nav button,body.dark-mode .bottom-nav button{color:#fff}
 body.theme-night .bottom-nav button.active,body.dark-mode .bottom-nav button.active{color:#fff}
+\n/* First-paint identity theme: avoid the default wine flash before app.js runs. */\nhtml[data-start-role="husband"] body{--wine:#285b86;--wine-2:#397eae;--rose:#68a9d5;--rose-soft:#e5f3fc;--gold:#d8bd83;--surface-2:#f3faff}\nhtml[data-start-role="wife"] body{--wine:#7b2147;--wine-2:#a43a62;--rose:#d16e91;--rose-soft:#fceaf0;--gold:#e2bd83;--surface-2:#fff6f8}\n

@@ -234,10 +234,11 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const allowed=['home','favorites','guide'];
+ const allowed=['home','library','favorites','guide','games'];
  if(!allowed.includes(page))page='home';
+ const contentPage=page==='library'?'home':page;
  document.querySelectorAll('.page-section').forEach(section=>{
-  const active=section.dataset.page===page;
+  const active=section.dataset.page===contentPage;
   section.classList.toggle('active-page',active);
   section.setAttribute('aria-hidden',String(!active));
   section.inert=!active;
@@ -249,7 +250,9 @@ function goPage(page){
  });
  try{bqStorage.setItem('bq_last_page',page)}catch(_){}
  window.scrollTo({top:0,behavior:'auto'});
+ if(page==='library')requestAnimationFrame(()=>$('catTitle')?.scrollIntoView({behavior:'auto',block:'start'}));
  if(page==='favorites'){showFavs();renderHistory();renderCustomNotes()}
+ if(page==='games')renderMiniGame();
  if(page==='settings')updateStorageStatus();
 }
 /* Bottom navigation is handled by the single delegated router below. */
@@ -501,7 +504,7 @@ generate=function(){originalGenerate();rememberMessage(current)};
 const originalApplyLanguage=applyLanguage;
 
 applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').value);renderHistory();renderCustomNotes();renderSmartChips();const labels={ar:['الرئيسية','المفضلة','الدليل','الإعدادات','الإعدادات','فاجئني برسالة','رسائلك الخاصة','آخر الرسائل','اكتب رسالة خاصة بك...','حفظ رسالتي'],en:['Home','Favorites','Guide','Settings','Settings','Surprise me','My private messages','Recent messages','Write your own message...','Save my message'],fr:['Accueil','Favoris','Guide','Paramètres','Paramètres','Surprenez-moi','Mes messages privés','Messages récents','Écrivez votre message...','Enregistrer']};const x=labels[lang]||labels.ar;[['navHome',x[0]],['navFavorites',x[1]],['navGuide',x[2]],['settingsTitleText',x[4]],['surpriseBtn',x[5]],['customTitle',x[6]],['historyTitle',x[7]]].forEach(([id,value])=>{const el=$(id);if(el)el.textContent=value});$('customInput').placeholder=x[8];$('saveCustom').textContent=x[9]};
-goPage(['home','favorites','guide'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
+goPage(['home','library','favorites','guide','games'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
 renderSmartChips();
 
 applyLanguage();applyTheme();updateStorageStatus();if(bqStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
@@ -800,8 +803,6 @@ window.displayMessageInMain=displayMessageInMain;
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');requestAnimationFrame(()=>{$('search')?.focus();$('search')?.scrollIntoView({behavior:'smooth',block:'center'})});return}
   b=t.closest('#topThemeBtn');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();$('themeToggle')?.click();return}
-  b=t.closest('#topNav button[data-go]');
-  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage(b.dataset.go);return}
   b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;
    if(b.dataset.quick==='categories'){$('search').value='';groupedRenderCats('');dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}
@@ -842,8 +843,12 @@ window.displayMessageInMain=displayMessageInMain;
   if(t.closest('#useBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v){useMessage(v);$('message')?.scrollIntoView({behavior:'auto',block:'center'})}else $('builtMessage')?.focus();return}
   if(t.closest('#copyBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v)copyText(v);return}
   if(t.closest('#rescueGenerate')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();showRescue();const r=$('rescueResult');if(r){r.classList.add('rescue-ready');r.scrollIntoView({behavior:'auto',block:'nearest'})}return}
+  b=t.closest('#gameAnswers button[data-game-answer]');
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();answerMiniGame(Number(b.dataset.gameAnswer));return}
+  if(t.closest('#nextGameQuestion')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();advanceMiniGame();return}
   if(t.closest('#copyBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(current)copyText(current);return}
  },true);
+ document.querySelectorAll('#topNav button[data-go]').forEach(button=>button.addEventListener('click',()=>goPage(button.dataset.go)));
  const sel=$('rescueSituation');if(sel)sel.addEventListener('change',()=>{$('rescueResult')?.classList.remove('rescue-ready')});
 })();
 
@@ -861,6 +866,39 @@ if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 
 
 document.documentElement.dataset.messageCount=String(Object.values(messages).reduce((n,p)=>n+p.length,0));
+
+/* A small offline relationship quiz: deterministic, private, and usable without network access. */
+const miniGameQuestions=[
+ {q:'ما أفضل بداية لحوار بعد خلاف؟',a:['رفع الصوت لإثبات الرأي','الاستماع بهدوء وفهم ما أزعج الطرف الآخر','تجاهل المشكلة تماماً'],correct:1,why:'الإنصات الهادئ يفتح باب الفهم ويخفف التوتر.'},
+ {q:'كيف تعبّر عن تقديرك لشريك حياتك؟',a:['أذكر جهده بكلمات صادقة','أنتظر مناسبة خاصة فقط','أقارن ما يفعله بالآخرين'],correct:0,why:'التقدير الصادق في التفاصيل اليومية يصنع فرقاً.'},
+ {q:'عندما يكون شريكك متعباً، ما التصرف الألطف؟',a:['أطالبه بالنقاش فوراً','أمنحه مساحة وأسأله كيف أساعده','أفترض أنه يتعمد الابتعاد'],correct:1,why:'السؤال بلطف ومراعاة التعب يعززان الأمان.'},
+ {q:'ما الذي يقوي الثقة بين الزوجين؟',a:['الوضوح والوفاء بالوعود','إخفاء الأمور المهمة','اختبار الطرف الآخر باستمرار'],correct:0,why:'الثقة تنمو بالصدق والثبات والوفاء.'},
+ {q:'كيف يكون الاعتذار نافعاً؟',a:['مع تبرير الخطأ وإلقاء اللوم','باعتراف واضح وتحمل للمسؤولية','بالتظاهر أن شيئاً لم يحدث'],correct:1,why:'الاعتذار الصادق يعترف بالأثر ويصحح السلوك.'}
+];
+let miniGameIndex=0,miniGameScore=0,miniGameAnswered=false;
+function renderMiniGame(){
+ const q=miniGameQuestions[miniGameIndex];if(!q)return;
+ $('gameQuestion').textContent=q.q;$('gameScore').textContent=String(miniGameScore);
+ $('gameProgress').textContent='السؤال '+(miniGameIndex+1)+' من '+miniGameQuestions.length;
+ $('gameFeedback').textContent='اختر الإجابة الأقرب للمودة وحسن التواصل.';
+ $('nextGameQuestion').hidden=true;miniGameAnswered=false;
+ const host=$('gameAnswers');host.innerHTML='';
+ q.a.forEach((label,index)=>{const b=document.createElement('button');b.type='button';b.dataset.gameAnswer=String(index);b.textContent=label;host.append(b)});
+}
+function answerMiniGame(index){
+ if(miniGameAnswered)return;const q=miniGameQuestions[miniGameIndex];if(!q||!Number.isInteger(index)||index<0||index>=q.a.length)return;
+ miniGameAnswered=true;const buttons=[...$('gameAnswers').querySelectorAll('button')];buttons.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add('correct-answer');else if(i===index)b.classList.add('wrong-answer')});
+ if(index===q.correct)miniGameScore++;
+ $('gameScore').textContent=String(miniGameScore);
+ $('gameFeedback').textContent=(index===q.correct?'أحسنت! ':'ليس تماماً. ')+q.why;
+ $('nextGameQuestion').textContent=miniGameIndex===miniGameQuestions.length-1?'العب من جديد':'السؤال التالي';
+ $('nextGameQuestion').hidden=false;
+}
+function advanceMiniGame(){
+ if(!miniGameAnswered)return;
+ if(miniGameIndex===miniGameQuestions.length-1){miniGameIndex=0;miniGameScore=0}else miniGameIndex++;
+ renderMiniGame();
+}
 
 /* Settings open as an overlay drawer; never replace the current page. */
 (function(){

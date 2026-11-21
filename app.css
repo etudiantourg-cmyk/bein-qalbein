@@ -154,9 +154,9 @@ body.theme-night .top-navigation{background:#51243a}
 .top-brand-logo{display:block;flex:0 0 42px;width:42px;height:42px;object-fit:cover;border:1px solid rgba(245,218,159,.9);border-radius:12px;background:#350719;box-shadow:0 2px 9px rgba(0,0,0,.18)}
 .top-tools{display:flex;align-items:center;gap:7px}
 .top-tool-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--wine);font-size:23px}
-.top-tabs{max-width:980px;margin:auto;padding:0 10px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
-.top-tabs button{position:relative;display:flex;min-width:0;min-height:48px;align-items:center;justify-content:center;gap:7px;padding:7px 4px 9px;border:0;border-radius:11px 11px 0 0;background:transparent;color:var(--muted);font-weight:750}
-.top-tabs button>span{font-size:19px;line-height:1}
+.top-tabs{max-width:980px;margin:auto;padding:0 8px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.top-tabs button{position:relative;display:flex;min-width:0;min-height:48px;align-items:center;justify-content:center;gap:0;padding:7px 2px 9px;border:0;border-radius:11px 11px 0 0;background:transparent;color:var(--muted);font-weight:750}
+.top-tabs button>span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;font-size:19px;line-height:1}\n.top-tabs button>span svg{display:block;width:23px;height:23px;stroke:currentColor}\n.top-tabs button small{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .top-tabs button small{font-size:12px;white-space:nowrap}
 .top-tabs button.active{color:var(--wine);background:var(--rose-soft)}
 .top-tabs button.active:after{content:"";position:absolute;bottom:0;left:22%;right:22%;height:3px;border-radius:4px 4px 0 0;background:var(--wine)}
@@ -315,3 +315,19 @@ body.settings-drawer-open{overflow:hidden}
 
 /* Keep the short copy controls large enough for reliable touch interaction. */
 .history-item button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
+
+/* Compact icon-only primary navigation. */
+.top-navigation .top-tabs button{color:rgba(255,255,255,.9)}
+.top-navigation .top-tabs button.active{color:#fff;background:rgba(255,255,255,.17)}
+.top-navigation .top-tabs button.active>span{background:rgba(255,255,255,.13)}
+.top-navigation .top-tabs button svg{width:23px;height:23px}
+.game-card{padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--surface-2)}
+.game-score{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:var(--muted);font-size:13px}
+.game-score strong{display:grid;place-items:center;min-width:34px;height:34px;border-radius:50%;background:var(--gold-soft);color:var(--wine);font-size:17px}
+.game-score #gameProgress{margin-inline-start:auto}
+.game-answers{display:grid;gap:10px;margin:16px 0}
+.game-answers button{min-height:52px;padding:11px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);text-align:start}
+.game-answers button.correct-answer{border-color:#31865c;background:#e9f7ef;color:#17613c}
+.game-answers button.wrong-answer{border-color:#bd5265;background:#fff0f1;color:#8b263b}
+.game-feedback{min-height:54px;padding:10px 12px;border-radius:12px;background:var(--surface);color:var(--muted)}
+@media(max-width:360px){.top-tabs{padding-inline:4px;gap:2px}.top-tabs button{min-height:44px}.top-tabs button>span{width:30px;height:30px}.top-navigation .top-tabs button svg{width:21px;height:21px}}

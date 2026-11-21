@@ -147,6 +147,18 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
     await fallbackPage.close();
+
+    const pwaContext = await browser.newContext({ serviceWorkers: "allow" });
+    const pwaPage = await pwaContext.newPage();
+    await pwaPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
+    await pwaPage.evaluate(async () => { await navigator.serviceWorker.ready; });
+    await pwaPage.reload({ waitUntil: "domcontentloaded" });
+    await pwaPage.waitForFunction(() => !!navigator.serviceWorker.controller);
+    await pwaContext.setOffline(true);
+    await pwaPage.reload({ waitUntil: "domcontentloaded" });
+    await pwaPage.locator("#cats .cat").first().waitFor();
+    assert.equal(await pwaPage.locator("#cats .cat").count(), 14, "PWA must render its cached app shell while offline");
+    await pwaContext.close();
   } finally {
     await browser.close();
     await new Promise(resolveClose => server.close(resolveClose));

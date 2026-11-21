@@ -307,6 +307,7 @@ function goPage(page){
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
  document.body.dataset.currentPage=page;
+ if(page==='home'&&typeof window.resetHomeShortcutView==='function')window.resetHomeShortcutView();
  document.querySelectorAll('.page-section').forEach(section=>{
   const active=section.dataset.page===page;
   section.classList.toggle('active-page',active);
@@ -1045,8 +1046,23 @@ function advanceMiniGame(){
  while(fav.firstChild)panes.favorites.appendChild(fav.firstChild);
  while(guide.firstChild)panes.guide.appendChild(guide.firstChild);
  panes.ai.appendChild(ai);
+ const homeSections=[...document.querySelectorAll('main > .page-section[data-page="home"]')];
+ const quickHub=document.getElementById('quickHub');
+ function resetView(){
+  document.body.removeAttribute('data-home-shortcuts-open');
+  host.hidden=true;
+  Object.values(panes).forEach(p=>p.hidden=true);
+  homeSections.forEach(section=>{section.hidden=false});
+  if(quickHub)quickHub.hidden=false;
+  strip.querySelectorAll('.home-shortcut').forEach(button=>{button.classList.remove('is-selected');button.setAttribute('aria-expanded','false')});
+  if(favNav)favNav.hidden=true;
+ }
+ window.resetHomeShortcutView=resetView;
  function activate(key){
   const pane=panes[key];if(!pane)return;
+  document.body.dataset.homeShortcutsOpen='true';
+  homeSections.slice(1).forEach(section=>{section.hidden=true});
+  if(quickHub)quickHub.hidden=true;
   host.hidden=false;
   Object.entries(panes).forEach(([name,node])=>{node.hidden=name!==key});
   strip.querySelectorAll('.home-shortcut').forEach(button=>{
@@ -1060,10 +1076,7 @@ function advanceMiniGame(){
  }
  const homeReset=strip.querySelector('[data-home-reset]');
  if(homeReset)homeReset.addEventListener('click',()=>{
-  host.hidden=true;
-  Object.values(panes).forEach(p=>p.hidden=true);
-  strip.querySelectorAll('.home-shortcut').forEach(button=>{button.classList.remove('is-selected');button.setAttribute('aria-expanded','false')});
-  if(favNav)favNav.hidden=true;
+  resetView();
   window.scrollTo({top:0,behavior:'smooth'});
  });
  strip.querySelectorAll('.home-shortcut').forEach(button=>button.addEventListener('click',()=>{

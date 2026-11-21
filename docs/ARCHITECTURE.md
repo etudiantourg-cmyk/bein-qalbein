@@ -9,7 +9,7 @@ The application is intentionally deployable as static files. GitHub Pages serves
 | `index.html` | Semantic page structure and controls | No application logic should be added inline |
 | `app.css` | Tokens, responsive layout, dark themes, focus and motion preferences | Keep visual rules out of JavaScript |
 | `content-data.js` | Static message catalogue, translations, advice, challenge and icon data | Data-only module loaded before the app |
-| `app.js` | Message catalogue, local state, navigation, favorites, history, backup, guide and local tools | Current legacy core; split gradually behind regression tests |
+| `app.js` | Local state, navigation, category rendering, favorites, history, backup, guide and local tools | Current legacy core; split gradually behind regression tests |
 | `ai-studio.js` | AI form, endpoint validation, request lifecycle, status and result handoff | Loaded after `app.js`; currently consumes shared global lexical bindings |
 | `sw.js` | Versioned shell cache, network-first navigation, cache-first static assets | Increment cache version whenever a precached asset changes |
 | `ai-worker/src/index.js` | Input validation, CORS, rate guard, prompt construction, model call and output checks | Never put provider secrets in frontend files |
@@ -18,6 +18,8 @@ The application is intentionally deployable as static files. GitHub Pages serves
 ## 2. Script ordering and the next refactor
 
 The frontend currently uses deferred classic scripts in this order:
+
+The Arabic catalogue combines category-specific and common closing groups. English and French use ten localized base messages plus fifteen localized closings for each category; all three expose 150 generated variants per category, not 150 separately authored messages.
 
 1. `content-data.js`
 2. `app.js`

@@ -888,6 +888,32 @@ function feedback(b){
   catch(_){try{const a=d.createElement('textarea');a.value=String(value);d.body.append(a);a.select();ok=d.execCommand('copy');a.remove()}catch(__){}}
   if(ok)feedback(source);else showCopyToast(false);return ok;
  };
+ function openGlobalSearch(){
+  let overlay=$('globalSearchOverlay');
+  if(!overlay){
+   overlay=d.createElement('div');overlay.id='globalSearchOverlay';overlay.className='global-search-overlay';
+   overlay.innerHTML='<div class="global-search-box" role="dialog" aria-modal="true" aria-label="البحث العام"><div class="global-search-head"><strong>البحث في التطبيق</strong><button type="button" id="closeGlobalSearch" aria-label="إغلاق">×</button></div><input id="globalSearchInput" type="search" placeholder="ابحث في الرسائل والمكتبة والنصائح..." autocomplete="off"><div id="globalSearchResults" class="global-search-results" aria-live="polite"><p>اكتب كلمة للبحث في محتوى التطبيق.</p></div></div>';
+   d.body.append(overlay);
+   $('closeGlobalSearch').addEventListener('click',()=>overlay.classList.remove('is-open'));
+   overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('is-open')});
+   $('globalSearchInput').addEventListener('input',()=>{
+    const q=$('globalSearchInput').value.trim().toLocaleLowerCase(),host=$('globalSearchResults');host.innerHTML='';
+    if(q.length<2){host.innerHTML='<p>اكتب حرفين على الأقل للبحث.</p>';return}
+    const seen=new Set();let matches=0;
+    d.querySelectorAll('#mainContent h1,#mainContent h2,#mainContent h3,#mainContent p,#mainContent li,#mainContent .cat,#mainContent .message-card,#mainContent .advice-card,#mainContent .book-card,#mainContent [data-search-text]').forEach(el=>{
+     if(el.closest('#globalSearchOverlay'))return;
+     const value=(el.innerText||el.textContent||'').replace(/\\s+/g,' ').trim();
+     if(value.length<3||value.length>1400||!value.toLocaleLowerCase().includes(q))return;
+     const key=value.slice(0,180);if(seen.has(key)||matches>=60)return;seen.add(key);
+     const row=d.createElement('button');row.type='button';row.className='global-search-result';row.textContent=value.slice(0,180)+(value.length>180?'…':'');
+     row.addEventListener('click',()=>{const page=el.closest('[data-page]')?.dataset.page;if(page)goPage(page);overlay.classList.remove('is-open');requestAnimationFrame(()=>{el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('global-search-hit');setTimeout(()=>el.classList.remove('global-search-hit'),1600)})});
+     host.append(row);matches++;
+    });
+    if(!matches)host.innerHTML='<p>لا توجد نتائج مطابقة في المحتوى المتاح حالياً.</p>';
+   });
+  }
+  overlay.classList.add('is-open');$('globalSearchInput').value='';$('globalSearchResults').innerHTML='<p>اكتب كلمة للبحث في محتوى التطبيق.</p>';requestAnimationFrame(()=>$('globalSearchInput').focus());
+ }
  function displayMessageInMain(value,categoryId){
  const message=String(value||'').trim();if(!message)return false;
  current=message;$('message').textContent=message;rememberMessage(message);
@@ -910,7 +936,7 @@ window.displayMessageInMain=displayMessageInMain;
  d.addEventListener('click',function(e){
   const t=e.target;
   let b=t.closest('#topSearchBtn');
-  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');requestAnimationFrame(()=>{$('search')?.focus();$('search')?.scrollIntoView({behavior:'smooth',block:'center'})});return}
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();openGlobalSearch();return}
   b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;
    if(b.dataset.quick==='categories'){$('search').value='';groupedRenderCats('');dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}

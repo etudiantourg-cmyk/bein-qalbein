@@ -19,13 +19,13 @@ test("application JavaScript parses and element IDs are unique", () => {
 
 test("main controls, AI connection test and safe message display exist", () => {
   for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiTestEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
-    assert.match(app, new RegExp(`id=["']${id}["']`));
+    assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(app, /function displayMessageInMain/);
   assert.match(app, /applyLanguage\(\);\s*\};/);
-  assert.match(app, /data-quick="ai"/);
+  assert.match(html, /data-quick="ai"/);
   assert.ok(app.includes("https://bein-qalbein.etudiantourg.workers.dev"));
-  assert.match(app, /<textarea id="aiOutput"/);
+  assert.match(html, /<textarea id="aiOutput"/);
   assert.match(app, /displayMessageInMain\(finalMessage/);
   assert.match(app, /function validBackupValue/);
   assert.match(app, /endsWith\('\.workers\.dev'\)/);
@@ -85,7 +85,7 @@ test("PWA cache and manifest remain coherent", () => {
   assert.doesNotMatch(sw, /couple-header\\.jpg\\.png/); // large hero is runtime-cached, not precached on first install
   assert.match(sw, /navigationPreload/);
   assert.equal(manifest.start_url, "./");
-  assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
+  assert.ok(sw.includes("keys.filter(key=>key.startsWith('bein-qalbein-royal-')&&key!==CACHE)"));
   assert.match(sw, /const response=await fetch\(event\.request\)/);
   assert.match(sw, /const cached=await caches\.match\(event\.request\)/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);

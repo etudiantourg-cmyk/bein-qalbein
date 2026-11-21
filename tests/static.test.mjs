@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
+const css = await readFile(new URL("../app.css", import.meta.url), "utf8");
 const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
 const worker = await readFile(new URL("../ai-worker/src/index.js", import.meta.url), "utf8");
@@ -17,59 +19,77 @@ test("application JavaScript parses and element IDs are unique", () => {
 
 test("main controls, AI connection test and safe message display exist", () => {
   for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiTestEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
-    assert.match(html, new RegExp(`id=["']${id}["']`));
+    assert.match(app, new RegExp(`id=["']${id}["']`));
   }
-  assert.match(html, /function displayMessageInMain/);
-  assert.match(html, /applyLanguage\(\);\s*\};/);
-  assert.match(html, /data-quick="ai"/);
-  assert.ok(html.includes("https://bein-qalbein.etudiantourg.workers.dev"));
-  assert.match(html, /<textarea id="aiOutput"/);
-  assert.match(html, /displayMessageInMain\(finalMessage/);
-  assert.match(html, /function validBackupValue/);
-  assert.match(html, /endsWith\('\.workers\.dev'\)/);
-  assert.match(html, /optionLabels/);
-  assert.match(html, /aiPrivacyNote/);
-  assert.match(html, /Live generation test passed/);
-  assert.ok(html.includes("url+'/generate'"));
-  assert.ok(html.includes("Unified interaction router"));
-  assert.match(html, /Your situation details are sent to Cloudflare AI/);
-  assert.match(html, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
-  assert.match(html, /aiSafetyNote/);
-  assert.match(html, /rateLimited:/);
-  assert.match(html, /safetyRejected:/);
-  assert.match(html, /engineUnavailable:/);
-  assert.match(html, /bq_ai_language_manual/);
-  assert.match(html, /role==='wife'\?'للزوج':'للزوجة'/);
+  assert.match(app, /function displayMessageInMain/);
+  assert.match(app, /applyLanguage\(\);\s*\};/);
+  assert.match(app, /data-quick="ai"/);
+  assert.ok(app.includes("https://bein-qalbein.etudiantourg.workers.dev"));
+  assert.match(app, /<textarea id="aiOutput"/);
+  assert.match(app, /displayMessageInMain\(finalMessage/);
+  assert.match(app, /function validBackupValue/);
+  assert.match(app, /endsWith\('\.workers\.dev'\)/);
+  assert.match(app, /optionLabels/);
+  assert.match(app, /aiPrivacyNote/);
+  assert.match(app, /Live generation test passed/);
+  assert.ok(app.includes("url+'/generate'"));
+  assert.ok(app.includes("Unified interaction router"));
+  assert.match(app, /Your situation details are sent to Cloudflare AI/);
+  assert.match(app, /تفاصيل الموقف تُرسل إلى Cloudflare AI/);
+  assert.match(app, /aiSafetyNote/);
+  assert.match(app, /rateLimited:/);
+  assert.match(app, /safetyRejected:/);
+  assert.match(app, /engineUnavailable:/);
+  assert.match(app, /bq_ai_language_manual/);
+  assert.match(app, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 
 test("existing saved data is preserved and backup import is validated", () => {
-  assert.match(html, /bq_favorites/);
-  assert.match(html, /bq_recent_messages/);
-  assert.match(html, /bq_custom_notes/);
-  assert.match(html, /bq_favorite_folders/);
-  assert.match(html, /bq_ai_language/);
-  assert.match(html, /bq_ai_language_manual/);
-  assert.match(html, /file\.size>2\*1024\*1024/);
-  assert.match(html, /x\.length<=10000/);
-  assert.match(html, /version:62,exportedAt:/);
-  assert.match(html, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);
+  assert.match(app, /bq_favorites/);
+  assert.match(app, /bq_recent_messages/);
+  assert.match(app, /bq_custom_notes/);
+  assert.match(app, /bq_favorite_folders/);
+  assert.match(app, /bq_ai_language/);
+  assert.match(app, /bq_ai_language_manual/);
+  assert.match(app, /file\.size>2\*1024\*1024/);
+  assert.match(app, /x\.length<=10000/);
+  assert.match(app, /version:62,exportedAt:/);
+  assert.match(app, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);
 });
 
 test("visual exclusions and honest privacy note remain in place", () => {
   assert.doesNotMatch(html, /🕊/u);
-  assert.match(html, /cardBtn:'card'/);
-  assert.doesNotMatch(html, /cardBtn:'gift'/);
-  assert.match(html, /ليس تشفيراً/);
+  assert.doesNotMatch(html, /fonts\\.bunny\\.net/);
+  assert.doesNotMatch(html, /floral-garden|heart-bubbles|hero-motion/);
+  assert.match(html, /class="skip-link" href="#mainContent"/);
+  assert.match(html, /id="mainContent"/);
+  assert.match(html, /id="message" aria-live="polite"/);
+  assert.match(app, /const bqStorage=\\(\\(\\)=>/);
+  assert.match(app, /section\\.inert=!active/);
+  assert.match(app, /cardBtn:'card'/);
+  assert.doesNotMatch(app, /cardBtn:'gift'/);
+  assert.match(app, /ليس تشفيراً/);
+});
+
+test("new design system is responsive, accessible and motion-aware", () => {
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /prefers-reduced-motion:reduce/);
+  assert.match(css, /safe-area-inset-bottom/);
+  assert.match(css, /@media\\(max-width:420px\\)/);
+  assert.match(css, /body\\.dark-mode/);
 });
 
 test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
+  assert.ok(sw.includes("'./app.js'") && sw.includes("'./app.css'"));
+  assert.doesNotMatch(sw, /couple-header\\.jpg\\.png/); // large hero is runtime-cached, not precached on first install
+  assert.match(sw, /navigationPreload/);
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
   assert.match(sw, /const response=await fetch\(event\.request\)/);
   assert.match(sw, /const cached=await caches\.match\(event\.request\)/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);
-  for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
+  for (const file of ["./index.html", "./app.js", "./app.css", "./manifest.json", "./icon.svg"]) assert.ok(sw.includes(file));
 });
 
 test("AI worker has a real health route and bounded request processing", () => {
@@ -81,24 +101,24 @@ test("AI worker has a real health route and bounded request processing", () => {
   assert.match(worker, /chat_template_kwargs/);
   assert.match(worker, /max_completion_tokens/);
   assert.match(worker, /result\?\.choices\?\.\[0\]\?\.message\?\.content/);
-  assert.match(html, /data\.error&&status/);
+  assert.match(app, /data\.error&&status/);
 });
 
 test("legacy competing click routers were consolidated", () => {
-  assert.ok(html.includes("Unified interaction router"));
-  assert.ok(html.includes("#bottomNav button[data-go]"));
-  assert.ok(!html.includes("V40 HOTFIX") && !html.includes("V44 — repair the four") && !html.includes("V46 — reliable bottom navigation"));
-  assert.ok(!html.includes("hub.addEventListener('click'"));
-  assert.match(html, /bq_favorites/);
-  assert.match(html, /bq_recent_messages/);
-  assert.match(html, /bq_custom_notes/);
+  assert.ok(app.includes("Unified interaction router"));
+  assert.ok(app.includes("#bottomNav button[data-go]"));
+  assert.ok(!app.includes("V40 HOTFIX") && !app.includes("V44 — repair the four") && !app.includes("V46 — reliable bottom navigation"));
+  assert.ok(!app.includes("hub.addEventListener('click'"));
+  assert.match(app, /bq_favorites/);
+  assert.match(app, /bq_recent_messages/);
+  assert.match(app, /bq_custom_notes/);
 });
 
 test("delegated actions have no competing legacy inline handlers", () => {
-  assert.ok(!html.includes("rescueSituation').onchange=showRescue"));
-  assert.ok(!html.includes("buildMessageBtn').onclick"));
-  assert.ok(!html.includes("useBuiltMessage').onclick"));
-  assert.ok(!html.includes("copyBuiltMessage').onclick"));
-  assert.ok(!html.includes("copyBtn').onclick"));
-  assert.ok(!html.includes("b.onclick=()=>{selected=c.id"));
+  assert.ok(!app.includes("rescueSituation').onchange=showRescue"));
+  assert.ok(!app.includes("buildMessageBtn').onclick"));
+  assert.ok(!app.includes("useBuiltMessage').onclick"));
+  assert.ok(!app.includes("copyBuiltMessage').onclick"));
+  assert.ok(!app.includes("copyBtn').onclick"));
+  assert.ok(!app.includes("b.onclick=()=>{selected=c.id"));
 });

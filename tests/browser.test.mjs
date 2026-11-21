@@ -70,6 +70,17 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.addScriptTag({ content: axe.source });
     await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");
+    for (const [tab, section] of [["library", "#catTitle"], ["favorites", "#favTitle"], ["guide", "#guideTitle"], ["games", "#gamesPage"]]) {
+      await page.locator(`#topNav button[data-go="${tab}"]`).click();
+      await page.locator(section).waitFor({ state: "visible" });
+      assert.equal(await page.locator(`#topNav button[data-go="${tab}"]`).getAttribute("aria-current"), "page");
+    }
+    await page.locator('#topNav button[data-go="games"]').click();
+    await page.locator('#gameAnswers button[data-game-answer="1"]').click();
+    assert.equal(await page.locator("#gameScore").innerText(), "1");
+    await page.locator("#nextGameQuestion").click();
+    await page.locator('#topNav button[data-go="home"]').click();
+
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
     assert.deepEqual(await page.evaluate(() => Object.values(window.BQ_DATA.messages).map(pool => pool.length)), Array(14).fill(150));
 

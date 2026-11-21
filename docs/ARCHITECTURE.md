@@ -75,11 +75,11 @@ The GitHub Actions quality workflow installs a pinned Playwright runtime, a stab
 - AI Studio request/response handoff using a mocked Worker;
 - image-card download and daily challenge stability;
 - storage-denied fallback disclosure;
-- WCAG A/AA automated checks on the initial screen;
+- WCAG 2.2 AA-tagged axe checks on home, favorites, guide dialog, settings and dark theme;
 - PWA offline shell after service-worker installation;
 - Worker CORS, request validation, size limits, prompt handling, output rejection and rate guard.
 
-A passing automated suite does not replace manual testing on representative Android devices, screen readers, low-memory devices, slow networks, or live Cloudflare model inference.
+The full findings and remaining risks are recorded in [QUALITY-REPORT.md](QUALITY-REPORT.md). A passing automated suite does not replace manual testing on representative Android devices, screen readers, low-memory devices, slow networks, or live Cloudflare model inference.
 
 ## 7. Non-negotiable change discipline
 

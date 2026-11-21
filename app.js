@@ -93,6 +93,27 @@ function applyIdentityColor(targetRole,color){
  document.querySelectorAll('[data-role-color="'+targetRole+'"]').forEach(swatch=>{const active=swatch.dataset.color.toLowerCase()===safe;swatch.classList.toggle('is-active',active);swatch.setAttribute('aria-pressed',String(active))});
 }
 document.querySelectorAll('[data-role-color]').forEach(swatch=>swatch.addEventListener('click',()=>applyIdentityColor(swatch.dataset.roleColor,swatch.dataset.color)));
+document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventListener('click',()=>{
+ const selected=tab.dataset.identityEditor;
+ document.querySelectorAll('[data-identity-editor]').forEach(item=>{const active=item===tab;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active))});
+ document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel===selected;panel.classList.toggle('is-active',active);panel.hidden=!active});
+}));
+$('resetAppearanceBtn').addEventListener('click',()=>{
+ // Reset appearance only; keep favorites, messages, history, role, and all personal data intact.
+ bqStorage.removeItem('bq_visual_style');
+ bqStorage.removeItem('bq_identity_color_husband');
+ bqStorage.removeItem('bq_identity_color_wife');
+ applyVisualStyle('classic');
+ applyIdentityColor('husband','#3298d3');
+ applyIdentityColor('wife','#d16e91');
+ const defaultPalette=role==='wife'?'rose':'blue';
+ $('paletteSelect').value=defaultPalette;
+ updatePalette(defaultPalette);
+ document.querySelectorAll('[data-identity-editor]').forEach(tab=>{const active=tab.dataset.identityEditor==='husband';tab.classList.toggle('is-active',active);tab.setAttribute('aria-pressed',String(active))});
+ document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel==='husband';panel.classList.toggle('is-active',active);panel.hidden=!active});
+ const styleSelect=$('visualStyleSelect');if(styleSelect)styleSelect.value='classic';
+});
+
 ['husband','wife'].forEach(targetRole=>applyIdentityColor(targetRole,bqStorage.getItem('bq_identity_color_'+targetRole)||(targetRole==='wife'?'#d16e91':'#3298d3')));
 function applyVisualStyle(value){
  const allowed=['classic','pixar','disney','anime','watercolor','glass','minimal','luxury','pastel','ocean','forest','sunset','retro','neon','paper','monochrome','lavender','desert'];

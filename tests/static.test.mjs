@@ -18,6 +18,7 @@ test("external app assets parse and HTML IDs are unique", () => {
   new Function(app);
   new Function(contentData);
   assert.ok(contentData.includes("window.BQ_DATA"));
+  assert.ok(contentData.includes("translatedClosings"));
   assert.ok(app.includes("} = window.BQ_DATA;"));
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);

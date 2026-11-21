@@ -1,37 +1,55 @@
-const CACHE='bein-qalbein-royal-v68';
-const FILES=['./','./index.html','./manifest.json','./icon.svg','./couple-header.jpg.png'];
+const CACHE='bein-qalbein-royal-v69';
+const PRECACHE=['./','./index.html','./app.css','./app.js','./manifest.json','./icon.svg'];
+
 self.addEventListener('install',event=>{
  self.skipWaiting();
- event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));
+ event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(PRECACHE)));
 });
+
 self.addEventListener('activate',event=>{
  event.waitUntil((async()=>{
   const keys=await caches.keys();
-  await Promise.all(keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE).map(k=>caches.delete(k)));
-  await self.clients.claim();
+  await Promise.all(keys.filter(key=>key.startsWith('bein-qalbein-royal-')&&key!==CACHE).map(key=>caches.delete(key)));
+  if(self.registration.navigationPreload){
+   try{await self.registration.navigationPreload.enable()}catch(_){}
+  }
  })());
 });
+
 self.addEventListener('fetch',event=>{
- if(event.request.method!=='GET')return;
- const url=new URL(event.request.url);
- if(url.origin!==location.origin)return;
- if(event.request.mode==='navigate'||url.pathname.endsWith('.html')){
-  // Network-first for the app shell: do not keep showing an old cached build
-  // after GitHub Pages has published a newer version.
+ const request=event.request;
+ if(request.method!=='GET')return;
+ const url=new URL(request.url);
+ if(url.origin!==self.location.origin)return;
+
+ if(request.mode==='navigate'||url.pathname.endsWith('.html')){
   event.respondWith((async()=>{
    try{
-    const response=await fetch(event.request);
+    const preloaded=await event.preloadResponse;
+    const response=preloaded||await fetch(request);
     if(response&&response.ok){
      const cache=await caches.open(CACHE);
-     await cache.put(event.request,response.clone());
+     await cache.put(request,response.clone());
     }
     return response;
    }catch(_){
-    const cached=await caches.match(event.request)||await caches.match('./index.html');
-    return cached||new Response('Offline',{status:503,statusText:'Offline'});
+    const cached=await caches.match(request)||await caches.match('./index.html')||await caches.match('./');
+    return cached||new Response('أنت غير متصل بالإنترنت. افتح التطبيق مجدداً عند عودة الاتصال.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});
    }
   })());
- }else{
-  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)));
+  return;
  }
+
+ const isStatic=/\.(?:css|js|svg|png|webp|jpg|jpeg|json|webmanifest)$/i.test(url.pathname);
+ if(!isStatic)return;
+ event.respondWith((async()=>{
+  const cached=await caches.match(request);
+  if(cached)return cached;
+  const response=await fetch(request);
+  if(response&&response.ok&&response.type==='basic'){
+   const cache=await caches.open(CACHE);
+   await cache.put(request,response.clone());
+  }
+  return response;
+ })());
 });

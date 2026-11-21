@@ -103,6 +103,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const drawerBox = await page.locator("#settingsDrawer .settings-drawer-panel").boundingBox();
     assert.ok(drawerBox.width <= 320 && drawerBox.height < 650, "settings drawer should stay compact");
     await page.locator("#settingsCloseBtn").click();
+    await page.locator('#topNav button[data-go="home"]').click();
 
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
     assert.deepEqual(await page.evaluate(() => Object.values(window.BQ_DATA.messages).map(pool => pool.length)), Array(14).fill(150));

@@ -401,23 +401,3 @@ body[data-current-page="favorites"] .couple-header{display:none}
  .top-navigation .top-tools .bq-identity-choice .bq-identity-label{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.top-navigation .top-tools .bq-identity-choice{transition:none}}
-
-
-/* Sweet 3D in-app keyboard — native keyboard stays available on desktop. */
-.sweet-keyboard{position:fixed;z-index:1200;inset-inline:0;bottom:0;padding:10px 9px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(155deg,#fff8fb 0%,#f2e8ff 48%,#e5f5ff 100%);border:1px solid rgba(255,255,255,.9);border-radius:22px 22px 0 0;box-shadow:0 -10px 35px rgba(70,35,75,.24);color:#512d51;max-height:48vh;overflow:auto;backdrop-filter:blur(16px)}
-.sweet-keyboard[hidden]{display:none!important}
-.sweet-keyboard-head,.sweet-keyboard-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:680px;margin:0 auto 8px}
-.sweet-keyboard-title{font-size:12px;font-weight:850;color:#713b70}
-.sweet-keyboard button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
-.sweet-kb-lang,.sweet-kb-hide,.sweet-keyboard-foot button{border:0;border-radius:12px;padding:7px 12px;font-weight:850;color:#fff;background:linear-gradient(145deg,#b77acb,#774c9c);box-shadow:inset 0 2px 2px #ffffff88,0 3px 0 #59366f,0 5px 9px #50345a35}
-.sweet-kb-hide{margin-inline-start:auto;background:linear-gradient(145deg,#e69bb5,#ad557e);box-shadow:inset 0 2px 2px #ffffff88,0 3px 0 #813c60}
-.sweet-keyboard-keys{display:grid;gap:7px;max-width:680px;margin:0 auto}
-.sweet-keyboard-row{display:flex;justify-content:center;gap:5px}
-.sweet-key{flex:1 1 0;min-width:0;height:42px;padding:0 2px;border:1px solid #fff!important;border-radius:11px!important;background:linear-gradient(160deg,#fff 0%,#f8e9ff 100%)!important;color:#633c70!important;font-size:16px!important;font-weight:850!important;box-shadow:inset 0 2px 2px #fff,0 3px 0 #d4b6e3,0 5px 8px #563b6020!important;transition:transform .08s,box-shadow .08s}
-.sweet-key:active{transform:translateY(3px)!important;box-shadow:inset 0 2px 5px #b99bc9,0 0 0 transparent!important}
-.sweet-key.special{flex:1.5;background:linear-gradient(160deg,#dff5ff,#c4e8fa)!important;color:#285e82!important;box-shadow:inset 0 2px 2px #fff,0 3px 0 #8dbbd5,0 5px 8px #35566a20!important;font-size:12px!important}
-.sweet-key.space{flex:4;background:linear-gradient(160deg,#fff4df,#ffe3c1)!important;color:#86572e!important}
-.sweet-key.enter{background:linear-gradient(160deg,#ffdce8,#f5b6d0)!important;color:#843d60!important}
-.sweet-keyboard-foot{margin:9px auto 0;font-size:10px;color:#8c668b}
-@media(min-width:700px){.sweet-keyboard{inset-inline:50%;transform:translateX(50%);width:min(620px,94vw);bottom:14px;border-radius:22px}}
-@media(prefers-reduced-motion:reduce){.sweet-key{transition:none}}

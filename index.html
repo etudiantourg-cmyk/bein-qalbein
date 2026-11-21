@@ -130,6 +130,38 @@
  <div class="advice-tabs"><button id="husbandTips" class="active" type="button">نصائح للزوج</button><button id="wifeTips" type="button">نصائح للزوجة</button></div>
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
+<div class="modal-backdrop hidden card-studio-backdrop" id="cardStudio" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cardStudioTitle">
+ <div class="card-studio">
+  <div class="modal-head card-studio-head"><div><span class="card-studio-eyebrow">✦ BEIN QALBEIN ATELIER</span><h2 id="cardStudioTitle">استوديو البطاقات</h2><p id="cardStudioSub">اصنع بطاقة تليق بالكلمات التي اخترتها</p></div><button id="cardClose" type="button" aria-label="إغلاق">✕</button></div>
+  <div class="card-studio-layout">
+   <div class="card-studio-controls">
+    <label for="cardMessageInput" id="cardTextLabel">نص البطاقة</label>
+    <textarea id="cardMessageInput" rows="5" maxlength="3000"></textarea>
+    <div class="card-control-head"><span id="cardDesignLabel">اختر التصميم</span><span>08</span></div>
+    <div id="cardDesigns" class="card-design-grid" role="group" aria-labelledby="cardDesignLabel">
+     <button type="button" data-card-style="royal" aria-pressed="true"><i class="swatch swatch-royal" aria-hidden="true"></i><span>ملكي مخملي</span></button>
+     <button type="button" data-card-style="rose" aria-pressed="false"><i class="swatch swatch-rose" aria-hidden="true"></i><span>وردي رقيق</span></button>
+     <button type="button" data-card-style="noor" aria-pressed="false"><i class="swatch swatch-noor" aria-hidden="true"></i><span>محراب النور</span></button>
+     <button type="button" data-card-style="midnight" aria-pressed="false"><i class="swatch swatch-midnight" aria-hidden="true"></i><span>ليل فاخر</span></button>
+     <button type="button" data-card-style="minimal" aria-pressed="false"><i class="swatch swatch-minimal" aria-hidden="true"></i><span>أناقة هادئة</span></button>
+     <button type="button" data-card-style="mosaic" aria-pressed="false"><i class="swatch swatch-mosaic" aria-hidden="true"></i><span>فسيفساء هندسية</span></button>
+     <button type="button" data-card-style="velvet" aria-pressed="false"><i class="swatch swatch-velvet" aria-hidden="true"></i><span>عنابي ملكي</span></button>
+     <button type="button" data-card-style="sand" aria-pressed="false"><i class="swatch swatch-sand" aria-hidden="true"></i><span>دفء الورق</span></button>
+    </div>
+    <label for="cardFormat" id="cardFormatLabel">مقاس البطاقة</label>
+    <select id="cardFormat"><option value="portrait">عمودي أنيق</option><option value="square">مربع للمشاركة</option><option value="story">قصة هاتف</option></select>
+    <label class="card-brand-toggle"><input type="checkbox" id="cardBrandToggle" checked><span id="cardBrandLabel">إظهار توقيع بين قلبين</span></label>
+    <p class="card-privacy-hint" id="cardPrivacyHint">تُصنع البطاقة داخل جهازك دون إرسال رسالتك إلى أي خادم.</p>
+   </div>
+   <div class="card-studio-preview">
+    <div class="card-preview-heading"><span id="cardPreviewLabel">معاينة مباشرة</span><span>2160 px</span></div>
+    <canvas id="cardPreview" width="1080" height="1350" aria-label="معاينة البطاقة"></canvas>
+    <p id="cardOverflowNote" class="card-overflow-note" aria-live="polite"></p>
+    <button id="cardDownload" class="wide primary card-download" type="button">حمّل البطاقة بدقة فائقة</button>
+   </div>
+  </div>
+ </div>
+</div>
 <div class="modal-backdrop hidden" id="adviceModal" role="dialog" aria-modal="true" aria-labelledby="adviceModalTitle"><div class="advice-modal"><div class="modal-head"><h2 id="adviceModalTitle">نصائح للزوج</h2><button id="closeAdvice" type="button">✕</button></div><div id="adviceList"></div></div></div>
 <section class="panel page-section" data-page="settings">
  <h2 id="settingsTitle">الإعدادات</h2>

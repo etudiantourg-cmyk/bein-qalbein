@@ -65,6 +65,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     });
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
+    assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).fontFamily), /Alexandria/);
+    assert.match(await page.locator(".quick-icon").first().evaluate(el => getComputedStyle(el).boxShadow), /rgb/);
     await page.addScriptTag({ content: axe.source });
     await auditAccessibility("home");
     assert.equal(await page.locator("#cats .cat").count(), 14, "all 14 categories should render");

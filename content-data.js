@@ -360,4 +360,41 @@ ar:['أسأل الله أن يكتب لك الخير وييسر أمرك.','أن
 en:['May Allah guide you towards what is best.','I appreciate you and will show it through my actions.','Let gentleness and respect guide our words.','May Allah bless your time, health and efforts.','Let us choose one helpful step together.'],
 fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je le montrerai aussi par mes actes.','Que la douceur et le respect guident nos paroles.','Qu’Allah bénisse ton temps, ta santé et tes efforts.','Choisissons ensemble une étape utile.']
 }
+,
+  translatedClosings: {
+    "en": [
+      "May Allah place blessing and ease in your day.",
+      "Your feelings and dignity will always matter to me.",
+      "I appreciate the care and effort you bring to our life.",
+      "Let us keep choosing patience, kindness and respect.",
+      "I am here to listen whenever you need me.",
+      "May our home remain filled with mercy and reassurance.",
+      "One calm step at a time is enough.",
+      "May goodness accompany you wherever you go.",
+      "Thank you for being a valued part of my life.",
+      "I will do my part to keep our bond gentle and strong.",
+      "May Allah guide us toward what is best.",
+      "You deserve peace, care and a kind word.",
+      "I notice your effort, even when it goes unseen.",
+      "Let our words bring us closer, never hurt each other.",
+      "May the next moments be easier and more peaceful."
+    ],
+    "fr": [
+      "Qu’Allah mette la bénédiction et la facilité dans ta journée.",
+      "Tes sentiments et ta dignité compteront toujours pour moi.",
+      "J’apprécie l’attention et les efforts que tu apportes à notre vie.",
+      "Continuons à choisir la patience, la douceur et le respect.",
+      "Je suis là pour t’écouter chaque fois que tu en as besoin.",
+      "Que notre foyer reste rempli de miséricorde et de sérénité.",
+      "Un pas calme à la fois suffit.",
+      "Que le bien t’accompagne partout.",
+      "Merci d’occuper une place si précieuse dans ma vie.",
+      "Je ferai ma part pour préserver notre lien avec douceur et force.",
+      "Qu’Allah nous guide vers ce qui est le meilleur.",
+      "Tu mérites la paix, l’attention et des paroles bienveillantes.",
+      "Je remarque tes efforts, même lorsqu’ils passent inaperçus.",
+      "Que nos paroles nous rapprochent sans jamais nous blesser.",
+      "Que les prochains instants soient plus doux et plus paisibles."
+    ]
+  }
 };

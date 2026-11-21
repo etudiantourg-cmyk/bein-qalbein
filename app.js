@@ -1031,7 +1031,7 @@ function advanceMiniGame(){
  const panel=document.getElementById('sweetKeyboard'),host=document.getElementById('sweetKeyboardKeys');
  if(!panel||!host)return;
  const mobile=()=>window.matchMedia('(pointer:coarse)').matches||window.matchMedia('(max-width:760px)').matches;
- const eligible=el=>el instanceof HTMLElement&&(el.matches('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]'))&&!el.disabled&&!el.readOnly&&!el.closest('#sweetKeyboard');
+ const eligible=el=>el instanceof HTMLElement&&(el.matches('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]'))&&!el.disabled&&(!el.readOnly||el.dataset.sweetKeyboard==='true')&&!el.closest('#sweetKeyboard');
  let target=null,kbLang='ar';
  const rows={
   ar:['ض ص ث ق ف غ ع ه خ ح ج','ش س ي ب ل ا ت ن م ك ط','ئ ء ؤ ر لا ى ة و ز ظ د'],
@@ -1074,11 +1074,11 @@ function advanceMiniGame(){
  }
  document.addEventListener('focusin',e=>{
   if(!mobile()||!eligible(e.target))return;
-  const el=e.target;el.setAttribute('readonly','readonly');show(el);
+  const el=e.target;el.dataset.sweetKeyboard='true';el.setAttribute('readonly','readonly');show(el);
  },true);
  document.addEventListener('pointerdown',e=>{
   if(!mobile())return;const el=e.target.closest('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]');
-  if(el&&eligible(el))el.setAttribute('readonly','readonly');
+  if(el&&eligible(el)){el.dataset.sweetKeyboard='true';el.setAttribute('readonly','readonly')}
  },true);
  document.addEventListener('click',e=>{
   const action=e.target.closest('[data-kb-action]')?.dataset.kbAction;if(!action)return;
@@ -1087,5 +1087,5 @@ function advanceMiniGame(){
  });
  document.addEventListener('focusout',e=>{if(e.target===target)setTimeout(()=>{if(!panel.contains(document.activeElement)&&document.activeElement!==target)panel.hidden=true},120)},true);
  window.addEventListener('resize',()=>{if(!mobile())panel.hidden=true});
- if(mobile())document.querySelectorAll('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]').forEach(el=>{if(eligible(el))el.setAttribute('readonly','readonly')});
+ if(mobile())document.querySelectorAll('textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"]').forEach(el=>{if(eligible(el)){el.dataset.sweetKeyboard='true';el.setAttribute('readonly','readonly')}});
 })();

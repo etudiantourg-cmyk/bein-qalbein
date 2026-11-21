@@ -241,7 +241,7 @@ function goPage(page){
   section.setAttribute('aria-hidden',String(!active));
   section.inert=!active;
  });
- document.querySelectorAll('.bottom-nav button').forEach(button=>{
+ document.querySelectorAll('#topNav button[data-go]').forEach(button=>{
   const active=button.dataset.go===page;
   button.classList.toggle('active',active);
   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
@@ -795,7 +795,11 @@ function useMessage(v,categoryId){
 window.displayMessageInMain=displayMessageInMain;
  d.addEventListener('click',function(e){
   const t=e.target;
-  let b=t.closest('#bottomNav button[data-go]');
+  b=t.closest('#topSearchBtn');
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');requestAnimationFrame(()=>{$('search')?.focus();$('search')?.scrollIntoView({behavior:'smooth',block:'center'})});return}
+  b=t.closest('#topThemeBtn');
+  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();$('themeToggle')?.click();return}
+  let b=t.closest('#topNav button[data-go]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage(b.dataset.go);return}
   b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;

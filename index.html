@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=120">
+<link rel="stylesheet" href="./app.css?v=121">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -22,10 +22,10 @@
   <div class="top-tools">
    <div class="bq-identity-control" role="group" aria-label="اختيار الهوية">
     <button type="button" class="bq-identity-choice is-selected" id="bqIdentityHusband" data-bq-role="husband" aria-label="أنا زوج" title="أنا زوج" aria-pressed="true">
-     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6.2" r="3.3"/><path d="M5.1 20.5v-1a6.9 6.9 0 0 1 13.8 0v1z"/></svg>
+     <span class="bq-identity-label">ذكر</span>
     </button>
     <button type="button" class="bq-identity-choice" id="bqIdentityWife" data-bq-role="wife" aria-label="أنا زوجة" title="أنا زوجة" aria-pressed="false">
-     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a4.15 4.15 0 0 0-4.15 4.15v1.1c0 1.05.39 2.05 1.08 2.82l-.85 1.08a8.6 8.6 0 0 0-3.18 6.7v2.35h14.2v-2.35a8.6 8.6 0 0 0-3.18-6.7l-.85-1.08c.69-.77 1.08-1.77 1.08-2.82v-1.1A4.15 4.15 0 0 0 12 2.5Zm-2.3 5.2V6.65a2.3 2.3 0 0 1 4.6 0V7.7a2.3 2.3 0 0 1-4.6 0Z"/></svg>
+     <span class="bq-identity-label">أنثى</span>
     </button>
    </div>
    <button type="button" id="topSearchBtn" class="top-tool-btn" aria-label="بحث" title="بحث"><span aria-hidden="true">⌕</span></button>
@@ -239,8 +239,9 @@
  </aside>
 </div>
 
+<div id="sweetKeyboard" class="sweet-keyboard" hidden aria-label="لوحة مفاتيح بين قلبين"><div class="sweet-keyboard-head"><span class="sweet-keyboard-title">لوحة بين قلبين 🍬</span><button type="button" data-kb-action="language" class="sweet-kb-lang">ع / EN</button><button type="button" data-kb-action="hide" class="sweet-kb-hide" aria-label="إخفاء لوحة المفاتيح">⌄</button></div><div id="sweetKeyboardKeys" class="sweet-keyboard-keys"></div><div class="sweet-keyboard-foot"><span>اكتب بلطف ♥</span><button type="button" data-kb-action="done">تم ✓</button></div></div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=109" defer></script>
+<script src="./app.js?v=110" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

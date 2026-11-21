@@ -376,9 +376,11 @@ function drawCardArtwork(canvas,scale=1){
  const isAr=lang==='ar',direction=isAr?'rtl':'ltr',brand=$('cardBrandToggle').checked;
  let size=format==='story'?55:52,lines=[],lineHeight=0;
  const fit=()=>{
-  lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');
+  const arabicText=/[\\u0600-\\u06FF]/u.test(text);
+  const cardFont=arabicText?'"Amiri", "Noto Naskh Arabic", serif':'"Playfair Display", Georgia, serif';
+  lines=cardWrap(ctx,text,maxWidth,'700 '+size+'px '+cardFont);
   lineHeight=size*1.72;
-  while(lines.length*lineHeight>baseH-top-300&&size>36){size-=2;lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.72}
+  while(lines.length*lineHeight>baseH-top-300&&size>36){size-=2;lines=cardWrap(ctx,text,maxWidth,'700 '+size+'px '+cardFont);lineHeight=size*1.78}
  };
  fit();
  const contentHeight=lines.reduce((sum,line)=>sum+(line===''?lineHeight*.52:lineHeight),0);
@@ -417,7 +419,7 @@ function drawCardArtwork(canvas,scale=1){
  if(activeCardTheme==='velvet'){
   ctx.fillStyle='rgba(255,248,237,.96)';cardRoundRect(ctx,105,320,870,h-640,26);ctx.fill();ctx.strokeStyle=theme.gold;ctx.lineWidth=2;cardRoundRect(ctx,125,340,830,h-680,19);ctx.stroke();
  }
- ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;ctx.fillStyle=theme.accent;ctx.font='700 66px Georgia, Tahoma, serif';
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;ctx.fillStyle=theme.accent;ctx.font=isAr?'700 78px "Amiri", Georgia, serif':'600 62px "Playfair Display", Georgia, serif';
  ctx.fillText(isAr?'بين قلبين':lang==='fr'?'Entre deux cœurs':'Between Two Hearts',540,170,820);
  ctx.fillStyle=theme.gold;ctx.font='30px Georgia, serif';ctx.fillText('✦  ❦  ✦',540,238);
  const areaTop=activeCardTheme==='noor'||activeCardTheme==='emerald'?top+10:activeCardTheme==='velvet'?390:315,areaBottom=h-260,blockHeight=contentHeight;
@@ -426,7 +428,7 @@ function drawCardArtwork(canvas,scale=1){
  ctx.font='600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif';
  lines.forEach(line=>{if(line===''){y+=lineHeight*.52;return}ctx.fillText(line,540,y,maxWidth);y+=lineHeight});
  const sealY=h-155;ctx.strokeStyle=theme.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(300,sealY-48);ctx.lineTo(780,sealY-48);ctx.stroke();cardRosette(ctx,540,sealY,22,theme.gold);
- if(brand){ctx.fillStyle=theme.muted;ctx.font='500 25px system-ui, Tahoma, serif';ctx.fillText(cardText('footer'),540,h-100,820)}
+ if(brand){ctx.fillStyle=theme.muted;ctx.font=isAr?'700 30px "Amiri", Georgia, serif':'500 24px "Playfair Display", Georgia, serif';ctx.fillText(cardText('footer'),540,h-100,820)}
  return {width:w,height:h,lines:lines.length,fontSize:size,overflow:contentHeight>areaBottom-areaTop};
 }
 function renderCardPreview(){

@@ -81,6 +81,29 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#nextGameQuestion").click();
     await page.locator('#topNav button[data-go="home"]').click();
 
+    await page.locator('#topNav button[data-go="library"]').click();
+    await page.locator('[data-save-book="kind-dialogue"]').click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
+    await page.locator('[data-fav-tab="books"]').click();
+    await page.locator("#favoriteBooksList").getByText("فن الحوار الهادئ").waitFor();
+    await page.locator('[data-fav-tab="messages"]').click();
+    await page.locator('#topNav button[data-go="guide"]').click();
+    await page.locator("#husbandTips").click();
+    await page.locator('#adviceList [data-save-tip]').first().click();
+    await page.locator("#closeAdvice").click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
+    await page.locator('[data-fav-tab="advice"]').click();
+    await page.locator("#favoriteTipsList .saved-collection-item").first().waitFor();
+    await page.locator('#topNav button[data-go="games"]').click();
+    await page.locator("#saveGameBtn").click();
+    await page.locator('#topNav button[data-go="favorites"]').click();
+    await page.locator('[data-fav-tab="games"]').click();
+    await page.locator("#favoriteGamesList .saved-collection-item").first().waitFor();
+    await page.locator('#topNav button[data-menu-toggle]').click();
+    const drawerBox = await page.locator("#settingsDrawer .settings-drawer-panel").boundingBox();
+    assert.ok(drawerBox.width <= 320 && drawerBox.height < 650, "settings drawer should stay compact");
+    await page.locator("#settingsCloseBtn").click();
+
     assert.equal(await page.locator("html").getAttribute("data-message-count"), "2100", "the 14 categories should expose 150 message variants each");
     assert.deepEqual(await page.evaluate(() => Object.values(window.BQ_DATA.messages).map(pool => pool.length)), Array(14).fill(150));
 

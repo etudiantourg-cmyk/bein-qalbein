@@ -41,6 +41,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const pageErrors = [];
   const consoleErrors = [];
   const auditAccessibility = async label => {
+    await page.addScriptTag({ content: axe.source });
     const result = await page.evaluate(async () => axe.run(document, {
       runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"] }
     }));

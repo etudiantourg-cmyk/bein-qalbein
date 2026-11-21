@@ -188,9 +188,9 @@ support:[
 const $=id=>document.getElementById(id);
 /* Storage adapter: persistent when possible, with a correct shadow layer for quota/security failures. */
 const bqStorage=(()=>{
- let native=null,cleared=false;
+ let native=null,cleared=false,shadowOnly=false;
  const memory=new Map(),removed=new Set();
- try{native=window.localStorage;native.getItem('__bq_probe__')}catch(_){native=null}
+ try{native=window.localStorage;const probe='__bq_probe__';native.setItem(probe,'1');native.removeItem(probe)}catch(_){native=null}
  const keys=()=>{
   const result=new Set();
   if(native&&!cleared){try{for(let i=0;i<native.length;i++){const key=native.key(i);if(key!==null&&!removed.has(key))result.add(key)}}catch(_){}}
@@ -208,24 +208,30 @@ const bqStorage=(()=>{
   setItem(key,value){
    const k=String(key),v=String(value);
    if(native&&!cleared){try{native.setItem(k,v);memory.delete(k);removed.delete(k);return}catch(_){}}
-   memory.set(k,v);removed.delete(k);
+   shadowOnly=true;memory.set(k,v);removed.delete(k);
   },
   removeItem(key){
    const k=String(key);memory.delete(k);
    if(native&&!cleared){try{native.removeItem(k);removed.delete(k);return}catch(_){}}
-   removed.add(k);
+   shadowOnly=true;removed.add(k);
   },
   clear(){
    memory.clear();removed.clear();
    if(native){try{native.clear();cleared=false;return}catch(_){}}
-   cleared=true;
+   shadowOnly=true;cleared=true;
   },
   key(index){const i=Number(index);return Number.isInteger(i)&&i>=0?keys()[i]??null:null},
-  get length(){return keys().length}
+  get length(){return keys().length},
+  get persistent(){return !!native&&!cleared&&!shadowOnly&&memory.size===0&&removed.size===0}
  };
 })();
 
 let role='husband',lang=(bqStorage.getItem('bq_language')||'ar'),selected='morning',current='',favs=[];
+function updateStorageStatus(){
+ const note=$('storageWarning');if(!note)return;
+ const persistent=bqStorage.persistent;note.hidden=persistent;
+ if(!persistent)note.textContent=lang==='en'?'Browser storage is unavailable or full. Changes are kept only until this page closes. Export a backup when storage is available.':lang==='fr'?'Le stockage du navigateur est indisponible ou plein. Les changements ne restent disponibles que jusqu’à la fermeture de cette page. Exportez une sauvegarde lorsque le stockage sera disponible.':'تخزين المتصفح غير متاح أو ممتلئ. ستبقى التغييرات في الذاكرة حتى إغلاق هذه الصفحة فقط. أنشئ نسخة احتياطية عندما يتاح التخزين.';
+}
 if(!['ar','en','fr'].includes(lang))lang='ar';
 try{const storedFavs=JSON.parse(bqStorage.getItem('bq_favorites')||'[]');favs=Array.isArray(storedFavs)?[...new Set(storedFavs.filter(x=>typeof x==='string'))].slice(0,1000):[]}catch(e){favs=[]}
 function saveFavs(){try{bqStorage.setItem('bq_favorites',JSON.stringify(favs))}catch(e){alert('تعذر الحفظ في مساحة المتصفح.')}} 
@@ -615,7 +621,7 @@ applyLanguage=function(){originalApplyLanguage();groupedRenderCats($('search').v
 goPage(['home','favorites','guide','settings'].includes(bqStorage.getItem('bq_last_page'))?bqStorage.getItem('bq_last_page'):'home');
 renderSmartChips();
 
-applyLanguage();applyTheme();if(bqStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
+applyLanguage();applyTheme();updateStorageStatus();if(bqStorage.getItem('bq_notifications')==='on')scheduleGentleNotification();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{const register=()=>navigator.serviceWorker.register('./sw.js').catch(()=>{});if('requestIdleCallback' in window)requestIdleCallback(register,{timeout:2500});else setTimeout(register,1200)});
 
 /* V35 complete feature suite: builder, repair guide, organization, privacy and backup */
@@ -965,6 +971,7 @@ const applyLanguageBeforeAiStudio=applyLanguage;
 applyLanguage=function(){
  applyLanguageBeforeAiStudio();
  if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
+ updateStorageStatus();
  const note=document.getElementById('privacyNote');
  if(note)note.textContent=lang==='en'?'Note: this is a local display lock, not encryption. Messages remain readable in browser storage.':lang==='fr'?'Note : ce verrou masque l’affichage local, mais ne chiffre pas les messages stockés dans le navigateur.':'تنبيه: هذا قفل عرض محلي بسيط، وليس تشفيراً للرسائل أو حمايةً من فحص بيانات المتصفح.';
 };

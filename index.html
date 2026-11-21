@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=107">
+<link rel="stylesheet" href="./app.css?v=108">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -24,11 +24,13 @@
    <button type="button" id="topThemeBtn" class="top-tool-btn" aria-label="تبديل الوضع الليلي" title="تبديل الوضع الليلي"><span aria-hidden="true">☾</span></button>
   </div>
  </div>
- <div class="top-tabs" id="topNav" aria-label="أقسام التطبيق">
-  <button type="button" data-go="home" class="active" aria-current="page"><span aria-hidden="true">⌂</span><small id="navHome">الرئيسية</small></button>
-  <button type="button" data-go="favorites"><span aria-hidden="true">♡</span><small id="navFavorites">المفضلة</small></button>
-  <button type="button" data-go="guide"><span aria-hidden="true">❖</span><small id="navGuide">الدليل</small></button>
-  <button type="button" class="menu-tab" data-menu-toggle aria-expanded="false" aria-controls="settingsDrawer" aria-label="القائمة" title="القائمة"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
+ <div class="top-tabs" id="topNav" aria-label="التنقل بين أقسام التطبيق">
+  <button type="button" data-go="home" class="active" aria-current="page" aria-label="الرئيسية" title="الرئيسية"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg></span></button>
+  <button type="button" data-go="library" aria-label="مكتبة الرسائل" title="مكتبة الرسائل"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22zM4 5.5v14A2.5 2.5 0 0 1 6.5 17H20M8 7h8M8 11h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+  <button type="button" data-go="favorites" aria-label="المفضلة" title="المفضلة"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 8.8c0 5.1-8.8 11-8.8 11s-8.8-5.9-8.8-11A4.8 4.8 0 0 1 12 6.1a4.8 4.8 0 0 1 8.8 2.7Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg></span></button>
+  <button type="button" data-go="games" aria-label="الألعاب" title="الألعاب"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8h10a4 4 0 0 1 3.8 5.2l-1 3.2a2.5 2.5 0 0 1-4.1 1.1L13.5 16h-3l-2.2 1.5a2.5 2.5 0 0 1-4.1-1.1l-1-3.2A4 4 0 0 1 7 8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 10.5v4M5 12.5h4m6-1h.01M17 14h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></button>
+  <button type="button" data-go="guide" aria-label="الدليل" title="الدليل"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 14.7 9.3 21 12l-6.3 2.7L12 21l-2.7-6.3L3 12l6.3-2.7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span></button>
+  <button type="button" class="menu-tab" data-menu-toggle aria-expanded="false" aria-controls="settingsDrawer" aria-label="الإعدادات" title="الإعدادات"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
  </div>
 </nav>
 <header class="couple-header">
@@ -142,6 +144,21 @@
  <div class="advice-tabs"><button id="husbandTips" class="active" type="button">نصائح للزوج</button><button id="wifeTips" type="button">نصائح للزوجة</button></div>
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
+<section class="panel page-section" data-page="games" id="gamesPage">
+ <h2 id="gamesTitle">ألعاب المودة</h2>
+ <p class="section-kicker">أسئلة خفيفة تساعدكما على فهم بعضكما وتقوية التواصل بلطف.</p>
+ <div class="game-card">
+  <div class="game-score"><span>النقاط</span><strong id="gameScore">0</strong><span id="gameProgress">السؤال 1 من 5</span></div>
+  <h3 id="gameQuestion">ما أفضل بداية لحوار بعد خلاف؟</h3>
+  <div id="gameAnswers" class="game-answers">
+   <button type="button" data-game-answer="0">رفع الصوت لإثبات الرأي</button>
+   <button type="button" data-game-answer="1">الاستماع بهدوء وفهم ما أزعج الطرف الآخر</button>
+   <button type="button" data-game-answer="2">تجاهل المشكلة تماماً</button>
+  </div>
+  <p id="gameFeedback" class="game-feedback" role="status" aria-live="polite">اختر الإجابة الأقرب للمودة وحسن التواصل.</p>
+  <button type="button" id="nextGameQuestion" class="wide primary" hidden>السؤال التالي</button>
+ </div>
+</section>
 <div class="modal-backdrop hidden card-studio-backdrop" id="cardStudio" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cardStudioTitle">
  <div class="card-studio">
   <div class="modal-head card-studio-head"><div><span class="card-studio-eyebrow">✦ BEIN QALBEIN ATELIER</span><h2 id="cardStudioTitle">استوديو البطاقات</h2><p id="cardStudioSub">اصنع بطاقة تليق بالكلمات التي اخترتها</p></div><button id="cardClose" type="button" aria-label="إغلاق">✕</button></div>
@@ -205,6 +222,6 @@
 
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=102" defer></script>
+<script src="./app.js?v=103" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

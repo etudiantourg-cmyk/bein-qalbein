@@ -429,7 +429,7 @@ function applyLanguage(){
  const categoryTranslations=ar?null:i18n[lang];categories.forEach((c,i)=>{c._name=c._name||c.name;c._desc=c._desc||c.desc;c.name=ar?c._name:categoryTranslations.cats[i];c.desc=ar?c._desc:categoryTranslations.desc[i]});
  if(ar){Object.keys(messages).forEach(id=>messages[id]=originalMessagePools[id].slice())}
  else{const translatedLibrary=i18n[lang];Object.keys(messages).forEach((id,i)=>{const pool=translatedLibrary.msgs[i]||translatedLibrary.msgs[0];messages[id]=pool.slice()})}
- renderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];renderAdviceForLanguage();showFavs();
+ groupedRenderCats($('search').value);generate();$('dailyMessage').textContent=ar?dailyText():messages[selected][(new Date().getDate()*7)%messages[selected].length];renderAdviceForLanguage();showFavs();
 }
 $('lang').onchange=e=>{lang=e.target.value;try{bqStorage.setItem('bq_language',lang)}catch(_){}applyLanguage()};
 $('themeToggle').onclick=()=>{const dark=!document.body.classList.contains('dark-mode');document.body.classList.toggle('dark-mode',dark);try{bqStorage.setItem('bq_theme',dark?'dark':'light')}catch(_){}$('themeToggle').textContent=dark?languageText[lang].day:languageText[lang].night};$('notifyToggle').onclick=toggleGentleNotifications;

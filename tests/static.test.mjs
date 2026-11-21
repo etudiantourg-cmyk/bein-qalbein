@@ -62,8 +62,8 @@ test("PWA cache and manifest remain coherent", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
   assert.equal(manifest.start_url, "./");
   assert.ok(sw.includes('keys.filter(k=>k.startsWith("bein-qalbein-royal-")&&k!==CACHE)'));
-  assert.match(sw, /const response=await fetch\\(event\\.request\\)/);
-  assert.match(sw, /const cached=await caches\\.match\\(event\\.request\\)/);
+  assert.match(sw, /const response=await fetch\(event\.request\)/);
+  assert.match(sw, /const cached=await caches\.match\(event\.request\)/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);
   for (const file of ["./index.html", "./manifest.json", "./icon.svg", "./couple-header.jpg.png"]) assert.ok(sw.includes(file));
 });

@@ -102,3 +102,27 @@ test("per-isolate rate guard blocks the seventh request in one minute", async ()
   for (let i = 0; i < 7; i++) last = await worker.fetch(makeRequest({ ip }), mockEnv());
   assert.equal(last.status, 429);
 });
+
+test("context has its own strict character limit before model invocation", async () => {
+  let calls = 0;
+  const env = mockEnv(async () => { calls++; return { response: "ok" }; });
+  const response = await worker.fetch(makeRequest({
+    body: { context: "x".repeat(241) }
+  }), env);
+  assert.equal(response.status, 413);
+  assert.equal(calls, 0);
+});
+
+test("structured multi-part model output is joined with actual line breaks", async () => {
+  const response = await worker.fetch(makeRequest(), mockEnv(async () => ({
+    response: [{ text: "السطر الأول" }, { text: "السطر الثاني" }]
+  })));
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).message, "السطر الأول\nالسطر الثاني");
+});
+
+test("health remains directly readable without an Origin header", async () => {
+  const response = await worker.fetch(new Request("https://worker.test/health", { method: "GET" }), mockEnv());
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).ok, true);
+});

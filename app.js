@@ -1165,4 +1165,59 @@ function advanceMiniGame(){
   if(alreadyOpen){resetView();return;}
   activate(key);
  }));
+ // Allow users to rearrange the shortcut buttons with a press-and-drag gesture.
+ const orderKey='bq_home_shortcut_order_v1';
+ const shortcutId=button=>button.hasAttribute('data-home-reset')?'home':button.dataset.homeGo||(button.id==='homeGuideShortcut'?'guide':'');
+ function restoreShortcutOrder(){
+  try{
+   const saved=JSON.parse(localStorage.getItem(orderKey)||'[]');
+   const buttons=[...strip.querySelectorAll('.home-shortcut')];
+   saved.forEach(id=>{const button=buttons.find(item=>shortcutId(item)===id);if(button)strip.appendChild(button)});
+  }catch(_){}
+ }
+ restoreShortcutOrder();
+ let pressTimer=null,draggingButton=null,startX=0,startY=0,dragMoved=false,suppressShortcutClick=false;
+ function finishShortcutDrag(){
+  clearTimeout(pressTimer);pressTimer=null;
+  if(draggingButton){
+   draggingButton.classList.remove('is-reordering');
+   draggingButton=null;
+   if(dragMoved){
+    suppressShortcutClick=true;
+    setTimeout(()=>{suppressShortcutClick=false},350);
+    try{localStorage.setItem(orderKey,JSON.stringify([...strip.querySelectorAll('.home-shortcut')].map(shortcutId).filter(Boolean)))}catch(_){}
+   }
+  }
+  dragMoved=false;
+ }
+ strip.querySelectorAll('.home-shortcut').forEach(button=>{
+  button.setAttribute('title',(button.getAttribute('aria-label')||'اختصار')+' — اضغط مطولاً ثم اسحب لترتيبه');
+  button.addEventListener('pointerdown',event=>{
+   if(event.button!==undefined&&event.button!==0)return;
+   startX=event.clientX;startY=event.clientY;dragMoved=false;
+   clearTimeout(pressTimer);
+   pressTimer=setTimeout(()=>{
+    draggingButton=button;
+    button.classList.add('is-reordering');
+    if(navigator.vibrate)navigator.vibrate(18);
+   },230);
+  });
+  button.addEventListener('pointermove',event=>{
+   if(!draggingButton){
+    if(Math.abs(event.clientX-startX)>9||Math.abs(event.clientY-startY)>9){clearTimeout(pressTimer);pressTimer=null}
+    return;
+   }
+   if(Math.abs(event.clientX-startX)>3||Math.abs(event.clientY-startY)>3)dragMoved=true;
+   const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('.home-shortcut');
+   if(!target||target===draggingButton||target.parentElement!==strip)return;
+   const rect=target.getBoundingClientRect();
+   const insertAfter=event.clientX<rect.left+rect.width/2;
+   strip.insertBefore(draggingButton,insertAfter?target.nextSibling:target);
+  });
+  button.addEventListener('pointerup',finishShortcutDrag);
+  button.addEventListener('pointercancel',finishShortcutDrag);
+  button.addEventListener('lostpointercapture',finishShortcutDrag);
+  button.addEventListener('click',event=>{if(suppressShortcutClick){event.preventDefault();event.stopImmediatePropagation()}},true);
+ });
+
 })();

@@ -98,3 +98,4 @@
   if(status&&!output.hidden&&latest)status.textContent=t.done;else if(status&&!busy)status.textContent=t.idle;
  };
 })();
+if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();

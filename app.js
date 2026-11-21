@@ -821,7 +821,17 @@ window.displayMessageInMain=displayMessageInMain;
    return;
   }
   b=t.closest('#smartChips button[data-pick]');
-  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(!messages[b.dataset.pick])return;selected=b.dataset.pick;generate();$('search').value='';groupedRenderCats('');d.querySelectorAll('#smartChips button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active))});$('inlineMessagePanel')?.scrollIntoView({behavior:'auto',block:'nearest'});return}
+  if(b){
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   const id=b.dataset.pick;if(!Object.prototype.hasOwnProperty.call(messages,id))return;
+   selected=id;generate();$('search').value='';groupedRenderCats('');
+   const panel=prepareInlineMessage();
+   const item=Array.from($('cats').querySelectorAll('.category-item')).find(x=>x.dataset.categoryId===id);
+   if(panel&&item){item.append(panel);panel.hidden=false;panel.style.display='block';item.querySelector('button.cat')?.setAttribute('aria-expanded','true')}
+   d.querySelectorAll('#smartChips button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active))});
+   requestAnimationFrame(()=>panel?.scrollIntoView({behavior:'auto',block:'center'}));
+   return;
+  }
   if(t.closest('#buildMessageBtn')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();buildCustomMessage();$('builtMessage')?.focus();return}
   if(t.closest('#useBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v){useMessage(v);$('message')?.scrollIntoView({behavior:'auto',block:'center'})}else $('builtMessage')?.focus();return}
   if(t.closest('#copyBuiltMessage')){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const v=$('builtMessage')?.value.trim();if(v)copyText(v);return}

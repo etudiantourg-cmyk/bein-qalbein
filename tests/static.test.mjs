@@ -32,7 +32,7 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(html, /data-quick="ai"/);
   assert.ok(aiStudio.includes("https://bein-qalbein.etudiantourg.workers.dev"));
   assert.match(html, /<textarea id="aiOutput"/);
-  assert.match(app, /displayMessageInMain\(finalMessage/);
+  assert.match(aiStudio, /displayMessageInMain\(finalMessage/);
   assert.match(app, /function validBackupValue/);
   assert.match(aiStudio, /endsWith\('\.workers\.dev'\)/);
   assert.match(aiStudio, /optionLabels/);

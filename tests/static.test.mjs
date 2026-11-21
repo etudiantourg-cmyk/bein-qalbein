@@ -58,6 +58,8 @@ test("core features, AI studio and safe message display are present", () => {
 test("saved user data remains compatible and backup import is validated", () => {
   for (const key of ["bq_favorites", "bq_recent_messages", "bq_custom_notes", "bq_favorite_folders", "bq_ai_language", "bq_ai_language_manual"]) assert.ok(app.includes(key));
   assert.match(app, /file\.size>2\*1024\*1024/);
+  assert.ok(app.includes("if(!bqStorage.persistent)throw Error('storage-unavailable')"));
+  assert.ok(app.includes("rollback-incomplete"));
   assert.match(app, /x\.length<=10000/);
   assert.match(app, /version:62,exportedAt:/);
   assert.match(app, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);

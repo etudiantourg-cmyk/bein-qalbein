@@ -529,3 +529,19 @@ body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
 .top-navigation .top-menu-trigger svg{display:block;width:25px;height:25px}
 .top-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
 .top-tabs button.menu-tab{display:none!important}
+
+
+/* RTL settings drawer: anchor to the physical right edge and slide in from right to left. */
+.settings-drawer-panel{
+ right:10px;
+ left:auto;
+ inset-inline-end:auto;
+ inset-inline-start:auto;
+ transform:translateX(calc(100% + 20px));
+}
+html[dir="rtl"] .settings-drawer-panel{
+ right:10px;
+ left:auto;
+ transform:translateX(calc(100% + 20px));
+}
+.settings-drawer.is-open .settings-drawer-panel{transform:translateX(0)}

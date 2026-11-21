@@ -198,7 +198,7 @@ test("surprise shortcut uses a refined lightbulb and the shared icon palette", (
 });
 
 test("blue identity colors the active top navigation and backup accepts blue", () => {
-  assert.match(css, /\.top-tabs button\.active\{color:var\(--wine\);background:var\(--rose-soft\)\}/);
+  assert.match(css, /body\.theme-blue \.top-navigation\{background:#285b86\}/);\n  assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);\n  assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
   assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night'\]\.includes\(raw\)/);
 });
 
@@ -237,4 +237,12 @@ test("primary navigation is moved to a two-row sticky top bar", () => {
   assert.match(css, /\.top-tabs button\.active:after/);
   assert.match(app, /#topNav button\[data-go\]/);
   assert.match(app, /goPage\('home'\);requestAnimationFrame\(\(\)=>\{\$\('search'\)/);
+});
+
+test("top navigation uses strong identity colors with high-contrast labels", () => {
+  assert.match(css, /body\.theme-blue \.top-navigation\{background:#285b86\}/);
+  assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);
+  assert.match(css, /\.top-navigation \.top-brand,\.top-navigation \.top-brand small\{color:#fff\}/);
+  assert.match(css, /\.top-navigation \.top-tabs button\.active:after\{background:#f1d59b\}/);
+  assert.doesNotMatch(css, /body\.dark-mode \.top-navigation,body\.theme-night \.top-navigation\{background:rgba/);
 });

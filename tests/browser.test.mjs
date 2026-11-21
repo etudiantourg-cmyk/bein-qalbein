@@ -35,7 +35,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
 
   await new Promise(resolveListen => server.listen(0, "127.0.0.1", resolveListen));
   const address = server.address();
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, channel: "chrome" });
   const page = await browser.newPage({ serviceWorkers: "block" });
   const pageErrors = [];
   page.on("pageerror", error => pageErrors.push(error.message));

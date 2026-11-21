@@ -199,7 +199,8 @@ test("surprise shortcut uses a refined lightbulb and the shared icon palette", (
 
 test("blue identity colors the active top navigation and backup accepts blue", () => {
   assert.match(css, /body\.theme-blue \.top-navigation\{background:#285b86\}/);
-  assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);\n  assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
+  assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);
+  assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
   assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night'\]\.includes\(raw\)/);
 });
 

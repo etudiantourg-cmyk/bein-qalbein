@@ -193,6 +193,11 @@ test("surprise shortcut uses a refined lightbulb and the shared icon palette", (
   assert.doesNotMatch(css, /data-quick="surprise"[^}]*background:linear-gradient\(145deg,#fff8df/);
 });
 
+test("blue identity colors the active bottom navigation and backup accepts blue", () => {
+  assert.match(css, /body\.theme-blue \.bottom-nav button\.active>span\{background:linear-gradient\(145deg,#8bc5e8 0%,#397eae 58%,#285b86 100%\)/);
+  assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night'\]\.includes\(raw\)/);
+});
+
 test("identity selector precedes quick actions and offers matching blue/rose palettes", () => {
   assert.ok(html.indexOf('id="roleTitle"') < html.indexOf('id="quickHub"'));
   assert.match(html, /<option value="blue">/);

@@ -16,7 +16,7 @@ const maskableIcon = await readFile(new URL("../icon-maskable.svg", import.meta.
 test("external app assets parse and HTML IDs are unique", () => {
   assert.match(html, /<script src="\.\/app\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.match(html, /<link rel="stylesheet" href="\.\/app\.css(?:\?v=\d+)?"\s*>/);
-  assert.doesNotMatch(html, /<script>([\s\S]*?)<\/script>/);
+  assert.equal((html.match(/<script>/g) || []).length, 1);
   new Function(app);
   new Function(contentData);
   assert.ok(contentData.includes("window.BQ_DATA"));

@@ -84,68 +84,6 @@ async function copyText(text){
  try{await navigator.clipboard.writeText(text);alert('تم النسخ بنجاح ✓')}
  catch(e){const t=document.createElement('textarea');t.value=text;document.body.append(t);t.select();document.execCommand('copy');t.remove();alert('تم النسخ ✓')}
 }
-function applyIdentityColor(targetRole,color){
- const allowed=['#3298d3','#2563eb','#0d9488','#16a34a','#64748b','#7c3aed','#d97706','#c2410c','#334155','#0891b2','#d16e91','#db2777','#a855f7','#8b5cf6','#e11d48','#c084fc','#ea580c','#ca8a04'];
- const safe=allowed.includes(String(color).toLowerCase())?String(color).toLowerCase():(targetRole==='wife'?'#d16e91':'#3298d3');
- const button=document.querySelector('.bq-identity-choice[data-bq-role="'+targetRole+'"]');
- if(button)button.style.setProperty('--identity-custom-color',safe);
- bqStorage.setItem('bq_identity_color_'+targetRole,safe);
- document.querySelectorAll('[data-role-color="'+targetRole+'"]').forEach(swatch=>{const active=swatch.dataset.color.toLowerCase()===safe;swatch.classList.toggle('is-active',active);swatch.setAttribute('aria-pressed',String(active))});
-}
-document.querySelectorAll('[data-role-color]').forEach(swatch=>swatch.addEventListener('click',()=>applyIdentityColor(swatch.dataset.roleColor,swatch.dataset.color)));
-document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventListener('click',()=>{
- const selected=tab.dataset.identityEditor;
- document.querySelectorAll('[data-identity-editor]').forEach(item=>{const active=item===tab;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active))});
- document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel===selected;panel.classList.toggle('is-active',active);panel.hidden=!active});
-}));
-
-function setIdentityEditor(selected){
- document.querySelectorAll('[data-identity-editor]').forEach(tab=>{const active=tab.dataset.identityEditor===selected;tab.classList.toggle('is-active',active);tab.setAttribute('aria-pressed',String(active))});
- document.querySelectorAll('[data-identity-panel]').forEach(panel=>{const active=panel.dataset.identityPanel===selected;panel.classList.toggle('is-active',active);panel.hidden=!active});
-}
-document.querySelectorAll('[data-identity-editor]').forEach(tab=>tab.addEventListener('click',()=>setIdentityEditor(tab.dataset.identityEditor)));
-document.querySelectorAll('[data-visual-style-card]').forEach(card=>card.addEventListener('click',()=>{applyVisualStyle(card.dataset.visualStyleCard);syncAppearanceChoices()}));
-document.querySelectorAll('[data-palette-choice]').forEach(card=>card.addEventListener('click',()=>{updatePalette(card.dataset.paletteChoice);$('paletteSelect').value=card.dataset.paletteChoice;syncAppearanceChoices()}));
-function applyIconStyle(value){
- const allowed=['classic','rounded','bold','duotone'];
- const style=allowed.includes(value)?value:'classic';
- document.body.dataset.iconStyle=style;
- bqStorage.setItem('bq_icon_style',style);
- document.querySelectorAll('[data-icon-style-choice]').forEach(card=>{const active=card.dataset.iconStyleChoice===style;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
-}
-document.addEventListener('click',event=>{const card=event.target.closest('[data-icon-style-choice]');if(card)applyIconStyle(card.dataset.iconStyleChoice);});
-applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');
-function syncAppearanceChoices(){
- applyIconStyle(bqStorage.getItem('bq_icon_style')||'classic');
- document.querySelectorAll('[data-visual-style-card]').forEach(card=>{const active=card.dataset.visualStyleCard===(document.body.dataset.visualStyle||'classic');card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
- const palette=['blue','rose','royal','night'].find(x=>document.body.classList.contains('theme-'+x))||'blue';
- document.querySelectorAll('[data-palette-choice]').forEach(card=>{const active=card.dataset.paletteChoice===palette;card.classList.toggle('is-selected',active);card.setAttribute('aria-pressed',String(active))});
-}
-(function(){
- const page=$('appearancePage'),open=$('openAppearancePage'),close=$('closeAppearancePage');
- if(!page||!open||!close)return;
- open.addEventListener('click',()=>{page.hidden=false;document.body.classList.add('appearance-page-open');syncAppearanceChoices();setIdentityEditor('husband');close.focus();window.scrollTo(0,0)});
- function closePage(){page.hidden=true;document.body.classList.remove('appearance-page-open');open.focus()}
- close.addEventListener('click',closePage);
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!page.hidden)closePage()});
-})();
-$('resetAppearanceBtn').addEventListener('click',()=>{
- // Restore the original appearance only; never delete user content or personal data.
- bqStorage.removeItem('bq_visual_style');bqStorage.removeItem('bq_icon_style');bqStorage.removeItem('bq_identity_color_husband');bqStorage.removeItem('bq_identity_color_wife');
- applyVisualStyle('classic');applyIconStyle('classic');applyIdentityColor('husband','#3298d3');applyIdentityColor('wife','#d16e91');
- const defaultPalette=role==='wife'?'rose':'blue';$('paletteSelect').value=defaultPalette;updatePalette(defaultPalette);
- setIdentityEditor('husband');syncAppearanceChoices();
-});
-
-
-['husband','wife'].forEach(targetRole=>applyIdentityColor(targetRole,bqStorage.getItem('bq_identity_color_'+targetRole)||(targetRole==='wife'?'#d16e91':'#3298d3')));
-function applyVisualStyle(value){
- const allowed=['classic','pixar','disney','anime','watercolor','glass','minimal','luxury','pastel','ocean','forest','sunset','retro','neon','paper','monochrome','lavender','desert','midnight','emerald','champagne','rosegold','sapphire','amethyst','arctic','mediterranean','sakura','copper','ivory','cyber'];
- const style=allowed.includes(value)?value:'classic';document.body.dataset.visualStyle=style;bqStorage.setItem('bq_visual_style',style);
- const selector=$('visualStyleSelect');if(selector)selector.value=style;
-}
-$('visualStyleSelect').onchange=e=>applyVisualStyle(e.target.value);
-applyVisualStyle(bqStorage.getItem('bq_visual_style')||'classic');
 document.querySelectorAll('.bq-identity-choice').forEach(button=>button.addEventListener('click',()=>{const nextRole=button.dataset.bqRole;if(!['husband','wife'].includes(nextRole))return;role=nextRole;bqStorage.setItem('bq_role',role);document.querySelectorAll('.bq-identity-choice').forEach(item=>{const selected=item===button;item.classList.toggle('is-selected',selected);item.setAttribute('aria-pressed',String(selected))});generate()}));
 $('newBtn').onclick=generate;
 $('shareBtn').onclick=async()=>{if(!current)return;if(navigator.share){try{await navigator.share({title:'BEIN QALBEIN PRO',text:current})}catch(e){}}else copyText(current)};

@@ -125,7 +125,7 @@
   <div class="favorite-tools"><button id="exportData" type="button">نسخة احتياطية</button><label class="import-label" for="importData" id="importLabel">استعادة نسخة</label><input id="importData" type="file" accept="application/json" hidden></div>
   <div class="favorite-tools" id="privacyTools"><input id="privacyPin" type="password" inputmode="numeric" maxlength="8" placeholder="رمز خصوصية من 4 إلى 8 أرقام" autocomplete="off"><button id="setPrivacyPin" type="button">تفعيل قفل المفضلة</button><button id="unlockFavorites" type="button">فتح المفضلة</button></div><small id="privacyNote" class="privacy-note">تنبيه: هذا قفل عرض محلي بسيط، وليس تشفيراً للرسائل أو حمايةً من فحص بيانات المتصفح.</small>
   <div id="favorites"></div>
-  <h2 id="historyTitle" class="subsection-title">آخر الرسائل</h2><div id="historyList"></div>
+  <h2 id="historyTitle" class="subsection-title">آخر ثلاث رسائل</h2><div id="historyList"></div>
   <h2 id="customTitle" class="subsection-title">رسائلي الخاصة</h2>
   <textarea id="customInput" rows="3" maxlength="10000" placeholder="اكتب رسالة خاصة بك..."></textarea>
   <button id="saveCustom" class="wide primary">حفظ رسالتي</button><div id="customList"></div>
@@ -237,6 +237,6 @@
 
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=104" defer></script>
+<script src="./app.js?v=105" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

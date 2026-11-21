@@ -584,7 +584,7 @@ html[dir="rtl"] .settings-drawer-panel{
 /* Keep the homepage shortcut strip pinned to the viewport while scrolling. */
 body[data-current-page="home"] .home-top-shortcuts{
  position:fixed!important;
- top:116px!important;
+ top:130px!important;
  left:50%!important;
  right:auto!important;
  transform:translateX(-50%);
@@ -593,17 +593,23 @@ body[data-current-page="home"] .home-top-shortcuts{
  z-index:950!important;
 }
 body[data-current-page="home"] main#mainContent{
- padding-top:70px;
+ padding-top:84px;
 }
 body[data-current-page]:not([data-current-page="home"]) .home-top-shortcuts{
  display:none!important;
 }
 @media(max-width:600px){
- body[data-current-page="home"] .home-top-shortcuts{top:112px!important}
- body[data-current-page="home"] main#mainContent{padding-top:68px}
+ body[data-current-page="home"] .home-top-shortcuts{top:126px!important}
+ body[data-current-page="home"] main#mainContent{padding-top:82px}
 }
 
 
 /* Learn opens as a standalone page: keep guide content, hide homepage shortcut strip. */
 body[data-current-page="guide"] .home-top-shortcuts{display:none!important}
 body[data-current-page="guide"] .home-shortcut-content{display:block!important}
+
+
+/* Visible breathing room between the main nav and the fixed home shortcuts. */
+body[data-current-page="home"] .home-top-shortcuts{
+ margin-top:0!important;
+}

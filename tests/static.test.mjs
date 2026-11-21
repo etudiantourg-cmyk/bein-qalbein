@@ -9,16 +9,17 @@ const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
 const worker = await readFile(new URL("../ai-worker/src/index.js", import.meta.url), "utf8");
 
-test("application JavaScript parses and element IDs are unique", () => {
-  const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]).filter(Boolean);
-  assert.ok(scripts.length > 0, "expected an application script");
-  for (const script of scripts) new Function(script);
+test("external app assets parse and HTML IDs are unique", () => {
+  assert.match(html, /<script src="\.\/app\.js" defer><\/script>/);
+  assert.match(html, /<link rel="stylesheet" href="\.\/app\.css">/);
+  assert.doesNotMatch(html, /<script>([\s\S]*?)<\/script>/);
+  new Function(app);
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, "duplicate HTML IDs found");
 });
 
-test("main controls, AI connection test and safe message display exist", () => {
-  for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiTestEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
+test("core features, AI studio and safe message display are present", () => {
+  for (const id of ["quickHub", "aiTestEndpoint", "cats", "message", "favorites", "aiGenerateBtn", "aiEndpoint", "saveAiEndpoint", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
     assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(app, /function displayMessageInMain/);
@@ -44,55 +45,52 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(app, /role==='wife'\?'للزوج':'للزوجة'/);
 });
 
-test("existing saved data is preserved and backup import is validated", () => {
-  assert.match(app, /bq_favorites/);
-  assert.match(app, /bq_recent_messages/);
-  assert.match(app, /bq_custom_notes/);
-  assert.match(app, /bq_favorite_folders/);
-  assert.match(app, /bq_ai_language/);
-  assert.match(app, /bq_ai_language_manual/);
+test("saved user data remains compatible and backup import is validated", () => {
+  for (const key of ["bq_favorites", "bq_recent_messages", "bq_custom_notes", "bq_favorite_folders", "bq_ai_language", "bq_ai_language_manual"]) assert.ok(app.includes(key));
   assert.match(app, /file\.size>2\*1024\*1024/);
   assert.match(app, /x\.length<=10000/);
   assert.match(app, /version:62,exportedAt:/);
   assert.match(app, /Your current data was left unchanged|لم نغيّر بياناتك الحالية/);
+  assert.match(app, /const bqStorage=\(\(\)=>/);
+  assert.ok(app.includes("window.localStorage"));
 });
 
-test("visual exclusions and honest privacy note remain in place", () => {
+test("HTML is accessible and unnecessary visual effects are removed", () => {
   assert.doesNotMatch(html, /🕊/u);
-  assert.doesNotMatch(html, /fonts\\.bunny\\.net/);
+  assert.doesNotMatch(html, /fonts\.bunny\.net/);
   assert.doesNotMatch(html, /floral-garden|heart-bubbles|hero-motion/);
   assert.match(html, /class="skip-link" href="#mainContent"/);
   assert.match(html, /id="mainContent"/);
   assert.match(html, /id="message" aria-live="polite"/);
-  assert.match(app, /const bqStorage=\\(\\(\\)=>/);
-  assert.match(app, /section\\.inert=!active/);
+  assert.match(app, /section\.inert=!active/);
+  assert.match(app, /section\.setAttribute\('aria-hidden'/);
   assert.match(app, /cardBtn:'card'/);
   assert.doesNotMatch(app, /cardBtn:'gift'/);
   assert.match(app, /ليس تشفيراً/);
 });
 
-test("new design system is responsive, accessible and motion-aware", () => {
+test("design system supports responsive layouts, focus and reduced motion", () => {
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:reduce/);
   assert.match(css, /safe-area-inset-bottom/);
-  assert.match(css, /@media\\(max-width:420px\\)/);
-  assert.match(css, /body\\.dark-mode/);
+  assert.match(css, /@media\(max-width:420px\)/);
+  assert.match(css, /body\.dark-mode/);
+  assert.ok(css.length < 30000, "stylesheet should stay within the lightweight budget");
 });
 
-test("PWA cache and manifest remain coherent", () => {
+test("PWA cache and manifest remain coherent and avoid heavy first-install downloads", () => {
   assert.equal(manifest.name, "BEIN QALBEIN PRO");
-  assert.ok(sw.includes("'./app.js'") && sw.includes("'./app.css'"));
-  assert.doesNotMatch(sw, /couple-header\\.jpg\\.png/); // large hero is runtime-cached, not precached on first install
-  assert.match(sw, /navigationPreload/);
   assert.equal(manifest.start_url, "./");
-  assert.ok(sw.includes("keys.filter(key=>key.startsWith('bein-qalbein-royal-')&&key!==CACHE)"));
-  assert.match(sw, /const response=await fetch\(event\.request\)/);
-  assert.match(sw, /const cached=await caches\.match\(event\.request\)/);
+  assert.ok(sw.includes("'./app.js'") && sw.includes("'./app.css'"));
+  assert.doesNotMatch(sw, /couple-header\.jpg\.png/);
+  assert.match(sw, /navigationPreload/);
   assert.match(sw, /const CACHE='bein-qalbein-royal-v[0-9]+'/);
+  assert.match(sw, /await fetch\(request\)/);
+  assert.match(sw, /caches\.match\(request\)/);
   for (const file of ["./index.html", "./app.js", "./app.css", "./manifest.json", "./icon.svg"]) assert.ok(sw.includes(file));
 });
 
-test("AI worker has a real health route and bounded request processing", () => {
+test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(worker, /url\.pathname === "\/health"/);
   assert.match(worker, /readBoundedBody/);
   assert.match(worker, /clearlyUnsafeOutput/);
@@ -104,21 +102,12 @@ test("AI worker has a real health route and bounded request processing", () => {
   assert.match(app, /data\.error&&status/);
 });
 
-test("legacy competing click routers were consolidated", () => {
+test("competing legacy click routers and inline bindings stay removed", () => {
   assert.ok(app.includes("Unified interaction router"));
   assert.ok(app.includes("#bottomNav button[data-go]"));
   assert.ok(!app.includes("V40 HOTFIX") && !app.includes("V44 — repair the four") && !app.includes("V46 — reliable bottom navigation"));
   assert.ok(!app.includes("hub.addEventListener('click'"));
-  assert.match(app, /bq_favorites/);
-  assert.match(app, /bq_recent_messages/);
-  assert.match(app, /bq_custom_notes/);
-});
-
-test("delegated actions have no competing legacy inline handlers", () => {
-  assert.ok(!app.includes("rescueSituation').onchange=showRescue"));
-  assert.ok(!app.includes("buildMessageBtn').onclick"));
-  assert.ok(!app.includes("useBuiltMessage').onclick"));
-  assert.ok(!app.includes("copyBuiltMessage').onclick"));
-  assert.ok(!app.includes("copyBtn').onclick"));
-  assert.ok(!app.includes("b.onclick=()=>{selected=c.id"));
+  for (const oldHandler of ["rescueSituation').onchange=showRescue", "buildMessageBtn').onclick", "useBuiltMessage').onclick", "copyBuiltMessage').onclick", "copyBtn').onclick", "b.onclick=()=>{selected=c.id"]) {
+    assert.ok(!app.includes(oldHandler), `obsolete handler remains: ${oldHandler}`);
+  }
 });

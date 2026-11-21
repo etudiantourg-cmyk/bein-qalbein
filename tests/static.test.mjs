@@ -127,7 +127,7 @@ test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(worker, /chat_template_kwargs/);
   assert.match(worker, /max_completion_tokens/);
   assert.match(worker, /result\?\.choices\?\.\[0\]\?\.message\?\.content/);
-  assert.match(aiStudio, /data\.error&&status/);
+  assert.doesNotMatch(aiStudio, /data\.error|error\.message|Cloudflare Worker|رابط المحرك/);
 });
 
 test("language initialization uses the real category renderer (regression: no undefined renderCats)", () => {

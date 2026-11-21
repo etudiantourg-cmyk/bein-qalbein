@@ -875,8 +875,6 @@ window.displayMessageInMain=displayMessageInMain;
   const t=e.target;
   let b=t.closest('#topSearchBtn');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');requestAnimationFrame(()=>{$('search')?.focus();$('search')?.scrollIntoView({behavior:'smooth',block:'center'})});return}
-  b=t.closest('#topThemeBtn');
-  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();$('themeToggle')?.click();return}
   b=t.closest('#quickHub button[data-quick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();goPage('home');let dest=null;
    if(b.dataset.quick==='categories'){$('search').value='';groupedRenderCats('');dest=$('cats');const first=dest?.querySelector('button.cat');const item=first?.closest('.category-item');const panel=$('inlineMessagePanel');if(first&&(!panel||panel.parentElement!==item))first.click()}

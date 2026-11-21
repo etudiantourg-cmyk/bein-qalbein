@@ -22,6 +22,7 @@ test("main controls, AI connection test and safe message display exist", () => {
   assert.match(html, /function displayMessageInMain/);
   assert.match(html, /applyLanguage\(\);\s*\};/);
   assert.match(html, /data-quick="ai"/);
+  assert.match(html, /https:\/\/bein-qalbein\\.etudiantourg\\.workers\\.dev/);
   assert.match(html, /<textarea id="aiOutput"/);
   assert.match(html, /displayMessageInMain\(finalMessage/);
   assert.match(html, /function validBackupValue/);

@@ -8,6 +8,7 @@ The application is intentionally deployable as static files. GitHub Pages serves
 | --- | --- | --- |
 | `index.html` | Semantic page structure and controls | No application logic should be added inline |
 | `app.css` | Tokens, responsive layout, dark themes, focus and motion preferences | Keep visual rules out of JavaScript |
+| `content-data.js` | Static message catalogue, translations, advice, challenge and icon data | Data-only module loaded before the app |
 | `app.js` | Message catalogue, local state, navigation, favorites, history, backup, guide and local tools | Current legacy core; split gradually behind regression tests |
 | `ai-studio.js` | AI form, endpoint validation, request lifecycle, status and result handoff | Loaded after `app.js`; currently consumes shared global lexical bindings |
 | `sw.js` | Versioned shell cache, network-first navigation, cache-first static assets | Increment cache version whenever a precached asset changes |
@@ -18,8 +19,9 @@ The application is intentionally deployable as static files. GitHub Pages serves
 
 The frontend currently uses deferred classic scripts in this order:
 
-1. `app.js`
-2. `ai-studio.js`
+1. `content-data.js`
+2. `app.js`
+3. `ai-studio.js`
 
 The AI module is separated into its own file, reducing the main bundle and giving the AI workflow a clear file boundary. It still reads shared bindings such as `lang`, `role`, `bqStorage`, and `copyText` from the main script. This is a transitional modularization, not full dependency isolation.
 

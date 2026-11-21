@@ -119,10 +119,22 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.reload({ waitUntil: "domcontentloaded" });
     assert.equal(await page.locator("#challengeTask").innerText(), dailyChallenge, "daily kindness challenge should remain stable for the day");
     await page.locator("#cats .cat").first().click();
-    const downloadPromise = page.waitForEvent("download");
     await page.locator("#cardBtn").click();
+    await page.locator("#cardStudio").waitFor({ state: "visible" });
+    assert.equal(await page.locator("#cardDesigns [data-card-style]").count(), 8);
+    assert.equal(await page.locator("#cardPreview").isVisible(), true);
+    await page.locator('[data-card-style="noor"]').click();
+    assert.equal(await page.locator('[data-card-style="noor"]').getAttribute("aria-pressed"), "true");
+    await page.locator("#cardFormat").selectOption("square");
+    assert.equal(await page.locator("#cardPreview").evaluate(canvas => canvas.width / canvas.height), 1);
+    await page.locator("#cardFormat").selectOption("portrait");
+    await page.locator("#cardMessageInput").fill("رسالة عربية جميلة\\nبسطر ثانٍ لاختبار تنسيق البطاقة");
+    const downloadPromise = page.waitForEvent("download");
+    await page.locator("#cardDownload").click();
     const cardDownload = await downloadPromise;
-    assert.equal(cardDownload.suggestedFilename(), "bein-qalbein-card.png");
+    assert.match(cardDownload.suggestedFilename(), /^bein-qalbein-card-noor\\.png$/);
+    await page.locator("#cardClose").click();
+    await page.locator("#cardStudio").waitFor({ state: "hidden" });
 
     await page.locator("#favBtn").click();
     await page.locator('#bottomNav button[data-go="favorites"]').click();

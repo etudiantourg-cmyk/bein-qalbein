@@ -287,7 +287,7 @@ fr:{
  ["Bonjour à ton cœur. Qu’Allah remplisse ta journée de facilité, de bénédictions et de paix.","Un nouveau jour commence, et je voulais te rappeler combien je t’apprécie.","Qu’Allah ouvre pour toi les portes de la subsistance et de la réussite.","Que ta matinée soit paisible et tes pas guidés vers le bien.","J’espère que tu trouveras aujourd’hui une raison de sourire.","Ta présence donne un sens plus doux à mes journées. Qu’Allah te protège.","Tu mérites des journées sereines et une sincère reconnaissance.","Avance avec espoir : après l’effort vient la facilité, avec la permission d’Allah.","Merci pour tous tes efforts, même ceux que personne ne remarque.","Qu’aujourd’hui t’apporte bien, sérénité et réussite."],
  ["Bonsoir. Je souhaite à ton cœur une paix durable.","La journée est terminée ; accorde-toi un peu de repos.","Qu’Allah transforme ta fatigue en sérénité.","J’espère que les prochaines heures t’apporteront une bonne nouvelle.","Ton repos compte et tu mérites de la reconnaissance.","Je voulais prendre de tes nouvelles avant la fin de la journée.","Laisse derrière toi ce qui t’a pesé et accueille le soir doucement.","Que ta soirée soit paisible et pleine de prières sincères.","Merci de rendre les petits détails de la vie plus doux.","Que la nuit t’apporte sérénité et satisfaction."],
  ["Je vois les efforts que tu consacres à ton travail et je les apprécie.","Les petits pas comptent ; chaque réussite commence par un effort sincère.","Qu’Allah bénisse ton travail, ton temps et tes revenus licites.","Fais une pause quand tu en as besoin. Ta santé compte.","Je crois en ta capacité à dépasser les difficultés, pas à pas."],
- ["Qu’Allah te protège pendant ton voyage et te ramène sain et sauf.","Donne-moi de tes nouvelles quand tu le peux ; ta sécurité compte beaucoup.","La distance ne diminue pas la place que tu occupes dans mon cœur.","Qu’Allah facilite ton voyage et t’accorde une bonne destination.","Repose-toi quand il le faut et prends soin de toi."],
+ ["Qu’Allah te protège pendant ton voyage et te ramène en toute sécurité.","Donne-moi de tes nouvelles quand tu le peux ; ta sécurité compte beaucoup.","La distance ne diminue pas la place que tu occupes dans mon cœur.","Qu’Allah facilite ton voyage et t’accorde une bonne destination.","Repose-toi quand il le faut et prends soin de toi."],
  ["J’espère que ta santé s’améliorera chaque jour et que tu retrouveras le confort.","Ton bien-être compte plus que n’importe quelle tâche.","Qu’Allah t’accorde guérison, force et soulagement.","Prends le temps nécessaire, sans précipiter ton rétablissement.","Je suis là pour te soutenir avec douceur et patience."],
  ["Tu n’as pas besoin de trouver les mots parfaits ; je suis là pour t’écouter.","Tes sentiments comptent et je ne les minimiserai pas.","Nous pouvons recommencer par un petit pas tranquille.","Qu’Allah remplace ta tristesse par le soulagement et la paix.","Tu n’as pas besoin de prétendre que tout va bien."],
  ["Je veux que nous puissions être en désaccord tout en restant respectueux.","Je vais réfléchir à mes paroles et à mes actes, et j’espère que nous ferons de même.","Cherchons une solution juste au lieu de nous rejeter la faute.","Une conversation calme vaut mieux qu’un ressentiment silencieux.","Je ne laisserai pas un instant de colère détruire notre affection."],
@@ -493,7 +493,7 @@ fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je l
       [
         "Ton sérieux se voit, même lorsque les résultats prennent du temps.",
         "Je souhaite que tes efforts mènent à un travail utile et à une réussite honnête.",
-        "Tu peux demander de l’aide ; tu n’as pas à tout porter seul.",
+        "Tu peux demander de l’aide ; tu n’as pas à tout porter sans soutien.",
         "Que chaque difficulté t’apprenne quelque chose sans voler ta paix.",
         "J’admire le soin que tu apportes à ton travail."
       ],
@@ -522,7 +522,7 @@ fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je l
         "Je veux comprendre ton point de vue avant d’expliquer le mien.",
         "Faisons une pause si nécessaire, puis reprenons avec des paroles plus douces.",
         "Ta dignité compte davantage que le fait de gagner une dispute.",
-        "Je suis prêt à écouter et à reconnaître ma part de responsabilité.",
+        "Je veux écouter et reconnaître ma part de responsabilité.",
         "Nous pouvons protéger notre lien tout en traversant un désaccord."
       ],
       [
@@ -555,7 +555,7 @@ fr:['Qu’Allah te guide vers ce qui est le meilleur.','Je t’apprécie et je l
       ],
       [
         "Ta bienveillance rend notre vie commune plus légère.",
-        "Je suis reconnaissant pour ta présence et tes efforts au quotidien.",
+        "Ta présence et tes efforts quotidiens me sont précieux.",
         "Ta contribution compte, qu’elle soit grande ou petite.",
         "Merci de faire une place à l’écoute et à l’esprit d’équipe.",
         "Je ne veux jamais que tes efforts passent inaperçus."

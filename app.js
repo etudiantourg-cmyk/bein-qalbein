@@ -479,9 +479,13 @@ function prepareInlineMessage(){
  return inlineMessagePanel;
 }
 function groupedRenderCats(filter=''){
- const host=$('cats');host.innerHTML='';const q=filter.trim().toLocaleLowerCase(lang);
- let count=0,selectedItem=null;
+ const host=$('cats');
  const inline=prepareInlineMessage();
+ // Keep the message card attached only after the user has explicitly opened a category.
+ const messageWasOpen=!!inline.parentElement?.classList.contains('category-item');
+ host.innerHTML='';
+ const q=filter.trim().toLocaleLowerCase(lang);
+ let count=0,selectedItem=null;
  categoryGroups.forEach(group=>{
   const matches=categories.filter(c=>group.ids.includes(c.id)&&(!q||(c.name+' '+c.desc).toLocaleLowerCase(lang).includes(q)));
   if(!matches.length)return;
@@ -490,13 +494,13 @@ function groupedRenderCats(filter=''){
    count++;
    const item=document.createElement('div');item.className='category-item';item.dataset.categoryId=c.id;
    const b=document.createElement('button');b.type='button';b.className='cat'+(c.id===selected?' active':'');
-   b.setAttribute('aria-expanded',c.id===selected&&inline.parentElement===item?'true':'false');
+   b.setAttribute('aria-expanded',String(messageWasOpen&&c.id===selected));
    b.innerHTML='<span class="badge">'+c.icon+'</span><span>'+c.name+'<small>'+c.desc+'</small></span>';
    item.append(b);host.append(item);if(c.id===selected)selectedItem=item;
   });
  });
  if(!count){const p=document.createElement('p');p.className='empty';p.textContent=languageText[lang]?.noCats||'لا توجد تصنيفات مطابقة لبحثك.';host.append(p)}
- if(selectedItem)selectedItem.append(inline);
+ if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
  const allowed=['home','favorites','guide','settings'];
@@ -887,9 +891,19 @@ window.displayMessageInMain=displayMessageInMain;
    if(dest)requestAnimationFrame(()=>dest.scrollIntoView({behavior:'auto',block:'center'}));return;
   }
   b=t.closest('#cats button.cat');
-  if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const item=b.closest('.category-item'),id=item?.dataset.categoryId;if(!id)return;const p=prepareInlineMessage();
-   if(selected===id&&p.parentElement===item){p.remove();selected=null;d.querySelectorAll('#cats .cat').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-expanded','false')});return}
-   selected=id;generate();d.querySelectorAll('#cats .cat').forEach(x=>{const active=x.closest('.category-item')?.dataset.categoryId===id;x.classList.toggle('active',active);x.setAttribute('aria-expanded',String(active))});item.append(p);p.hidden=false;p.style.display='block';requestAnimationFrame(()=>p.scrollIntoView({behavior:'auto',block:'nearest'}));return;
+  if(b){
+   e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+   const item=b.closest('.category-item'),id=item?.dataset.categoryId;if(!id||!messages[id])return;
+   // Every tap on a category must produce a message, including the initially selected one.
+   selected=id;generate();
+   const p=prepareInlineMessage();
+   d.querySelectorAll('#cats .cat').forEach(x=>{
+    const active=x.closest('.category-item')?.dataset.categoryId===id;
+    x.classList.toggle('active',active);x.setAttribute('aria-expanded',String(active));
+   });
+   item.append(p);p.hidden=false;p.style.display='block';
+   requestAnimationFrame(()=>p.scrollIntoView({behavior:'auto',block:'nearest'}));
+   return;
   }
   b=t.closest('#smartChips button[data-pick]');
   if(b){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(!messages[b.dataset.pick])return;selected=b.dataset.pick;generate();$('search').value='';groupedRenderCats('');d.querySelectorAll('#smartChips button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active))});$('inlineMessagePanel')?.scrollIntoView({behavior:'auto',block:'nearest'});return}

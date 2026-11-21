@@ -74,6 +74,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.deepEqual(await page.evaluate(() => Object.values(window.BQ_DATA.messages).map(pool => pool.length)), Array(14).fill(150));
 
     assert.deepEqual(pageErrors, [], `uncaught startup errors: ${pageErrors.join(" | ")}`);
+    // Every intent chip must reveal its matching message panel on a fresh page.
+    for (const id of ["thanks", "miss", "sorry", "support", "sad", "upset", "dua"]) {
+      await page.locator(`#smartChips button[data-pick="${id}"]`).click();
+      await page.waitForFunction(expected => {
+        const panel = document.querySelector("#inlineMessagePanel");
+        return panel && !panel.hidden && panel.parentElement?.dataset.categoryId === expected;
+      }, id);
+      assert.ok((await page.locator("#message").innerText()).trim().length > 0, `chip ${id} should show a message`);
+    }
     await page.locator("#cats .cat").first().click();
     await page.waitForTimeout(150);
     const categoryState = await page.evaluate(() => ({

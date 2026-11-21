@@ -307,7 +307,7 @@ function goPage(page){
  const allowed=['home','library','favorites','guide','games','channels'];
  if(!allowed.includes(page))page='home';
  if(page==='guide'&&typeof window.openHomeShortcut==='function'){
-  document.body.dataset.currentPage='home';
+  document.body.dataset.currentPage='guide';
   document.querySelectorAll('.page-section').forEach(section=>{
    const active=section.dataset.page==='home';
    section.classList.toggle('active-page',active);
@@ -320,7 +320,7 @@ function goPage(page){
    if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
   });
   $('favoritesSubnav').hidden=true;
-  try{bqStorage.setItem('bq_last_page','home')}catch(_){}
+  try{bqStorage.setItem('bq_last_page','guide')}catch(_){}
   window.openHomeShortcut('guide');
   window.scrollTo({top:0,behavior:'auto'});
   return;

@@ -189,7 +189,7 @@ const $=id=>document.getElementById(id);
 /* Safe storage adapter: persistent when available, in-memory fallback when blocked. */
 const bqStorage=(()=>{
  let native=null;const memory=new Map();
- try{native=window.bqStorage;native.getItem('__bq_probe__')}catch(_){native=null}
+ try{native=window.localStorage;native.getItem('__bq_probe__')}catch(_){native=null}
  return {
   getItem(key){try{const value=native?.getItem(key);if(value!==null&&value!==undefined)return value}catch(_){}return memory.has(String(key))?memory.get(String(key)):null},
   setItem(key,value){const k=String(key),v=String(value);memory.set(k,v);try{native?.setItem(k,v)}catch(_){}},

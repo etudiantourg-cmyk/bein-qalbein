@@ -1,5 +1,5 @@
-const CACHE='bein-qalbein-royal-v81';
-const PRECACHE=['./','./index.html','./app.css','./app.js','./ai-studio.js','./manifest.json','./icon.svg'];
+const CACHE='bein-qalbein-royal-v82';
+const PRECACHE=['./','./index.html','./app.css','./content-data.js','./app.js','./ai-studio.js','./manifest.json','./icon.svg'];
 
 self.addEventListener('install',event=>{
  self.skipWaiting();

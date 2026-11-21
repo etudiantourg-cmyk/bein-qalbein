@@ -112,6 +112,7 @@ test("category taps always generate a visible message, including the initially s
   const grouped = app.slice(app.indexOf("function groupedRenderCats"), app.indexOf("function goPage"));
   assert.match(grouped, /messageWasOpen=!!inline\.parentElement\?\.classList\.contains\('category-item'\)/);
   assert.match(grouped, /if\(messageWasOpen&&selectedItem\)\{selectedItem\.append\(inline\)/);
+  assert.doesNotMatch(grouped, /prepareInlineMessage\\(\\)/, "initial category rendering must not detach the live message node");
   const router = app.slice(app.indexOf("b=t.closest('#cats button.cat')"), app.indexOf("b=t.closest('#smartChips"));
   assert.match(router, /if\(!id\|\|!messages\[id\]\)return/);
   assert.match(router, /selected=id;generate\(\)/);

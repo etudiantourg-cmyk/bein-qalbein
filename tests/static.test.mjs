@@ -184,7 +184,7 @@ test("luxury typography and dimensional icon design remain available", () => {
   assert.match(css, /--font-latin-display:"Playfair Display"/);
   assert.match(css, /inset 0 2px 3px/);
   assert.match(css, /drop-shadow\(/);
-  assert.match(css, /bottom-nav button\.active>span/);
+  assert.match(css, /\.top-tabs button\.active:after/);
   assert.match(app, /"Amiri", "Noto Naskh Arabic", serif/);
   assert.match(app, /"Playfair Display", Georgia, serif/);
 });
@@ -197,8 +197,8 @@ test("surprise shortcut uses a refined lightbulb and the shared icon palette", (
   assert.doesNotMatch(css, /data-quick="surprise"[^}]*background:linear-gradient\(145deg,#fff8df/);
 });
 
-test("blue identity colors the active bottom navigation and backup accepts blue", () => {
-  assert.match(css, /body\.theme-blue \.bottom-nav button\.active>span\{background:linear-gradient\(145deg,#8bc5e8 0%,#397eae 58%,#285b86 100%\)/);
+test("blue identity colors the active top navigation and backup accepts blue", () => {
+  assert.match(css, /\.top-tabs button\.active\{color:var\(--wine\);background:var\(--rose-soft\)\}/);
   assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night'\]\.includes\(raw\)/);
 });
 

@@ -33,7 +33,7 @@ test("external app assets parse and HTML IDs are unique", () => {
 });
 
 test("core features, AI studio and safe message display are present", () => {
-  for (const id of ["quickHub", "cats", "message", "favorites", "aiGenerateBtn", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
+  for (const id of ["quickHub", "cats", "message", "favorites", "favoritesSubnav", "favoriteTipsList", "favoriteBooksList", "favoriteGamesList", "libraryPage", "aiGenerateBtn", "aiUseBtn", "aiCopyBtn", "aiMoreBtn", "rescueGenerate", "buildMessageBtn"]) {
     assert.match(html, new RegExp(`id=["']${id}["']`));
   }
   assert.match(app, /function displayMessageInMain/);
@@ -258,4 +258,15 @@ test("official app icon is displayed in the top brand header", () => {
   assert.ok(manifest.icons.some(icon => icon.src === "icon.svg"));
   assert.ok(appIcon.includes('data:image/png;base64,'));
   assert.ok(maskableIcon.includes('x="51.2" y="51.2" width="409.6" height="409.6"'));
+});
+
+test("favorites are separated into messages, advice, books and games with compact settings", () => {
+  for (const tab of ["messages","advice","books","games"]) assert.match(html, new RegExp('data-fav-tab="'+tab+'"'));
+  for (const panel of ["messages","advice","books","games"]) assert.match(html, new RegExp('data-fav-panel="'+panel+'"'));
+  assert.match(app, /function setFavoriteTab\(tab\)/);
+  assert.match(app, /bq_favorite_tips/);
+  assert.match(app, /bq_favorite_books/);
+  assert.match(app, /bq_favorite_games/);
+  assert.match(css, /width:min\(82vw,310px\)/);
+  assert.match(css, /max-height:min\(78vh,620px\)/);
 });

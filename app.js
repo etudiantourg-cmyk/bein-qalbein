@@ -155,6 +155,7 @@ async function sendGentleNotification(){if(!('Notification'in window)||Notificat
 function scheduleGentleNotification(){if(notificationTimer)clearInterval(notificationTimer);if(bqStorage.getItem('bq_notifications')!=='on')return;sendGentleNotification();notificationTimer=setInterval(sendGentleNotification,3600000)}
 async function toggleGentleNotifications(){if(!('Notification'in window)){alert(lang==='en'?'Notifications are not supported by this browser.':lang==='fr'?'Les notifications ne sont pas prises en charge.':'هذا المتصفح لا يدعم الإشعارات.');return}if(bqStorage.getItem('bq_notifications')==='on'){bqStorage.setItem('bq_notifications','off');if(notificationTimer)clearInterval(notificationTimer);$('notifyToggle').textContent=languageText[lang].notifyOff;return}const permission=await Notification.requestPermission();if(permission!=='granted'){alert(languageText[lang].permissionDenied);return}bqStorage.setItem('bq_notifications','on');$('notifyToggle').textContent=languageText[lang].notifyOn;scheduleGentleNotification()}
 function applyLanguage(){
+ applyCardStudioLanguage();
  const t=languageText[lang]||languageText.ar;const ar=lang==='ar';
  document.documentElement.lang=lang;document.documentElement.dir=ar?'rtl':'ltr';$('lang').value=lang;document.title=t.title;
  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
@@ -286,31 +287,165 @@ function renderSmartChips(){
  keys.forEach(id=>{const b=document.createElement('button');b.type='button';b.dataset.pick=id;b.textContent=smartNames[lang][id];host.append(b)});
  const title=$('smartTitle');if(title)title.textContent=lang==='en'?'What would you like to say today?':lang==='fr'?'Que souhaitez-vous lui dire aujourd’hui ?':'ماذا تريد أن تقول اليوم؟';
 }
-async function createMessageCard(){
+/* Card Atelier — vector-rendered, offline, high-resolution card studio. */
+const cardThemes={
+ royal:{paper:'#fff9ef',paper2:'#f5e8d8',ink:'#52172f',muted:'#85566a',gold:'#b88b45',accent:'#7b1e43',edge:'#ead5ae'},
+ rose:{paper:'#fff5f6',paper2:'#f5dce4',ink:'#63283f',muted:'#98677b',gold:'#c49a60',accent:'#a94368',edge:'#edc6d2'},
+ noor:{paper:'#fcf8ec',paper2:'#e9dfc7',ink:'#403526',muted:'#81704e',gold:'#a98442',accent:'#6e5934',edge:'#d8c69b'},
+ midnight:{paper:'#251728',paper2:'#48263d',ink:'#fff1e4',muted:'#e0c3c8',gold:'#d7b36e',accent:'#a85a78',edge:'#8c6376'},
+ minimal:{paper:'#fffefd',paper2:'#f4efeb',ink:'#39232c',muted:'#806d72',gold:'#bd9a65',accent:'#70233f',edge:'#e6d9d1'},
+ mosaic:{paper:'#fbf4e9',paper2:'#eadcc8',ink:'#482b32',muted:'#80606a',gold:'#bd9252',accent:'#762d4a',edge:'#d9c09a'},
+ velvet:{paper:'#4b1733',paper2:'#241525',ink:'#fff4e8',muted:'#e9cad4',gold:'#e1c17c',accent:'#bd718c',edge:'#b38a61'},
+ sand:{paper:'#f7ead8',paper2:'#ead0b8',ink:'#57352d',muted:'#906b5c',gold:'#b18a50',accent:'#984d48',edge:'#d5b18e'}
+};
+const cardNames={
+ ar:{royal:'ملكي مخملي',rose:'وردي رقيق',noor:'محراب النور',midnight:'ليل فاخر',minimal:'أناقة هادئة',mosaic:'فسيفساء هندسية',velvet:'عنابي ملكي',sand:'دفء الورق'},
+ en:{royal:'Royal velvet',rose:'Soft rose',noor:'Noor arch',midnight:'Midnight',minimal:'Quiet minimal',mosaic:'Geometric mosaic',velvet:'Burgundy',sand:'Warm paper'},
+ fr:{royal:'Velours royal',rose:'Rose tendre',noor:'Arche lumineuse',midnight:'Nuit élégante',minimal:'Minimal chic',mosaic:'Mosaïque',velvet:'Bordeaux',sand:'Papier chaud'}
+};
+let activeCardTheme='royal',activeCardFormat='portrait',cardPreviousFocus=null;
+const cardCopy={
+ ar:{title:'استوديو البطاقات',sub:'اصنع بطاقة تليق بالكلمات التي اخترتها',text:'نص البطاقة',design:'اختر التصميم',format:'مقاس البطاقة',portrait:'عمودي أنيق',square:'مربع للمشاركة',story:'قصة هاتف',brand:'إظهار توقيع بين قلبين',download:'حمّل البطاقة بدقة فائقة',close:'إغلاق',preview:'معاينة مباشرة',hint:'تُصنع البطاقة داخل جهازك دون إرسال رسالتك إلى أي خادم.',footer:'بين قلبين · كلمات من القلب'},
+ en:{title:'Card Atelier',sub:'Craft a card worthy of your words',text:'Card message',design:'Choose a design',format:'Card format',portrait:'Elegant portrait',square:'Square share',story:'Phone story',brand:'Show Between Two Hearts signature',download:'Download ultra-high resolution',close:'Close',preview:'Live preview',hint:'Your card is rendered on this device. Your message is not uploaded.',footer:'Between Two Hearts · From the heart'},
+ fr:{title:'Atelier de cartes',sub:'Une carte à la hauteur de vos mots',text:'Texte de la carte',design:'Choisir un design',format:'Format de la carte',portrait:'Portrait élégant',square:'Carré à partager',story:'Story mobile',brand:'Afficher la signature Entre deux cœurs',download:'Télécharger en très haute résolution',close:'Fermer',preview:'Aperçu en direct',hint:'La carte est créée sur cet appareil. Votre message n’est pas envoyé.',footer:'Entre deux cœurs · Du cœur'}
+};
+function cardText(key){return (cardCopy[lang]||cardCopy.ar)[key]}
+function openCardStudio(){
  if(!current){alert(lang==='en'?'Choose a message first.':lang==='fr'?'Choisissez d’abord un message.':'اختر رسالة أولاً.');return}
- const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
- if(!ctx){alert(lang==='en'?'This browser cannot create an image card.':lang==='fr'?'Ce navigateur ne peut pas créer la carte.':'هذا المتصفح لا يستطيع إنشاء بطاقة الصورة.');return}
- const maxWidth=850,words=current.trim().split(/\s+/u),lines=[];
- let line='',fontSize=48;
- const setFont=()=>{ctx.font='600 '+fontSize+'px Tajawal, sans-serif'};
- setFont();
- words.forEach(word=>{const candidate=line?line+' '+word:word;if(ctx.measureText(candidate).width>maxWidth&&line){lines.push(line);line=word}else line=candidate});
- if(line)lines.push(line);
- if(lines.length>22){fontSize=40;setFont();lines.length=0;line='';words.forEach(word=>{const candidate=line?line+' '+word:word;if(ctx.measureText(candidate).width>maxWidth&&line){lines.push(line);line=word}else line=candidate});if(line)lines.push(line)}
- canvas.width=1080;canvas.height=Math.max(1350,700+lines.length*(fontSize+24));
- const g=ctx.createLinearGradient(0,0,1080,canvas.height);g.addColorStop(0,'#fff8ed');g.addColorStop(.48,'#f6dce5');g.addColorStop(1,'#4c0825');
- ctx.fillStyle=g;ctx.fillRect(0,0,1080,canvas.height);
- ctx.strokeStyle='#e9c477';ctx.lineWidth=12;ctx.strokeRect(42,42,996,canvas.height-84);ctx.lineWidth=3;ctx.strokeRect(62,62,956,canvas.height-124);
- ctx.textAlign='center';ctx.direction=lang==='ar'?'rtl':'ltr';ctx.fillStyle='#7b1741';ctx.font='bold 78px Tajawal, sans-serif';
- ctx.fillText(lang==='en'?'Between Two Hearts':lang==='fr'?'Entre deux cœurs':'بين قلبين',540,205);
- ctx.fillStyle='#b38a43';ctx.font='42px Tajawal, sans-serif';ctx.fillText('♡',540,290);
- ctx.fillStyle='#4c0825';ctx.font='600 '+fontSize+'px Tajawal, sans-serif';
- const lineHeight=fontSize+24,textHeight=lines.length*lineHeight;let y=Math.max(390,(canvas.height-textHeight)/2+lineHeight/2);
- lines.forEach(textLine=>{ctx.fillText(textLine,540,y,maxWidth);y+=lineHeight});
- ctx.fillStyle='#ffe8ad';ctx.font='34px Tajawal, sans-serif';ctx.fillText(lang==='en'?'Kind words make life beautiful':lang==='fr'?'Les belles paroles embellissent la vie':'الكلمات الجميلة تجعل الحياة أجمل',540,canvas.height-105);
- canvas.toBlob(blob=>{if(!blob){alert(lang==='en'?'Could not create the image card.':lang==='fr'?'Impossible de créer la carte.':'تعذر إنشاء البطاقة.');return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='bein-qalbein-card.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)},'image/png');
+ const modal=$('cardStudio');if(!modal)return;
+ cardPreviousFocus=document.activeElement;
+ $('cardMessageInput').value=current;
+ $('cardDesigns').querySelectorAll('[data-card-style]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.cardStyle===activeCardTheme)));
+ $('cardFormat').value=activeCardFormat;$('cardBrandToggle').checked=true;
+ applyCardStudioLanguage();
+ modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');
+ renderCardPreview();$('cardMessageInput').focus();
 }
-$('cardBtn').onclick=createMessageCard;
+function closeCardStudio(){
+ const modal=$('cardStudio');if(!modal)return;
+ modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');
+ if(cardPreviousFocus?.focus)cardPreviousFocus.focus();
+}
+function applyCardStudioLanguage(){
+ const modal=$('cardStudio');if(!modal)return;
+ const labels=cardCopy[lang]||cardCopy.ar;
+ $('cardStudioTitle').textContent=labels.title;$('cardStudioSub').textContent=labels.sub;
+ $('cardTextLabel').textContent=labels.text;$('cardDesignLabel').textContent=labels.design;
+ $('cardFormatLabel').textContent=labels.format;$('cardBrandLabel').textContent=labels.brand;
+ $('cardDownload').textContent=labels.download;$('cardClose').textContent=labels.close;
+ $('cardPreviewLabel').textContent=labels.preview;$('cardPrivacyHint').textContent=labels.hint;
+ $('cardFormat').options[0].text=labels.portrait;$('cardFormat').options[1].text=labels.square;$('cardFormat').options[2].text=labels.story;
+ $('cardDesigns').querySelectorAll('[data-card-style]').forEach(button=>{button.querySelector('span').textContent=(cardNames[lang]||cardNames.ar)[button.dataset.cardStyle]});
+}
+function cardRoundRect(ctx,x,y,w,h,r){
+ const radius=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+radius,y);ctx.arcTo(x+w,y,x+w,y+h,radius);ctx.arcTo(x+w,y+h,x,y+h,radius);ctx.arcTo(x,y+h,x,y,radius);ctx.arcTo(x,y,x+w,y,radius);ctx.closePath();
+}
+function cardRosette(ctx,x,y,r,color){
+ ctx.save();ctx.translate(x,y);ctx.strokeStyle=color;ctx.lineWidth=2.2;ctx.beginPath();
+ for(let i=0;i<16;i++){const angle=i*Math.PI/8,rr=i%2?r*.72:r,px=Math.cos(angle)*rr,py=Math.sin(angle)*rr;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py)}
+ ctx.closePath();ctx.stroke();ctx.beginPath();ctx.arc(0,0,r*.28,0,Math.PI*2);ctx.stroke();ctx.restore();
+}
+function cardWrap(ctx,text,maxWidth,font){
+ ctx.font=font;const result=[],paragraphs=String(text||'').replace(/\r/g,'').split('\n');
+ const splitGraphemes=word=>typeof Intl!=='undefined'&&Intl.Segmenter?[...new Intl.Segmenter(lang==='ar'?'ar':lang,{granularity:'grapheme'}).segment(word)].map(x=>x.segment):Array.from(word);
+ paragraphs.forEach((paragraph,index)=>{
+  const words=paragraph.trim().split(/\s+/u).filter(Boolean);let line='';
+  for(const word of words){
+   const pieces=ctx.measureText(word).width>maxWidth?splitGraphemes(word):[word];
+   for(const piece of pieces){const candidate=line?line+' '+piece:piece;if(ctx.measureText(candidate).width>maxWidth&&line){result.push(line);line=piece}else line=candidate}
+  }
+  result.push(line);if(index<paragraphs.length-1)result.push('');
+ });
+ return result;
+}
+function drawCardArtwork(canvas,scale=1){
+ const text=$('cardMessageInput').value.trim(),theme=cardThemes[activeCardTheme]||cardThemes.royal;
+ const format=activeCardFormat,w=1080,baseH=format==='square'?1080:format==='story'?1920:1350;
+ canvas.width=w*scale;canvas.height=baseH*scale;
+ let ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');ctx.setTransform(scale,0,0,scale,0,0);
+ const isAr=lang==='ar',direction=isAr?'rtl':'ltr',brand=$('cardBrandToggle').checked;
+ const maxWidth=790,top=activeCardTheme==='noor'?425:330,bottom=baseH-250;
+ let size=format==='story'?53:49,lines=[],lineHeight=0;
+ const fit=()=>{
+  lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.68;
+  while(lines.length*lineHeight>bottom-top&&size>31){size-=2;lines=cardWrap(ctx,text,maxWidth,'600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif');lineHeight=size*1.68}
+ };
+ fit();
+ const height=Math.max(baseH,Math.min(3000,top+lines.length*lineHeight+250));
+ if(height!==baseH){canvas.height=height*scale;ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0)}
+ const h=height,gradient=ctx.createLinearGradient(0,0,w,h);
+ gradient.addColorStop(0,theme.paper);gradient.addColorStop(.52,theme.paper2);gradient.addColorStop(1,theme.paper);
+ ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+ ctx.save();ctx.globalAlpha=.045;ctx.fillStyle=theme.ink;
+ for(let y=18;y<h;y+=31)for(let x=17;x<w;x+=37)ctx.fillRect(x+((y*7+x*3)%11),y,1.5,1.5);
+ ctx.restore();
+ if(activeCardTheme==='midnight'||activeCardTheme==='velvet'){const glow=ctx.createRadialGradient(540,250,30,540,250,680);glow.addColorStop(0,'rgba(255,220,185,.12)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h)}
+ ctx.strokeStyle=theme.gold;ctx.lineWidth=4;cardRoundRect(ctx,38,38,w-76,h-76,34);ctx.stroke();
+ ctx.strokeStyle=theme.edge;ctx.lineWidth=2;cardRoundRect(ctx,57,57,w-114,h-114,27);ctx.stroke();
+ [[105,105],[w-105,105],[105,h-105],[w-105,h-105]].forEach(([x,y])=>cardRosette(ctx,x,y,27,theme.gold));
+ if(activeCardTheme==='noor'){
+  ctx.save();ctx.strokeStyle=theme.gold;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(285,405);ctx.lineTo(285,260);ctx.bezierCurveTo(285,95,795,95,795,260);ctx.lineTo(795,405);ctx.stroke();ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(310,405);ctx.lineTo(310,270);ctx.bezierCurveTo(310,135,770,135,770,270);ctx.lineTo(770,405);ctx.stroke();ctx.restore();
+ }else if(activeCardTheme==='mosaic'){
+  ctx.save();ctx.globalAlpha=.35;for(let x=155;x<=925;x+=110){cardRosette(ctx,x,300,24,theme.gold);cardRosette(ctx,x,h-300,24,theme.gold)}ctx.restore();
+ }else if(activeCardTheme==='rose'){
+  ctx.save();ctx.strokeStyle=theme.edge;ctx.lineWidth=3;for(let i=0;i<5;i++){const y=230+i*24;ctx.beginPath();ctx.moveTo(115,y);ctx.bezierCurveTo(230,y-90,280,y+90,390,y);ctx.stroke();ctx.beginPath();ctx.moveTo(690,y);ctx.bezierCurveTo(800,y-90,850,y+90,965,y);ctx.stroke()}ctx.restore();
+ }else if(activeCardTheme==='minimal'){
+  ctx.strokeStyle=theme.gold;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(330,270);ctx.lineTo(750,270);ctx.stroke();ctx.beginPath();ctx.moveTo(330,h-250);ctx.lineTo(750,h-250);ctx.stroke();
+ }
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;
+ ctx.fillStyle=theme.accent;ctx.font='700 67px Georgia, Tahoma, serif';ctx.fillText(isAr?'بين قلبين':lang==='fr'?'Entre deux cœurs':'Between Two Hearts',540,175,800);
+ ctx.fillStyle=theme.gold;ctx.font='34px Georgia, serif';ctx.fillText('✦  ❦  ✦',540,245);
+ if(activeCardTheme==='velvet'){ctx.fillStyle='rgba(255,248,237,.94)';cardRoundRect(ctx,105,320,870,h-640,26);ctx.fill();ctx.strokeStyle=theme.gold;ctx.lineWidth=2;cardRoundRect(ctx,125,340,830,h-680,19);ctx.stroke()}
+ const areaTop=activeCardTheme==='noor'?425:activeCardTheme==='velvet'?400:330,areaBottom=h-250,blockHeight=lines.length*lineHeight;
+ let y=Math.max(areaTop+lineHeight,(areaTop+areaBottom-blockHeight)/2+lineHeight/2);
+ ctx.fillStyle=activeCardTheme==='velvet'?'#4b1733':theme.ink;ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction=direction;
+ ctx.font='600 '+size+'px system-ui, Tahoma, "Noto Naskh Arabic", serif';
+ lines.forEach(line=>{if(line===''){y+=lineHeight*.58;return}ctx.fillText(line,540,y,maxWidth);y+=lineHeight});
+ const sealY=h-155;ctx.strokeStyle=theme.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(250,sealY-48);ctx.lineTo(830,sealY-48);ctx.stroke();cardRosette(ctx,540,sealY,22,theme.gold);
+ if(brand){ctx.fillStyle=theme.muted;ctx.font='500 27px system-ui, Tahoma, serif';ctx.fillText(cardText('footer'),540,h-100,820)}
+ return {width:w,height:h,lines:lines.length,fontSize:size};
+}
+function renderCardPreview(){
+ const canvas=$('cardPreview');if(!canvas)return;
+ try{
+  const result=drawCardArtwork(canvas,1);canvas.setAttribute('aria-label',cardText('preview')+' · '+result.width+' × '+result.height);
+  $('cardOverflowNote').textContent=result.fontSize<37?(lang==='en'?'Long message: font size was reduced to fit.':lang==='fr'?'Message long : la taille du texte a été réduite.':'الرسالة طويلة؛ صُغّر الخط تلقائياً لتناسب البطاقة.'): '';
+  $('cardDownload').disabled=false;
+ }catch(error){$('cardDownload').disabled=true;$('cardOverflowNote').textContent=lang==='en'?'Preview could not be rendered.':lang==='fr'?'Impossible de créer l’aperçu.':'تعذر إنشاء المعاينة.'}
+}
+async function downloadMessageCard(){
+ const button=$('cardDownload'),oldText=button.textContent;button.disabled=true;
+ button.textContent=lang==='en'?'Preparing…':lang==='fr'?'Préparation…':'جارٍ تجهيز البطاقة…';
+ try{
+  if(document.fonts?.ready)await document.fonts.ready;
+  const canvas=document.createElement('canvas');drawCardArtwork(canvas,2);
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('PNG export failed');
+  const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='bein-qalbein-card-'+activeCardTheme+'.png';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+ }catch(error){alert(lang==='en'?'The card could not be exported. Please try again.':lang==='fr'?'La carte n’a pas pu être exportée. Réessayez.':'تعذر تصدير البطاقة. حاول مرة أخرى.')}
+ finally{button.disabled=false;button.textContent=oldText}
+}
+$('cardBtn').onclick=openCardStudio;
+$('cardClose').onclick=closeCardStudio;
+$('cardDownload').onclick=downloadMessageCard;
+$('cardMessageInput').addEventListener('input',renderCardPreview);
+$('cardFormat').addEventListener('change',event=>{activeCardFormat=event.target.value;renderCardPreview()});
+$('cardBrandToggle').addEventListener('change',renderCardPreview);
+$('cardDesigns').addEventListener('click',event=>{
+ const button=event.target.closest('[data-card-style]');if(!button)return;
+ activeCardTheme=button.dataset.cardStyle;
+ $('cardDesigns').querySelectorAll('[data-card-style]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+ renderCardPreview();
+});
+$('cardStudio').addEventListener('click',event=>{if(event.target===$('cardStudio'))closeCardStudio()});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&!$('cardStudio').classList.contains('hidden'))closeCardStudio();
+ if(event.key==='Tab'&&!$('cardStudio').classList.contains('hidden')){
+  const focusable=[...$('cardStudio').querySelectorAll('button:not(:disabled),textarea,select,input')].filter(el=>!el.hidden);
+  if(!focusable.length)return;const first=focusable[0],last=focusable[focusable.length-1];
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+ }
+});
 
 const originalGenerate=generate;
 generate=function(){originalGenerate();rememberMessage(current)};

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <script>try{var r=localStorage.getItem("bq_role");document.documentElement.setAttribute("data-start-role",r==="wife"?"wife":"husband")}catch(e){document.documentElement.setAttribute("data-start-role","husband")}</script>
-<link rel="stylesheet" href="./app.css?v=159">
+<link rel="stylesheet" href="./app.css?v=160">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -21,14 +21,7 @@
   <button type="button" class="menu-tab top-menu-trigger" data-menu-toggle aria-expanded="false" aria-controls="settingsDrawer" aria-label="الإعدادات" title="الإعدادات"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
   <a class="top-brand" href="./" aria-label="بين قلبين برو - الرئيسية"><span>بين قلبين <small>PRO</small></span></a>
   <div class="top-tools">
-   <div class="bq-identity-control" role="group" aria-label="اختيار الهوية">
-    <button type="button" class="bq-identity-choice is-selected" id="bqIdentityHusband" data-bq-role="husband" aria-label="أنا زوج" title="أنا زوج" aria-pressed="true">
-     <span class="bq-identity-label">ذكر</span>
-    </button>
-    <button type="button" class="bq-identity-choice" id="bqIdentityWife" data-bq-role="wife" aria-label="أنا زوجة" title="أنا زوجة" aria-pressed="false">
-     <span class="bq-identity-label">انثى</span>
-    </button>
-   </div>
+   <button type="button" id="themePickerOpen" class="top-tool-btn theme-picker-trigger" aria-label="النمط وتغيير اللون" title="النمط"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.1a2.2 2.2 0 0 0 1.5-3.8 1.7 1.7 0 0 1 1.2-2.9H18a3 3 0 0 0 3-3C21 6.7 17 3 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="7.8" cy="10" r="1.1" fill="currentColor"/><circle cx="11" cy="7.2" r="1.1" fill="currentColor"/><circle cx="15.2" cy="8.1" r="1.1" fill="currentColor"/><circle cx="7.5" cy="14.2" r="1.1" fill="currentColor"/></svg></button>
    <button type="button" id="topSearchBtn" class="top-tool-btn" aria-label="بحث" title="بحث"><span aria-hidden="true">⌕</span></button>
   </div>
  </div>
@@ -249,8 +242,19 @@
  </div>
 </section>
  </aside>
-</div><footer id="appFooter">صُنع بالمحبة والاحترام</footer>
+</div>
+<div id="themePickerModal" class="modal-backdrop theme-picker-backdrop" hidden>
+ <section class="theme-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="themePickerTitle">
+  <div class="modal-head"><h2 id="themePickerTitle">اختر لون التطبيق</h2><button type="button" id="themePickerClose" aria-label="إغلاق">×</button></div>
+  <p class="theme-picker-note">اختر اللون الذي يعجبك، ثم اضغط موافق لتطبيقه على الواجهة.</p>
+  <label class="theme-color-label" for="themeColorInput">دائرة اختيار الألوان</label>
+  <div class="theme-color-stage"><input id="themeColorInput" type="color" value="#285b86" aria-label="اختيار لون التطبيق"><span id="themeColorHex">#285B86</span></div>
+  <div class="theme-preview" id="themePreview"><span>معاينة اللون</span><b>بين قلبين برو</b><small>هذا مثال لشكل اللون في التطبيق</small></div>
+  <div class="theme-picker-actions"><button type="button" id="themeFactoryReset" class="theme-factory-reset">استعادة لون المصنع</button><button type="button" id="themeColorConfirm" class="primary">موافق</button></div>
+ </section>
+</div>
+<footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=142" defer></script>
+<script src="./app.js?v=143" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

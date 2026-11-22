@@ -689,3 +689,4 @@ body[data-current-page="home"] .home-top-shortcuts{
 }
  filter:drop-shadow(1px 1px 0 color-mix(in srgb,var(--gold),transparent 18%)) drop-shadow(-1px -1px 0 color-mix(in srgb,var(--rose),transparent 35%));
 }
+.history-actions button{min-width:44px;min-height:44px;padding:10px 12px}

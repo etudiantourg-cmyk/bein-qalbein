@@ -32,6 +32,7 @@
   finally{if(timer)clearTimeout(timer);busy=false;generateButton.disabled=false;if(moreButton)moreButton.disabled=false;generateButton.textContent=pack().generate}
  }
  $('aiLanguage')?.addEventListener('change',e=>{try{bqStorage.setItem('bq_ai_language',e.target.value);bqStorage.setItem('bq_ai_language_manual','1')}catch(_){}});
+ if($('aiRecipient'))$('aiRecipient').value='محايدة';
  generateButton.addEventListener('click',generate);moreButton?.addEventListener('click',generate);
  $('aiUseBtn')?.addEventListener('click',()=>{const value=String(output.hidden?latest:output.value).trim();if(!value)return;window.displayMessageInMain(value,map[$('aiMood')?.value]||'thanks');say('used')});
  $('aiCopyBtn')?.addEventListener('click',async()=>{const value=String(output.hidden?latest:output.value).trim();if(value){const ok=await copyText(value);say(ok?'copied':'copyFailed')}});

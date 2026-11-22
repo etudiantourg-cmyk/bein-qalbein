@@ -107,7 +107,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('[data-fav-tab="books"]').click();
     await page.locator("#favoriteBooksList").getByText("فن الحوار الهادئ").waitFor();
     await page.locator('[data-fav-tab="messages"]').click();
-    await page.locator('#topNav button[data-go="guide"]').click();
+    await page.locator('#topNav button[data-go="home"]').click();
+    await page.locator('.home-top-shortcuts [data-home-go="guide"]').click();
     await page.locator("#husbandTips").click();
     await page.locator('#adviceList [data-save-tip]').first().click();
     await page.locator("#closeAdvice").click();

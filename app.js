@@ -44,7 +44,7 @@ const bqStorage=(()=>{
  };
 })();
 
-let role=['husband','wife'].includes(bqStorage.getItem('bq_role'))?bqStorage.getItem('bq_role'):'husband',lang=(bqStorage.getItem('bq_language')||'ar'),selected='morning',current='',favs=[];
+let lang=(bqStorage.getItem('bq_language')||'ar'),selected='morning',current='',favs=[];
 function updateStorageStatus(){
  const note=$('storageWarning');if(!note)return;
  const persistent=bqStorage.persistent;note.hidden=persistent;
@@ -219,7 +219,7 @@ function renderAdviceForLanguage(){
  $('husbandTips').classList.toggle('active',activeAdvice==='husband');$('wifeTips').classList.toggle('active',activeAdvice==='wife');
 }
 function applyTheme(){const dark=bqStorage.getItem('bq_theme')==='dark';document.body.classList.toggle('dark-mode',dark);$('themeToggle').textContent=dark?languageText[lang].day:languageText[lang].night}
-function notificationCopy(){if(lang==='en')return role==='wife'?'A gentle reminder: your kindness can brighten your husband’s day. ♥':'A gentle reminder: a kind word can make your wife’s day warmer. ♥';if(lang==='fr')return role==='wife'?'Un doux rappel : votre tendresse peut illuminer la journée de votre mari. ♥':'Un doux rappel : quelques mots bienveillants peuvent embellir la journée de votre épouse. ♥';return role==='wife'?'تذكير لطيف: كلمة طيبة منكِ قد تجعل يوم زوجك أجمل. ♥':'تذكير لطيف: كلمة حانية منك قد تجعل يوم زوجتك أجمل. ♥'}
+function notificationCopy(){if(lang==='en')return 'A gentle reminder: a kind word can make someone’s day warmer. ♥';if(lang==='fr')return 'Un doux rappel : quelques mots bienveillants peuvent embellir la journée. ♥';return 'تذكير لطيف: كلمة طيبة قد تجعل يوم من تحب أجمل. ♥'}
 let notificationTimer=null;
 async function sendGentleNotification(){if(!('Notification'in window)||Notification.permission!=='granted')return;const last=Number(bqStorage.getItem('bq_last_notification')||0);if(Date.now()-last<86400000)return;const title=lang==='en'?'Between Two Hearts':lang==='fr'?'Entre deux cœurs':'بين قلبين';const options={body:notificationCopy(),icon:'./icon.svg',badge:'./icon.svg',tag:'bein-qalbein-daily',renotify:false};try{if(navigator.serviceWorker){const reg=await navigator.serviceWorker.ready;await reg.showNotification(title,options)}else new Notification(title,options);bqStorage.setItem('bq_last_notification',String(Date.now()))}catch(_){}}
 function scheduleGentleNotification(){if(notificationTimer)clearInterval(notificationTimer);if(bqStorage.getItem('bq_notifications')!=='on')return;sendGentleNotification();notificationTimer=setInterval(sendGentleNotification,3600000)}

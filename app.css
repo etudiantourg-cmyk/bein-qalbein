@@ -1358,3 +1358,26 @@ body.dark-mode:not(.theme-night){--bq-primary-nav:#392632;--bq-primary-nav-activ
 .top-navigation .top-tabs button svg *{
  color:#fff!important;stroke:#fff!important;
 }
+
+
+/* Accessible selected states: preserve the theme hue while keeping white labels readable. */
+body.theme-blue{--bq-bar-active:#285b86;--bq-primary-nav-active:#285b86}
+body.theme-rose{--bq-bar-active:#762044;--bq-primary-nav-active:#762044}
+body.theme-royal{--bq-bar-active:#64132f;--bq-primary-nav-active:#64132f}
+body.theme-night{--bq-bar-active:#51243a;--bq-primary-nav-active:#51243a}
+body.theme-custom{--bq-bar-active:color-mix(in srgb,var(--bq-accent,#285b86) 35%,#000 65%);--bq-primary-nav-active:var(--bq-bar-active)}
+.top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+.sharia-door-nav .sharia-door.is-active{
+ background:var(--bq-bar-active)!important;
+ color:#fff!important;
+ border-color:#fff!important;
+}
+.top-navigation .top-tabs button.active{
+ background:var(--bq-primary-nav-active)!important;
+ color:#fff!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut,
+.top-navigation>.home-top-shortcuts .home-shortcut>span,
+.top-navigation>.home-top-shortcuts .home-shortcut>span b{
+ color:#fff!important;
+}

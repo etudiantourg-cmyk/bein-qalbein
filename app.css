@@ -1131,3 +1131,60 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
  .sharia-door-icon{width:32px;height:32px}
  .sharia-door-icon svg{width:21px;height:21px}
 }
+
+
+/* Navigation correction: restore the original clean top-bar language;
+   keep the home shortcut row in the same refined blue icon family. */
+#topNavigation #topNav>button,
+#topNavigation #topNav>button.active{
+  color:rgba(255,255,255,.96)!important;
+  background:transparent!important;
+}
+#topNavigation #topNav>button>span,
+#topNavigation #topNav>button.active>span{
+  width:34px!important;height:34px!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+#topNavigation #topNav>button>span svg,
+#topNavigation #topNav>button>span svg *{
+  width:24px!important;height:24px!important;
+  color:#fff!important;stroke:#fff!important;
+  filter:none!important;
+}
+#topNavigation #topNav>button.active{
+  background:rgba(255,255,255,.13)!important;
+}
+#topNavigation #topNav>button.active:after{
+  background:#f1d59b!important;
+}
+#topNavigation #topNav>button .nav-label{
+  color:#fff!important;
+  text-shadow:none!important;
+}
+#topNavigation #topNav>button:focus-visible{
+  outline:2px solid rgba(255,255,255,.85)!important;
+  outline-offset:-3px!important;
+}
+/* The lower home shortcuts use one consistent royal-blue stroke, without
+   dark shadows or mixed fills. */
+.home-top-shortcuts .home-shortcut>svg,
+.home-top-shortcuts .home-shortcut>svg *,
+.top-navigation>.home-top-shortcuts .home-shortcut>svg,
+.top-navigation>.home-top-shortcuts .home-shortcut>svg *{
+  color:#285b86!important;
+  stroke:#285b86!important;
+  fill:none!important;
+  opacity:1!important;
+  filter:none!important;
+  stroke-width:1.9!important;
+}
+.home-top-shortcuts .home-shortcut>svg{
+  width:22px!important;height:22px!important;
+  flex:0 0 22px!important;
+}
+.home-top-shortcuts .home-shortcut{
+  color:#285b86!important;
+}

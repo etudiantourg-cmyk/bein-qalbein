@@ -58,7 +58,8 @@ test("core features, AI studio and safe message display are present", () => {
   assert.match(aiStudio, /unavailable:/);
   assert.match(aiStudio, /bq_ai_language_manual/);
   assert.doesNotMatch(aiStudio, /aiEndpoint|saveAiEndpoint|aiTestEndpoint|bq_ai_endpoint|Cloudflare Worker|رابط المحرك/);
-  assert.match(aiStudio, /role==='wife'\?'للزوج':'للزوجة'/);
+  assert.match(aiStudio, /value='محايدة'/);
+  assert.doesNotMatch(aiStudio, /role==='wife'|querySelectorAll\('\.role'\)/);
 });
 
 test("saved user data remains compatible and backup import is validated", () => {

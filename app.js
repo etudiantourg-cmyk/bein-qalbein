@@ -649,7 +649,7 @@ const oldShowFavs=showFavs;
 showFavs=function(){oldShowFavs();const chosen=$('favoriteFolder')?.value||'all';$('favorites').querySelectorAll('.favitem').forEach((node,i)=>{const value=favs[i];const folder=favFolders[value]||'love';node.style.display=chosen==='all'||chosen===folder?'':'none'})};
 $('favoriteFolder').onchange=showFavs;
 $('assignFolder').onclick=()=>{if(!current||!favs.includes(current)){alert(lang==='ar'?'أضف الرسالة إلى المفضلة أولاً.':'Save this message to favorites first.');return}favFolders[current]=$('favoriteFolder').value==='all'?'love':$('favoriteFolder').value;bqStorage.setItem('bq_favorite_folders',JSON.stringify(favFolders));showFavs()};
-const backupKeys=['bq_role','bq_favorites','bq_favorite_tips','bq_favorite_books','bq_favorite_games','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_ai_language','bq_ai_language_manual'];
+const backupKeys=['bq_role','bq_favorites','bq_favorite_tips','bq_favorite_books','bq_favorite_games','bq_language','bq_theme','bq_recent_messages','bq_custom_notes','bq_notifications','bq_last_notification','bq_favorite_folders','bq_font_scale','bq_palette','bq_custom_color','bq_ai_language','bq_ai_language_manual'];
 function validBackupValue(key,raw){
  if(typeof raw!=='string'||raw.length>1500000)return false;
  if(key==='bq_role')return ['husband','wife'].includes(raw);
@@ -658,7 +658,8 @@ function validBackupValue(key,raw){
  if(key==='bq_ai_language_manual')return ['0','1'].includes(raw);
  if(key==='bq_theme')return ['dark','light'].includes(raw);
  if(key==='bq_notifications')return ['on','off'].includes(raw);
- if(key==='bq_palette')return ['blue','rose','royal','night'].includes(raw);
+ if(key==='bq_palette')return ['blue','rose','royal','night','custom'].includes(raw);
+ if(key==='bq_custom_color')return /^#[0-9a-f]{6}$/i.test(raw);
  if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.9&&n<=1.2}
  if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
  let value;try{value=JSON.parse(raw)}catch(_){return false}

@@ -875,9 +875,3 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
   color:#0066FF!important;stroke:#0066FF!important;opacity:1!important;visibility:visible!important;stroke-width:2.15!important;
 }
 
-/* Red controls inside the games gamepad icon; keep the gamepad outline unchanged. */
-#topNav button[data-go="games"] > span > svg > path:nth-child(2){
-  stroke:#ff2020!important;
-  fill:#ff2020!important;
-  opacity:1!important;
-}

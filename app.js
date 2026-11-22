@@ -66,7 +66,6 @@ function generate(){
  let next=pool[Math.floor(Math.random()*pool.length)];
  if(pool.length>1&&next===current)next=pool[(pool.indexOf(next)+1)%pool.length];
  current=next;
- if(role==='wife'&&lang==='ar')current=current.replaceAll('حبيبي','حبيبتي');
  $('message').textContent=current;
 }
 function showFavs(){

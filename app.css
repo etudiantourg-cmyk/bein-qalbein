@@ -745,10 +745,9 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 #topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}
 
 
-/* Home shortcut bar: one scoped icon rule prevents cascade collisions.
-   Restore the original gold icon treatment with full opacity. */
+/* Home shortcut icons: restore the original blue treatment consistently. */
 .top-navigation > .home-top-shortcuts .home-shortcut > svg{
-  color:var(--gold)!important;
+  color:#397eae!important;
   opacity:1!important;
   filter:none!important;
 }

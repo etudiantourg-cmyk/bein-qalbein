@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./app.css?v=177">
+<link rel="stylesheet" href="./app.css?v=178">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -168,13 +168,17 @@
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
 <section class="panel page-section sharia-page" data-page="learn" aria-label="الشريعة">
- <div class="sharia-heading"><span class="sharia-eyebrow">زاد المسلم</span><h2>الشريعة والعبادات</h2><p>مساحة منظمة للصلاة والقرآن والأذكار والمناسبات والمكتبة الإسلامية.</p></div>
+ <header class="sharia-hero">
+ <div class="sharia-hero-mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M45 8a25 25 0 1 0 11 42A23 23 0 0 1 45 8Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="m43 17 2.4 5.3 5.8.5-4.4 3.8 1.3 5.6-5.1-3-5.1 3 1.3-5.6-4.4-3.8 5.8-.5Z" fill="currentColor"/></svg></div>
+ <div class="sharia-hero-copy"><span class="sharia-eyebrow">زَادُ المُسْلِم</span><h2>طمأنينةٌ في كل يوم</h2><p>صلاتك، قرآنك، وأذكارك… في مساحة هادئة تجمع العبادة والمعرفة.</p></div>
+ <div class="sharia-hero-glow" aria-hidden="true"></div>
+</header>
 <nav class="sharia-door-nav" aria-label="أبواب الشريعة">
-<button type="button" class="sharia-door is-active" data-sharia-tab="prayer" aria-selected="true">🕌 <span>الصلاة</span></button>
-<button type="button" class="sharia-door" data-sharia-tab="quran" aria-selected="false">📖 <span>القرآن</span></button>
-<button type="button" class="sharia-door" data-sharia-tab="dhikr" aria-selected="false">🤲 <span>الأذكار</span></button>
-<button type="button" class="sharia-door" data-sharia-tab="occasions" aria-selected="false">🌙 <span>المناسبات</span></button>
-<button type="button" class="sharia-door" data-sharia-tab="library" aria-selected="false">📚 <span>المكتبة</span></button>
+<button type="button" class="sharia-door is-active" data-sharia-tab="prayer" aria-selected="true"><svg class="sharia-door-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5M5.5 9.5v10h13v-10M9 19.5v-6h6v6M2.5 20h19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>الصلاة</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="quran" aria-selected="false"><svg class="sharia-door-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.5c3.2-1 6.1-.4 8.5 1.5v13c-2.4-1.9-5.3-2.5-8.5-1.5zM20.5 5.5c-3.2-1-6.1-.4-8.5 1.5v13c2.4-1.9 5.3-2.5 8.5-1.5zM12 7v13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>القرآن</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="dhikr" aria-selected="false"><svg class="sharia-door-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13c1.5-2 3.4-3 5.4-3 1.4 0 2.4.8 3.1 2.2l.7 1.4 1.3-2.2c.7-1.1 1.7-1.7 2.8-1.7 1.1 0 2 .6 2.7 1.6M4 16c1.5 2.1 3.5 3.2 5.6 3.2 1.6 0 2.8-.8 3.6-2.2l1-1.8 1.1 1.5c.8 1.1 1.8 1.7 3 1.7 1 0 1.9-.4 2.7-1.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>الأذكار</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="occasions" aria-selected="false"><svg class="sharia-door-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14A8.5 8.5 0 0 1 9 4.5 8.5 8.5 0 1 0 19.5 14Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m17.5 3 .8 1.8 1.9.2-1.5 1.3.5 1.9-1.7-1-1.7 1 .5-1.9-1.5-1.3 1.9-.2Z" fill="currentColor"/></svg><span>المناسبات</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="library" aria-selected="false"><svg class="sharia-door-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 4.5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>المكتبة</span></button>
 </nav><div class="sharia-panel-wrap">
  <div class="sharia-panel-content is-active" data-sharia-panel="prayer">
  <div class="sharia-clock-strip" aria-label="التاريخ والوقت">
@@ -188,12 +192,19 @@
  </section>
  <div class="sharia-widgets">
   <section class="sharia-card qibla-card">
-   <div class="sharia-card-title"><span>🧭</span><div><h3>اتجاه القبلة</h3><small>السهم يشير إلى اتجاه الكعبة من الشمال</small></div></div>
-   <div class="qibla-compass" aria-label="بوصلة اتجاه القبلة">
-    <span class="compass-north">ش</span><span class="compass-east">ق</span><span class="compass-south">ج</span><span class="compass-west">غ</span>
-    <div class="qibla-needle" id="qiblaNeedle"><span>▲</span></div><div class="compass-center"></div>
+   <div class="sharia-card-title"><span class="qibla-title-icon">⌖</span><div><h3>بوصلة القبلة</h3><small>اتجاه مباشر نحو الكعبة المشرفة</small></div></div>
+   <div class="qibla-compass-shell">
+    <div class="qibla-compass" id="qiblaCompass" role="img" aria-label="بوصلة القبلة؛ يوجّه رمز الكعبة نحو اتجاه القبلة">
+     <span class="compass-north">N</span><span class="compass-east">E</span><span class="compass-south">S</span><span class="compass-west">W</span>
+     <span class="compass-degree degree-top">0°</span><span class="compass-degree degree-right">90°</span><span class="compass-degree degree-bottom">180°</span><span class="compass-degree degree-left">270°</span>
+     <div class="qibla-needle" id="qiblaNeedle"><span class="kaaba-marker" aria-hidden="true"><svg viewBox="0 0 48 52"><path d="M5 15 24 5l19 10v25L24 50 5 40Z" fill="#171717" stroke="#d5b36b" stroke-width="1.7"/><path d="m5 15 19 10 19-10M24 25v25" fill="none" stroke="#d5b36b" stroke-width="1.4"/><path d="M5 21 24 31l19-10" fill="none" stroke="#d8b66e" stroke-width="4"/><path d="M5 25 24 35l19-10" fill="none" stroke="#f1dfad" stroke-width="1.1"/><path d="M13 18v-2.5M35 18v-2.5" stroke="#f8e9bd" stroke-width="1.3"/></svg></span></div>
+     <div class="compass-center"><span></span></div>
+    </div>
    </div>
-   <strong id="qiblaBearing" class="qibla-bearing">—°</strong><button type="button" id="qiblaCompassEnable" class="sharia-secondary-action">تفعيل بوصلة الهاتف</button><p id="qiblaStatus" class="sharia-muted">حدّد موقعك لإظهار اتجاه القبلة.</p>
+   <div class="qibla-readout"><strong id="qiblaBearing" class="qibla-bearing">—°</strong><span>زاوية القبلة من الشمال الحقيقي</span></div>
+   <button type="button" id="qiblaCompassEnable" class="sharia-secondary-action">تفعيل بوصلة الهاتف</button>
+   <p id="qiblaStatus" class="sharia-muted" role="status" aria-live="polite">حدّد موقعك أولاً، ثم فعّل مستشعر الاتجاه لتدور البوصلة مع هاتفك.</p>
+   <small class="qibla-calibration-hint">أمسك الهاتف أفقياً وحرّكه ببطء على شكل رقم 8 بعيداً عن المعادن.</small>
   </section>
   <section class="sharia-card prayer-card">
    <div class="sharia-card-title"><span>🕌</span><div><h3>أوقات الصلاة</h3><small id="prayerDateLabel">مواقيت اليوم حسب موقعك</small></div></div>
@@ -335,6 +346,6 @@
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=150" defer></script>
+<script src="./app.js?v=151" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

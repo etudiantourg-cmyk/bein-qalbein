@@ -1386,3 +1386,16 @@ body.theme-custom .top-navigation>.home-top-shortcuts .home-shortcut.is-selected
 .top-navigation>.home-top-shortcuts .home-shortcut>span b{
  color:#fff!important;
 }
+
+
+/* Keep the always-active home shortcut readable even before JS applies selected state. */
+.top-navigation>.home-top-shortcuts .home-shortcut-home{
+ background:#24445f!important;
+ color:#fff!important;
+ border-color:rgba(255,255,255,.9)!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut-home>span,
+.top-navigation>.home-top-shortcuts .home-shortcut-home>span b{
+ color:#fff!important;
+ opacity:1!important;
+}

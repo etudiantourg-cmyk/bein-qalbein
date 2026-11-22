@@ -745,31 +745,50 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 #topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}
 
 
-/* High-contrast shortcut icons: target the live shortcut bar wherever it is mounted. */
-.home-top-shortcuts .home-shortcut svg,
-.home-top-shortcuts .home-shortcut svg *{color:#ffd36f!important;stroke:#ffd36f!important;opacity:1!important;filter:none!important}
-.home-top-shortcuts .home-shortcut svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.38))!important}
+/* Home shortcut bar: one scoped icon rule prevents cascade collisions.
+   Restore the original gold icon treatment with full opacity. */
+.top-navigation > .home-top-shortcuts .home-shortcut > svg{
+  color:var(--gold)!important;
+  opacity:1!important;
+  filter:none!important;
+}
+.top-navigation > .home-top-shortcuts .home-shortcut > svg *{
+  stroke:currentColor!important;
+  opacity:1!important;
+}
 
-/* Compact theme controls: keep every option visible without dialog scrolling. */
-.theme-picker-trigger{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:6px!important}
-.theme-picker-trigger svg{width:20px!important;height:20px!important}
-.theme-picker-backdrop{padding:8px!important;overflow:hidden!important;align-items:center!important}
-.theme-picker-dialog{box-sizing:border-box!important;width:min(94vw,360px)!important;max-height:calc(100dvh - 16px)!important;overflow:hidden!important;padding:11px!important;border-radius:17px!important}
-.theme-picker-dialog .modal-head{margin-bottom:4px!important}
-.theme-picker-dialog .modal-head h2{font-size:17px!important}
-.theme-picker-dialog .modal-head button{width:34px!important;min-width:34px!important;height:34px!important;min-height:34px!important}
-.theme-picker-note{margin:0 0 5px!important;font-size:11px!important;line-height:1.35!important}
-.theme-color-label{margin:5px 0 3px!important;font-size:12px!important}
-.theme-color-stage{display:grid!important;grid-template-columns:minmax(0,1fr) 88px!important;align-items:center!important;justify-items:center!important;gap:7px!important;padding:4px 0!important}
-.theme-color-wheel{width:clamp(112px,38vw,148px)!important;max-width:100%!important;height:auto!important}
-.theme-color-readout{min-width:0!important;gap:4px!important}
-.theme-color-readout span{width:30px!important;height:30px!important}
-.theme-color-readout b{font-size:12px!important}
-.theme-color-readout small{font-size:9px!important;line-height:1.2!important}
-.theme-preview{gap:2px!important;margin:4px 0 7px!important;padding:7px!important;font-size:11px!important}
-.theme-preview:before{height:5px!important;margin:-7px -7px 5px!important}
-.theme-preview b{font-size:14px!important}
-.theme-preview small{font-size:10px!important}
-.theme-picker-actions{gap:6px!important}
-.theme-picker-actions button{min-height:36px!important;padding:6px 5px!important;border-radius:10px!important;font-size:11px!important}
-@media(max-height:620px){.theme-picker-dialog{padding:8px!important}.theme-color-wheel{width:clamp(100px,31vw,124px)!important}.theme-preview{margin:2px 0 4px!important;padding:5px!important}.theme-picker-actions button{min-height:32px!important}}
+/* Keep all six shortcut commands inside their own hit areas on narrow screens. */
+.top-navigation > .home-top-shortcuts .home-shortcut{
+  flex:1 1 0!important;
+  min-width:0!important;
+  overflow:hidden!important;
+}
+.top-navigation > .home-top-shortcuts .home-shortcut > svg{
+  flex:0 0 17px!important;
+  width:17px!important;
+  height:17px!important;
+}
+.top-navigation > .home-top-shortcuts .home-shortcut > span{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+.top-navigation > .home-top-shortcuts .home-shortcut b{
+  display:block!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+  text-align:center!important;
+  line-height:1.15!important;
+}
+@media(max-width:370px){
+  .top-navigation > .home-top-shortcuts{gap:3px!important;padding-inline:4px!important}
+  .top-navigation > .home-top-shortcuts .home-shortcut{padding-inline:2px!important}
+  .top-navigation > .home-top-shortcuts .home-shortcut b{font-size:8px!important}
+}
+
+/* Keep the compact theme picker overrides grouped and isolated from other modals. */
+.theme-picker-backdrop{padding:8px!important;overflow:hidden!important}
+.theme-picker-dialog{overflow:hidden!important;overscroll-behavior:contain!important}

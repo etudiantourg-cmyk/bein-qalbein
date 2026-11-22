@@ -1090,10 +1090,11 @@ function advanceMiniGame(){
  const library=document.getElementById('libraryPage');
  const guide=document.querySelector('.page-section[data-page="guide"]');
  const ai=document.getElementById('aiMessagePanel');
+ const services=document.querySelector('main > .page-section[data-page="services"]');
  const favNav=document.getElementById('favoritesSubnav');
- if(!strip||!host||!fav||!library||!guide||!ai||strip.dataset.tabsReady)return;
+ if(!strip||!host||!fav||!library||!guide||!ai||!services||strip.dataset.tabsReady)return;
  strip.dataset.tabsReady='1';
- const panes={favorites:document.createElement('div'),library:document.createElement('div'),guide:document.createElement('div'),ai:document.createElement('div')};
+ const panes={favorites:document.createElement('div'),library:document.createElement('div'),guide:document.createElement('div'),ai:document.createElement('div'),services:document.createElement('div')};
  Object.entries(panes).forEach(([key,pane])=>{pane.className='home-shortcut-pane';pane.dataset.shortcutPane=key;pane.hidden=true;host.appendChild(pane)});
  // Move the existing live UI nodes, preserving their IDs, data, and event handlers.
  if(favNav)panes.favorites.appendChild(favNav);
@@ -1101,6 +1102,7 @@ function advanceMiniGame(){
  while(library.firstChild)panes.library.appendChild(library.firstChild);
  while(guide.firstChild)panes.guide.appendChild(guide.firstChild);
  panes.ai.appendChild(ai);
+ panes.services.appendChild(services);
  const homeSections=[...document.querySelectorAll('main > .page-section[data-page="home"]')];
  const quickHub=document.getElementById('quickHub');
  // Hide every other home section with a dedicated class; .active-page uses !important.
@@ -1128,7 +1130,7 @@ function advanceMiniGame(){
   host.hidden=false;
   Object.entries(panes).forEach(([name,node])=>{node.hidden=name!==key});
   strip.querySelectorAll('.home-shortcut').forEach(button=>{
-   const active=(key==='favorites'&&button.dataset.homeGo==='favorites')||(key==='library'&&button.dataset.homeGo==='library')||(key==='ai'&&button.dataset.homeGo==='ai')||(key==='guide'&&(button.dataset.homeGo==='guide'||button.id==='homeGuideShortcut'));
+   const active=(key==='favorites'&&button.dataset.homeGo==='favorites')||(key==='library'&&button.dataset.homeGo==='library')||(key==='ai'&&button.dataset.homeGo==='ai')||(key==='services'&&button.dataset.homeGo==='services')||(key==='guide'&&(button.dataset.homeGo==='guide'||button.id==='homeGuideShortcut'));
    button.classList.toggle('is-selected',active);
    button.setAttribute('aria-expanded',String(active));
   });
@@ -1158,7 +1160,6 @@ function advanceMiniGame(){
  strip.querySelectorAll('.home-shortcut').forEach(button=>button.addEventListener('click',()=>{
   const key=button.id==='homeGuideShortcut'?'guide':button.dataset.homeGo;
   if(!key)return;
-  if(key==='services'){goPage('services');return;}
   const alreadyOpen=!host.hidden&&!panes[key].hidden;
   if(alreadyOpen){resetView();return;}
   activate(key);

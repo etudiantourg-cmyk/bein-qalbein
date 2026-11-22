@@ -286,6 +286,6 @@ test("navigation icon system is semantic, consistent and versioned", () => {
   assert.ok(sharia.includes("M8 39h32") && sharia.includes("M17 22v-5"), "prayer icon should depict a mosque");
   assert.ok(sharia.includes('circle cx="24" cy="7.5"') && sharia.includes('circle cx="33.8" cy="12.2"'), "dhikr icon should depict a beaded tasbih");
   assert.match(css, /\.top-navigation \.top-tabs button svg[\s\S]*?color:#fff!important/);
-  assert.match(css, /\.home-top-shortcuts \.home-shortcut>svg[\\s\\S]*?color:#fff!important/);
+  assert.match(css, /\.home-top-shortcuts \.home-shortcut>svg[\s\S]*?color:#fff!important/);
   assert.match(css, /\.sharia-door-nav\{[\\s\\S]*?position:fixed/);
 });

@@ -1082,7 +1082,7 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
  .sharia-hero-mark{flex-basis:51px;width:51px;height:51px;border-radius:16px}
  .sharia-hero-mark svg{width:35px;height:35px}
  .sharia-hero p{font-size:11px}
- .sharia-door-nav{gap:4px;padding:6px}
+ .sharia-door-nav{top:126px!important;gap:4px;padding:7px 6px}
  .sharia-door{min-height:63px;padding:6px 2px}
  .sharia-door-emoji{font-size:21px}
  .sharia-door span{font-size:10px}
@@ -1133,12 +1133,12 @@ body.dark-mode .home-top-shortcuts .home-shortcut>svg{color:#a9d1ff;stroke:#a9d1
 
 /* Sharia section navigation: compact, sticky and consistent across screens. */
 .sharia-door-nav{
- position:sticky;top:112px;z-index:90;
+ position:sticky!important;top:126px!important;z-index:950!important;
  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
- gap:6px;margin:8px 0 17px;padding:7px;
- border:1px solid rgba(40,91,134,.16);border-radius:16px;
- background:rgba(255,255,255,.97);
- box-shadow:0 5px 18px rgba(25,50,75,.10);
+ gap:6px;width:min(980px,calc(100% - 20px));margin:9px auto 17px;padding:9px 10px;
+ border:1px solid var(--line);border-radius:15px;
+ background:var(--surface);
+ box-shadow:0 5px 16px rgba(35,20,30,.12);
  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .sharia-door{
@@ -1159,7 +1159,7 @@ body.dark-mode .home-top-shortcuts .home-shortcut>svg{color:#a9d1ff;stroke:#a9d1
 }
 .sharia-door.is-active .sharia-door-icon{background:#e0edf8}
 @media(max-width:540px){
- .sharia-door-nav{top:108px;gap:3px;padding:5px}
+ .sharia-door-nav{top:126px!important;gap:3px;padding:7px 6px}
  .sharia-door{min-height:58px;gap:4px;font-size:10px}
  .sharia-door-icon{width:31px;height:31px}
  .sharia-door-icon svg{width:21px;height:21px}

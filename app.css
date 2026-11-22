@@ -882,12 +882,12 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .sharia-eyebrow{display:inline-block;color:var(--wine-2);font-size:12px;font-weight:800;letter-spacing:.08em}
 .sharia-heading h2{margin:5px 0 7px;font-size:clamp(23px,5vw,32px)}
 .sharia-heading p,.sharia-muted{color:var(--muted,#777);font-size:13px;line-height:1.7}
-.sharia-clock-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px;padding:13px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(135deg,var(--surface-2),var(--surface))}
+.sharia-clock-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px;padding:13px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,var(--surface-2),var(--surface))}
 .sharia-clock-strip>div{min-width:0;text-align:center;display:grid;gap:5px}
 .sharia-clock-strip small{font-size:11px;color:var(--muted,#777)}
 .sharia-clock-strip strong{font-size:clamp(12px,2.8vw,16px);overflow-wrap:anywhere}
 .sharia-clock-strip>div:last-child strong{font-variant-numeric:tabular-nums;font-size:clamp(17px,4vw,22px)}
-.sharia-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.045);min-width:0}
+.sharia-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 18px rgba(0,0,0,.045);min-width:0}
 .sharia-location-card{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
 .sharia-location-card h3,.sharia-card h3{margin:0 0 5px;font-size:16px}
 .sharia-location-card p{margin:0;color:var(--muted,#777);font-size:12px;line-height:1.6}
@@ -900,8 +900,8 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .sharia-card-title small{color:var(--muted,#777);font-size:11px}
 .qibla-card{text-align:center}
 .qibla-card .sharia-card-title{text-align:start}
-.qibla-compass{width:min(54vw,190px);aspect-ratio:1;border:5px solid var(--border);border-radius:50%;margin:12px auto;position:relative;background:radial-gradient(circle,var(--surface-2) 0 58%,transparent 59%),repeating-conic-gradient(from 0deg,var(--border) 0deg 1deg,transparent 1deg 15deg)}
-.qibla-compass:before{content:"";position:absolute;inset:10%;border:1px solid var(--border);border-radius:50%}
+.qibla-compass{width:min(54vw,190px);aspect-ratio:1;border:5px solid var(--line);border-radius:50%;margin:12px auto;position:relative;background:radial-gradient(circle,var(--surface-2) 0 58%,transparent 59%),repeating-conic-gradient(from 0deg,var(--line) 0deg 1deg,transparent 1deg 15deg)}
+.qibla-compass:before{content:"";position:absolute;inset:10%;border:1px solid var(--line);border-radius:50%}
 .qibla-compass>span{position:absolute;font-size:12px;font-weight:800;color:var(--muted,#777)}
 .compass-north{top:5px;left:50%;transform:translateX(-50%)}
 .compass-south{bottom:5px;left:50%;transform:translateX(-50%)}
@@ -920,7 +920,7 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .quran-card{margin-top:14px}
 .quran-controls{display:flex;align-items:end;gap:8px;flex-wrap:wrap}
 .quran-controls label{font-size:12px;font-weight:700;display:grid;gap:5px;flex:1 1 180px}
-.quran-controls select{width:100%;min-height:42px;border:1px solid var(--border);border-radius:11px;padding:8px 10px;background:var(--surface-2);color:var(--text);font:inherit}
+.quran-controls select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:11px;padding:8px 10px;background:var(--surface-2);color:var(--ink);font:inherit}
 .quran-controls button{min-height:42px}
 .quran-surah-content{margin-top:15px;padding:clamp(12px,3vw,22px);border-radius:14px;background:var(--surface-2);max-height:65vh;overflow:auto;scroll-behavior:smooth}
 .quran-surah-title{text-align:center;font-family:"Amiri",serif;font-size:25px;margin:0 0 8px}
@@ -928,7 +928,7 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .quran-ayahs{font-family:"Amiri",serif;font-size:clamp(20px,4.5vw,27px);line-height:2.15;text-align:justify;white-space:normal}
 .quran-ayah-number{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;margin:0 4px;border:1px solid var(--wine-2);border-radius:50%;font-family:Arial,sans-serif;font-size:11px;color:var(--wine);vertical-align:middle}
 .quran-bottom-actions{display:flex;justify-content:space-between;gap:8px;margin-top:12px}
-.quran-bottom-actions button{border:1px solid var(--border);border-radius:10px;padding:9px 13px;background:var(--surface-2);color:var(--text);font:inherit;font-size:12px;font-weight:700}
+.quran-bottom-actions button{border:1px solid var(--line);border-radius:10px;padding:9px 13px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:12px;font-weight:700}
 .quran-bottom-actions button:disabled{opacity:.4}
 .sharia-privacy-note{margin:12px 3px 0;text-align:center;color:var(--muted,#777);font-size:10px;line-height:1.7}
 @media(max-width:620px){

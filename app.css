@@ -1091,115 +1091,79 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 @media(prefers-reduced-motion:reduce){.sharia-panel-content,.sharia-door,.qibla-needle{animation:none;transition:none}}
 
 
-/* Unified professional icon system: one consistent navy glyph across all navigation. */
-#topNavigation .top-tabs button>span{
- width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.96);
- color:#285b86;box-shadow:0 2px 7px rgba(8,28,48,.14);
+
+/* Unified navigation system — one deliberate rule set, with no competing overrides. */
+/* The original top navigation remains white on its colored bar. */
+#topNavigation #topNav>button,
+#topNavigation #topNav>button.active{
+ color:rgba(255,255,255,.96)!important;
+ background:transparent!important;
 }
-#topNavigation .top-tabs button>span svg{width:22px;height:22px;color:#285b86;stroke:#285b86}
-#topNavigation .top-tabs button.active>span{background:#fff;box-shadow:inset 0 0 0 1px rgba(40,91,134,.12),0 2px 8px rgba(8,28,48,.16)}
-.home-top-shortcuts .home-shortcut>svg,
-.top-navigation>.home-top-shortcuts .home-shortcut>svg,
-.home-top-shortcuts .home-shortcut>svg *{
- color:#285b86!important;stroke:#285b86!important;filter:none!important;opacity:1!important;
+#topNavigation #topNav>button>span,
+#topNavigation #topNav>button.active>span{
+ width:34px!important;height:34px!important;border-radius:0!important;
+ background:transparent!important;color:#fff!important;box-shadow:none!important;
 }
-.home-top-shortcuts .home-shortcut>svg{width:22px!important;height:22px!important;flex:0 0 22px!important}
+#topNavigation #topNav>button>span svg{
+ display:block;width:24px!important;height:24px!important;
+ color:#fff!important;stroke:#fff!important;filter:none!important;
+}
+#topNavigation #topNav>button.active{background:rgba(255,255,255,.13)!important}
+#topNavigation #topNav>button.active:after{background:#f1d59b!important}
+#topNavigation #topNav>button .nav-label{color:#fff!important;text-shadow:none!important}
+#topNavigation #topNav>button:focus-visible{outline:2px solid rgba(255,255,255,.85)!important;outline-offset:-3px!important}
+
+/* Home shortcut icons: same royal-blue line style and controlled dimensions. */
+.home-top-shortcuts .home-shortcut{color:#285b86}
+.home-top-shortcuts .home-shortcut>svg{
+ display:block;width:22px;height:22px;flex:0 0 22px;
+ color:#285b86;stroke:#285b86;filter:none;opacity:1;
+}
+.home-top-shortcuts .home-shortcut>svg path,
+.home-top-shortcuts .home-shortcut>svg rect,
+.home-top-shortcuts .home-shortcut>svg circle,
+.home-top-shortcuts .home-shortcut>svg line,
+.home-top-shortcuts .home-shortcut>svg polyline{
+ stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;
+}
+body.theme-night .home-top-shortcuts .home-shortcut,
+body.dark-mode .home-top-shortcuts .home-shortcut{color:#a9d1ff}
+body.theme-night .home-top-shortcuts .home-shortcut>svg,
+body.dark-mode .home-top-shortcuts .home-shortcut>svg{color:#a9d1ff;stroke:#a9d1ff}
+
+/* Sharia section navigation: compact, sticky and consistent across screens. */
 .sharia-door-nav{
- position:sticky;top:112px;z-index:90;margin-top:8px;
- background:rgba(255,255,255,.97);border:1px solid rgba(40,91,134,.16);
+ position:sticky;top:112px;z-index:90;
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:6px;margin:8px 0 17px;padding:7px;
+ border:1px solid rgba(40,91,134,.16);border-radius:16px;
+ background:rgba(255,255,255,.97);
  box-shadow:0 5px 18px rgba(25,50,75,.10);
  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
 .sharia-door{
- color:#285b86;border:1px solid rgba(40,91,134,.10);
- background:#f5f8fc;min-height:68px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-width:0;min-height:64px;gap:5px;padding:6px 3px;
+ border:1px solid rgba(40,91,134,.10);border-radius:12px;
+ background:#f5f8fc;color:#285b86;font-size:11px;font-weight:800;
 }
 .sharia-door-icon{
- display:grid;place-items:center;width:36px;height:36px;border-radius:11px;
- background:#fff;color:#285b86;box-shadow:0 2px 7px rgba(25,50,75,.10);
+ display:grid;place-items:center;width:34px;height:34px;
+ border-radius:10px;background:#fff;color:#285b86;
+ box-shadow:0 2px 7px rgba(25,50,75,.10);
 }
-.sharia-door-icon svg{display:block;width:23px;height:23px;color:#285b86;stroke:#285b86}
-.sharia-door span:not(.sharia-door-icon){color:#285b86;font-weight:800}
+.sharia-door-icon svg{display:block;width:23px;height:23px;color:inherit;stroke:currentColor}
 .sharia-door.is-active{
  background:#eaf2fa;border-color:#9dbbd5;color:#285b86;
  box-shadow:inset 0 0 0 1px rgba(40,91,134,.08),0 3px 10px rgba(25,50,75,.08);
 }
 .sharia-door.is-active .sharia-door-icon{background:#e0edf8}
 @media(max-width:540px){
- .sharia-door-nav{top:108px;gap:4px;padding:6px}
- .sharia-door{min-height:62px;gap:5px}
- .sharia-door-icon{width:32px;height:32px}
+ .sharia-door-nav{top:108px;gap:3px;padding:5px}
+ .sharia-door{min-height:58px;gap:4px;font-size:10px}
+ .sharia-door-icon{width:31px;height:31px}
  .sharia-door-icon svg{width:21px;height:21px}
 }
-
-
-/* Navigation correction: restore the original clean top-bar language;
-   keep the home shortcut row in the same refined blue icon family. */
-#topNavigation #topNav>button,
-#topNavigation #topNav>button.active{
-  color:rgba(255,255,255,.96)!important;
-  background:transparent!important;
-}
-#topNavigation #topNav>button>span,
-#topNavigation #topNav>button.active>span{
-  width:34px!important;height:34px!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:#fff!important;
-  box-shadow:none!important;
-}
-#topNavigation #topNav>button>span svg,
-#topNavigation #topNav>button>span svg *{
-  width:24px!important;height:24px!important;
-  color:#fff!important;stroke:#fff!important;
-  filter:none!important;
-}
-#topNavigation #topNav>button.active{
-  background:rgba(255,255,255,.13)!important;
-}
-#topNavigation #topNav>button.active:after{
-  background:#f1d59b!important;
-}
-#topNavigation #topNav>button .nav-label{
-  color:#fff!important;
-  text-shadow:none!important;
-}
-#topNavigation #topNav>button:focus-visible{
-  outline:2px solid rgba(255,255,255,.85)!important;
-  outline-offset:-3px!important;
-}
-/* The lower home shortcuts use one consistent royal-blue stroke, without
-   dark shadows or mixed fills. */
-.home-top-shortcuts .home-shortcut>svg,
-.home-top-shortcuts .home-shortcut>svg *,
-.top-navigation>.home-top-shortcuts .home-shortcut>svg,
-.top-navigation>.home-top-shortcuts .home-shortcut>svg *{
-  color:#285b86!important;
-  stroke:#285b86!important;
-  fill:none!important;
-  opacity:1!important;
-  filter:none!important;
-  stroke-width:1.9!important;
-}
-.home-top-shortcuts .home-shortcut>svg{
-  width:22px!important;height:22px!important;
-  flex:0 0 22px!important;
-}
-.home-top-shortcuts .home-shortcut{
-  color:#285b86!important;
-}
-
-
-/* Dark-theme shortcut contrast: readable labels on the dark shortcut surface. */
-body.theme-night .home-top-shortcuts .home-shortcut,
-body.dark-mode .home-top-shortcuts .home-shortcut,
-body.theme-night .home-top-shortcuts .home-shortcut b,
-body.dark-mode .home-top-shortcuts .home-shortcut b{
- color:#fff!important;
-}
-body.theme-night .home-top-shortcuts .home-shortcut>svg,
-body.dark-mode .home-top-shortcuts .home-shortcut>svg,
-body.theme-night .home-top-shortcuts .home-shortcut>svg *,
-body.dark-mode .home-top-shortcuts .home-shortcut>svg *{
- color:#a9d1ff!important;stroke:#a9d1ff!important;
+@media(prefers-reduced-motion:reduce){
+ .sharia-panel-content,.sharia-door,.qibla-needle{animation:none;transition:none}
 }

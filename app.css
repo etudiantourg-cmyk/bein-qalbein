@@ -1188,3 +1188,18 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .home-top-shortcuts .home-shortcut{
   color:#285b86!important;
 }
+
+
+/* Dark-theme shortcut contrast: readable labels on the dark shortcut surface. */
+body.theme-night .home-top-shortcuts .home-shortcut,
+body.dark-mode .home-top-shortcuts .home-shortcut,
+body.theme-night .home-top-shortcuts .home-shortcut b,
+body.dark-mode .home-top-shortcuts .home-shortcut b{
+ color:#fff!important;
+}
+body.theme-night .home-top-shortcuts .home-shortcut>svg,
+body.dark-mode .home-top-shortcuts .home-shortcut>svg,
+body.theme-night .home-top-shortcuts .home-shortcut>svg *,
+body.dark-mode .home-top-shortcuts .home-shortcut>svg *{
+ color:#a9d1ff!important;stroke:#a9d1ff!important;
+}

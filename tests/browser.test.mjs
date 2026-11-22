@@ -84,6 +84,11 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
         await openFavorites();
         await page.locator(section).waitFor({ state: "visible" });
         assert.equal(await page.locator('.home-top-shortcuts [data-home-go="favorites"]').getAttribute("aria-expanded"), "true");
+      } else if (tab === "guide") {
+        await page.locator('#topNav button[data-go="home"]').click();
+        await page.locator('.home-top-shortcuts [data-home-go="guide"]').click();
+        await page.locator(section).waitFor({ state: "visible" });
+        assert.equal(await page.locator('.home-top-shortcuts [data-home-go="guide"]').getAttribute("aria-expanded"), "true");
       } else {
         await page.locator(`#topNav button[data-go="${tab}"]`).click();
         await page.locator(section).waitFor({ state: "visible" });

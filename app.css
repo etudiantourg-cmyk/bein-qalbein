@@ -743,3 +743,16 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 /* Match search control dimensions to the theme palette button */
 #topSearchBtn.top-tool-btn{width:40px;height:40px;min-width:40px;min-height:40px;padding:8px;display:grid;place-items:center;box-sizing:border-box}
 #topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}
+
+
+/* Restore strong, theme-aware colors for the home shortcut icons.
+   This overrides the older translucent-white icon rule on the top navigation. */
+.top-navigation>.home-top-shortcuts .home-shortcut svg,
+.top-navigation>.home-top-shortcuts .home-shortcut svg *{
+ color:var(--wine-2)!important;
+ stroke:currentColor!important;
+ opacity:1!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut svg{
+ filter:drop-shadow(0 1px 1px rgba(35,20,30,.16));
+}

@@ -745,14 +745,31 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 #topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}
 
 
-/* Restore strong, theme-aware colors for the home shortcut icons.
-   This overrides the older translucent-white icon rule on the top navigation. */
-.top-navigation>.home-top-shortcuts .home-shortcut svg,
-.top-navigation>.home-top-shortcuts .home-shortcut svg *{
- color:var(--wine-2)!important;
- stroke:currentColor!important;
- opacity:1!important;
-}
-.top-navigation>.home-top-shortcuts .home-shortcut svg{
- filter:drop-shadow(0 1px 1px rgba(35,20,30,.16));
-}
+/* High-contrast shortcut icons: target the live shortcut bar wherever it is mounted. */
+.home-top-shortcuts .home-shortcut svg,
+.home-top-shortcuts .home-shortcut svg *{color:#ffd36f!important;stroke:#ffd36f!important;opacity:1!important;filter:none!important}
+.home-top-shortcuts .home-shortcut svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.38))!important}
+
+/* Compact theme controls: keep every option visible without dialog scrolling. */
+.theme-picker-trigger{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:6px!important}
+.theme-picker-trigger svg{width:20px!important;height:20px!important}
+.theme-picker-backdrop{padding:8px!important;overflow:hidden!important;align-items:center!important}
+.theme-picker-dialog{box-sizing:border-box!important;width:min(94vw,360px)!important;max-height:calc(100dvh - 16px)!important;overflow:hidden!important;padding:11px!important;border-radius:17px!important}
+.theme-picker-dialog .modal-head{margin-bottom:4px!important}
+.theme-picker-dialog .modal-head h2{font-size:17px!important}
+.theme-picker-dialog .modal-head button{width:34px!important;min-width:34px!important;height:34px!important;min-height:34px!important}
+.theme-picker-note{margin:0 0 5px!important;font-size:11px!important;line-height:1.35!important}
+.theme-color-label{margin:5px 0 3px!important;font-size:12px!important}
+.theme-color-stage{display:grid!important;grid-template-columns:minmax(0,1fr) 88px!important;align-items:center!important;justify-items:center!important;gap:7px!important;padding:4px 0!important}
+.theme-color-wheel{width:clamp(112px,38vw,148px)!important;max-width:100%!important;height:auto!important}
+.theme-color-readout{min-width:0!important;gap:4px!important}
+.theme-color-readout span{width:30px!important;height:30px!important}
+.theme-color-readout b{font-size:12px!important}
+.theme-color-readout small{font-size:9px!important;line-height:1.2!important}
+.theme-preview{gap:2px!important;margin:4px 0 7px!important;padding:7px!important;font-size:11px!important}
+.theme-preview:before{height:5px!important;margin:-7px -7px 5px!important}
+.theme-preview b{font-size:14px!important}
+.theme-preview small{font-size:10px!important}
+.theme-picker-actions{gap:6px!important}
+.theme-picker-actions button{min-height:36px!important;padding:6px 5px!important;border-radius:10px!important;font-size:11px!important}
+@media(max-height:620px){.theme-picker-dialog{padding:8px!important}.theme-color-wheel{width:clamp(100px,31vw,124px)!important}.theme-preview{margin:2px 0 4px!important;padding:5px!important}.theme-picker-actions button{min-height:32px!important}}

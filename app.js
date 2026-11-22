@@ -1367,7 +1367,8 @@ function advanceMiniGame(){
     const text=document.createTextNode(ayah.text+' ');
     const mark=document.createElement('span');mark.className='quran-ayah-number';mark.textContent=String(ayah.numberInSurah);mark.dataset.ayahNumber=String(ayah.numberInSurah);
     const save=document.createElement('button');save.type='button';save.className='quran-save-ayah';save.dataset.saveAyah=String(ayah.numberInSurah);save.textContent='♡';save.setAttribute('aria-label','حفظ الآية '+ayah.numberInSurah);
-    row.append(text,mark,save);ayahs.append(row);
+    const tafsir=document.createElement('button');tafsir.type='button';tafsir.className='quran-tafsir-button';tafsir.dataset.tafsirAyah=String(ayah.numberInSurah);tafsir.textContent='التفسير الميسر';
+    row.append(text,mark,save,tafsir);ayahs.append(row);
    });
    content.append(ayahs);
    status.textContent='سورة '+(surah.name||'')+' · '+surah.numberOfAyahs+' آية';
@@ -1514,13 +1515,43 @@ function advanceMiniGame(){
   try{localStorage.setItem('bq_quran_bookmarks',JSON.stringify(saved))}catch(_){}
   $('quranBookmarkBtn').textContent=i>=0?'♡ حفظ السورة':'♥ السورة محفوظة';
  });
- quran?.addEventListener('click',event=>{
+ quran?.addEventListener('click',async event=>{
+  const tafsirButton=event.target.closest('[data-tafsir-ayah]');
+  if(tafsirButton){
+   const row=tafsirButton.closest('.quran-ayah-row'),surah=Number($('quranSurahSelect')?.value),ayah=Number(tafsirButton.dataset.tafsirAyah);
+   let panel=row.querySelector('.quran-tafsir');if(panel){panel.hidden=!panel.hidden;return}
+   panel=document.createElement('p');panel.className='quran-tafsir';panel.textContent='جارٍ تحميل التفسير الميسر…';row.append(panel);tafsirButton.disabled=true;
+   try{
+    const key=surah+':'+ayah;let text='';
+    try{text=localStorage.getItem('bq_tafsir_'+key)||''}catch(_){}
+    if(!text){const r=await fetch('https://api.alquran.cloud/v1/ayah/'+key+'/ar.muyassar');if(!r.ok)throw new Error('تعذر تحميل التفسير.');
+     const j=await r.json();text=j.data?.text||'';if(!text)throw new Error('لا يتوفر تفسير لهذه الآية.');try{localStorage.setItem('bq_tafsir_'+key,text)}catch(_){}
+    }
+    panel.textContent=text;
+   }catch(err){panel.textContent=err.message||'تعذر تحميل التفسير حالياً.'}
+   finally{tafsirButton.disabled=false}
+   return;
+  }
   const b=event.target.closest('[data-save-ayah]');if(!b)return;
   const key=Number($('quranSurahSelect')?.value)+':'+Number(b.dataset.saveAyah);
   let saved=[];try{saved=JSON.parse(localStorage.getItem('bq_quran_saved_ayahs')||'[]')}catch(_){}
   if(!Array.isArray(saved))saved=[];const i=saved.indexOf(key);if(i>=0)saved.splice(i,1);else saved.push(key);
   try{localStorage.setItem('bq_quran_saved_ayahs',JSON.stringify(saved))}catch(_){}
   b.textContent=i>=0?'♡':'♥';
+ });
+ const savedPanel=$('quranSavedList');
+ $('quranShowSavedBtn')?.addEventListener('click',()=>{
+  if(!savedPanel)return;
+  savedPanel.hidden=!savedPanel.hidden;if(savedPanel.hidden)return;
+  savedPanel.replaceChildren();
+  let surahs=[],ayahs=[];try{surahs=JSON.parse(localStorage.getItem('bq_quran_bookmarks')||'[]')}catch(_){}
+  try{ayahs=JSON.parse(localStorage.getItem('bq_quran_saved_ayahs')||'[]')}catch(_){}
+  const title=document.createElement('strong');title.textContent='السور المحفوظة';savedPanel.append(title);
+  if(!surahs.length){const empty=document.createElement('p');empty.textContent='لا توجد سور محفوظة بعد.';savedPanel.append(empty)}
+  surahs.forEach(n=>{const b=document.createElement('button');b.type='button';b.textContent='فتح السورة رقم '+n;b.addEventListener('click',()=>{const select=$('quranSurahSelect');select.value=String(n);$('quranLoadBtn').click();savedPanel.hidden=true});savedPanel.append(b)});
+  const verseTitle=document.createElement('strong');verseTitle.textContent='الآيات المحفوظة';savedPanel.append(verseTitle);
+  if(!ayahs.length){const empty=document.createElement('p');empty.textContent='لا توجد آيات محفوظة بعد.';savedPanel.append(empty)}
+  ayahs.forEach(key=>{const b=document.createElement('button');b.type='button';b.textContent='السورة والآية '+key;b.addEventListener('click',()=>{const parts=key.split(':');$('quranSurahSelect').value=parts[0];$('quranLoadBtn').click();setTimeout(()=>quran?.querySelector('[data-ayah-number="'+parts[1]+'"]')?.scrollIntoView({behavior:'smooth',block:'center'}),650);savedPanel.hidden=true});savedPanel.append(b)});
  });
  const play=$('quranPlayBtn'),audio=$('quranAudioPlayer');let tracks=[],trackIndex=0;
  async function startAudio(){

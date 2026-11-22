@@ -867,10 +867,10 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 /* User-requested blue shortcut icons: override prior white contrast rules. */
 .top-navigation > .home-top-shortcuts .home-shortcut > svg,
 .home-top-shortcuts .home-shortcut > svg{
-  color:#55b5f5!important;stroke:#55b5f5!important;opacity:1!important;visibility:visible!important;
+  color:#0066FF!important;stroke:#0066FF!important;opacity:1!important;visibility:visible!important;
   filter:drop-shadow(0 1px 1px rgba(0,0,0,.28))!important;
 }
 .top-navigation > .home-top-shortcuts .home-shortcut > svg *,
 .home-top-shortcuts .home-shortcut > svg *{
-  color:#55b5f5!important;stroke:#55b5f5!important;opacity:1!important;visibility:visible!important;stroke-width:2.15!important;
+  color:#0066FF!important;stroke:#0066FF!important;opacity:1!important;visibility:visible!important;stroke-width:2.15!important;
 }

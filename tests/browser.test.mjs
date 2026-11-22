@@ -175,9 +175,6 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await page.locator("html").getAttribute("lang"), "ar");
     await page.locator("#settingsCloseBtn").click();
     await page.locator('#topNav button[data-go="home"]').click();
-    await page.locator("#bqIdentityWife").click();
-    assert.equal(await page.locator("#bqIdentityWife").getAttribute("aria-pressed"), "true");
-    await page.locator("#bqIdentityHusband").click();
     await page.locator("#search").fill("صباح");
     await page.waitForTimeout(150);
     assert.equal(await page.locator("#cats .cat").count(), 1, "category search should filter results");

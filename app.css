@@ -791,3 +791,51 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 /* Keep the compact theme picker overrides grouped and isolated from other modals. */
 .theme-picker-backdrop{padding:8px!important;overflow:hidden!important}
 .theme-picker-dialog{overflow:hidden!important;overscroll-behavior:contain!important}
+
+
+/* Compact color editor: keep every control visible without vertical scrolling. */
+.theme-picker-backdrop{
+  padding:8px!important;
+  overflow:hidden!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.theme-picker-dialog{
+  box-sizing:border-box!important;
+  width:min(100%,390px)!important;
+  max-height:calc(100dvh - 16px)!important;
+  height:auto!important;
+  overflow:hidden!important;
+  padding:10px 12px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+}
+.theme-picker-dialog .modal-head{flex:0 0 auto!important;margin:0!important;padding:0!important;min-height:34px!important}
+.theme-picker-dialog .modal-head h2{font-size:16px!important;margin:0!important}
+.theme-picker-dialog .modal-head button{width:32px!important;min-height:32px!important;height:32px!important;padding:0!important}
+.theme-picker-note{flex:0 0 auto!important;margin:0!important;font-size:11px!important;line-height:1.35!important}
+.theme-color-label{flex:0 0 auto!important;margin:2px 0 0!important;font-size:12px!important}
+.theme-color-stage{flex:0 0 auto!important;flex-wrap:nowrap!important;gap:10px!important;padding:2px 0!important;min-height:0!important}
+.theme-color-wheel{width:min(42vw,154px)!important;height:auto!important;flex:0 0 auto!important}
+.theme-color-readout{min-width:72px!important;gap:4px!important}
+.theme-color-readout span{width:30px!important;height:30px!important}
+.theme-color-readout b{font-size:12px!important}
+.theme-color-readout small{font-size:10px!important;line-height:1.2!important}
+.theme-preview{flex:0 0 auto!important;gap:1px!important;margin:2px 0 4px!important;padding:7px 10px!important;font-size:11px!important}
+.theme-preview:before{height:4px!important;margin:-7px -10px 4px!important}
+.theme-preview b{font-size:14px!important}
+.theme-preview small{font-size:10px!important}
+.theme-picker-actions{flex:0 0 auto!important;gap:7px!important}
+.theme-picker-actions button{min-height:36px!important;padding:6px 7px!important;font-size:12px!important;border-radius:10px!important}
+@media(max-height:600px){
+ .theme-picker-dialog{gap:2px!important;padding:7px 10px!important}
+ .theme-color-wheel{width:min(34vw,124px)!important}
+ .theme-preview{display:none!important}
+ .theme-color-label{font-size:11px!important}
+ .theme-picker-actions button{min-height:32px!important}
+}
+@media(max-width:360px){
+ .theme-color-wheel{width:min(39vw,138px)!important}
+ .theme-color-readout{min-width:64px!important}
+}

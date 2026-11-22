@@ -209,7 +209,7 @@
  <section class="sharia-card quran-card">
   <div class="sharia-card-title"><span>📖</span><div><h3>المصحف الشريف</h3><small>تصفّح سور القرآن الكريم بالنص العربي</small></div></div>
   <div class="quran-controls"><label for="quranSurahSelect">اختر السورة</label><select id="quranSurahSelect" disabled><option>جارٍ تحميل فهرس السور…</option></select><button type="button" id="quranLoadBtn" class="sharia-action" disabled>فتح السورة</button></div>
-  <div class="quran-tools"><input id="quranSearchInput" type="search" placeholder="ابحث عن كلمة داخل السورة" aria-label="ابحث داخل السورة"><button type="button" id="quranBookmarkBtn">♡ حفظ السورة</button><button type="button" id="quranPlayBtn">▶ تشغيل التلاوة</button></div>
+  <div class="quran-tools"><input id="quranSearchInput" type="search" placeholder="ابحث عن كلمة داخل السورة" aria-label="ابحث داخل السورة"><button type="button" id="quranBookmarkBtn">♡ حفظ السورة</button><button type="button" id="quranPlayBtn">▶ تشغيل التلاوة</button><button type="button" id="quranShowSavedBtn">المحفوظات</button></div><div id="quranSavedList" class="quran-saved-list" hidden></div>
   <audio id="quranAudioPlayer" controls preload="none" hidden></audio><p id="quranSearchStatus" class="sharia-muted" aria-live="polite"></p>
   <p id="quranStatus" class="sharia-muted" role="status">يتم تحميل فهرس المصحف عند فتح قسم الشريعة.</p>
   <article id="quranSurahContent" class="quran-surah-content" aria-live="polite"><p class="sharia-muted">اختر سورة لبدء القراءة.</p></article>

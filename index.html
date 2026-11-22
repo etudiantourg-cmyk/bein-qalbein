@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./app.css?v=173">
+<link rel="stylesheet" href="./app.css?v=174">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -167,7 +167,42 @@
  <div class="advice-tabs"><button id="husbandTips" class="active" type="button">نصائح للزوج</button><button id="wifeTips" type="button">نصائح للزوجة</button></div>
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
-<section class="panel page-section" data-page="learn" aria-label="تعلم"></section>
+<section class="panel page-section sharia-page" data-page="learn" aria-label="الشريعة">
+ <div class="sharia-heading"><span class="sharia-eyebrow">زاد المسلم</span><h2>الشريعة والعبادات</h2><p>الوقت والتاريخ، القبلة، مواقيت الصلاة، وقراءة القرآن الكريم.</p></div>
+ <div class="sharia-clock-strip" aria-label="التاريخ والوقت">
+  <div><small>التاريخ الميلادي</small><strong id="shariaGregorianDate">—</strong></div>
+  <div><small>التاريخ الهجري</small><strong id="shariaHijriDate">حدّد موقعك لتحديثه</strong></div>
+  <div><small>الوقت المحلي</small><strong id="shariaClockTime" dir="ltr">--:--:--</strong></div>
+ </div>
+ <section class="sharia-card sharia-location-card">
+  <div><h3>موقعك لحساب المواقيت</h3><p id="shariaLocationStatus" role="status">اضغط لتحديد موقعك وحساب مواقيت الصلاة واتجاه القبلة بدقة.</p></div>
+  <button type="button" id="shariaLocateBtn" class="sharia-action">تحديد موقعي</button>
+ </section>
+ <div class="sharia-widgets">
+  <section class="sharia-card qibla-card">
+   <div class="sharia-card-title"><span>🧭</span><div><h3>اتجاه القبلة</h3><small>السهم يشير إلى اتجاه الكعبة من الشمال</small></div></div>
+   <div class="qibla-compass" aria-label="بوصلة اتجاه القبلة">
+    <span class="compass-north">ش</span><span class="compass-east">ق</span><span class="compass-south">ج</span><span class="compass-west">غ</span>
+    <div class="qibla-needle" id="qiblaNeedle"><span>▲</span></div><div class="compass-center"></div>
+   </div>
+   <strong id="qiblaBearing" class="qibla-bearing">—°</strong><p id="qiblaStatus" class="sharia-muted">حدّد موقعك لإظهار اتجاه القبلة.</p>
+  </section>
+  <section class="sharia-card prayer-card">
+   <div class="sharia-card-title"><span>🕌</span><div><h3>أوقات الصلاة</h3><small id="prayerDateLabel">مواقيت اليوم حسب موقعك</small></div></div>
+   <div id="prayerTimesList" class="prayer-times-list"><p class="sharia-muted">حدّد موقعك لعرض المواقيت.</p></div>
+   <small class="prayer-source-note">تُحسب المواقيت آلياً وقد تختلف دقائق عن توقيت مسجدك المحلي.</small>
+  </section>
+ </div>
+ <section class="sharia-card quran-card">
+  <div class="sharia-card-title"><span>📖</span><div><h3>المصحف الشريف</h3><small>تصفّح سور القرآن الكريم بالنص العربي</small></div></div>
+  <div class="quran-controls"><label for="quranSurahSelect">اختر السورة</label><select id="quranSurahSelect" disabled><option>جارٍ تحميل فهرس السور…</option></select><button type="button" id="quranLoadBtn" class="sharia-action" disabled>فتح السورة</button></div>
+  <p id="quranStatus" class="sharia-muted" role="status">يتم تحميل فهرس المصحف عند فتح قسم الشريعة.</p>
+  <article id="quranSurahContent" class="quran-surah-content" aria-live="polite"><p class="sharia-muted">اختر سورة لبدء القراءة.</p></article>
+  <div class="quran-bottom-actions"><button type="button" id="quranPrevBtn" disabled>السورة السابقة</button><button type="button" id="quranNextBtn" disabled>السورة التالية</button></div>
+  <small class="quran-source-note">النص القرآني عبر خدمة AlQuran Cloud.</small>
+ </section>
+ <p class="sharia-privacy-note">خصوصيتك: لا يُطلب الموقع إلا عند ضغطك على «تحديد موقعي»، وتُستخدم الإحداثيات لحساب القبلة ومواقيت الصلاة ولا تُحفظ داخل التطبيق.</p>
+</section>
 <section class="panel page-section" data-page="services" aria-label="الخدمات"></section>
 <section class="panel page-section" data-page="games" id="gamesPage">
  <h2 id="gamesTitle">ألعاب المودة</h2>
@@ -254,6 +289,6 @@
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=145" defer></script>
+<script src="./app.js?v=146" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

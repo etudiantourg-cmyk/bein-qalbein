@@ -260,7 +260,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#unlockFavorites").click();
     await page.locator("#favorites .favitem").first().waitFor();
 
-    await page.locator('#topNav button[data-go="guide"]').click();
+    await page.locator('#topNav button[data-go="home"]').click();
+    await page.locator('.home-top-shortcuts [data-home-go="guide"]').click();
     await page.locator("#husbandTips").click();
     await page.locator("#adviceModal:not(.hidden)").waitFor();
     await auditAccessibility("marriage guide dialog");

@@ -214,6 +214,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#favorites .favitem").first().waitFor();
     await auditAccessibility("favorites");
     await page.reload({ waitUntil: "domcontentloaded" });
+    await openFavorites();
     await page.locator("#favorites .favitem").first().waitFor();
 
     await page.locator("#customInput").fill("ملاحظة خاصة يجب أن تبقى محفوظة");

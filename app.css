@@ -1291,3 +1291,46 @@ body[data-current-page="learn"] .sharia-page{
  .sharia-door-nav .sharia-door-icon{width:26px!important;height:26px!important;flex-basis:26px!important}
  .sharia-door-nav .sharia-door-icon svg{width:24px!important;height:24px!important}
 }
+
+
+/* Palette-aware navigation strips: both shortcut bars follow the selected app theme. */
+:root{--bq-bar-bg:#285b86;--bq-bar-active:#397eae;--bq-bar-border:rgba(255,255,255,.34)}
+body.theme-blue{--bq-bar-bg:#285b86;--bq-bar-active:#397eae}
+body.theme-rose{--bq-bar-bg:#7b2147;--bq-bar-active:#a43a62}
+body.theme-royal{--bq-bar-bg:#64132f;--bq-bar-active:#8c2149}
+body.theme-night{--bq-bar-bg:#51243a;--bq-bar-active:#75415a}
+body.theme-custom{--bq-bar-bg:var(--bq-accent);--bq-bar-active:var(--wine-2)}
+.top-navigation>.home-top-shortcuts,
+.sharia-door-nav{
+ background:var(--bq-bar-bg)!important;
+ border-color:var(--bq-bar-bg)!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut{
+ color:#fff!important;
+ background:rgba(255,255,255,.12)!important;
+ border-color:var(--bq-bar-border)!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut>span,
+.top-navigation>.home-top-shortcuts .home-shortcut>span b,
+.top-navigation>.home-top-shortcuts .home-shortcut>svg,
+.top-navigation>.home-top-shortcuts .home-shortcut>svg *{
+ color:#fff!important;stroke:#fff!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+.sharia-door-nav .sharia-door.is-active{
+ background:var(--bq-bar-active)!important;
+ border-color:rgba(255,255,255,.92)!important;
+ color:#fff!important;
+}
+.sharia-door-nav .sharia-door{
+ color:#fff!important;
+ background:rgba(255,255,255,.12)!important;
+ border-color:var(--bq-bar-border)!important;
+}
+.sharia-door-nav .sharia-door>span:last-child,
+.sharia-door-nav .sharia-door-icon,
+.sharia-door-nav .sharia-door-icon svg,
+.sharia-door-nav .sharia-door-icon svg *{
+ color:#fff!important;stroke:#fff!important;
+}
+.sharia-door-nav .sharia-door-icon{background:transparent!important}

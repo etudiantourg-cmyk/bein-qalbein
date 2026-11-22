@@ -1386,3 +1386,170 @@ function advanceMiniGame(){
  // If section is restored or activated programmatically.
 
 })();
+
+
+/* Five-door Sharia hub: adhkar, tasbih, Hijri occasions, Asma al-Husna and Quran tools. */
+(function setupShariaDoors(){
+ const $=id=>document.getElementById(id);
+ const tabs=Array.from(document.querySelectorAll('[data-sharia-tab]'));
+ const panels=Array.from(document.querySelectorAll('[data-sharia-panel]'));
+ function activate(name){
+  tabs.forEach(t=>{const on=t.dataset.shariaTab===name;t.classList.toggle('is-active',on);t.setAttribute('aria-selected',String(on))});
+  panels.forEach(p=>{const on=p.dataset.shariaPanel===name;p.classList.toggle('is-active',on);p.hidden=!on});
+  try{localStorage.setItem('bq_sharia_last_door',name)}catch(_){}
+  if(name==='library')loadNames();
+ }
+ tabs.forEach(t=>t.addEventListener('click',()=>activate(t.dataset.shariaTab)));
+ panels.forEach(p=>{if(p.dataset.shariaPanel!=='prayer')p.hidden=true});
+ let savedDoor='prayer';try{savedDoor=localStorage.getItem('bq_sharia_last_door')||'prayer'}catch(_){}
+ activate(tabs.some(t=>t.dataset.shariaTab===savedDoor)?savedDoor:'prayer');
+
+ const data={
+  morning:[
+   ['أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.','مرة واحدة','ذكر الصباح'],
+   ['اللهم بك أصبحنا، وبك أمسينا، وبك نحيا، وبك نموت، وإليك النشور.','مرة واحدة','ذكر الصباح'],
+   ['سبحان الله وبحمده','100 مرة','صحيح مسلم'],
+   ['رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً.','3 مرات','ذكر مأثور']
+  ],
+  evening:[
+   ['أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.','مرة واحدة','ذكر المساء'],
+   ['اللهم بك أمسينا، وبك أصبحنا، وبك نحيا، وبك نموت، وإليك المصير.','مرة واحدة','ذكر المساء'],
+   ['سبحان الله وبحمده','100 مرة','صحيح مسلم'],
+   ['رضيت بالله رباً، وبالإسلام ديناً، وبمحمد ﷺ نبياً.','3 مرات','ذكر مأثور']
+  ],
+  afterPrayer:[
+   ['سبحان الله','33 مرة','صحيح مسلم'],
+   ['الحمد لله','33 مرة','صحيح مسلم'],
+   ['الله أكبر','33 مرة','صحيح مسلم'],
+   ['لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.','مرة واحدة','تمام المئة']
+  ],
+  sleep:[
+   ['باسمك اللهم أموت وأحيا.','مرة واحدة','صحيح البخاري'],
+   ['اللهم قني عذابك يوم تبعث عبادك.','3 مرات','سنن أبي داود'],
+   ['سبحان الله','33 مرة','قبل النوم'],
+   ['الحمد لله','33 مرة','قبل النوم'],
+   ['الله أكبر','34 مرة','قبل النوم'],
+   ['الحمد لله الذي أحيانا بعدما أماتنا وإليه النشور.','عند الاستيقاظ','صحيح البخاري']
+  ]
+ };
+ function renderDhikr(kind){
+  document.querySelectorAll('[data-dhikr-category]').forEach(b=>b.classList.toggle('is-active',b.dataset.dhikrCategory===kind));
+  const host=$('dhikrList');if(!host)return;host.replaceChildren();
+  (data[kind]||[]).forEach(item=>{
+   const card=document.createElement('article');card.className='dhikr-item';
+   const text=document.createElement('p');text.className='dhikr-text';text.textContent=item[0];
+   const meta=document.createElement('small');meta.textContent=item[1]+' · '+item[2];
+   const controls=document.createElement('div');controls.className='dhikr-controls';
+   const count=document.createElement('strong');count.className='dhikr-count';count.textContent='0';
+   const tap=document.createElement('button');tap.type='button';tap.textContent='تسبيح';
+   let n=0;tap.addEventListener('click',()=>{n++;count.textContent=String(n);if(n>=parseInt(item[1],10))tap.textContent='اكتمل العدد ✓'});
+   const reset=document.createElement('button');reset.type='button';reset.textContent='إعادة';reset.addEventListener('click',()=>{n=0;count.textContent='0';tap.textContent='تسبيح'});
+   controls.append(count,tap,reset);card.append(text,meta,controls);host.append(card);
+  });
+ }
+ document.querySelectorAll('[data-dhikr-category]').forEach(b=>b.addEventListener('click',()=>renderDhikr(b.dataset.dhikrCategory)));
+ renderDhikr('morning');
+
+ const phrase=$('tasbihPhrase'),countNode=$('tasbihCount'),goal=$('tasbihGoal'),bar=$('tasbihProgress');
+ const key=()=> 'bq_tasbih_count_'+(phrase?.selectedIndex||0);
+ function readCount(){try{const n=Number(localStorage.getItem(key())||0);return Number.isFinite(n)&&n>0?n:0}catch(_){return 0}}
+ let count=readCount();
+ function draw(){if(!countNode)return;countNode.textContent=String(count);bar.style.width=Math.min(100,count/(Number(goal.value)||100)*100)+'%'}
+ function save(){try{localStorage.setItem(key(),String(count))}catch(_){}draw()}
+ phrase?.addEventListener('change',()=>{count=readCount();draw()});
+ $('tasbihTap')?.addEventListener('click',()=>{count++;save();if(navigator.vibrate)navigator.vibrate(12)});
+ $('tasbihMinus')?.addEventListener('click',()=>{count=Math.max(0,count-1);save()});
+ $('tasbihReset')?.addEventListener('click',()=>{count=0;save()});
+ goal?.addEventListener('change',draw);draw();
+
+ function updateHijri(){
+  const now=new Date();let p={};
+  try{p=Object.fromEntries(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'numeric',year:'numeric'}).formatToParts(now).map(x=>[x.type,x.value]))}catch(_){}
+  const day=Number(p.day)||1,month=Number(p.month)||1;
+  if($('hijriFullDate'))$('hijriFullDate').textContent=new Intl.DateTimeFormat('ar-DZ-u-ca-islamic-umalqura',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
+  if($('hijriMonthProgress'))$('hijriMonthProgress').textContent='اليوم '+day+' من الشهر الهجري';
+  const events=[[1,1,'رأس السنة الهجرية'],[10,1,'عاشوراء'],[12,3,'المولد النبوي'],[1,7,'بداية رجب'],[27,7,'الإسراء والمعراج'],[1,9,'بداية رمضان'],[17,9,'غزوة بدر'],[27,9,'ليلة يُرجى تحري ليلة القدر'],[1,10,'عيد الفطر'],[9,12,'يوم عرفة'],[10,12,'عيد الأضحى']];
+  const host=$('islamicOccasionsList');
+  if(host){host.replaceChildren();events.forEach(e=>{
+   const row=document.createElement('div');row.className='occasion-row'+(e[0]===day&&e[1]===month?' is-today':'');
+   const date=document.createElement('strong');date.textContent=e[0]+'/'+e[1];
+   const label=document.createElement('span');label.textContent=e[2];
+   const note=document.createElement('small');note.textContent=e[0]===day&&e[1]===month?'اليوم':'موعد هجري تقريبي';
+   row.append(date,label,note);host.append(row);
+  })}
+  if($('ramadanStatus'))$('ramadanStatus').textContent=month===9?'نحن في شهر رمضان وفق التقويم المعروض.':'تظهر متابعة رمضان عند دخول الشهر التاسع الهجري.';
+ }
+ updateHijri();setInterval(updateHijri,3600000);
+
+ let namesLoaded=false;
+ async function loadNames(){
+  if(namesLoaded)return;namesLoaded=true;
+  const host=$('asmaNamesGrid');if(!host)return;host.textContent='جارٍ تحميل أسماء الله الحسنى…';
+  try{
+   const r=await fetch('https://api.aladhan.com/v1/asmaAlHusna');if(!r.ok)throw new Error('تعذر الاتصال بمصدر الأسماء.');
+   const j=await r.json(),items=j.data;if(!Array.isArray(items)||!items.length)throw new Error('لم تصل قائمة الأسماء.');
+   host.replaceChildren();items.forEach(item=>{
+    const card=document.createElement('div');card.className='asma-name-card';
+    const name=document.createElement('strong');name.textContent=item.name;
+    const meaning=document.createElement('small');meaning.textContent=item.transliteration||item.en?.meaning||'';
+    card.append(name,meaning);host.append(card);
+   });
+  }catch(err){namesLoaded=false;host.textContent=err.message||'تعذر تحميل الأسماء حالياً.'}
+ }
+
+ const search=$('quranSearchInput'),searchStatus=$('quranSearchStatus'),quran=$('quranSurahContent');
+ search?.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();let matches=0;
+  quran?.querySelectorAll('.quran-ayah-row').forEach(row=>{
+   const hit=!q||row.dataset.ayahText.toLowerCase().includes(q);row.hidden=!hit;if(hit&&q)matches++;
+  });
+  if(searchStatus)searchStatus.textContent=q?(matches?'الآيات المطابقة: '+matches:'لا توجد آيات مطابقة في السورة الحالية.'):'';
+ });
+ $('quranBookmarkBtn')?.addEventListener('click',()=>{
+  const n=Number($('quranSurahSelect')?.value);if(!n)return;
+  let saved=[];try{saved=JSON.parse(localStorage.getItem('bq_quran_bookmarks')||'[]')}catch(_){}
+  if(!Array.isArray(saved))saved=[];const i=saved.indexOf(n);if(i>=0)saved.splice(i,1);else saved.push(n);
+  try{localStorage.setItem('bq_quran_bookmarks',JSON.stringify(saved))}catch(_){}
+  $('quranBookmarkBtn').textContent=i>=0?'♡ حفظ السورة':'♥ السورة محفوظة';
+ });
+ quran?.addEventListener('click',event=>{
+  const b=event.target.closest('[data-save-ayah]');if(!b)return;
+  const key=Number($('quranSurahSelect')?.value)+':'+Number(b.dataset.saveAyah);
+  let saved=[];try{saved=JSON.parse(localStorage.getItem('bq_quran_saved_ayahs')||'[]')}catch(_){}
+  if(!Array.isArray(saved))saved=[];const i=saved.indexOf(key);if(i>=0)saved.splice(i,1);else saved.push(key);
+  try{localStorage.setItem('bq_quran_saved_ayahs',JSON.stringify(saved))}catch(_){}
+  b.textContent=i>=0?'♡':'♥';
+ });
+ const play=$('quranPlayBtn'),audio=$('quranAudioPlayer');let tracks=[],trackIndex=0;
+ async function startAudio(){
+  const n=Number($('quranSurahSelect')?.value);if(!n)return;
+  play.disabled=true;play.textContent='جارٍ تجهيز التلاوة…';
+  try{
+   const r=await fetch('https://api.alquran.cloud/v1/surah/'+n+'/ar.alafasy');if(!r.ok)throw new Error('تعذر تحميل روابط التلاوة.');
+   const j=await r.json();tracks=(j.data?.ayahs||[]).map(a=>a.audio).filter(Boolean);if(!tracks.length)throw new Error('التلاوة غير متاحة حالياً.');
+   trackIndex=0;audio.hidden=false;audio.src=tracks[0];await audio.play();play.textContent='إيقاف التلاوة';
+  }catch(err){if(searchStatus)searchStatus.textContent=err.message||'تعذر تشغيل التلاوة.';play.textContent='▶ تشغيل التلاوة'}
+  finally{play.disabled=false}
+ }
+ play?.addEventListener('click',()=>{
+  if(!audio.paused){audio.pause();play.textContent='▶ متابعة التلاوة';return}
+  if(tracks.length&&audio.src){audio.play().then(()=>play.textContent='إيقاف التلاوة').catch(()=>{});return}
+  startAudio();
+ });
+ audio?.addEventListener('ended',()=>{trackIndex++;if(trackIndex<tracks.length){audio.src=tracks[trackIndex];audio.play().catch(()=>{})}else play.textContent='▶ إعادة التلاوة'});
+
+ // Prayer alerts are browser notifications while the page is open only.
+ let notifyTimer=null,lastNotice='';
+ $('prayerNotifyBtn')?.addEventListener('click',async()=>{
+  const button=$('prayerNotifyBtn');
+  if(!('Notification'in window)){button.textContent='الإشعارات غير مدعومة';return}
+  const permission=Notification.permission==='granted'?'granted':await Notification.requestPermission();
+  if(permission!=='granted'){button.textContent='لم يتم منح إذن الإشعارات';return}
+  if(notifyTimer){clearInterval(notifyTimer);notifyTimer=null;button.textContent='تفعيل تنبيه الصلاة أثناء فتح التطبيق';return}
+  button.textContent='التنبيه مفعّل أثناء فتح التطبيق';
+  notifyTimer=setInterval(()=>{
+   const t=$('prayerCountdown')?.textContent||'',m=t.match(/المتبقي لصلاة (.+): 00:00:00/);
+   if(m&&lastNotice!==m[1]){lastNotice=m[1];try{new Notification('حان وقت صلاة '+m[1],{body:'تذكير بوقت الصلاة.'})}catch(_){}}
+  },1000);
+ });
+})();

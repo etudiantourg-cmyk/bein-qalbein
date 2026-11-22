@@ -1189,3 +1189,7 @@ body.dark-mode .home-top-shortcuts .home-shortcut>svg{color:#a9d1ff;stroke:#a9d1
  border-color:#fff!important;
  color:#fff!important;
 }
+
+
+/* Prevent accidental pinch-zoom gestures while preserving normal page scrolling. */
+html,body{touch-action:pan-x pan-y}

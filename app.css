@@ -745,17 +745,19 @@ body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);b
 #topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}
 
 
-/* Restore the original vivid, theme-aware shortcut icon colors.
-   Match the previously verified working rule: use the active theme's --wine-2,
-   override the translucent-white navigation rule, and retain clear icon edges. */
-.top-navigation>.home-top-shortcuts .home-shortcut svg,
-.top-navigation>.home-top-shortcuts .home-shortcut svg *{
-  color:var(--wine-2)!important;
-  stroke:currentColor!important;
-  opacity:1!important;
-}
+/* High-contrast shortcut icons: the bar uses dark theme backgrounds,
+   so icons must match the other top-navigation icons (solid white), not wine. */
 .top-navigation>.home-top-shortcuts .home-shortcut svg{
-  filter:drop-shadow(0 1px 1px rgba(35,20,30,.16));
+  color:#fff!important;
+  stroke:#fff!important;
+  opacity:1!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.42))!important;
+}
+.top-navigation>.home-top-shortcuts .home-shortcut svg *{
+  color:#fff!important;
+  stroke:#fff!important;
+  opacity:1!important;
+  stroke-width:2.15!important;
 }
 
 /* Keep all six shortcut commands inside their own hit areas on narrow screens. */

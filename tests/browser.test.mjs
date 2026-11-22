@@ -284,6 +284,10 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.deepEqual(pageErrors, [], "application must not throw uncaught browser exceptions");
     assert.deepEqual(consoleErrors, [], `browser console errors: ${consoleErrors.join(" | ")}`);
     const fallbackPage = await browser.newPage({ serviceWorkers: "block" });
+    const openFallbackFavorites = async () => {
+      await fallbackPage.locator('#topNav button[data-go="home"]').click();
+      await fallbackPage.locator('.home-top-shortcuts [data-home-go="favorites"]').click();
+    };
     await fallbackPage.addInitScript(() => {
       localStorage.setItem("bq_favorites", JSON.stringify(["رسالة موجودة قبل تعطل التخزين"]));
       Storage.prototype.setItem = function () { throw new DOMException("Storage unavailable", "QuotaExceededError"); };
@@ -291,14 +295,14 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await fallbackPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await fallbackPage.locator("#cats .cat").first().waitFor();
     await fallbackPage.locator("#favBtn").click();
-    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
+    await openFallbackFavorites();
     await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
     await fallbackPage.locator('button[data-menu-toggle]').click();
     await fallbackPage.locator("#settingsDrawer:not([hidden])").waitFor();
     assert.equal(await fallbackPage.locator("#storageWarning").isVisible(), true, "non-persistent storage must be disclosed");
     assert.match(await fallbackPage.locator("#storageWarning").innerText(), /ستبقى التغييرات في الذاكرة/);
     await fallbackPage.locator("#settingsCloseBtn").click();
-    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
+    await openFallbackFavorites();
     const fallbackChooserPromise = fallbackPage.waitForEvent("filechooser");
     await fallbackPage.locator("#importLabel").click();
     const fallbackChooser = await fallbackChooserPromise;
@@ -316,7 +320,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const fallbackDialog = await fallbackDialogPromise;
     assert.match(fallbackDialog.message(), /التخزين الدائم غير متاح/);
     await fallbackDialog.accept();
-    await fallbackPage.locator('#topNav button[data-go="favorites"]').click();
+    await openFallbackFavorites();
     await fallbackPage.locator("#favorites .favitem").filter({ hasText: "رسالة موجودة قبل تعطل التخزين" }).waitFor();
     await fallbackPage.close();
 

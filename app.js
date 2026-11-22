@@ -1245,30 +1245,57 @@ function advanceMiniGame(){
  const locateBtn=el('shariaLocateBtn'),locationStatus=el('shariaLocationStatus');
  function renderQiblaNeedle(){
   if(qiblaBearingDegrees===null)return;
-  const relative=qiblaBearingDegrees-(deviceHeading===null?0:deviceHeading);
-  el('qiblaNeedle').style.transform='rotate('+relative+'deg)';
+  const relative=((qiblaBearingDegrees-(deviceHeading===null?0:deviceHeading))%360+360)%360;
+  const needle=el('qiblaNeedle');
+  if(needle)needle.style.transform='rotate('+relative+'deg)';
+  const compass=el('qiblaCompass');
+  if(compass)compass.dataset.heading=deviceHeading===null?'north-reference':'live-heading';
  }
  const compassButton=el('qiblaCompassEnable');
+ let orientationListener=null,orientationWatchdog=null;
  compassButton?.addEventListener('click',async()=>{
   try{
-   if(typeof DeviceOrientationEvent==='undefined')throw new Error('مستشعر اتجاه الهاتف غير متاح في هذا الجهاز أو المتصفح.');
+   if(!window.isSecureContext)throw new Error('يلزم فتح التطبيق عبر اتصال HTTPS لتشغيل مستشعر البوصلة.');
+   if(typeof DeviceOrientationEvent==='undefined')throw new Error('هذا المتصفح لا يتيح مستشعر اتجاه الهاتف.');
    if(typeof DeviceOrientationEvent.requestPermission==='function'){
     const permission=await DeviceOrientationEvent.requestPermission();
     if(permission!=='granted')throw new Error('لم يتم منح إذن مستشعر الاتجاه.');
    }
    if(!orientationActive){
-    const onOrientation=event=>{
+    let receivedAbsoluteHeading=false;
+    orientationListener=event=>{
      let heading=null;
-     if(Number.isFinite(event.webkitCompassHeading))heading=event.webkitCompassHeading;
-     else if(Number.isFinite(event.alpha)&&event.absolute===true)heading=(360-event.alpha)%360;
-     if(heading!==null){deviceHeading=heading;renderQiblaNeedle();el('qiblaStatus').textContent='بوصلة الهاتف مفعّلة؛ حرّك الهاتف بعيداً عن المعادن ومصادر التشويش.'}
+     if(Number.isFinite(event.webkitCompassHeading)){
+      heading=((event.webkitCompassHeading%360)+360)%360;
+     }else if(Number.isFinite(event.alpha)&&(event.type==='deviceorientationabsolute'||event.absolute===true)){
+      heading=((360-event.alpha)%360+360)%360;
+     }
+     if(heading===null)return;
+     receivedAbsoluteHeading=true;
+     deviceHeading=heading;
+     renderQiblaNeedle();
+     compassButton.textContent='البوصلة تعمل الآن ✓';
+     compassButton.classList.add('is-calibrated');
+     el('qiblaStatus').textContent='تم استقبال اتجاه الشمال من مستشعر الهاتف. أبقِ الجهاز أفقياً وابتعد عن المعادن.';
     };
-    window.addEventListener('deviceorientationabsolute',onOrientation,true);
-    window.addEventListener('deviceorientation',onOrientation,true);
+    window.addEventListener('deviceorientationabsolute',orientationListener,true);
+    window.addEventListener('deviceorientation',orientationListener,true);
     orientationActive=true;
+    clearTimeout(orientationWatchdog);
+    orientationWatchdog=setTimeout(()=>{
+     if(!receivedAbsoluteHeading){
+      compassButton.textContent='إعادة محاولة البوصلة';
+      compassButton.classList.remove('is-calibrated');
+      el('qiblaStatus').textContent='لم يصل اتجاه مغناطيسي موثوق من المستشعر. تحقق من أذونات المستشعر وعاير الهاتف بتحريكه على شكل 8.';
+     }
+    },6500);
+   }else if(deviceHeading!==null){
+    el('qiblaStatus').textContent='البوصلة نشطة وتتبع اتجاه الهاتف.';
    }
-   compassButton.textContent='بوصلة الهاتف مفعّلة';
-  }catch(error){el('qiblaStatus').textContent=error.message||'تعذر تفعيل مستشعر الاتجاه.'}
+   compassButton.textContent='جارٍ البحث عن اتجاه الشمال…';
+  }catch(error){
+   el('qiblaStatus').textContent=error.message||'تعذر تفعيل مستشعر الاتجاه.';
+  }
  });
  const prayerNames=[['Fajr','الفجر'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
  const cleanTime=value=>String(value||'').match(/\d{1,2}:\d{2}/)?.[0]||'—';

@@ -1172,6 +1172,10 @@ function advanceMiniGame(){
    const saved=JSON.parse(localStorage.getItem(orderKey)||'[]');
    const buttons=[...strip.querySelectorAll('.home-shortcut')];
    saved.forEach(id=>{const button=buttons.find(item=>shortcutId(item)===id);if(button)strip.appendChild(button)});
+   const home=strip.querySelector('[data-home-reset]');
+   const services=strip.querySelector('[data-home-go="services"]');
+   if(home&&services)home.insertAdjacentElement('afterend',services);
+   localStorage.setItem(orderKey,JSON.stringify([...strip.querySelectorAll('.home-shortcut')].map(shortcutId).filter(Boolean)));
   }catch(_){}
  }
  restoreShortcutOrder();

@@ -1399,3 +1399,38 @@ body.theme-custom .top-navigation>.home-top-shortcuts .home-shortcut.is-selected
  color:#fff!important;
  opacity:1!important;
 }
+
+
+/* The home shortcut strip lives inside the home page section, not inside .top-navigation. */
+.home-top-shortcuts{
+ width:min(980px,calc(100% - 20px))!important;
+ max-width:980px!important;
+ box-sizing:border-box!important;
+ margin:0 auto 10px!important;
+ padding:7px 10px 9px!important;
+ border:1px solid rgba(255,255,255,.18)!important;
+ border-radius:24px!important;
+ background:var(--bq-bar-bg,#285b86)!important;
+}
+.home-top-shortcuts .home-shortcut{
+ color:#fff!important;
+ background:rgba(255,255,255,.12)!important;
+ border-color:var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ box-shadow:0 2px 7px rgba(0,0,0,.08)!important;
+}
+.home-top-shortcuts .home-shortcut>span,
+.home-top-shortcuts .home-shortcut>span b,
+.home-top-shortcuts .home-shortcut>svg,
+.home-top-shortcuts .home-shortcut>svg *{
+ color:#fff!important;
+ stroke:#fff!important;
+ opacity:1!important;
+}
+.home-top-shortcuts .home-shortcut.is-selected,
+.home-top-shortcuts .home-shortcut-home{
+ background:var(--bq-bar-active,#285b86)!important;
+ color:#fff!important;
+ border-color:#fff!important;
+}
+.home-top-shortcuts .home-shortcut.is-selected>span b,
+.home-top-shortcuts .home-shortcut-home>span b{color:#fff!important;opacity:1!important}

@@ -1240,14 +1240,32 @@ function advanceMiniGame(){
   clockNode.textContent=fmt(now,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
  }
  updateClock();setInterval(updateClock,1000);
- let coordinates=null,prayerData=null,surahList=[],currentSurah=1;
+ let coordinates=null,prayerData=null,surahList=[],currentSurah=1,prayerCountdownTimer=null;
  const locateBtn=el('shariaLocateBtn'),locationStatus=el('shariaLocationStatus');
  const prayerNames=[['Fajr','الفجر'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
  const cleanTime=value=>String(value||'').match(/\d{1,2}:\d{2}/)?.[0]||'—';
  function minuteValue(value){const m=cleanTime(value).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):9999}
+ function updatePrayerCountdown(timings){
+  const host=el('prayerCountdown');if(!host)return;
+  const tick=()=>{
+   const now=new Date(),minutes=now.getHours()*60+now.getMinutes();
+   let next=prayerNames.find(([key])=>minuteValue(timings[key])>minutes);
+   const target=new Date(now);
+   if(!next){next=prayerNames[0];target.setDate(target.getDate()+1)}
+   const parts=cleanTime(timings[next[0]]).split(':').map(Number);
+   target.setHours(parts[0]||0,parts[1]||0,0,0);
+   const seconds=Math.max(0,Math.floor((target-now)/1000));
+   const h=String(Math.floor(seconds/3600)).padStart(2,'0');
+   const m=String(Math.floor(seconds%3600/60)).padStart(2,'0');
+   const s=String(seconds%60).padStart(2,'0');
+   host.textContent='المتبقي لصلاة '+next[1]+': '+h+':'+m+':'+s;
+  };
+  clearInterval(prayerCountdownTimer);tick();prayerCountdownTimer=setInterval(tick,1000);
+ }
  function renderPrayerTimes(data){
   const host=el('prayerTimesList');if(!host)return;
   const timings=data.timings||{},now=new Date(),nowMinute=now.getHours()*60+now.getMinutes();
+  updatePrayerCountdown(timings);
   const upcoming=prayerNames.find(([key])=>minuteValue(timings[key])>nowMinute)?.[0]||'Fajr';
   host.replaceChildren();
   prayerNames.forEach(([key,label])=>{
@@ -1268,7 +1286,7 @@ function advanceMiniGame(){
    const now=new Date(),date=[String(now.getDate()).padStart(2,'0'),String(now.getMonth()+1).padStart(2,'0'),now.getFullYear()].join('-');
    const base='https://api.aladhan.com/v1';
    const [prayerResponse,qiblaResponse]=await Promise.all([
-    fetch(base+'/timings/'+date+'?latitude='+encodeURIComponent(coords.latitude)+'&longitude='+encodeURIComponent(coords.longitude)+'&method=19&school=0'),
+    fetch(base+'/timings/'+date+'?latitude='+encodeURIComponent(coords.latitude)+'&longitude='+encodeURIComponent(coords.longitude)+'&method='+encodeURIComponent(el('prayerMethodSelect')?.value||'19')+'&school='+encodeURIComponent(el('prayerSchoolSelect')?.value||'0')),
     fetch(base+'/qibla/'+encodeURIComponent(coords.latitude)+'/'+encodeURIComponent(coords.longitude))
    ]);
    if(!prayerResponse.ok||!qiblaResponse.ok)throw new Error('تعذر الاتصال بخدمة المواقيت.');
@@ -1344,9 +1362,11 @@ function advanceMiniGame(){
    if(number!==1&&number!==9){const b=document.createElement('p');b.className='quran-bismillah';b.textContent='بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ';content.append(b)}
    const ayahs=document.createElement('div');ayahs.className='quran-ayahs';
    surah.ayahs.forEach(ayah=>{
+    const row=document.createElement('p');row.className='quran-ayah-row';row.dataset.ayahText=ayah.text;
     const text=document.createTextNode(ayah.text+' ');
-    const mark=document.createElement('span');mark.className='quran-ayah-number';mark.textContent=String(ayah.numberInSurah);
-    ayahs.append(text,mark,document.createTextNode(' '));
+    const mark=document.createElement('span');mark.className='quran-ayah-number';mark.textContent=String(ayah.numberInSurah);mark.dataset.ayahNumber=String(ayah.numberInSurah);
+    const save=document.createElement('button');save.type='button';save.className='quran-save-ayah';save.dataset.saveAyah=String(ayah.numberInSurah);save.textContent='♡';save.setAttribute('aria-label','حفظ الآية '+ayah.numberInSurah);
+    row.append(text,mark,save);ayahs.append(row);
    });
    content.append(ayahs);
    status.textContent='سورة '+(surah.name||'')+' · '+surah.numberOfAyahs+' آية';
@@ -1360,10 +1380,9 @@ function advanceMiniGame(){
  el('quranNextBtn').addEventListener('click',()=>renderSurah(currentSurah+1));
  // Load the Quran index only when the user opens the Sharia section.
  let indexLoaded=false;
- document.querySelector('#topNav button[data-go="learn"]')?.addEventListener('click',()=>{
+ document.querySelector('[data-sharia-tab="quran"]')?.addEventListener('click',()=>{
   if(!indexLoaded){indexLoaded=true;loadSurahIndex()}
  });
  // If section is restored or activated programmatically.
- const learnTab=document.querySelector('#topNav button[data-go="learn"]');
- if(learnTab&&document.body.dataset.currentPage==='learn'){indexLoaded=true;loadSurahIndex()}
+
 })();

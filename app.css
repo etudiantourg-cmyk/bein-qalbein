@@ -1268,3 +1268,16 @@ body[data-current-page="learn"] .sharia-page{
  body[data-current-page="learn"] .sharia-door-nav{top:126px!important}
  body[data-current-page="learn"] .sharia-page{padding-top:82px!important}
 }
+
+/* Match Sharia door glyph size to the 17px icons in the home shortcut bar. */
+.sharia-door-nav .sharia-door-icon{
+ width:17px!important;height:17px!important;flex:0 0 17px!important;
+ padding:0!important;margin:0!important;
+}
+.sharia-door-nav .sharia-door-icon svg{
+ width:17px!important;height:17px!important;max-width:17px!important;max-height:17px!important;
+}
+@media(max-width:540px){
+ .sharia-door-nav .sharia-door-icon{width:17px!important;height:17px!important;flex-basis:17px!important}
+ .sharia-door-nav .sharia-door-icon svg{width:17px!important;height:17px!important}
+}

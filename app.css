@@ -1434,3 +1434,38 @@ body.theme-custom .top-navigation>.home-top-shortcuts .home-shortcut.is-selected
 }
 .home-top-shortcuts .home-shortcut.is-selected>span b,
 .home-top-shortcuts .home-shortcut-home>span b{color:#fff!important;opacity:1!important}
+
+
+/* Custom accents choose a readable foreground from the actual selected color. */
+body.theme-custom .top-navigation,
+body.theme-custom .home-top-shortcuts,
+body.theme-custom .sharia-door-nav{color:var(--bq-nav-foreground,#fff)!important}
+body.theme-custom .top-navigation .top-brand,
+body.theme-custom .top-navigation .top-brand small,
+body.theme-custom .top-navigation .top-tabs button,
+body.theme-custom .top-navigation .top-tabs button svg,
+body.theme-custom .top-navigation .top-tabs button svg *,
+body.theme-custom .home-top-shortcuts .home-shortcut,
+body.theme-custom .home-top-shortcuts .home-shortcut>span,
+body.theme-custom .home-top-shortcuts .home-shortcut>span b,
+body.theme-custom .home-top-shortcuts .home-shortcut>svg,
+body.theme-custom .home-top-shortcuts .home-shortcut>svg *,
+body.theme-custom .sharia-door-nav .sharia-door,
+body.theme-custom .sharia-door-nav .sharia-door>span,
+body.theme-custom .sharia-door-nav .sharia-door-icon,
+body.theme-custom .sharia-door-nav .sharia-door-icon svg,
+body.theme-custom .sharia-door-nav .sharia-door-icon svg *{
+ color:var(--bq-nav-foreground,#fff)!important;
+ stroke:var(--bq-nav-foreground,#fff)!important;
+}
+body.theme-custom .home-top-shortcuts .home-shortcut,
+body.theme-custom .sharia-door-nav .sharia-door{
+ background:color-mix(in srgb,var(--bq-accent) 82%,#000 18%)!important;
+ border-color:color-mix(in srgb,var(--bq-nav-foreground,#fff) 40%,transparent)!important;
+}
+body.theme-custom .home-top-shortcuts .home-shortcut.is-selected,
+body.theme-custom .home-top-shortcuts .home-shortcut-home,
+body.theme-custom .sharia-door-nav .sharia-door.is-active{
+ background:color-mix(in srgb,var(--bq-accent) 35%,#000 65%)!important;
+ border-color:var(--bq-nav-foreground,#fff)!important;
+}

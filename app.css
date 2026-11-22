@@ -739,3 +739,7 @@ body.theme-custom .top-tabs button.active{background:rgba(255,255,255,.17);color
 body.theme-custom .top-tabs button.active:after{background:rgba(255,255,255,.85)}
 body.theme-custom .quick-grid>button[data-quick="ai"]{border-color:var(--rose);background:var(--surface-2)}
 @media(max-width:420px){.theme-color-stage{gap:12px}.theme-color-wheel{width:min(66vw,230px)}}
+
+/* Match search control dimensions to the theme palette button */
+#topSearchBtn.top-tool-btn{width:40px;height:40px;min-width:40px;min-height:40px;padding:8px;display:grid;place-items:center;box-sizing:border-box}
+#topSearchBtn.top-tool-btn span{display:block;font-size:25px;line-height:1;font-weight:500}

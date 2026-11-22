@@ -1158,6 +1158,7 @@ function advanceMiniGame(){
  strip.querySelectorAll('.home-shortcut').forEach(button=>button.addEventListener('click',()=>{
   const key=button.id==='homeGuideShortcut'?'guide':button.dataset.homeGo;
   if(!key)return;
+  if(key==='services'){goPage('services');return;}
   const alreadyOpen=!host.hidden&&!panes[key].hidden;
   if(alreadyOpen){resetView();return;}
   activate(key);

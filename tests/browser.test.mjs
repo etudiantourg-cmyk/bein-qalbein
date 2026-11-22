@@ -42,7 +42,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
   const consoleErrors = [];
   const openFavorites = async () => {
     await page.locator('#topNav button[data-go="home"]').click();
-    await page.locator('.home-top-shortcuts [data-home-go="favorites"]').click();
+    await page.locator('[data-menu-toggle]').click();
+    await page.locator('#openSavedArchive').click();
   };
 
   const openAiStudio = async () => {
@@ -83,7 +84,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
       if (tab === "favorites") {
         await openFavorites();
         await page.locator(section).waitFor({ state: "visible" });
-        assert.equal(await page.locator('.home-top-shortcuts [data-home-go="favorites"]').getAttribute("aria-expanded"), "true");
+        assert.equal(await page.locator("#settingsDrawer").isHidden(), true, "saved archive action should close the settings drawer");
       } else if (tab === "guide") {
         await page.locator('#topNav button[data-go="home"]').click();
         await page.locator('.home-top-shortcuts [data-home-go="guide"]').click();

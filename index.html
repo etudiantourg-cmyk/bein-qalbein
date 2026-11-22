@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./app.css?v=175">
+<link rel="stylesheet" href="./app.css?v=176">
 </head>
 <body>
 <a class="skip-link" href="#mainContent">تجاوز إلى المحتوى</a>
@@ -168,7 +168,15 @@
  <p class="hint" id="adviceHint">اضغط على أحد الزرين لفتح النصائح في نافذة مستقلة.</p>
 </section>
 <section class="panel page-section sharia-page" data-page="learn" aria-label="الشريعة">
- <div class="sharia-heading"><span class="sharia-eyebrow">زاد المسلم</span><h2>الشريعة والعبادات</h2><p>الوقت والتاريخ، القبلة، مواقيت الصلاة، وقراءة القرآن الكريم.</p></div>
+ <div class="sharia-heading"><span class="sharia-eyebrow">زاد المسلم</span><h2>الشريعة والعبادات</h2><p>مساحة منظمة للصلاة والقرآن والأذكار والمناسبات والمكتبة الإسلامية.</p></div>
+<nav class="sharia-door-nav" aria-label="أبواب الشريعة">
+<button type="button" class="sharia-door is-active" data-sharia-tab="prayer" aria-selected="true">🕌 <span>الصلاة</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="quran" aria-selected="false">📖 <span>القرآن</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="dhikr" aria-selected="false">🤲 <span>الأذكار</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="occasions" aria-selected="false">🌙 <span>المناسبات</span></button>
+<button type="button" class="sharia-door" data-sharia-tab="library" aria-selected="false">📚 <span>المكتبة</span></button>
+</nav><div class="sharia-panel-wrap">
+ <div class="sharia-panel-content is-active" data-sharia-panel="prayer">
  <div class="sharia-clock-strip" aria-label="التاريخ والوقت">
   <div><small>التاريخ الميلادي</small><strong id="shariaGregorianDate">—</strong></div>
   <div><small>التاريخ الهجري</small><strong id="shariaHijriDate">حدّد موقعك لتحديثه</strong></div>
@@ -190,18 +198,56 @@
   <section class="sharia-card prayer-card">
    <div class="sharia-card-title"><span>🕌</span><div><h3>أوقات الصلاة</h3><small id="prayerDateLabel">مواقيت اليوم حسب موقعك</small></div></div>
    <div id="prayerTimesList" class="prayer-times-list"><p class="sharia-muted">حدّد موقعك لعرض المواقيت.</p></div>
+   <div class="prayer-countdown" id="prayerCountdown" role="status">الوقت المتبقي للصلاة القادمة يظهر بعد تحديد موقعك.</div>
+   <div class="prayer-settings"><label for="prayerMethodSelect">طريقة حساب المواقيت</label><select id="prayerMethodSelect"><option value="19" selected>الجزائر</option><option value="18">تونس</option><option value="3">رابطة العالم الإسلامي</option><option value="5">الهيئة المصرية</option><option value="4">أم القرى</option></select><label for="prayerSchoolSelect">حساب العصر</label><select id="prayerSchoolSelect"><option value="0" selected>الطريقة الشافعية</option><option value="1">الحنفية</option></select></div>
+   <button type="button" id="prayerNotifyBtn" class="sharia-secondary-action">تفعيل تنبيه الصلاة أثناء فتح التطبيق</button>
    <small class="prayer-source-note">تُحسب المواقيت آلياً وقد تختلف دقائق عن توقيت مسجدك المحلي.</small>
   </section>
  </div>
+ </div>
+ <section class="sharia-panel-content" data-sharia-panel="quran">
  <section class="sharia-card quran-card">
   <div class="sharia-card-title"><span>📖</span><div><h3>المصحف الشريف</h3><small>تصفّح سور القرآن الكريم بالنص العربي</small></div></div>
   <div class="quran-controls"><label for="quranSurahSelect">اختر السورة</label><select id="quranSurahSelect" disabled><option>جارٍ تحميل فهرس السور…</option></select><button type="button" id="quranLoadBtn" class="sharia-action" disabled>فتح السورة</button></div>
+  <div class="quran-tools"><input id="quranSearchInput" type="search" placeholder="ابحث عن كلمة داخل السورة" aria-label="ابحث داخل السورة"><button type="button" id="quranBookmarkBtn">♡ حفظ السورة</button><button type="button" id="quranPlayBtn">▶ تشغيل التلاوة</button></div>
+  <audio id="quranAudioPlayer" controls preload="none" hidden></audio><p id="quranSearchStatus" class="sharia-muted" aria-live="polite"></p>
   <p id="quranStatus" class="sharia-muted" role="status">يتم تحميل فهرس المصحف عند فتح قسم الشريعة.</p>
   <article id="quranSurahContent" class="quran-surah-content" aria-live="polite"><p class="sharia-muted">اختر سورة لبدء القراءة.</p></article>
   <div class="quran-bottom-actions"><button type="button" id="quranPrevBtn" disabled>السورة السابقة</button><button type="button" id="quranNextBtn" disabled>السورة التالية</button></div>
   <small class="quran-source-note">النص القرآني عبر خدمة AlQuran Cloud.</small>
  </section>
- <p class="sharia-privacy-note">خصوصيتك: لا يُطلب الموقع إلا عند ضغطك على «تحديد موقعي»، وتُستخدم الإحداثيات لحساب القبلة ومواقيت الصلاة ولا تُحفظ داخل التطبيق.</p>
+ </div>
+ <section class="sharia-panel-content" data-sharia-panel="dhikr">
+  <div class="sharia-card"><div class="sharia-card-title"><span>🤲</span><div><h3>الأذكار اليومية</h3><small>أذكار مختارة مع عدّاد مستقل لكل ذكر</small></div></div>
+   <div class="dhikr-category-tabs"><button type="button" data-dhikr-category="morning" class="is-active">الصباح</button><button type="button" data-dhikr-category="evening">المساء</button><button type="button" data-dhikr-category="afterPrayer">بعد الصلاة</button><button type="button" data-dhikr-category="sleep">النوم والاستيقاظ</button></div>
+   <div id="dhikrList" class="dhikr-list"></div><p class="sharia-muted">راجع مصدر الذكر وتخريجه عند الحاجة، فالأعداد مرتبطة بالأذكار المأثورة.</p>
+  </div>
+  <div class="sharia-card tasbih-card"><div class="sharia-card-title"><span>📿</span><div><h3>السبحة الإلكترونية</h3><small>عداد محلي محفوظ على جهازك</small></div></div>
+   <label for="tasbihPhrase">اختر الذكر</label><select id="tasbihPhrase"><option>سبحان الله</option><option>الحمد لله</option><option>الله أكبر</option><option>أستغفر الله</option><option>لا إله إلا الله</option><option>سبحان الله وبحمده</option></select>
+   <div class="tasbih-counter" id="tasbihCount">0</div><div class="tasbih-actions"><button type="button" id="tasbihMinus">−</button><button type="button" id="tasbihTap">سبّح</button><button type="button" id="tasbihReset">إعادة</button></div>
+   <div class="tasbih-goal"><label for="tasbihGoal">الهدف</label><select id="tasbihGoal"><option value="33">33</option><option value="100" selected>100</option><option value="500">500</option><option value="1000">1000</option></select><div class="tasbih-progress"><span id="tasbihProgress"></span></div></div>
+  </div>
+ </section>
+ <section class="sharia-panel-content" data-sharia-panel="occasions"><div class="sharia-card">
+  <div class="sharia-card-title"><span>🌙</span><div><h3>التقويم الهجري</h3><small>بحسب تقويم أم القرى على جهازك</small></div></div>
+  <div class="hijri-today-card"><strong id="hijriFullDate">—</strong><span id="hijriMonthProgress">—</span></div><div id="islamicOccasionsList" class="islamic-occasions-list"></div>
+  <p class="sharia-muted">قد تختلف بدايات الأشهر والمناسبات يوماً بحسب رؤية الهلال؛ اعتمد إعلان بلدك الرسمي.</p>
+ </div><div class="sharia-card ramadan-card"><div class="sharia-card-title"><span>🌙</span><div><h3>زاد رمضان</h3><small>متابعة الصيام والقرآن والعبادات</small></div></div>
+  <div class="ramadan-feature-grid"><div><strong>ورد القرآن</strong><span>حدد مقداراً يومياً ثابتاً</span></div><div><strong>الدعاء</strong><span>خصص وقتاً للدعاء والذكر</span></div><div><strong>الصدقة</strong><span>تابع أعمال الخير</span></div></div><p id="ramadanStatus" class="sharia-muted">تظهر حالة الشهر وفق التاريخ الهجري.</p>
+ </div></section>
+ <section class="sharia-panel-content" data-sharia-panel="library">
+  <div class="sharia-card"><div class="sharia-card-title"><span>✨</span><div><h3>أسماء الله الحسنى</h3><small>الأسماء ومعانيها من مصدر بيانات خارجي</small></div></div><div id="asmaNamesGrid" class="asma-names-grid"><p class="sharia-muted">يتم تحميل الأسماء عند فتح المكتبة.</p></div></div>
+  <div class="sharia-card"><div class="sharia-card-title"><span>📚</span><div><h3>مصادر إسلامية للقراءة والتحقق</h3><small>مصادر خارجية للقراءة والتخريج</small></div></div>
+   <div class="islamic-resource-list">
+    <a href="https://dorar.net/hadith" target="_blank" rel="noopener noreferrer"><strong>الدرر السنية</strong><span>البحث في الأحاديث ودرجاتها وتخريجها</span></a>
+    <a href="https://sunnah.com/" target="_blank" rel="noopener noreferrer"><strong>موسوعة السنة</strong><span>مجموعات الحديث ومراجع الأبواب</span></a>
+    <a href="https://quran.ksu.edu.sa/" target="_blank" rel="noopener noreferrer"><strong>المصحف الإلكتروني</strong><span>قراءة القرآن والاستماع للتلاوات</span></a>
+    <a href="https://marw.gov.dz/" target="_blank" rel="noopener noreferrer"><strong>وزارة الشؤون الدينية والأوقاف الجزائرية</strong><span>المصدر الرسمي للإعلانات والتوجيهات المحلية</span></a>
+   </div>
+  </div>
+ </section>
+ <p class="sharia-privacy-note">خصوصيتك: لا يُطلب الموقع إلا عند ضغطك على «تحديد موقعي»، وتُستخدم الإحداثيات لحساب القبلة ومواقيت الصلاة ولا تُحفظ إحداثياتك.</p>
+ </div>خصوصيتك: لا يُطلب الموقع إلا عند ضغطك على «تحديد موقعي»، وتُستخدم الإحداثيات لحساب القبلة ومواقيت الصلاة ولا تُحفظ داخل التطبيق.</p>
 </section>
 <section class="panel page-section" data-page="services" aria-label="الخدمات"></section>
 <section class="panel page-section" data-page="games" id="gamesPage">
@@ -289,6 +335,6 @@
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=146" defer></script>
+<script src="./app.js?v=147" defer></script>
 <script src="./ai-studio.js?v=97" defer></script>
 </body></html>

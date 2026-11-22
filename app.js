@@ -1226,3 +1226,145 @@ function advanceMiniGame(){
  });
 
 })();
+
+
+/* Sharia section: local clock, opt-in location, prayer times, Qibla and Quran reader. */
+(function setupShariaHub(){
+ const el=id=>document.getElementById(id);
+ const dateNode=el('shariaGregorianDate'),hijriNode=el('shariaHijriDate'),clockNode=el('shariaClockTime');
+ if(!dateNode||!hijriNode||!clockNode)return;
+ const fmt=(date,options)=>{try{return new Intl.DateTimeFormat('ar-DZ',options).format(date)}catch(_){return date.toLocaleString()}};
+ function updateClock(){
+  const now=new Date();
+  dateNode.textContent=fmt(now,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  clockNode.textContent=fmt(now,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+ }
+ updateClock();setInterval(updateClock,1000);
+ let coordinates=null,prayerData=null,surahList=[],currentSurah=1;
+ const locateBtn=el('shariaLocateBtn'),locationStatus=el('shariaLocationStatus');
+ const prayerNames=[['Fajr','الفجر'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
+ const cleanTime=value=>String(value||'').match(/\d{1,2}:\d{2}/)?.[0]||'—';
+ function minuteValue(value){const m=cleanTime(value).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):9999}
+ function renderPrayerTimes(data){
+  const host=el('prayerTimesList');if(!host)return;
+  const timings=data.timings||{},now=new Date(),nowMinute=now.getHours()*60+now.getMinutes();
+  const upcoming=prayerNames.find(([key])=>minuteValue(timings[key])>nowMinute)?.[0]||'Fajr';
+  host.replaceChildren();
+  prayerNames.forEach(([key,label])=>{
+   const row=document.createElement('div');row.className='prayer-time-item'+(key===upcoming?' is-next':'');
+   const name=document.createElement('span');name.textContent=label+(key===upcoming?' · القادمة':'');
+   const time=document.createElement('strong');time.textContent=cleanTime(timings[key]);
+   row.append(name,time);host.append(row);
+  });
+  const date= data.date?.hijri;
+  if(date){hijriNode.textContent=[date.weekday?.ar,date.day,date.month?.ar,date.year].filter(Boolean).join(' ')}
+  const greg=data.date?.gregorian;
+  el('prayerDateLabel').textContent=greg?.weekday?.ar?greg.weekday.ar+' · '+(greg.date||''):'مواقيت اليوم';
+ }
+ async function loadPrayerAndQibla(coords){
+  locationStatus.textContent='جارٍ حساب مواقيت الصلاة واتجاه القبلة…';
+  locateBtn.disabled=true;
+  try{
+   const now=new Date(),date=[String(now.getDate()).padStart(2,'0'),String(now.getMonth()+1).padStart(2,'0'),now.getFullYear()].join('-');
+   const base='https://api.aladhan.com/v1';
+   const [prayerResponse,qiblaResponse]=await Promise.all([
+    fetch(base+'/timings/'+date+'?latitude='+encodeURIComponent(coords.latitude)+'&longitude='+encodeURIComponent(coords.longitude)+'&method=19&school=0'),
+    fetch(base+'/qibla/'+encodeURIComponent(coords.latitude)+'/'+encodeURIComponent(coords.longitude))
+   ]);
+   if(!prayerResponse.ok||!qiblaResponse.ok)throw new Error('تعذر الاتصال بخدمة المواقيت.');
+   const [prayerJson,qiblaJson]=await Promise.all([prayerResponse.json(),qiblaResponse.json()]);
+   if(prayerJson.code!==200||qiblaJson.code!==200)throw new Error('لم تصل بيانات الموقع بشكل صحيح.');
+   prayerData=prayerJson.data;renderPrayerTimes(prayerData);
+   const bearing=Number(qiblaJson.data?.direction);
+   if(!Number.isFinite(bearing))throw new Error('تعذر تحديد اتجاه القبلة.');
+   el('qiblaNeedle').style.transform='rotate('+bearing+'deg)';
+   el('qiblaBearing').textContent=bearing.toFixed(1)+'°';
+   el('qiblaStatus').textContent='زاوية القبلة محسوبة من اتجاه الشمال.';
+   locationStatus.textContent='تم تحديد موقعك وحساب المواقيت بنجاح.';
+  }catch(error){
+   locationStatus.textContent=error.message||'حدث خطأ أثناء جلب المواقيت. حاول مجدداً.';
+   el('qiblaStatus').textContent='تعذر حساب الاتجاه حالياً.';
+  }finally{locateBtn.disabled=false}
+ }
+ locateBtn.addEventListener('click',()=>{
+  if(!navigator.geolocation){locationStatus.textContent='المتصفح لا يدعم تحديد الموقع.';return}
+  locationStatus.textContent='بانتظار إذن الموقع من جهازك…';
+  navigator.geolocation.getCurrentPosition(position=>{
+   coordinates={latitude:position.coords.latitude,longitude:position.coords.longitude};
+   loadPrayerAndQibla(coordinates);
+  },error=>{
+   const messages={1:'لم تمنح إذن الوصول للموقع. يمكنك السماح به من إعدادات المتصفح.',2:'تعذر تحديد موقعك. تحقق من تشغيل خدمة الموقع.',3:'انتهت مهلة تحديد الموقع. حاول مرة أخرى.'};
+   locationStatus.textContent=messages[error.code]||'تعذر تحديد الموقع.';
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:300000});
+ });
+ // Refresh prayer times after local midnight without asking for location again.
+ setInterval(()=>{if(coordinates&&new Date().getHours()===0&&new Date().getMinutes()<2)loadPrayerAndQibla(coordinates)},60000);
+
+ const select=el('quranSurahSelect'),loadBtn=el('quranLoadBtn'),content=el('quranSurahContent'),status=el('quranStatus');
+ function setQuranStatus(message){status.textContent=message}
+ async function loadSurahIndex(){
+  try{
+   let list=null;
+   try{list=JSON.parse(bqStorage.getItem('bq_quran_surah_index')||'null')}catch(_){}
+   if(!Array.isArray(list)||list.length!==114){
+    const response=await fetch('https://api.alquran.cloud/v1/surah');
+    if(!response.ok)throw new Error('تعذر تحميل فهرس السور.');
+    const json=await response.json();list=json.data;
+    if(!Array.isArray(list)||list.length!==114)throw new Error('بيانات فهرس السور غير مكتملة.');
+    try{bqStorage.setItem('bq_quran_surah_index',JSON.stringify(list))}catch(_){}
+   }
+   surahList=list;
+   select.replaceChildren();
+   list.forEach(surah=>{
+    const option=document.createElement('option');option.value=String(surah.number);
+    option.textContent=surah.number+'. '+surah.name+' ('+surah.numberOfAyahs+' آية)';
+    select.append(option);
+   });
+   select.disabled=false;loadBtn.disabled=false;
+   setQuranStatus('اختر السورة التي تريد قراءتها.');
+   const saved=Number(bqStorage.getItem('bq_quran_last_surah')||1);
+   currentSurah=Number.isInteger(saved)&&saved>=1&&saved<=114?saved:1;
+   select.value=String(currentSurah);
+   await renderSurah(currentSurah);
+  }catch(error){setQuranStatus(error.message||'تعذر تحميل فهرس المصحف. تحقق من الاتصال بالإنترنت.')}
+ }
+ async function renderSurah(number){
+  if(!Number.isInteger(number)||number<1||number>114)return;
+  loadBtn.disabled=true;select.disabled=true;content.replaceChildren();
+  setQuranStatus('جارٍ تحميل السورة…');
+  try{
+   const response=await fetch('https://api.alquran.cloud/v1/surah/'+number+'/quran-uthmani');
+   if(!response.ok)throw new Error('تعذر تحميل السورة المطلوبة.');
+   const json=await response.json(),surah=json.data;
+   if(!surah||!Array.isArray(surah.ayahs)||!surah.ayahs.length)throw new Error('لم تصل آيات السورة بشكل صحيح.');
+   currentSurah=number;select.value=String(number);
+   try{bqStorage.setItem('bq_quran_last_surah',String(number))}catch(_){}
+   const title=document.createElement('h3');title.className='quran-surah-title';title.textContent=surah.name;
+   content.append(title);
+   if(number!==1&&number!==9){const b=document.createElement('p');b.className='quran-bismillah';b.textContent='بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ';content.append(b)}
+   const ayahs=document.createElement('div');ayahs.className='quran-ayahs';
+   surah.ayahs.forEach(ayah=>{
+    const text=document.createTextNode(ayah.text+' ');
+    const mark=document.createElement('span');mark.className='quran-ayah-number';mark.textContent=String(ayah.numberInSurah);
+    ayahs.append(text,mark,document.createTextNode(' '));
+   });
+   content.append(ayahs);
+   setQuranStatus=''; // overwritten below by status text update
+   status.textContent='سورة '+(surah.name||'')+' · '+surah.numberOfAyahs+' آية';
+   el('quranPrevBtn').disabled=number===1;el('quranNextBtn').disabled=number===114;
+  }catch(error){setQuranStatus(error.message||'تعذر تحميل السورة. حاول مجدداً.')}
+  finally{loadBtn.disabled=false;select.disabled=false}
+ }
+ loadBtn.addEventListener('click',()=>renderSurah(Number(select.value)));
+ select.addEventListener('change',()=>{if(select.value)renderSurah(Number(select.value))});
+ el('quranPrevBtn').addEventListener('click',()=>renderSurah(currentSurah-1));
+ el('quranNextBtn').addEventListener('click',()=>renderSurah(currentSurah+1));
+ // Load the Quran index only when the user opens the Sharia section.
+ let indexLoaded=false;
+ document.querySelector('#topNav button[data-go="learn"]')?.addEventListener('click',()=>{
+  if(!indexLoaded){indexLoaded=true;loadSurahIndex()}
+ });
+ // If section is restored or activated programmatically.
+ const learnTab=document.querySelector('#topNav button[data-go="learn"]');
+ if(learnTab&&document.body.dataset.currentPage==='learn'){indexLoaded=true;loadSurahIndex()}
+})();

@@ -271,7 +271,7 @@ test("favorites are separated into messages, advice, books and games with compac
 
 
 test("navigation icon system is semantic, consistent and versioned", () => {
-  assert.match(html, /app\.css\?v=192/);
+  assert.match(html, /app\.css\?v=193/);
   const sharia = html.match(/<nav class="sharia-door-nav"[\s\S]*?<\/nav>/)?.[0] || "";
   assert.ok(sharia, "Sharia navigation must exist");
   for (const [tab, label] of [["prayer", "الصلاة"], ["quran", "القرآن"], ["dhikr", "الأذكار"], ["library", "المكتبة"]]) {

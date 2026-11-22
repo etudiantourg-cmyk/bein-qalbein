@@ -1065,6 +1065,8 @@ function advanceMiniGame(){
   }
  }
  trigger.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setOpen(true)});
+ const savedArchive=$('openSavedArchive');
+ if(savedArchive)savedArchive.addEventListener('click',()=>{setOpen(false);goPage('favorites')});
  drawer.addEventListener('click',e=>{if(e.target.closest('[data-settings-close]')||e.target.closest('#settingsCloseBtn')){e.preventDefault();setOpen(false)}});
  document.addEventListener('keydown',e=>{
   if(drawer.hidden)return;

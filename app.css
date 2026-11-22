@@ -1469,3 +1469,13 @@ body.theme-custom .sharia-door-nav .sharia-door.is-active{
  background:color-mix(in srgb,var(--bq-accent) 35%,#000 65%)!important;
  border-color:var(--bq-nav-foreground,#fff)!important;
 }
+
+
+/* Familiar saved/bookmark icon in the settings archive action. */
+#openSavedArchive.saved-archive-btn{
+ display:flex;align-items:center;justify-content:center;gap:10px;
+}
+#openSavedArchive .saved-archive-icon{
+ display:block;width:20px;height:20px;flex:0 0 20px;
+ color:currentColor;
+}

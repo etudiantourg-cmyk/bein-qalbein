@@ -1034,10 +1034,10 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
 .sharia-door-nav{gap:8px;margin-bottom:17px;padding:8px;border-color:rgba(180,151,103,.2);border-radius:18px;background:linear-gradient(145deg,var(--surface-2),var(--surface));box-shadow:0 7px 20px rgba(20,30,25,.045)}
 .sharia-door{min-height:70px;gap:7px;border-radius:13px;font-size:12px;transition:transform .2s ease,background .2s ease,box-shadow .2s ease}
 .sharia-door:active{transform:scale(.97)}
-.sharia-door-icon{width:25px;height:25px;color:var(--muted)}
+.sharia-door-emoji{display:block;font-size:23px;line-height:1.1;filter:drop-shadow(0 2px 2px rgba(20,25,20,.10))}
 .sharia-door span{font-size:11px}
 .sharia-door.is-active{background:linear-gradient(155deg,#fffdf7,#f5eddd);border-color:#d6b979;color:#5d4320;box-shadow:0 5px 14px rgba(104,77,36,.12)}
-.sharia-door.is-active .sharia-door-icon{color:#96713a}
+.sharia-door.is-active .sharia-door-emoji{filter:drop-shadow(0 2px 2px rgba(104,77,36,.18))}
 .sharia-heading{display:none}
 .sharia-clock-strip{border-color:rgba(186,158,111,.24);background:linear-gradient(125deg,var(--surface-2),var(--surface));box-shadow:0 5px 18px rgba(15,25,20,.035)}
 .sharia-card{border-radius:20px;border-color:rgba(180,151,103,.2);box-shadow:0 8px 25px rgba(18,35,28,.055)}
@@ -1084,7 +1084,7 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
  .sharia-hero p{font-size:11px}
  .sharia-door-nav{gap:4px;padding:6px}
  .sharia-door{min-height:63px;padding:6px 2px}
- .sharia-door-icon{width:23px;height:23px}
+ .sharia-door-emoji{font-size:21px}
  .sharia-door span{font-size:10px}
  .qibla-compass{width:min(68vw,250px)}
 }

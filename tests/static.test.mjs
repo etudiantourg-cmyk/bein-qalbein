@@ -16,7 +16,8 @@ const maskableIcon = await readFile(new URL("../icon-maskable.svg", import.meta.
 test("external app assets parse and HTML IDs are unique", () => {
   assert.match(html, /<script src="\.\/app\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.match(html, /<link rel="stylesheet" href="\.\/app\.css(?:\?v=\d+)?"\s*>/);
-  assert.equal((html.match(/<script\\b[^>]*>/g) || []).length, 3, "the app should load its three external scripts");\n  assert.doesNotMatch(html, /<script(?!\\s+src=)[^>]*>/, "no inline scripts should be embedded in the HTML");
+  assert.equal((html.match(/<script\b[^>]*>/g) || []).length, 3, "the app should load its three external scripts");
+  assert.doesNotMatch(html, /<script(?!\s+src=)[^>]*>/, "no inline scripts should be embedded in the HTML");
   new Function(app);
   new Function(contentData);
   assert.ok(contentData.includes("window.BQ_DATA"));
@@ -204,7 +205,7 @@ test("blue identity colors the active top navigation and backup accepts blue", (
   assert.match(css, /body\.theme-blue \.top-navigation\{background:#285b86\}/);
   assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);
   assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
-  assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night'\]\.includes\(raw\)/);
+  assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night','custom'\]\.includes\(raw\)/);
 });
 
 test("the home screen stays free of the removed role selector", () => {

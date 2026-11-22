@@ -1349,7 +1349,6 @@ function advanceMiniGame(){
     ayahs.append(text,mark,document.createTextNode(' '));
    });
    content.append(ayahs);
-   setQuranStatus=''; // overwritten below by status text update
    status.textContent='سورة '+(surah.name||'')+' · '+surah.numberOfAyahs+' آية';
    el('quranPrevBtn').disabled=number===1;el('quranNextBtn').disabled=number===114;
   }catch(error){setQuranStatus(error.message||'تعذر تحميل السورة. حاول مجدداً.')}

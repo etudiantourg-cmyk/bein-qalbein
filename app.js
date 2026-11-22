@@ -304,7 +304,7 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const allowed=['home','library','favorites','learn','games','channels'];
+ const allowed=['home','library','favorites','learn','games','channels','services'];
  if(!allowed.includes(page))page='home';
  const shortcutStrip=document.querySelector('.home-top-shortcuts');
  if(shortcutStrip){shortcutStrip.hidden=page!=='home';shortcutStrip.style.display=page==='home'?'':'none';}

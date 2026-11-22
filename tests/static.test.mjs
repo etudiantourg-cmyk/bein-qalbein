@@ -207,6 +207,10 @@ test("blue identity colors the active top navigation and backup accepts blue", (
   assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);
   assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
   assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night','custom'\]\.includes\(raw\)/);
+  assert.match(app, /const savedPalette=bqStorage\.getItem\('bq_palette'\)\|\|'blue'/);
+  assert.match(app, /savedPalette==='custom'&&\/\^#\[0-9a-f\]\{6\}\$\/i\.test\(savedCustomColor\|\|''\)/);
+  assert.match(app, /--bq-nav-foreground/);
+  assert.match(css, /body\.theme-custom \.top-navigation[\s\S]*?var\(--bq-nav-foreground/);
 });
 
 test("the home screen stays free of the removed role selector", () => {

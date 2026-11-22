@@ -1367,7 +1367,12 @@ body.theme-royal{--bq-bar-active:#64132f;--bq-primary-nav-active:#64132f}
 body.theme-night{--bq-bar-active:#51243a;--bq-primary-nav-active:#51243a}
 body.theme-custom{--bq-bar-active:color-mix(in srgb,var(--bq-accent,#285b86) 35%,#000 65%);--bq-primary-nav-active:var(--bq-bar-active)}
 .top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
-.sharia-door-nav .sharia-door.is-active{
+.sharia-door-nav .sharia-door.is-active,
+body.theme-blue .top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+body.theme-rose .top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+body.theme-royal .top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+body.theme-night .top-navigation>.home-top-shortcuts .home-shortcut.is-selected,
+body.theme-custom .top-navigation>.home-top-shortcuts .home-shortcut.is-selected{
  background:var(--bq-bar-active)!important;
  color:#fff!important;
  border-color:#fff!important;

@@ -1011,3 +1011,10 @@ body[data-current-page="home"] .home-top-shortcuts .home-shortcut svg,
  .asma-names-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
  .hijri-today-card{align-items:flex-start;flex-direction:column}
 }
+
+.quran-tafsir-button{display:inline-block;margin-inline-start:6px;padding:5px 8px;border:1px solid var(--gold);border-radius:8px;background:rgba(216,182,110,.13);color:var(--wine);font:inherit;font-size:10px;font-weight:800}
+.quran-tafsir{margin:8px 0 0;padding:11px;border-inline-start:3px solid var(--gold);border-radius:8px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:13px;line-height:1.9}
+.quran-saved-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}
+.quran-saved-list strong{grid-column:1/-1;color:var(--wine);font-size:12px}
+.quran-saved-list p{margin:0;font-size:11px;color:var(--muted)}
+.quran-saved-list button{padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--wine);font:inherit;font-size:11px}

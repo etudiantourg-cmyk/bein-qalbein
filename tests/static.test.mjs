@@ -271,7 +271,7 @@ test("favorites are separated into messages, advice, books and games with compac
 
 
 test("navigation icon system is semantic, consistent and versioned", () => {
-  assert.match(html, /app\\.css\\?v=191/);
+  assert.match(html, /app\.css\?v=192/);
   const sharia = html.match(/<nav class="sharia-door-nav"[\s\S]*?<\/nav>/)?.[0] || "";
   assert.ok(sharia, "Sharia navigation must exist");
   for (const [tab, label] of [["prayer", "الصلاة"], ["quran", "القرآن"], ["dhikr", "الأذكار"], ["library", "المكتبة"]]) {
@@ -280,7 +280,7 @@ test("navigation icon system is semantic, consistent and versioned", () => {
     assert.match(button, /<svg[\s\S]*?<\/svg>/, tab + " SVG icon missing");
   }
   assert.match(sharia, /data-sharia-tab="prayer"[\\s\\S]*?M8 39h32[\\s\\S]*?M17 22v-5/ , "prayer icon should depict a mosque");
-  assert.match(sharia, /data-sharia-tab="dhikr"[\\s\\S]*?circle cx="24" cy="7\\.5"[\\s\\S]*?circle cx="33\\.8" cy="12\\.2"/ , "dhikr icon should depict raised hands");
+  assert.match(sharia, /data-sharia-tab="dhikr"[\\s\\S]*?circle cx="24" cy="7\\.5"[\\s\\S]*?circle cx="33\\.8" cy="12\\.2"/ , "dhikr icon should depict a beaded tasbih");
   assert.match(css, /\\.top-navigation \\.top-tabs button svg[\\s\\S]*?color:#fff!important/);
   assert.match(css, /\.home-top-shortcuts \.home-shortcut>svg[\\s\\S]*?color:#fff!important/);
   assert.match(css, /\.sharia-door-nav\{[\\s\\S]*?position:fixed/);

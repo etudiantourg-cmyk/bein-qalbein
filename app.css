@@ -1334,3 +1334,27 @@ body.theme-custom{--bq-bar-bg:var(--bq-accent);--bq-bar-active:var(--wine-2)}
  color:#fff!important;stroke:#fff!important;
 }
 .sharia-door-nav .sharia-door-icon{background:transparent!important}
+
+
+/* Primary header must use the active palette (including custom and night modes). */
+body{--bq-primary-nav:#285b86;--bq-primary-nav-active:#397eae}
+body.theme-blue{--bq-primary-nav:#285b86;--bq-primary-nav-active:#397eae}
+body.theme-rose{--bq-primary-nav:#7b2147;--bq-primary-nav-active:#a43a62}
+body.theme-royal{--bq-primary-nav:#64132f;--bq-primary-nav-active:#8c2149}
+body.theme-night{--bq-primary-nav:#51243a;--bq-primary-nav-active:#75415a}
+body.theme-custom{--bq-primary-nav:var(--bq-accent,#285b86);--bq-primary-nav-active:var(--wine-2,#397eae)}
+body.dark-mode:not(.theme-night){--bq-primary-nav:#392632;--bq-primary-nav-active:#604052}
+.top-navigation{
+ background:var(--bq-primary-nav)!important;
+ transition:background-color .2s ease,border-color .2s ease;
+}
+.top-navigation .top-tabs button.active{
+ background:var(--bq-primary-nav-active)!important;
+ color:#fff!important;
+}
+.top-navigation .top-tabs button.active:after{background:#f1d59b!important}
+.top-navigation .top-tabs button,
+.top-navigation .top-tabs button svg,
+.top-navigation .top-tabs button svg *{
+ color:#fff!important;stroke:#fff!important;
+}

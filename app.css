@@ -1250,6 +1250,16 @@ html,body{touch-action:pan-x pan-y}
  .sharia-door-nav .sharia-door>span:last-child{font-size:10px}
 }
 
+/* Use one identical outer width and box model for both five-item shortcut strips. */
+.top-navigation>.home-top-shortcuts,
+.sharia-door-nav{
+ width:min(980px,calc(100% - 20px))!important;
+ max-width:980px!important;
+ box-sizing:border-box!important;
+ margin-left:auto!important;
+ margin-right:auto!important;
+}
+
 /* Keep the Sharia doors pinned exactly like the home shortcuts while its page is open. */
 body[data-current-page="learn"] .sharia-door-nav{
  position:fixed!important;

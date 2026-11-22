@@ -1249,3 +1249,22 @@ html,body{touch-action:pan-x pan-y}
  .sharia-door-nav .sharia-door-icon svg{width:24px;height:24px}
  .sharia-door-nav .sharia-door>span:last-child{font-size:10px}
 }
+
+/* Keep the Sharia doors pinned exactly like the home shortcuts while its page is open. */
+body[data-current-page="learn"] .sharia-door-nav{
+ position:fixed!important;
+ top:130px!important;
+ left:50%!important;
+ right:auto!important;
+ transform:translateX(-50%)!important;
+ width:min(980px,calc(100% - 20px))!important;
+ margin:0!important;
+ z-index:950!important;
+}
+body[data-current-page="learn"] .sharia-page{
+ padding-top:82px!important;
+}
+@media(max-width:600px){
+ body[data-current-page="learn"] .sharia-door-nav{top:126px!important}
+ body[data-current-page="learn"] .sharia-page{padding-top:82px!important}
+}

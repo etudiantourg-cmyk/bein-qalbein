@@ -1238,6 +1238,7 @@ function advanceMiniGame(){
   const now=new Date();
   dateNode.textContent=fmt(now,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   clockNode.textContent=fmt(now,{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+  try{hijriNode.textContent=new Intl.DateTimeFormat('ar-DZ-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(now)}catch(_){}
  }
  updateClock();setInterval(updateClock,1000);
  let coordinates=null,prayerData=null,surahList=[],currentSurah=1,prayerCountdownTimer=null;
@@ -1380,7 +1381,7 @@ function advanceMiniGame(){
  el('quranNextBtn').addEventListener('click',()=>renderSurah(currentSurah+1));
  // Load the Quran index only when the user opens the Sharia section.
  let indexLoaded=false;
- document.querySelector('[data-sharia-tab="quran"]')?.addEventListener('click',()=>{
+ document.querySelector('[data-sharia-tab="quran"]')?.addEventListener('sharia:quran-open',()=>{
   if(!indexLoaded){indexLoaded=true;loadSurahIndex()}
  });
  // If section is restored or activated programmatically.
@@ -1398,6 +1399,7 @@ function advanceMiniGame(){
   panels.forEach(p=>{const on=p.dataset.shariaPanel===name;p.classList.toggle('is-active',on);p.hidden=!on});
   try{localStorage.setItem('bq_sharia_last_door',name)}catch(_){}
   if(name==='library')loadNames();
+  if(name==='quran')document.querySelector('[data-sharia-tab="quran"]')?.dispatchEvent(new Event('sharia:quran-open'));
  }
  tabs.forEach(t=>t.addEventListener('click',()=>activate(t.dataset.shariaTab)));
  panels.forEach(p=>{if(p.dataset.shariaPanel!=='prayer')p.hidden=true});

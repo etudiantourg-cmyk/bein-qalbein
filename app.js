@@ -1352,9 +1352,21 @@ function advanceMiniGame(){
   loadBtn.disabled=true;select.disabled=true;content.replaceChildren();
   setQuranStatus('جارٍ تحميل السورة…');
   try{
-   const response=await fetch('https://api.alquran.cloud/v1/surah/'+number+'/quran-uthmani');
-   if(!response.ok)throw new Error('تعذر تحميل السورة المطلوبة.');
-   const json=await response.json(),surah=json.data;
+   let json=null;
+   try{json=JSON.parse(localStorage.getItem('bq_quran_surah_cache_'+number)||'null')}catch(_){}
+   if(!json||!json.data?.ayahs){
+    const response=await fetch('https://api.alquran.cloud/v1/surah/'+number+'/quran-uthmani');
+    if(!response.ok)throw new Error('تعذر تحميل السورة المطلوبة، ولا توجد نسخة محفوظة لهذه السورة.');
+    json=await response.json();
+    try{
+     localStorage.setItem('bq_quran_surah_cache_'+number,JSON.stringify(json));
+     let cached=JSON.parse(localStorage.getItem('bq_quran_cached_surahs')||'[]');if(!Array.isArray(cached))cached=[];
+     cached=[number,...cached.filter(n=>n!==number)].slice(0,5);
+     Object.keys(localStorage).filter(k=>k.startsWith('bq_quran_surah_cache_')&&!cached.includes(Number(k.split('_').pop()))).forEach(k=>localStorage.removeItem(k));
+     localStorage.setItem('bq_quran_cached_surahs',JSON.stringify(cached));
+    }catch(_){}
+   }
+   const surah=json.data;
    if(!surah||!Array.isArray(surah.ayahs)||!surah.ayahs.length)throw new Error('لم تصل آيات السورة بشكل صحيح.');
    currentSurah=number;select.value=String(number);
    try{bqStorage.setItem('bq_quran_last_surah',String(number))}catch(_){}
@@ -1489,8 +1501,12 @@ function advanceMiniGame(){
   if(namesLoaded)return;namesLoaded=true;
   const host=$('asmaNamesGrid');if(!host)return;host.textContent='جارٍ تحميل أسماء الله الحسنى…';
   try{
-   const r=await fetch('https://api.aladhan.com/v1/asmaAlHusna');if(!r.ok)throw new Error('تعذر الاتصال بمصدر الأسماء.');
-   const j=await r.json(),items=j.data;if(!Array.isArray(items)||!items.length)throw new Error('لم تصل قائمة الأسماء.');
+   let items=null;try{items=JSON.parse(localStorage.getItem('bq_asma_names_cache')||'null')}catch(_){}
+   if(!Array.isArray(items)||!items.length){
+    const r=await fetch('https://api.aladhan.com/v1/asmaAlHusna');if(!r.ok)throw new Error('تعذر الاتصال بمصدر الأسماء.');
+    const j=await r.json();items=j.data;if(!Array.isArray(items)||!items.length)throw new Error('لم تصل قائمة الأسماء.');
+    try{localStorage.setItem('bq_asma_names_cache',JSON.stringify(items))}catch(_){}
+   }
    host.replaceChildren();items.forEach(item=>{
     const card=document.createElement('div');card.className='asma-name-card';
     const name=document.createElement('strong');name.textContent=item.name;

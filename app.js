@@ -304,7 +304,7 @@ function groupedRenderCats(filter=''){
  if(messageWasOpen&&selectedItem){selectedItem.append(inline);inline.hidden=false;inline.style.display='block'}
 }
 function goPage(page){
- const allowed=['home','library','favorites','guide','games','channels'];
+ const allowed=['home','library','favorites','learn','games','channels'];
  if(!allowed.includes(page))page='home';
  const shortcutStrip=document.querySelector('.home-top-shortcuts');
  if(shortcutStrip){shortcutStrip.hidden=page!=='home';shortcutStrip.style.display=page==='home'?'':'none';}
@@ -328,30 +328,7 @@ function goPage(page){
   window.scrollTo({top:0,behavior:'auto'});
   return;
  }
- if(page==='guide'&&typeof window.openHomeShortcut==='function'){
-  // The guide content is hosted inside the first home section, but is a
-  // standalone destination: always reset stale shortcut state before opening it.
-  if(typeof window.resetHomeShortcutView==='function')window.resetHomeShortcutView();
-  document.body.dataset.currentPage='guide';
-  document.querySelectorAll('.page-section').forEach(section=>{
-   const active=section.dataset.page==='home';
-   section.classList.toggle('active-page',active);
-   section.setAttribute('aria-hidden',String(!active));
-   section.inert=!active;
-  });
-  document.querySelectorAll('#topNav button[data-go]').forEach(button=>{
-   const active=button.dataset.go==='guide';
-   button.classList.toggle('active',active);
-   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
-  });
-  const subnav=$('favoritesSubnav');if(subnav)subnav.hidden=true;
-  try{bqStorage.setItem('bq_last_page','guide')}catch(_){}
-  window.openHomeShortcut('guide');
-  const guideHost=$('homeShortcutContent');
-  if(guideHost)guideHost.hidden=false;
-  window.scrollTo({top:0,behavior:'auto'});
-  return;
- }
+
  document.body.dataset.currentPage=page;
  if(page==='home'&&typeof window.resetHomeShortcutView==='function')window.resetHomeShortcutView();
  document.querySelectorAll('.page-section').forEach(section=>{
@@ -1151,7 +1128,7 @@ function advanceMiniGame(){
   host.hidden=false;
   Object.entries(panes).forEach(([name,node])=>{node.hidden=name!==key});
   strip.querySelectorAll('.home-shortcut').forEach(button=>{
-   const active=(key==='favorites'&&button.dataset.homeGo==='favorites')||(key==='library'&&button.dataset.homeGo==='library')||(key==='ai'&&button.dataset.homeGo==='ai')||(key==='guide'&&button.id==='homeGuideShortcut');
+   const active=(key==='favorites'&&button.dataset.homeGo==='favorites')||(key==='library'&&button.dataset.homeGo==='library')||(key==='ai'&&button.dataset.homeGo==='ai')||(key==='guide'&&(button.dataset.homeGo==='guide'||button.id==='homeGuideShortcut'));
    button.classList.toggle('is-selected',active);
    button.setAttribute('aria-expanded',String(active));
   });

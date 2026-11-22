@@ -211,8 +211,8 @@ test("the home screen stays free of the removed role selector", () => {
   assert.doesNotMatch(html, /data-bq-role=|class="bq-identity-control"/);
   assert.doesNotMatch(html, /id="bqIdentity(?:Husband|Wife)"/);
   assert.match(html, /id="aiRecipient"/);
-  assert.match(css, /\\.theme-blue\\{--wine:#285b86/);
-  assert.match(css, /\\.theme-rose\\{--wine:#7b2147/);
+  assert.match(css, /\.theme-blue\{--wine:#285b86/);
+  assert.match(css, /\.theme-rose\{--wine:#7b2147/);
 });
 test("Islamic visual constraint: no cross glyphs or cross-shaped icon ornament", () => {
   const forbidden = [0x271d,0x271e,0x2626,0x271f,0x2020,0x2021,0x2670,0x2671,0x2720].map(code => String.fromCodePoint(code));
@@ -223,7 +223,7 @@ test("Islamic visual constraint: no cross glyphs or cross-shaped icon ornament",
 
 test("legacy role data remains backup-compatible without restoring the removed selector", () => {
   assert.match(app, /'bq_role'/);
-  assert.match(app, /if\\(key==='bq_role'\\)return \\['husband','wife'\\]\\.includes\\(raw\\)/);
+  assert.match(app, /if\(key==='bq_role'\)return \['husband','wife'\]\.includes\(raw\)/);
   assert.doesNotMatch(html, /data-start-role|data-bq-role=|id="bqIdentity(?:Husband|Wife)"/);
   assert.doesNotMatch(app, /rolePalette=role===/);
 });

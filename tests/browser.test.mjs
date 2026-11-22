@@ -291,7 +291,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     const fallbackPage = await browser.newPage({ serviceWorkers: "block" });
     const openFallbackFavorites = async () => {
       await fallbackPage.locator('#topNav button[data-go="home"]').click();
-      await fallbackPage.locator('.home-top-shortcuts [data-home-go="favorites"]').click();
+      await fallbackPage.locator('[data-menu-toggle]').click();
+      await fallbackPage.locator('#openSavedArchive').click();
     };
     await fallbackPage.addInitScript(() => {
       localStorage.setItem("bq_favorites", JSON.stringify(["رسالة موجودة قبل تعطل التخزين"]));

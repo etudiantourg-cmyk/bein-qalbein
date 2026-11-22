@@ -1241,8 +1241,35 @@ function advanceMiniGame(){
   try{hijriNode.textContent=new Intl.DateTimeFormat('ar-DZ-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(now)}catch(_){}
  }
  updateClock();setInterval(updateClock,1000);
- let coordinates=null,prayerData=null,surahList=[],currentSurah=1,prayerCountdownTimer=null;
+ let coordinates=null,prayerData=null,surahList=[],currentSurah=1,prayerCountdownTimer=null,qiblaBearingDegrees=null,deviceHeading=null,orientationActive=false;
  const locateBtn=el('shariaLocateBtn'),locationStatus=el('shariaLocationStatus');
+ function renderQiblaNeedle(){
+  if(qiblaBearingDegrees===null)return;
+  const relative=qiblaBearingDegrees-(deviceHeading===null?0:deviceHeading);
+  el('qiblaNeedle').style.transform='rotate('+relative+'deg)';
+ }
+ const compassButton=el('qiblaCompassEnable');
+ compassButton?.addEventListener('click',async()=>{
+  try{
+   if(typeof DeviceOrientationEvent==='undefined')throw new Error('مستشعر اتجاه الهاتف غير متاح في هذا الجهاز أو المتصفح.');
+   if(typeof DeviceOrientationEvent.requestPermission==='function'){
+    const permission=await DeviceOrientationEvent.requestPermission();
+    if(permission!=='granted')throw new Error('لم يتم منح إذن مستشعر الاتجاه.');
+   }
+   if(!orientationActive){
+    const onOrientation=event=>{
+     let heading=null;
+     if(Number.isFinite(event.webkitCompassHeading))heading=event.webkitCompassHeading;
+     else if(Number.isFinite(event.alpha)&&event.absolute===true)heading=(360-event.alpha)%360;
+     if(heading!==null){deviceHeading=heading;renderQiblaNeedle();el('qiblaStatus').textContent='بوصلة الهاتف مفعّلة؛ حرّك الهاتف بعيداً عن المعادن ومصادر التشويش.'}
+    };
+    window.addEventListener('deviceorientationabsolute',onOrientation,true);
+    window.addEventListener('deviceorientation',onOrientation,true);
+    orientationActive=true;
+   }
+   compassButton.textContent='بوصلة الهاتف مفعّلة';
+  }catch(error){el('qiblaStatus').textContent=error.message||'تعذر تفعيل مستشعر الاتجاه.'}
+ });
  const prayerNames=[['Fajr','الفجر'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
  const cleanTime=value=>String(value||'').match(/\d{1,2}:\d{2}/)?.[0]||'—';
  function minuteValue(value){const m=cleanTime(value).match(/^(\d{1,2}):(\d{2})$/);return m?Number(m[1])*60+Number(m[2]):9999}
@@ -1296,7 +1323,7 @@ function advanceMiniGame(){
    prayerData=prayerJson.data;renderPrayerTimes(prayerData);
    const bearing=Number(qiblaJson.data?.direction);
    if(!Number.isFinite(bearing))throw new Error('تعذر تحديد اتجاه القبلة.');
-   el('qiblaNeedle').style.transform='rotate('+bearing+'deg)';
+   qiblaBearingDegrees=bearing;renderQiblaNeedle();
    el('qiblaBearing').textContent=bearing.toFixed(1)+'°';
    el('qiblaStatus').textContent='زاوية القبلة محسوبة من اتجاه الشمال.';
    locationStatus.textContent='تم تحديد موقعك وحساب المواقيت بنجاح.';
@@ -1316,6 +1343,7 @@ function advanceMiniGame(){
    locationStatus.textContent=messages[error.code]||'تعذر تحديد الموقع.';
   },{enableHighAccuracy:true,timeout:15000,maximumAge:300000});
  });
+ ['prayerMethodSelect','prayerSchoolSelect'].forEach(id=>el(id)?.addEventListener('change',()=>{if(coordinates)loadPrayerAndQibla(coordinates)}));
  // Refresh prayer times after local midnight without asking for location again.
  setInterval(()=>{if(coordinates&&new Date().getHours()===0&&new Date().getMinutes()<2)loadPrayerAndQibla(coordinates)},60000);
 

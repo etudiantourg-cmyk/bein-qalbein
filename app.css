@@ -1597,3 +1597,18 @@ body.theme-custom .sharia-door-nav .sharia-door.is-active{
  .sharia-door-nav .sharia-door>span:last-child{font-size:9px!important}
  .home-top-shortcuts,.sharia-door-nav{gap:4px!important}
 }
+
+
+/* Numbered placeholder strips for sections that will receive their own features later. */
+.section-number-nav{
+ width:min(980px,calc(100% - 20px));max-width:980px;box-sizing:border-box;
+ margin:0 auto 14px;padding:7px 10px 9px;border:1px solid var(--bq-bar-border,rgba(255,255,255,.34));
+ border-radius:24px;background:var(--bq-bar-bg,var(--bq-primary-nav,#285b86));
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:stretch;
+}
+.section-number-tile{
+ min-width:0;height:58px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ border:1px solid var(--bq-bar-border,rgba(255,255,255,.34));border-radius:11px;
+ background:rgba(255,255,255,.12);color:#fff;font:700 15px/1 Alexandria, sans-serif;
+}
+@media(max-width:540px){.section-number-nav{gap:4px;padding:6px 8px 8px}.section-number-tile{height:54px;font-size:14px}}

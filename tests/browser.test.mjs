@@ -120,12 +120,17 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
       }
     }
     await page.locator('#topNav button[data-go="games"]').click();
-    await page.locator('#gameAnswers button[data-game-answer="1"]').click();
-    assert.equal(await page.locator("#gameScore").innerText(), "1");
-    await page.locator("#nextGameQuestion").click();
-    await page.locator('[data-game-mode="truefalse"]').click();
-    await page.locator("#exploreGameBoard").waitFor({ state: "visible" });
-    assert.equal(await page.locator("#exploreGameBoard .explore-game-answers button").count(), 2);
+    await page.locator('[data-kids-game="pattern"]').click();
+    assert.equal(await page.locator("#kidsPlayArea").isVisible(), true, "selected kids game should open");
+    for (let round = 0; round < 5; round++) {
+      await page.locator("#kidsPlayArea [data-kids-answer]").first().click();
+      await page.locator("#kidsPlayArea .kids-next-action").click();
+    }
+    await page.locator("#kidsPlayArea .kids-finish-card").waitFor();
+    assert.match(await page.locator("#kidsPlayArea .kids-finish-card").innerText(), /أنهيت المغامرة/);
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("bq_kids_progress_v1") || "{}").mind), 1);
+    await page.locator("#kidsPlayArea [data-kids-back]").click();
+    assert.match(await page.locator(".kids-world-card .kids-world-badge").innerText(), /1 إنجاز/);
     await page.locator('#topNav button[data-go="channels"]').click();
     assert.equal(await page.locator("#channelsPage .explore-channel-card").count(), 10);
     assert.match(await page.locator("#channelsPage .explore-channel-card").first().getAttribute("href"), /youtube\.com\/results/);
@@ -145,12 +150,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await openFavorites();
     await page.locator('[data-fav-tab="advice"]').click();
     await page.locator("#favoriteTipsList .saved-collection-item").first().waitFor();
-    await page.locator('#topNav button[data-go="games"]').click();
-    await page.locator('[data-game-mode="quiz"]').click();
-    await page.locator("#saveGameBtn").click();
-    await openFavorites();
     await page.locator('[data-fav-tab="games"]').click();
-    await page.locator("#favoriteGamesList .saved-collection-item").first().waitFor();
+    assert.equal(await page.locator("#favoriteGamesList").isVisible(), true, "games favorites panel should remain available");
     await page.locator('button[data-menu-toggle]').click();
     const drawerBox = await page.locator("#settingsDrawer .settings-drawer-panel").boundingBox();
     assert.ok(drawerBox.width <= 320 && drawerBox.height < 650, "settings drawer should stay compact");

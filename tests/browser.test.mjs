@@ -87,6 +87,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
       assert.equal(visual.iconStroke, "rgb(255, 255, 255)", "Overview SVG must not turn black");
     };
     await assertHomeIconNeutral();
+    const homeShortcut = page.locator('.home-top-shortcuts [data-home-reset]');
+    const libraryShortcut = page.locator('.home-top-shortcuts [data-home-go="library"]');
+    await libraryShortcut.click();
+    assert.equal(await libraryShortcut.getAttribute("aria-expanded"), "true", "Library shortcut must be the only selected shortcut");
+    assert.equal(await homeShortcut.getAttribute("aria-expanded"), "false", "Home shortcut must clear its selected state when Library opens");
+    assert.equal(await page.locator('#topNav button[data-go="library"]').getAttribute("aria-current"), "page", "Primary navigation must stay synchronized with Library shortcut");
+    const homeShortcutBackground = await homeShortcut.evaluate(el => getComputedStyle(el).backgroundColor);
+    assert.equal(homeShortcutBackground, "rgba(255, 255, 255, 0.12)", "Inactive Home shortcut must not retain the dark active background");
+    await page.locator('#topNav button[data-go="home"]').click();
     assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).fontFamily), /Alexandria/);
     assert.match(await page.locator(".quick-icon").first().evaluate(el => getComputedStyle(el).boxShadow), /rgb/);
     await page.addScriptTag({ content: axe.source });

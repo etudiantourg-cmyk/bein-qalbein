@@ -75,6 +75,18 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     });
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
+    const homeNav = page.locator('#topNav button[data-go="home"]');
+    const assertHomeIconNeutral = async () => {
+      const visual = await homeNav.evaluate(button => ({
+        background: getComputedStyle(button).backgroundColor,
+        color: getComputedStyle(button).color,
+        iconStroke: getComputedStyle(button.querySelector("svg path")).stroke
+      }));
+      assert.equal(visual.background, "rgba(0, 0, 0, 0)", "Overview must not retain a dark selected background");
+      assert.equal(visual.color, "rgb(255, 255, 255)", "Overview icon must keep the navigation foreground");
+      assert.equal(visual.iconStroke, "rgb(255, 255, 255)", "Overview SVG must not turn black");
+    };
+    await assertHomeIconNeutral();
     assert.match(await page.locator("body").evaluate(el => getComputedStyle(el).fontFamily), /Alexandria/);
     assert.match(await page.locator(".quick-icon").first().evaluate(el => getComputedStyle(el).boxShadow), /rgb/);
     await page.addScriptTag({ content: axe.source });
@@ -92,6 +104,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
         assert.equal(await page.locator('.home-top-shortcuts [data-home-go="guide"]').getAttribute("aria-expanded"), "true");
       } else {
         await page.locator(`#topNav button[data-go="${tab}"]`).click();
+        await assertHomeIconNeutral();
         await page.locator(section).waitFor({ state: "visible" });
         assert.equal(await page.locator(`#topNav button[data-go="${tab}"]`).getAttribute("aria-current"), "page");
       }

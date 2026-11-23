@@ -51,3 +51,6 @@
  };
  if(window.applyAiStudioLanguage)window.applyAiStudioLanguage();
 })();
+
+/* Load the general learning, games and channels hub after the core app has initialized. */
+(function(){var script=document.createElement('script');script.src='./explore-hub.js?v=2';document.body.appendChild(script)})();

@@ -105,11 +105,11 @@
     {q:'ما العدد الناقص؟ 5، 10، 15، ؟',a:['18','20','25'],c:1,why:'نضيف خمسة كل مرة.'}
    ],
    memory:[
-    {q:'تذكّر: 🍎 🐟 🌼 — أي شيء كان في الوسط؟',a:['🍎','🐟','🌼'],c:1,why:'كانت السمكة في الوسط.'},
-    {q:'تذكّر: 🟡 🟢 🔵 — ما اللون الأخير؟',a:['أصفر','أخضر','أزرق'],c:2,why:'الأزرق كان في نهاية التسلسل.'},
-    {q:'أي حيوان ظهر هنا؟ 🐱 🐰 🐼',a:['🐶','🐼','🦁'],c:1,why:'كان الباندا ضمن المجموعة.'},
-    {q:'ما الرمز الأول؟ ⭐ 🌙 ☀️',a:['⭐','🌙','☀️'],c:0,why:'بدأ التسلسل بالنجمة.'},
-    {q:'كم زهرة ظهرت؟ 🌸 🌸 🌸',a:['2','3','4'],c:1,why:'ظهرت ثلاث زهرات.'}
+    {q:'أي رمز كان في الوسط؟',sequence:['🍎','🐟','🌼'],a:['🍎','🐟','🌼'],c:1,why:'كانت السمكة في الوسط.'},
+    {q:'ما اللون الذي ظهر أخيراً؟',sequence:['🟡','🟢','🔵'],a:['أصفر','أخضر','أزرق'],c:2,why:'الأزرق كان في نهاية التسلسل.'},
+    {q:'أي حيوان كان ضمن التسلسل؟',sequence:['🐱','🐰','🐼'],a:['🐶','🐼','🦁'],c:1,why:'كان الباندا ضمن المجموعة.'},
+    {q:'ما الرمز الذي بدأ التسلسل؟',sequence:['⭐','🌙','☀️'],a:['⭐','🌙','☀️'],c:0,why:'بدأ التسلسل بالنجمة.'},
+    {q:'كم زهرة ظهرت في التسلسل؟',sequence:['🌸','🌸','🌸'],a:['2','3','4'],c:1,why:'ظهرت ثلاث زهرات.'}
    ],
    detective:[
     {q:'اختفت جزرة من المطبخ. من يحب أكل الجزر غالباً؟',a:['🐰 الأرنب','🐳 الحوت','🐧 البطريق'],c:0,why:'الأرنب معروف بحبه للخضروات.'},
@@ -237,7 +237,9 @@
   function showRound(){
    const item=deck[round];locked=false;
    const art=({pattern:'🔷',memory:'🌟',detective:'🔎',colors:'🎨',story:'📖',shapes:'🧩','little-shapes':'🟡',animals:'🐾',space:'🪐',world:'🗺️',letters:'🔤',numbers:'🔢',rescue:'🐢',garden:'🌱',treasure:'💎'})[activeGame]||'✨';
-   gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ خريطة العوالم</button><span class="kids-round-count">المستوى '+String(round+1).padStart(2,'0')+' / '+deck.length+'</span></div><div class="kids-stage-meta"><span>🎯 '+worldData[activeWorld].name+'</span><span>🔥 سلسلة '+streak+'</span><span>⭐ '+score+' نجوم</span></div><div class="kids-play-progress" role="progressbar" aria-label="تقدم المهمة" aria-valuemin="0" aria-valuemax="'+deck.length+'" aria-valuenow="'+round+'"><span style="width:'+(round/deck.length*100)+'%"></span></div><div class="kids-question-card"><div class="kids-question-art" aria-hidden="true"><span>'+art+'</span><i></i><b></b></div><span class="kids-question-label">تحدّي '+(round+1)+' · اختر الإجابة الصحيحة</span><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'" aria-label="الخيار '+(i+1)+': '+escapeHtml(a)+'"><span class="kids-answer-index">'+['أ','ب','ج','د'][i]+'</span><span class="kids-answer-text">'+escapeHtml(a)+'</span><span class="kids-answer-mark" aria-hidden="true"></span></button>').join('')+'</div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line"><span>رصيد النجوم</span><strong>⭐ '+score+'</strong><small>كل إجابة صحيحة = نجمة</small></div>';
+   const isMemory=activeGame==='memory'&&Array.isArray(item.sequence);
+   const scene=isMemory?'<div class="kids-memory-preview"><span class="kids-scene-caption">احفظ ترتيب الرموز</span><div class="kids-memory-tiles">'+item.sequence.map((symbol,i)=>'<span><small>'+(i+1)+'</small>'+symbol+'</span>').join('')+'</div><button type="button" class="kids-primary-action kids-memory-start" data-memory-start>حفظت الترتيب — ابدأ التحدي</button></div>':activeGame==='colors'?'<div class="kids-color-lab"><span class="kids-scene-caption">مختبر مزج الألوان</span><div class="kids-color-equation"><i style="--mix:#f4c542"></i><b>+</b><i style="--mix:#438bd0"></i><b>=</b><i class="kids-color-result" style="--mix:'+(round===0?'#4e9b69':round===1?'#e66c87':round===2?'#76a9d8':round===3?'#ed9a43':'#78a96c')+'"></i></div></div>':'';
+   gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ خريطة العوالم</button><span class="kids-round-count">المستوى '+String(round+1).padStart(2,'0')+' / '+deck.length+'</span></div><div class="kids-stage-meta"><span>🎯 '+worldData[activeWorld].name+'</span><span>🔥 سلسلة '+streak+'</span><span>⭐ '+score+' نجوم</span></div><div class="kids-play-progress" role="progressbar" aria-label="تقدم المهمة" aria-valuemin="0" aria-valuemax="'+deck.length+'" aria-valuenow="'+round+'"><span style="width:'+(round/deck.length*100)+'%"></span></div><div class="kids-question-card"><div class="kids-question-art" aria-hidden="true"><span>'+art+'</span><i></i><b></b></div><span class="kids-question-label">تحدّي '+(round+1)+' · اختر الإجابة الصحيحة</span>'+scene+'<div class="kids-memory-challenge"'+(isMemory?' hidden':'')+'><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'" aria-label="الخيار '+(i+1)+': '+escapeHtml(a)+'"><span class="kids-answer-index">'+['أ','ب','ج','د'][i]+'</span><span class="kids-answer-text">'+escapeHtml(a)+'</span><span class="kids-answer-mark" aria-hidden="true"></span></button>').join('')+'</div></div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line"><span>رصيد النجوم</span><strong>⭐ '+score+'</strong><small>كل إجابة صحيحة = نجمة</small></div>';
    gameArea.hidden=false;
   }
   function startGame(id){
@@ -260,6 +262,7 @@
   gameArea.addEventListener('click',e=>{
    if(e.target.closest('[data-kids-back]')){renderWorld(activeWorld);return}
    if(e.target.closest('[data-kids-replay]')){startGame(activeGame);return}
+   if(e.target.closest('[data-memory-start]')){const card=gameArea.querySelector('.kids-question-card');const preview=card.querySelector('.kids-memory-preview');const challenge=card.querySelector('.kids-memory-challenge');if(preview)preview.hidden=true;if(challenge)challenge.hidden=false;return}
    if(e.target.closest('[data-kids-next]')){round++;if(round>=deck.length)finishGame();else showRound();return}
    const b=e.target.closest('[data-kids-answer]');if(!b||locked)return;
    locked=true;const item=deck[round],choice=Number(b.dataset.kidsAnswer),correct=choice===item.c;if(correct){score++;streak++}else{streak=0}

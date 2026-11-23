@@ -28,7 +28,7 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);
   new Function(exploreHub);
-  assert.match(aiStudio, /explore-hub\\.js\\?v=3/);
+  assert.match(aiStudio, /explore-hub\.js\?v=3/);
   assert.match(html, /<script src="\.\/ai-studio\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
   assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);

@@ -123,13 +123,19 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('#gameAnswers button[data-game-answer="1"]').click();
     assert.equal(await page.locator("#gameScore").innerText(), "1");
     await page.locator("#nextGameQuestion").click();
+    await page.locator('[data-game-mode="truefalse"]').click();
+    await page.locator("#exploreGameBoard").waitFor({ state: "visible" });
+    assert.equal(await page.locator("#exploreGameBoard .explore-game-answers button").count(), 2);
+    await page.locator('#topNav button[data-go="channels"]').click();
+    assert.equal(await page.locator("#channelsPage .explore-channel-card").count(), 10);
+    assert.match(await page.locator("#channelsPage .explore-channel-card").first().getAttribute("href"), /youtube\.com\/results/);
     await page.locator('#topNav button[data-go="home"]').click();
 
     await page.locator('#topNav button[data-go="library"]').click();
-    await page.locator('[data-save-book="kind-dialogue"]').click();
+    await page.locator('[data-save-book="science"]').click();
     await openFavorites();
     await page.locator('[data-fav-tab="books"]').click();
-    await page.locator("#favoriteBooksList").getByText("فن الحوار الهادئ").waitFor();
+    await page.locator("#favoriteBooksList").getByText("العلوم").waitFor();
     await page.locator('[data-fav-tab="messages"]').click();
     await page.locator('#topNav button[data-go="home"]').click();
     await page.locator('.home-top-shortcuts [data-home-go="guide"]').click();

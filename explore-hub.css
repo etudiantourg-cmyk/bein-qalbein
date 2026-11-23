@@ -56,3 +56,5 @@
  .explore-game-question{font-size:16px}
 }
 @media(min-width:700px){.explore-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.explore-game-modes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.explore-card .explore-save{width:100%;min-height:40px;margin-top:7px;padding:8px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--wine);font-size:12px;font-weight:800}

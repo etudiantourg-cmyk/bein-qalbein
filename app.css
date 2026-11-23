@@ -3,7 +3,7 @@
 
 
 /* Compact language picker beside the appearance control in the main header. */
-.top-tools .language-tool{position:relative;display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;min-width:40px;min-height:40px;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--wine)}
+.top-tools .language-tool{position:relative;display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;min-width:40px;min-height:40px;padding:8px;box-sizing:border-box;border-radius:12px}
 .language-tool-icon,.language-tool-icon svg{display:block;width:23px;height:23px}
 .language-tool-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .language-tool-select{position:absolute;inset:0;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;opacity:0;cursor:pointer;border:0!important;border-radius:12px!important}

@@ -58,3 +58,76 @@
 @media(min-width:700px){.explore-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.explore-game-modes{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 .explore-card .explore-save{width:100%;min-height:40px;margin-top:7px;padding:8px 10px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--wine);font-size:12px;font-weight:800}
+
+
+/* Premium children's worlds */
+.kids-world-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px!important;margin:0 0 14px!important;padding:7px!important;border:1px solid var(--line)!important;border-radius:19px!important;background:var(--surface-2)!important}
+.kids-world-nav .kids-world-tab{position:relative;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;min-height:72px;padding:7px 3px!important;border:1px solid transparent!important;border-radius:13px!important;background:transparent!important;color:var(--muted)!important}
+.kids-world-nav .kids-world-tab:after{display:none!important}
+.kids-world-nav .kids-world-tab.is-active{border-color:#b8d6eb!important;background:#eaf5fc!important;color:#285b86!important;box-shadow:0 3px 12px rgba(40,91,134,.09)}
+.kids-tab-number{font-size:9px;font-weight:800;opacity:.65}
+.kids-tab-icon{font-size:21px;line-height:1.2}
+.kids-tab-name{font-size:clamp(9px,2vw,12px);font-weight:800;line-height:1.3;text-align:center}
+.kids-hub{display:grid;gap:16px}
+.kids-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:205px;overflow:hidden;padding:clamp(18px,4vw,28px);border:1px solid rgba(255,255,255,.75);border-radius:25px;background:radial-gradient(circle at 82% 15%,rgba(255,255,255,.65),transparent 28%),linear-gradient(120deg,#eaf5fc 0%,#d9eef9 47%,#f5f0ff 100%);box-shadow:0 12px 28px rgba(40,91,134,.10)}
+.kids-hero-copy{position:relative;z-index:2;max-width:68%}
+.kids-hero-kicker{display:inline-flex;padding:5px 11px;border:1px solid rgba(40,91,134,.13);border-radius:99px;background:rgba(255,255,255,.68);color:#285b86;font-size:11px;font-weight:850}
+.kids-hero h2{margin:10px 0 5px;color:#234f73;font-size:clamp(25px,6vw,34px);letter-spacing:-.8px}
+.kids-hero p{max-width:430px;margin:0;color:#49677e;font-size:13px;line-height:1.8}
+.kids-hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+.kids-hero-pills span{padding:5px 9px;border:1px solid rgba(40,91,134,.12);border-radius:99px;background:rgba(255,255,255,.64);color:#315e7e;font-size:10px;font-weight:750}
+.kids-hero-art{position:relative;flex:0 0 30%;min-height:155px}
+.kids-hero-mascot{position:absolute;z-index:2;inset:50% auto auto 50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:112px;height:112px;border:1px solid rgba(255,255,255,.9);border-radius:38px;background:linear-gradient(145deg,#fff,#f6e8ff);box-shadow:0 12px 24px rgba(66,79,126,.15);font-size:65px;animation:kids-float 4s ease-in-out infinite}
+.kids-orbit{position:absolute;z-index:3;display:grid;place-items:center;width:35px;height:35px;border-radius:50%;background:#fff;box-shadow:0 5px 13px rgba(40,91,134,.13);font-size:20px}
+.orbit-one{top:7px;right:7px}.orbit-two{bottom:8px;left:0}
+.kids-hero-cloud{position:absolute;width:60px;height:19px;border-radius:30px;background:rgba(255,255,255,.7)}
+.cloud-one{top:20px;left:4px}.cloud-two{right:0;bottom:15px;width:42px}
+@keyframes kids-float{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-7px)}}
+.kids-section-heading{display:flex;align-items:end;justify-content:space-between;gap:8px;margin:0 2px}
+.kids-section-heading span{color:#397eae;font-size:11px;font-weight:850}
+.kids-section-heading h3{margin:2px 0 0;color:var(--wine);font-size:18px}
+.kids-section-heading small{color:var(--muted);font-size:10px}
+.kids-world-card{overflow:hidden;padding:16px;border:1px solid var(--line);border-radius:21px;background:linear-gradient(145deg,var(--surface),var(--surface-2));box-shadow:0 7px 22px rgba(45,32,48,.055)}
+.kids-world-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.kids-world-illustration{display:grid;place-items:center;width:56px;height:56px;border:1px solid rgba(255,255,255,.8);border-radius:18px;background:linear-gradient(145deg,#e6f4fc,#f3eaff);font-size:31px;box-shadow:0 5px 14px rgba(40,91,134,.08)}
+.kids-world-badge{padding:5px 10px;border-radius:99px;background:var(--rose-soft);color:var(--wine);font-size:10px;font-weight:800}
+.kids-world-eyebrow{display:block;margin-top:13px;color:#397eae;font-size:11px;font-weight:850}
+.kids-world-card h3{margin:3px 0;color:var(--wine);font-size:22px}
+.kids-world-card>p{margin:0 0 13px;color:var(--muted);font-size:12px}
+.kids-game-list{display:grid;gap:9px}
+.kids-game-card{display:flex;align-items:center;gap:10px;min-width:0;min-height:72px;padding:10px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);text-align:start;transition:transform .16s,border-color .16s,box-shadow .16s}
+.kids-game-card:active{transform:scale(.985)}
+.kids-game-icon{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border-radius:14px;background:var(--surface-2);font-size:23px}
+.kids-game-copy{display:grid;gap:2px;flex:1;min-width:0}
+.kids-game-copy strong{color:var(--wine);font-size:13px}
+.kids-game-copy small{color:var(--muted);font-size:10px;line-height:1.5}
+.kids-game-tag{padding:4px 7px;border-radius:99px;background:#edf6fc;color:#285b86;font-size:9px;font-weight:800}
+.kids-game-arrow{color:#397eae;font-size:23px}
+.kids-play-area{margin-top:2px;scroll-margin-top:150px}
+.kids-play-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.kids-back{min-height:38px;padding:6px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--wine);font-size:12px;font-weight:800}
+.kids-round-count{color:var(--muted);font-size:11px;font-weight:800}
+.kids-play-progress{height:7px;overflow:hidden;margin-bottom:13px;border-radius:99px;background:var(--line)}
+.kids-play-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#397eae,#7bb7d8);transition:width .2s}
+.kids-question-card{position:relative;padding:19px 15px 15px;border:1px solid #d8e8f3;border-radius:21px;background:linear-gradient(150deg,#fff,#f4faff);box-shadow:0 7px 20px rgba(40,91,134,.06)}
+.kids-question-mascot{position:absolute;top:-13px;inset-inline-end:15px;display:grid;place-items:center;width:42px;height:42px;border:1px solid #d8e8f3;border-radius:14px;background:#fff;font-size:23px}
+.kids-question-label{display:block;margin-bottom:6px;color:#397eae;font-size:10px;font-weight:850}
+.kids-question-card h3{margin:7px 0 15px;padding-inline-end:34px;color:#284e6c;font-size:17px;line-height:1.8}
+.kids-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.kids-answer{min-height:54px;padding:10px;border:1px solid #d9e7f0;border-radius:14px;background:#fff;color:#31536b;font-size:13px;font-weight:750}
+.kids-answer:disabled{opacity:1}
+.kids-answer.is-correct{border-color:#5aa77a;background:#e9f7ee;color:#21613b}
+.kids-answer.is-wrong{border-color:#d18a8a;background:#fff0f0;color:#8a3333}
+.kids-feedback{min-height:27px;margin:12px 0 0;color:#49677e;font-size:12px;line-height:1.8}
+.kids-score-line{margin-top:9px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);color:var(--wine);font-size:12px}
+.kids-primary-action,.kids-secondary-action{width:100%;min-height:47px;margin-top:10px;padding:10px 14px;border:1px solid #285b86;border-radius:13px;background:#285b86;color:#fff;font-weight:850}
+.kids-secondary-action{border-color:#d7e5ef;background:#fff;color:#285b86}
+.kids-next-action{margin-top:12px}
+.kids-finish-card{padding:24px 17px;border:1px solid #d8e8f3;border-radius:22px;background:linear-gradient(145deg,#fff,#eef7fc);text-align:center}
+.kids-finish-art{display:block;margin-bottom:8px;font-size:58px}
+.kids-finish-card h3{margin:8px 0;color:#285b86;font-size:23px}
+.kids-finish-card p{color:#49677e;font-size:13px}
+.kids-finish-stars{display:flex;justify-content:center;gap:7px;margin:14px 0;font-size:24px}
+.kids-safety-note{margin:0;padding:11px 13px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--muted);font-size:10px;line-height:1.7}
+@media(max-width:480px){.kids-hero{min-height:190px;padding:16px}.kids-hero-copy{max-width:72%}.kids-hero-art{flex-basis:28%;min-height:135px}.kids-hero-mascot{width:82px;height:82px;border-radius:29px;font-size:49px}.kids-world-nav{gap:3px!important;padding:5px!important}.kids-world-nav .kids-world-tab{min-height:65px;padding:5px 1px!important}.kids-tab-icon{font-size:18px}.kids-tab-name{font-size:9px}.kids-answer-grid{grid-template-columns:1fr}.kids-game-tag{display:none}}
+@media(prefers-reduced-motion:reduce){.kids-hero-mascot{animation:none!important}.kids-game-card,.kids-play-progress span{transition:none!important}}

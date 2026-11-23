@@ -56,141 +56,197 @@
   updateProgress();
  }
 
- /* GAMES */
+ /* GAMES — عالم الصغار */
  const games=$('gamesPage');
  if(games){
   const nav=games.querySelector('.section-number-nav');
   games.innerHTML='';
-  if(nav)games.appendChild(nav);
-  const title=document.createElement('h2');title.textContent='مركز الألعاب الذهنية';
-  const intro=document.createElement('p');intro.className='explore-intro';intro.textContent='ألعاب قصيرة ومتنوعة لا تحتاج إلى اتصال بالإنترنت. اختر لعبة وابدأ التحدي.';
-  const modes=document.createElement('div');modes.className='explore-game-modes';modes.id='exploreGameModes';
-  const modeList=[
-   ['quiz','🧩','اختبر معلوماتك','أسئلة عامة متنوعة'],
-   ['truefalse','⚖️','صح أم خطأ','اختبر سرعة حكمك'],
-   ['speed','⚡','تحدي السرعة','أجب قبل انتهاء الوقت'],
-   ['words','🔤','ترتيب الحروف','اكتشف الكلمة المخفية'],
-   ['math','➗','الحساب السريع','تحديات حسابية قصيرة'],
-   ['memory','🧠','تحدي الذاكرة','تذكّر تسلسل الأرقام']
+  if(nav){
+   nav.innerHTML=[
+    ['01','🧠','جزيرة العباقرة'],['02','🎨','مدينة المبدعين'],['03','🌍','كوكب المعرفة'],['04','🧸','حديقة الطفولة'],['05','🚀','مدينة المغامرات']
+   ].map((x,i)=>'<button type="button" class="kids-world-tab'+(i===0?' is-active':'')+'" data-kids-world="'+i+'" aria-pressed="'+(i===0)+'"><span class="kids-tab-number">'+x[0]+'</span><span class="kids-tab-icon" aria-hidden="true">'+x[1]+'</span><span class="kids-tab-name">'+x[2]+'</span></button>').join('');
+   nav.setAttribute('aria-label','عوالم ألعاب الأطفال');
+   nav.classList.add('kids-world-nav');
+   games.appendChild(nav);
+  }
+  const worldData=[
+   {name:'جزيرة العباقرة',eyebrow:'فكّر، اكتشف، وتألّق',icon:'🧠',color:'mind',desc:'ألغاز ذكية ومهمات صغيرة تدرب الملاحظة والذاكرة والمنطق دون ضغط.',games:[
+    {id:'pattern',icon:'🔷',name:'سرّ النمط',desc:'اكتشف الشكل الذي يكمل السلسلة.',tag:'منطق'},
+    {id:'memory',icon:'🌟',name:'ذاكرة النجوم',desc:'تذكّر الإجابة الصحيحة وتدرّب على الانتباه.',tag:'ذاكرة'},
+    {id:'detective',icon:'🔎',name:'المحقق الصغير',desc:'اجمع القرائن واختر الحل الأقرب.',tag:'ملاحظة'}
+   ]},
+   {name:'مدينة المبدعين',eyebrow:'خيالك يصنع عالماً',icon:'🎨',color:'create',desc:'مساحة آمنة للتجريب والتصميم والتعبير عن الأفكار بطرق ممتعة.',games:[
+    {id:'colors',icon:'🖍️',name:'مختبر الألوان',desc:'اكتشف مزج الألوان واختياراتها.',tag:'فن'},
+    {id:'story',icon:'📖',name:'حكاية تفاعلية',desc:'اختر كيف تتقدم الحكاية وصمّم نهايتها.',tag:'خيال'},
+    {id:'shapes',icon:'🧩',name:'مهندس الأشكال',desc:'تعرّف على الأشكال واختر القطعة المناسبة.',tag:'تصميم'}
+   ]},
+   {name:'كوكب المعرفة',eyebrow:'العالم كتاب مفتوح',icon:'🌍',color:'learn',desc:'رحلات قصيرة في العلوم والطبيعة والجغرافيا والمعرفة العامة.',games:[
+    {id:'animals',icon:'🐾',name:'أصدقاء الحيوانات',desc:'اكتشف الحيوان وبيئته وصفاته.',tag:'طبيعة'},
+    {id:'space',icon:'🪐',name:'رحلة الفضاء',desc:'تعرف على الكواكب والنجوم.',tag:'علوم'},
+    {id:'world',icon:'🗺️',name:'مستكشف العالم',desc:'أسئلة لطيفة عن كوكبنا.',tag:'جغرافيا'}
+   ]},
+   {name:'حديقة الطفولة',eyebrow:'نتعلم باللعب',icon:'🧸',color:'little',desc:'أنشطة بسيطة بصرياً وصوتياً، مناسبة للبدايات والتعلم خطوة بخطوة.',games:[
+    {id:'letters',icon:'🔤',name:'قطار الحروف',desc:'اختر الحرف الذي تبدأ به الكلمة.',tag:'لغة'},
+    {id:'numbers',icon:'🔢',name:'عدّ واربح',desc:'عدّ الأشياء واختر العدد الصحيح.',tag:'أرقام'},
+    {id:'shapes',icon:'🟡',name:'عالم الأشكال',desc:'ميّز الأشكال والألوان الأساسية.',tag:'تمييز'}
+   ]},
+   {name:'مدينة المغامرات',eyebrow:'مغامرات لطيفة بلا مخاطر',icon:'🚀',color:'adventure',desc:'مهمات إنقاذ واستكشاف وتحديات حركة ذهنية بشخصيات محببة.',games:[
+    {id:'rescue',icon:'🐢',name:'أنقذ السلحفاة',desc:'اختر الطريق الآمن لمساعدة صديقك.',tag:'مهمة'},
+    {id:'garden',icon:'🌱',name:'سر الحديقة',desc:'اختر ما تحتاجه النبتة لتنمو.',tag:'طبيعة'},
+    {id:'treasure',icon:'💎',name:'كنز الجزيرة',desc:'حل الألغاز لتصل إلى الكنز.',tag:'مغامرة'}
+   ]}
   ];
-  modes.innerHTML=modeList.map(m=>'<button type="button" class="explore-mode" data-game-mode="'+m[0]+'" aria-pressed="false"><span class="explore-mode-icon">'+m[1]+'</span><span><strong>'+m[2]+'</strong><small>'+m[3]+'</small></span></button>').join('');
-  const legacyBoard=document.createElement('section');legacyBoard.className='game-card';legacyBoard.id='generalKnowledgeQuiz';
-  legacyBoard.innerHTML='<div class="game-score"><span>النقاط</span><strong id="gameScore">0</strong><span id="gameProgress">السؤال 1 من 5</span></div><h3 id="gameQuestion">اختبار المعلومات العامة</h3><div id="gameAnswers" class="game-answers"></div><p id="gameFeedback" class="game-feedback" role="status" aria-live="polite">أجب عن الأسئلة لتحصل على نقاط.</p><button type="button" id="saveGameBtn" class="wide">♡ احفظ السؤال</button><button type="button" id="nextGameQuestion" class="wide primary" hidden>السؤال التالي</button>';
-  const board=document.createElement('section');board.className='explore-game-board';board.id='exploreGameBoard';board.setAttribute('aria-live','polite');
-  board.innerHTML='<div class="explore-game-top"><span id="exploreGameProgress">اختر لعبة للبدء</span><span>النقاط: <strong id="exploreGameScore">0</strong></span><span id="exploreGameTimer"></span></div><h3 class="explore-game-question" id="exploreGameQuestion">مستعد لاختبار معلوماتك؟</h3><div id="exploreGameStage"><p class="explore-game-feedback">ستجد هنا أسئلة وألعاباً ذهنية تعمل مباشرة على جهازك.</p></div><p class="explore-game-feedback" id="exploreGameFeedback" role="status"></p><button type="button" class="explore-game-action" id="exploreGameNext" hidden>السؤال التالي</button>';
-  const note=document.createElement('p');note.className='explore-note';note.textContent='تُحفظ أفضل نتيجة محلياً على جهازك. لا توجد منافسة أو ترتيب عام ولا تُرسل إجاباتك إلى خادم.';
-  board.hidden=true;games.append(title,intro,modes,legacyBoard,board,note);
-
-  const questions=[
-   {q:'ما عاصمة الجزائر؟',a:['وهران','الجزائر','قسنطينة','عنابة'],c:1,w:'مدينة الجزائر هي عاصمة البلاد.'},
-   {q:'ما الكوكب المعروف بالكوكب الأحمر؟',a:['الزهرة','المشتري','المريخ','زحل'],c:2,w:'يبدو المريخ أحمر بسبب أكاسيد الحديد على سطحه.'},
-   {q:'ما الصيغة الكيميائية للماء؟',a:['CO₂','H₂O','O₂','NaCl'],c:1,w:'يتكون جزيء الماء من ذرتي هيدروجين وذرة أكسجين.'},
-   {q:'ما أكبر محيط على الأرض؟',a:['الأطلسي','الهندي','المتجمد الشمالي','الهادئ'],c:3,w:'المحيط الهادئ هو الأكبر مساحة.'},
-   {q:'كم يساوي 9 × 7؟',a:['56','63','72','69'],c:1,w:'تسعة في سبعة تساوي ثلاثة وستين.'},
-   {q:'في أي قارة تقع الأرجنتين؟',a:['أفريقيا','أوروبا','أمريكا الجنوبية','آسيا'],c:2,w:'تقع الأرجنتين في الجزء الجنوبي من أمريكا الجنوبية.'},
-   {q:'ما الغاز الذي تمتصه النباتات في عملية البناء الضوئي؟',a:['الأكسجين','ثاني أكسيد الكربون','النيتروجين','الهيدروجين'],c:1,w:'تمتص النباتات ثاني أكسيد الكربون وتستخدم الضوء لصنع السكريات.'},
-   {q:'ما اللغة الرسمية الأساسية في البرازيل؟',a:['الإسبانية','البرتغالية','الفرنسية','الإنجليزية'],c:1,w:'البرتغالية هي اللغة الرسمية في البرازيل.'},
-   {q:'كم عدد أضلاع الشكل السداسي؟',a:['خمسة','ستة','سبعة','ثمانية'],c:1,w:'السداسي له ستة أضلاع.'},
-   {q:'ما العضو الذي يضخ الدم في جسم الإنسان؟',a:['الرئة','الكبد','القلب','المعدة'],c:2,w:'القلب يضخ الدم عبر الأوعية الدموية.'},
-   {q:'ما أقرب نجم إلى الأرض؟',a:['الشمس','الشعرى اليمانية','النسر الواقع','سهيل'],c:0,w:'الشمس هي أقرب نجم إلى الأرض.'},
-   {q:'أي جهاز يُستخدم لقياس درجة الحرارة؟',a:['البارومتر','الترمومتر','الأميتر','البوصلة'],c:1,w:'الترمومتر هو أداة قياس درجة الحرارة.'}
-  ];
-  const truths=[
-   ['الأرض تدور حول الشمس.','صحيح: الأرض تدور حول الشمس.'],
-   ['الماء يغلي عند 100 درجة مئوية في كل الظروف.','خطأ: تتغير درجة الغليان بتغير الضغط الجوي.'],
-   ['عدد قارات العالم سبع وفق التصنيف الشائع.','صحيح: التصنيف الشائع يقسم اليابسة إلى سبع قارات.'],
-   ['الصوت ينتقل في الفراغ مثل الضوء.','خطأ: الصوت يحتاج إلى وسط مادي لينتقل.'],
-   ['الخفاش من الثدييات.','صحيح: الخفافيش تلد وترضع صغارها.'],
-   ['العدد الأولي الزوجي الوحيد هو 2.','صحيح: العدد 2 لا يقبل القسمة إلا على 1 ونفسه.'],
-   ['كل أنواع البكتيريا ضارة للإنسان.','خطأ: توجد بكتيريا نافعة وأخرى ممرضة.'],
-   ['القمر يصدر ضوءه من نفسه.','خطأ: يعكس ضوء الشمس الساقط عليه.']
-  ];
-  const words=[['ةسردم','مدرسة','مكان للتعلم والدراسة.'],['باتك','كتاب','نقرأ فيه المعلومات والقصص.'],['ةرايس','سيارة','وسيلة نقل برية.'],['رتويبمك','كمبيوتر','جهاز لمعالجة المعلومات.'],['ةقيدح','حديقة','مكان تكثر فيه النباتات.'],['رحب','بحر','مسطح مائي واسع.'],['ملق','قلم','أداة للكتابة.'],['ةحاسم','مساحة','مقدار السطح داخل شكل.']];
-  let mode='',round=0,score=0,items=[],locked=false,timer=null,timeLeft=0,memorySequence='',completedGame=false;
-  const stage=$('exploreGameStage'),feedback=$('exploreGameFeedback'),next=$('exploreGameNext');
-  function clearTimer(){if(timer){clearInterval(timer);timer=null}}
-  function shuffle(list){const copy=list.slice();for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}return copy}
-  function status(){ $('exploreGameProgress').textContent='الجولة '+Math.min(round+1,5)+' من 5';$('exploreGameScore').textContent=String(score); }
-  function finish(){
-   clearTimer();locked=true;completedGame=true;next.hidden=false;next.textContent='العب مرة أخرى';
-   const bests=safeRead('bq_game_best_v1',{});const best=Math.max(Number(bests[mode]||0),score);bests[mode]=best;safeWrite('bq_game_best_v1',bests);
-   $('exploreGameQuestion').textContent='انتهى التحدي!';
-   stage.innerHTML='<p class="explore-game-feedback">نتيجتك: <strong>'+score+' من 5</strong> — أفضل نتيجة لك: <strong>'+best+' من 5</strong>.</p>';
-   feedback.textContent=score===5?'ممتاز! نتيجة كاملة.':'أحسنت المحاولة؛ يمكنك إعادة اللعب وتحسين نتيجتك.';
-   $('exploreGameProgress').textContent='اكتملت اللعبة';$('exploreGameTimer').textContent='';
+  const datasets={
+   pattern:[
+    {q:'ما الشكل الذي يكمل النمط؟ 🔴 🔵 🔴 🔵 ؟',a:['🔴','🟢','⭐'],c:0,why:'النمط يتناوب بين الأحمر والأزرق.'},
+    {q:'ما العدد التالي؟ 2، 4، 6، ؟',a:['7','8','10'],c:1,why:'نضيف 2 في كل مرة.'},
+    {q:'🌟 🌙 🌟 🌙 ؟',a:['🌟','☀️','🌙'],c:0,why:'النجمة والقمر يتناوبان.'},
+    {q:'ما الشكل المختلف؟',a:['🟦','🟦','🔺'],c:2,why:'المثلث يختلف عن المربعين.'},
+    {q:'ما العدد الناقص؟ 5، 10، 15، ؟',a:['18','20','25'],c:1,why:'نضيف خمسة كل مرة.'}
+   ],
+   memory:[
+    {q:'تذكّر: 🍎 🐟 🌼 — أي شيء كان في الوسط؟',a:['🍎','🐟','🌼'],c:1,why:'كانت السمكة في الوسط.'},
+    {q:'تذكّر: 🟡 🟢 🔵 — ما اللون الأخير؟',a:['أصفر','أخضر','أزرق'],c:2,why:'الأزرق كان في نهاية التسلسل.'},
+    {q:'أي حيوان ظهر هنا؟ 🐱 🐰 🐼',a:['🐶','🐼','🦁'],c:1,why:'كان الباندا ضمن المجموعة.'},
+    {q:'ما الرمز الأول؟ ⭐ 🌙 ☀️',a:['⭐','🌙','☀️'],c:0,why:'بدأ التسلسل بالنجمة.'},
+    {q:'كم زهرة ظهرت؟ 🌸 🌸 🌸',a:['2','3','4'],c:1,why:'ظهرت ثلاث زهرات.'}
+   ],
+   detective:[
+    {q:'اختفت جزرة من المطبخ. من يحب أكل الجزر غالباً؟',a:['🐰 الأرنب','🐳 الحوت','🐧 البطريق'],c:0,why:'الأرنب معروف بحبه للخضروات.'},
+    {q:'وجدت آثار أقدام صغيرة قرب العش. من قد يكون مرّ هنا؟',a:['🐘 فيل','🐦 عصفور','🐋 حوت'],c:1,why:'العصفور صغير ويمكنه الوقوف قرب العش.'},
+    {q:'المكان مليء بالماء والزعانف ظاهرة. أين تبحث؟',a:['في الصحراء','في البحر','فوق الشجرة'],c:1,why:'الزعانف والماء دليلان على البيئة البحرية.'},
+    {q:'سمعت مواءً خلف الباب. من صاحب الصوت؟',a:['🐱 قطة','🐸 ضفدع','🐮 بقرة'],c:0,why:'القطة تصدر صوت المواء.'},
+    {q:'وجدت قشرة بيضة في العش. ما الذي كان فيه؟',a:['بيضة','حجر','ورقة'],c:0,why:'القشرة دليل على وجود بيضة.'}
+   ],
+   colors:[
+    {q:'ما اللون الناتج غالباً عن مزج الأصفر والأزرق؟',a:['أخضر','وردي','برتقالي'],c:0,why:'الأصفر مع الأزرق يصنعان الأخضر.'},
+    {q:'أي لون نراه في ثمرة الفراولة الناضجة؟',a:['أزرق','أحمر','بنفسجي'],c:1,why:'الفراولة الناضجة غالباً حمراء.'},
+    {q:'ما اللون الأقرب إلى لون السماء الصافية؟',a:['أزرق','بني','أسود'],c:0,why:'السماء الصافية تبدو زرقاء.'},
+    {q:'الأحمر مع الأصفر يصنعان غالباً:',a:['برتقالي','أخضر','رمادي'],c:0,why:'مزج الأحمر والأصفر يعطي البرتقالي.'},
+    {q:'أي لون يشبه أوراق الشجر؟',a:['أخضر','وردي','فضي'],c:0,why:'أوراق كثيرة تبدو خضراء.'}
+   ],
+   story:[
+    {q:'وجدت عصفوراً صغيراً قرب شجرة. ما التصرف اللطيف؟',a:['أراقبه من بعيد وأطلب مساعدة شخص بالغ','أحمله بقوة','أتركه في مكان خطر'],c:0,why:'نحافظ على سلامة الحيوان ونطلب مساعدة شخص بالغ.'},
+    {q:'وصلت إلى نهر في طريق الرحلة. ماذا تفعل؟',a:['أعبر وحدي','أبحث عن جسر وأرافق شخصاً بالغاً','أقفز في الماء'],c:1,why:'اختيار الطريق الآمن ووجود شخص بالغ مهم.'},
+    {q:'صديقك حزين لأنه أخطأ. ماذا تقول؟',a:['لا بأس، حاول مرة أخرى','لن تلعب أبداً','أضحك عليه'],c:0,why:'الكلمات المشجعة تساعد الصديق.'},
+    {q:'وجدت كتاباً جميلاً في المكتبة. ماذا تفعل؟',a:['أمزقه','أقرأه وأعيده إلى مكانه','أخفيه'],c:1,why:'نستمتع بالكتاب ونحافظ عليه.'},
+    {q:'انتهت المغامرة، كيف تشكر من ساعدك؟',a:['بكلمة شكر لطيفة','بالصراخ','بتجاهله'],c:0,why:'الشكر يعبر عن التقدير.'}
+   ],
+   shapes:[
+    {q:'أي شكل له ثلاثة أضلاع؟',a:['🔺 مثلث','🟦 مربع','⚪ دائرة'],c:0,why:'للمثلث ثلاثة أضلاع.'},
+    {q:'أي شكل ليس له زوايا؟',a:['مربع','دائرة','مثلث'],c:1,why:'الدائرة ليس لها زوايا.'},
+    {q:'كم ضلعاً للمربع؟',a:['3','4','5'],c:1,why:'للمربع أربعة أضلاع متساوية.'},
+    {q:'أي شكل يشبه نافذة مربعة؟',a:['🟦','⚪','🔺'],c:0,why:'المربع له أربعة أضلاع.'},
+    {q:'أي شكل يشبه عجلة؟',a:['دائرة','مثلث','مستطيل'],c:0,why:'العجلة دائرية.'}
+   ],
+   animals:[
+    {q:'أين يعيش الجمل غالباً؟',a:['الصحراء','المحيط','القطب الجنوبي'],c:0,why:'الجمل متكيف مع البيئة الصحراوية.'},
+    {q:'أي حيوان يستطيع الطيران؟',a:['🐦 عصفور','🐘 فيل','🐢 سلحفاة'],c:0,why:'العصفور من الحيوانات التي تطير.'},
+    {q:'ماذا يغطي جسم السمكة؟',a:['قشور','ريش','صوف'],c:0,why:'تغطي أجسام كثير من الأسماك قشور.'},
+    {q:'أي حيوان يُسمى ملك الغابة في القصص؟',a:['🦁 الأسد','🐰 الأرنب','🐑 الخروف'],c:0,why:'الأسد يُعرف بهذا اللقب الشائع.'},
+    {q:'أين يعيش الدب القطبي؟',a:['المناطق القطبية','الغابة الاستوائية','الصحراء'],c:0,why:'يعيش الدب القطبي في مناطق القطب الشمالي.'}
+   ],
+   space:[
+    {q:'ما اسم الكوكب الذي نعيش عليه؟',a:['الأرض','المريخ','زحل'],c:0,why:'نحن نعيش على كوكب الأرض.'},
+    {q:'ما الذي يضيء لنا في النهار؟',a:['الشمس','القمر','المريخ'],c:0,why:'الشمس نجم يمد الأرض بالضوء والحرارة.'},
+    {q:'ما الجسم الذي يدور حول الأرض؟',a:['القمر','الشمس','المشتري'],c:0,why:'القمر هو تابع الأرض الطبيعي.'},
+    {q:'أي كوكب مشهور بحلقاته؟',a:['زحل','عطارد','الأرض'],c:0,why:'زحل مشهور بحلقاته الجميلة.'},
+    {q:'هل الشمس كوكب أم نجم؟',a:['نجم','كوكب','قمر'],c:0,why:'الشمس نجم قريب من الأرض.'}
+   ],
+   world:[
+    {q:'ما القارة التي تقع فيها الجزائر؟',a:['أفريقيا','أوروبا','آسيا'],c:0,why:'الجزائر تقع في شمال أفريقيا.'},
+    {q:'ما لون أوراق الشجر غالباً؟',a:['أخضر','أزرق','أسود'],c:0,why:'تبدو الأوراق خضراء بسبب صبغة اليخضور.'},
+    {q:'ما أكبر حيوان يعيش في البحر؟',a:['الحوت الأزرق','الدلفين','فرس البحر'],c:0,why:'الحوت الأزرق أكبر حيوان معروف.'},
+    {q:'ماذا نستخدم لمعرفة الاتجاهات؟',a:['البوصلة','الملعقة','الفرشاة'],c:0,why:'تساعد البوصلة على تحديد الاتجاهات.'},
+    {q:'أي فصل يأتي بعد الشتاء؟',a:['الربيع','الخريف','الصيف'],c:0,why:'يأتي الربيع بعد الشتاء.'}
+   ],
+   letters:[
+    {q:'أي حرف تبدأ به كلمة «أسد»؟',a:['أ','ب','ت'],c:0,why:'أسد تبدأ بحرف الألف.'},
+    {q:'أي حرف تبدأ به كلمة «تفاحة»؟',a:['م','ت','س'],c:1,why:'تفاحة تبدأ بحرف التاء.'},
+    {q:'أي حرف تبدأ به كلمة «باب»؟',a:['ب','ن','ر'],c:0,why:'باب تبدأ بحرف الباء.'},
+    {q:'أي حرف تبدأ به كلمة «قمر»؟',a:['ف','ق','ك'],c:1,why:'قمر تبدأ بحرف القاف.'},
+    {q:'أي حرف تبدأ به كلمة «وردة»؟',a:['و','د','ز'],c:0,why:'وردة تبدأ بحرف الواو.'}
+   ],
+   numbers:[
+    {q:'كم تفاحة هنا؟ 🍎 🍎 🍎',a:['2','3','4'],c:1,why:'هناك ثلاث تفاحات.'},
+    {q:'كم يساوي 2 + 1؟',a:['2','3','4'],c:1,why:'اثنان زائد واحد يساوي ثلاثة.'},
+    {q:'ما العدد الذي يأتي بعد 5؟',a:['4','6','7'],c:1,why:'العدد التالي هو ستة.'},
+    {q:'كم نجمة هنا؟ ⭐ ⭐ ⭐ ⭐',a:['3','4','5'],c:1,why:'هناك أربع نجمات.'},
+    {q:'ما الأصغر؟',a:['2','5','8'],c:0,why:'اثنان أصغر من خمسة وثمانية.'}
+   ],
+   rescue:[
+    {q:'السلحفاة تريد عبور الطريق. ما الخيار الآمن؟',a:['تطلب مساعدة شخص بالغ','تركض وحدها','تغمض عينيها'],c:0,why:'السلامة أولاً، ونطلب مساعدة شخص بالغ.'},
+    {q:'صديقك ضائع في الحديقة. ماذا تفعل؟',a:['أخبر موظفاً أو شخصاً بالغاً موثوقاً','أذهب بعيداً','أتبع غريباً'],c:0,why:'نلجأ إلى شخص بالغ موثوق.'},
+    {q:'وجدت زجاجاً مكسوراً على الأرض. ماذا تفعل؟',a:['لا ألمسه وأخبر شخصاً بالغاً','ألتقطه','ألعب به'],c:0,why:'الزجاج قد يسبب جروحاً، لا تلمسه.'},
+    {q:'حيوان صغير يبدو خائفاً. كيف تساعده؟',a:['أهدأ وأطلب مساعدة بالغ','أطارده','أصرخ قربه'],c:0,why:'الهدوء وطلب المساعدة يحميان الحيوان والطفل.'},
+    {q:'أنت لا تعرف الطريق. ما الأفضل؟',a:['أبقى في مكان آمن وأطلب المساعدة','أمشي مع أي شخص','أختبئ'],c:0,why:'ابق في مكان آمن واطلب المساعدة من شخص موثوق.'}
+   ],
+   garden:[
+    {q:'ماذا تحتاج النبتة لتنمو؟',a:['ماء وضوء مناسب','حلوى','ألعاب'],c:0,why:'تحتاج النباتات إلى الماء والضوء والهواء.'},
+    {q:'أي جزء يمتص الماء من التربة؟',a:['الجذور','الزهرة','الثمرة'],c:0,why:'تمتص الجذور الماء من التربة.'},
+    {q:'ماذا نفعل بالتربة الجافة؟',a:['نسقيها باعتدال','نرميها','نغطيها بالبلاستيك دائماً'],c:0,why:'الري المعتدل يساعد النبات.'},
+    {q:'أي كائن يساعد بعض النباتات في التلقيح؟',a:['النحلة','السمكة','الحصان'],c:0,why:'تساعد النحلات في نقل حبوب اللقاح.'},
+    {q:'أين نضع نبتة تحتاج الضوء؟',a:['مكان مناسب تصله أشعة الشمس','خزانة مظلمة','داخل صندوق مغلق'],c:0,why:'تحتاج النباتات إلى الضوء لصنع غذائها.'}
+   ],
+   treasure:[
+    {q:'للوصول إلى الكنز اتبع النمط: شمال، شرق، شمال، شرق، ؟',a:['شمال','جنوب','غرب'],c:0,why:'النمط يتناوب بين الشمال والشرق.'},
+    {q:'ما الأداة التي تساعدك على معرفة الاتجاه؟',a:['بوصلة','وسادة','كوب'],c:0,why:'البوصلة تساعد على معرفة الاتجاهات.'},
+    {q:'لديك مفتاحان، واحد ذهبي وآخر خشبي. أيهما يطابق القفل الذهبي؟',a:['الذهبي','الخشبي','كلاهما مكسور'],c:0,why:'نطابق المفتاح مع لون القفل في هذا اللغز.'},
+    {q:'ثلاث خطوات للأمام ثم خطوتان للخلف. كم تقدمت؟',a:['خطوة واحدة','خمس خطوات','صفر'],c:0,why:'ثلاثة للأمام ناقص اثنتين للخلف تساوي خطوة.'},
+    {q:'الكنز داخل الصندوق وليس تحت الشجرة. أين تبحث؟',a:['داخل الصندوق','تحت الشجرة','في النهر'],c:0,why:'اتبع الدليل كما ورد.'}
+   ]
+  };
+  const $games=document.createElement('div');$games.className='kids-hub';
+  const hero=document.createElement('section');hero.className='kids-hero';
+  hero.innerHTML='<div class="kids-hero-copy"><span class="kids-hero-kicker">✦ مساحة آمنة للخيال والاكتشاف</span><h2>عالم الصغار</h2><p>خمسة عوالم مليئة بالتجارب والألعاب والقصص. تعلّم، ابتكر، واكتشف بطريقتك.</p><div class="kids-hero-pills"><span>🌱 نتعلم بهدوء</span><span>🎯 تحديات لطيفة</span><span>♡ بلا إعلانات داخل اللعب</span></div></div><div class="kids-hero-art" aria-hidden="true"><span class="kids-orbit orbit-one">⭐</span><span class="kids-orbit orbit-two">🪐</span><span class="kids-hero-mascot">🦊</span><span class="kids-hero-cloud cloud-one"></span><span class="kids-hero-cloud cloud-two"></span></div>';
+  const worldIntro=document.createElement('div');worldIntro.className='kids-section-heading';worldIntro.innerHTML='<div><span>اختر بوابتك</span><h3>أي عالم ستكتشف اليوم؟</h3></div><small>5 عوالم • ألعاب قصيرة</small>';
+  const worldGrid=document.createElement('div');worldGrid.className='kids-world-grid';
+  const gameArea=document.createElement('section');gameArea.className='kids-play-area';gameArea.id='kidsPlayArea';gameArea.hidden=true;
+  const safety=document.createElement('p');safety.className='kids-safety-note';safety.textContent='مساحة لعب هادئة: لا محادثات عامة، ولا ترتيب أو منافسة مع غرباء. تُحفظ نتائجك على هذا الجهاز فقط.';
+  $games.append(hero,worldIntro,worldGrid,gameArea,safety);games.appendChild($games);
+  let activeWorld=0,activeGame=null,round=0,score=0,deck=[],locked=false;
+  const progress=safeRead('bq_kids_progress_v1',{});
+  function updateWorldTabs(index){
+   if(nav)nav.querySelectorAll('[data-kids-world]').forEach(b=>{const active=Number(b.dataset.kidsWorld)===index;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active))});
   }
-  function nextRound(){
-   clearTimer();round++;
-   if(round>=5){finish();return}
-   renderRound();
+  function renderWorld(index){
+   activeWorld=index;activeGame=null;gameArea.hidden=true;updateWorldTabs(index);
+   const w=worldData[index];
+   worldGrid.innerHTML='<article class="kids-world-card world-'+w.color+'"><div class="kids-world-card-top"><span class="kids-world-illustration">'+w.icon+'</span><span class="kids-world-badge">'+(progress[w.color]||0)+' إنجاز</span></div><span class="kids-world-eyebrow">'+w.eyebrow+'</span><h3>'+w.name+'</h3><p>'+w.desc+'</p><div class="kids-game-list">'+w.games.map(g=>'<button type="button" class="kids-game-card" data-kids-game="'+g.id+'" data-world="'+index+'"><span class="kids-game-icon">'+g.icon+'</span><span class="kids-game-copy"><strong>'+g.name+'</strong><small>'+g.desc+'</small></span><span class="kids-game-tag">'+g.tag+'</span><span class="kids-game-arrow" aria-hidden="true">‹</span></button>').join('')+'</div></article>';
+   worldIntro.querySelector('small').textContent='العالم '+(index+1)+' من 5 • '+w.games.length+' ألعاب';
   }
-  function answerChoice(index){
-   if(locked)return;locked=true;clearTimer();
-   const item=items[round],correct=index===item.c;
-   if(correct)score++;
-   [...stage.querySelectorAll('button[data-answer]')].forEach((b,i)=>{b.disabled=true;if(i===item.c)b.classList.add('correct-answer');else if(i===index)b.classList.add('wrong-answer')});
-   feedback.textContent=(correct?'إجابة صحيحة. ':'ليست الإجابة الصحيحة. ')+item.w;
-   $('exploreGameScore').textContent=String(score);next.hidden=false;next.textContent=round===4?'عرض النتيجة':'التالي';
-   $('exploreGameTimer').textContent='';
+  function showRound(){
+   const item=deck[round];locked=false;
+   gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ العودة للعالم</button><span class="kids-round-count">المهمة '+(round+1)+' من '+deck.length+'</span></div><div class="kids-play-progress"><span style="width:'+((round)/deck.length*100)+'%"></span></div><div class="kids-question-card"><span class="kids-question-mascot">🦊</span><span class="kids-question-label">'+worldData[activeWorld].name+'</span><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'">'+a+'</button>').join('')+'</div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line">⭐ <span>نجومك</span> <strong>'+score+'</strong></div>';
+   gameArea.hidden=false;
   }
-  function submitText(){
-   if(locked)return;
-   const input=stage.querySelector('input');if(!input)return;
-   const value=input.value.trim().replace(/\s+/g,'').toLocaleLowerCase();
-   const item=items[round],correct=value===item.answer.replace(/\s+/g,'').toLocaleLowerCase();
-   locked=true;if(correct)score++;
-   input.disabled=true;stage.querySelector('button').disabled=true;
-   feedback.textContent=(correct?'أحسنت، إجابة صحيحة. ':'الإجابة الصحيحة: '+item.answer+'. ')+(item.why||'');
-   $('exploreGameScore').textContent=String(score);next.hidden=false;next.textContent=round===4?'عرض النتيجة':'التالي';
+  function startGame(id){
+   activeGame=id;round=0;score=0;locked=false;deck=(datasets[id]||[]).slice();if(!deck.length)return;
+   const old=Number(progress[worldData[activeWorld].color]||0);showRound();
+   gameArea.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
-  function renderRound(){
-   locked=false;next.hidden=true;feedback.textContent='';status();
-   const prompt=$('exploreGameQuestion');
-   if(mode==='quiz'||mode==='speed'||mode==='truefalse'){
-    const item=items[round];prompt.textContent=item.q;
-    const options=mode==='truefalse'?['صح','خطأ']:item.a;
-    stage.innerHTML='<div class="explore-game-answers">'+options.map((x,i)=>'<button type="button" data-answer="'+i+'">'+escapeHtml(x)+'</button>').join('')+'</div>';
-    if(mode==='speed'){
-     timeLeft=15;$('exploreGameTimer').textContent='الوقت: '+timeLeft+' ث';
-     timer=setInterval(()=>{timeLeft--;$('exploreGameTimer').textContent='الوقت: '+timeLeft+' ث';if(timeLeft<=0){clearTimer();if(!locked){locked=true;[...stage.querySelectorAll('button')].forEach(b=>b.disabled=true);feedback.textContent='انتهى الوقت. '+item.w;next.hidden=false;next.textContent=round===4?'عرض النتيجة':'التالي';}}},1000);
-    }else $('exploreGameTimer').textContent='';
-   }else if(mode==='words'){
-    const item=items[round];prompt.textContent='رتّب الحروف لتكتشف الكلمة.';
-    stage.innerHTML='<p class="explore-game-feedback">الحروف: <strong>'+escapeHtml(item.scrambled)+'</strong><br>'+escapeHtml(item.hint)+'</p><div class="explore-game-input-row"><input id="exploreGameAnswer" type="text" autocomplete="off" placeholder="اكتب الكلمة"><button type="button" data-submit-text>تحقق</button></div>';
-    $('exploreGameTimer').textContent='';
-   }else if(mode==='math'){
-    const item=items[round];prompt.textContent=item.q;
-    stage.innerHTML='<div class="explore-game-input-row"><input id="exploreGameAnswer" type="number" inputmode="numeric" placeholder="اكتب الناتج"><button type="button" data-submit-text>تحقق</button></div>';
-    $('exploreGameTimer').textContent='';
-   }else if(mode==='memory'){
-    const item=items[round];memorySequence=item.answer;prompt.textContent='تذكّر تسلسل الأرقام ثم اكتبه.';
-    stage.innerHTML='<p class="explore-game-feedback" id="memoryDigits">احفظ هذا التسلسل: <strong>'+memorySequence+'</strong></p><div class="explore-game-input-row"><input id="exploreGameAnswer" type="text" inputmode="numeric" autocomplete="off" placeholder="أدخل الأرقام"><button type="button" data-submit-text>تحقق</button></div>';
-    $('exploreGameTimer').textContent='';
-    const shown=$('memoryDigits');setTimeout(()=>{if(mode==='memory'&&round===Number(shown?.dataset.round||round)&&shown?.isConnected)shown.innerHTML='تم إخفاء التسلسل. أدخله الآن.';},2300);
-   }
+  function finishGame(){
+   const key=worldData[activeWorld].color;progress[key]=Number(progress[key]||0)+1;safeWrite('bq_kids_progress_v1',progress);
+   const bests=safeRead('bq_kids_best_v1',{});bests[activeGame]=Math.max(Number(bests[activeGame]||0),score);safeWrite('bq_kids_best_v1',bests);
+   gameArea.innerHTML='<div class="kids-finish-card"><span class="kids-finish-art">🏆</span><span class="kids-hero-kicker">أحسنت يا بطل!</span><h3>أنهيت المغامرة</h3><p>جمعت '+score+' من '+deck.length+' نجوم. كل محاولة تعلّم جديد، وأنت تتقدم بطريقتك.</p><div class="kids-finish-stars">'+Array.from({length:deck.length},(_,i)=>'<span>'+(i<score?'⭐':'☆')+'</span>').join('')+'</div><button type="button" class="kids-primary-action" data-kids-replay>العب مرة أخرى</button><button type="button" class="kids-secondary-action" data-kids-back>العودة إلى العالم</button></div>';
+   renderWorld(activeWorld);
+   gameArea.hidden=false;
+   const finish=gameArea.previousElementSibling;
+   gameArea.innerHTML=finish.outerHTML+gameArea.innerHTML;
   }
-  function start(selected){
-   clearTimer();mode=selected;round=0;score=0;locked=false;completedGame=false;feedback.textContent='';next.hidden=true;
-   modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gameMode===mode)));legacyBoard.hidden=true;board.hidden=false;
-   if(mode==='quiz'||mode==='speed')items=shuffle(questions).slice(0,5);
-   else if(mode==='truefalse')items=shuffle(truths).slice(0,5).map(x=>({q:x[0],a:['صح','خطأ'],c:x[1].startsWith('صحيح')?0:1,w:x[1]}));
-   else if(mode==='words')items=shuffle(words).slice(0,5).map(x=>({scrambled:x[0],answer:x[1],hint:x[2],why:'راجع ترتيب الحروف وحاول مرة أخرى.'}));
-   else if(mode==='math')items=Array.from({length:5},()=>{const a=2+Math.floor(Math.random()*18),b=2+Math.floor(Math.random()*12);return {q:'كم يساوي '+a+' × '+b+'؟',answer:String(a*b),why:a+' × '+b+' = '+(a*b)}})
-   else if(mode==='memory')items=Array.from({length:5},()=>({answer:''}));
-   if(mode==='memory')memorySequence=String(100+Math.floor(Math.random()*900));
-   if(mode==='memory')items=items.map(()=>{memorySequence=String(1000+Math.floor(Math.random()*9000));return {answer:memorySequence}});
-   renderRound();
-  }
-  modes.addEventListener('click',e=>{const button=e.target.closest('[data-game-mode]');if(!button)return;const selected=button.dataset.gameMode;modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));if(selected==='quiz'){clearTimer();legacyBoard.hidden=false;board.hidden=true;legacyBoard.scrollIntoView({behavior:'smooth',block:'nearest'});return}legacyBoard.hidden=true;board.hidden=false;start(selected)});
-  stage.addEventListener('click',e=>{
-   const answer=e.target.closest('[data-answer]');if(answer){let index=Number(answer.dataset.answer);if(mode==='truefalse')answerChoice(index);else answerChoice(index);return}
-   if(e.target.closest('[data-submit-text]'))submitText();
+  if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('[data-kids-world]');if(b)renderWorld(Number(b.dataset.kidsWorld))});
+  worldGrid.addEventListener('click',e=>{const b=e.target.closest('[data-kids-game]');if(b){activeWorld=Number(b.dataset.world);updateWorldTabs(activeWorld);startGame(b.dataset.kidsGame)}});
+  gameArea.addEventListener('click',e=>{
+   if(e.target.closest('[data-kids-back]')){renderWorld(activeWorld);return}
+   if(e.target.closest('[data-kids-replay]')){startGame(activeGame);return}
+   const b=e.target.closest('[data-kids-answer]');if(!b||locked)return;
+   locked=true;const item=deck[round],choice=Number(b.dataset.kidsAnswer),correct=choice===item.c;if(correct)score++;
+   gameArea.querySelectorAll('[data-kids-answer]').forEach((button,i)=>{button.disabled=true;if(i===item.c)button.classList.add('is-correct');else if(i===choice)button.classList.add('is-wrong')});
+   const fb=gameArea.querySelector('.kids-feedback');fb.textContent=(correct?'أحسنت! إجابة رائعة. ':'محاولة جميلة! ')+item.why;
+   const footer=document.createElement('button');footer.type='button';footer.className='kids-primary-action kids-next-action';footer.textContent=round===deck.length-1?'عرض النتيجة':'المهمة التالية';footer.addEventListener('click',()=>{round++;if(round>=deck.length)finishGame();else showRound()});gameArea.querySelector('.kids-question-card').appendChild(footer);
   });
-  stage.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='exploreGameAnswer'){e.preventDefault();submitText()}});
-  next.addEventListener('click',()=>{if(!mode||!locked)return;if(completedGame){start(mode);return}if(round===4){finish();return}nextRound()});
-  games.addEventListener('click',e=>{const modeButton=e.target.closest('[data-game-mode]');if(modeButton)board.scrollIntoView({behavior:'smooth',block:'nearest'})});
+  renderWorld(0);
  }
- 
  /* CHANNELS */
  const channels=$('channelsPage');
  if(channels){

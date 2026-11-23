@@ -6,6 +6,7 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
 const contentData = await readFile(new URL("../content-data.js", import.meta.url), "utf8");
 const aiStudio = await readFile(new URL("../ai-studio.js", import.meta.url), "utf8");
+const exploreHub = await readFile(new URL("../explore-hub.js", import.meta.url), "utf8");
 const css = await readFile(new URL("../app.css", import.meta.url), "utf8");
 const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
@@ -26,6 +27,8 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.ok(app.includes("} = window.BQ_DATA;"));
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);
+  new Function(exploreHub);
+  assert.match(aiStudio, /explore-hub\.js\?v=2/);
   assert.match(html, /<script src="\.\/ai-studio\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
   assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);

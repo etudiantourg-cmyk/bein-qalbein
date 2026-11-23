@@ -229,10 +229,7 @@
    const key=worldData[activeWorld].color;progress[key]=Number(progress[key]||0)+1;safeWrite('bq_kids_progress_v1',progress);
    const bests=safeRead('bq_kids_best_v1',{});bests[activeGame]=Math.max(Number(bests[activeGame]||0),score);safeWrite('bq_kids_best_v1',bests);
    gameArea.innerHTML='<div class="kids-finish-card"><span class="kids-finish-art">🏆</span><span class="kids-hero-kicker">أحسنت يا بطل!</span><h3>أنهيت المغامرة</h3><p>جمعت '+score+' من '+deck.length+' نجوم. كل محاولة تعلّم جديد، وأنت تتقدم بطريقتك.</p><div class="kids-finish-stars">'+Array.from({length:deck.length},(_,i)=>'<span>'+(i<score?'⭐':'☆')+'</span>').join('')+'</div><button type="button" class="kids-primary-action" data-kids-replay>العب مرة أخرى</button><button type="button" class="kids-secondary-action" data-kids-back>العودة إلى العالم</button></div>';
-   renderWorld(activeWorld);
    gameArea.hidden=false;
-   const finish=gameArea.previousElementSibling;
-   gameArea.innerHTML=finish.outerHTML+gameArea.innerHTML;
   }
   if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('[data-kids-world]');if(b)renderWorld(Number(b.dataset.kidsWorld))});
   worldGrid.addEventListener('click',e=>{const b=e.target.closest('[data-kids-game]');if(b){activeWorld=Number(b.dataset.world);updateWorldTabs(activeWorld);startGame(b.dataset.kidsGame)}});

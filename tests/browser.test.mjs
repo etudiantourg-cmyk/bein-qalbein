@@ -93,6 +93,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.equal(await libraryShortcut.getAttribute("aria-expanded"), "true", "Library shortcut must be the only selected shortcut");
     assert.equal(await homeShortcut.getAttribute("aria-expanded"), "false", "Home shortcut must clear its selected state when Library opens");
     assert.equal(await page.locator('#topNav button[data-go="library"]').getAttribute("aria-current"), "page", "Primary navigation must stay synchronized with Library shortcut");
+    assert.equal(await page.locator("body").getAttribute("data-current-page"), "library", "Current page state must match the opened Library pane");
     const homeShortcutBackground = await homeShortcut.evaluate(el => getComputedStyle(el).backgroundColor);
     assert.equal(homeShortcutBackground, "rgba(255, 255, 255, 0.12)", "Inactive Home shortcut must not retain the dark active background");
     await page.locator('#topNav button[data-go="home"]').click();

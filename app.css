@@ -1479,3 +1479,121 @@ body.theme-custom .sharia-door-nav .sharia-door.is-active{
  display:block;width:20px;height:20px;flex:0 0 20px;
  color:currentColor;
 }
+
+
+/* Final navigation alignment: all five main tabs and their section tiles share one grid. */
+#topNavigation #topNav{
+ display:grid!important;
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:5px!important;
+}
+#topNavigation #topNav>button{
+ display:flex!important;
+ min-width:0!important;
+ min-height:62px!important;
+ height:62px!important;
+ box-sizing:border-box!important;
+ flex:1 1 0!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:3px!important;
+ padding:5px 2px!important;
+ margin:0!important;
+ border:1px solid var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ border-radius:11px!important;
+ background:rgba(255,255,255,.12)!important;
+ color:#fff!important;
+}
+#topNavigation #topNav>button.active{
+ background:var(--bq-bar-active,#285b86)!important;
+ border-color:rgba(255,255,255,.95)!important;
+ color:#fff!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)!important;
+}
+#topNavigation #topNav>button:after{display:none!important}
+#topNavigation #topNav>button>span{
+ display:grid!important;place-items:center!important;
+ width:27px!important;height:27px!important;flex:0 0 27px!important;
+}
+#topNavigation #topNav>button>span svg{width:23px!important;height:23px!important}
+#topNavigation #topNav>button .nav-label{
+ display:block!important;max-width:100%!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;
+ white-space:nowrap!important;font-size:10px!important;line-height:1.15!important;
+ color:#fff!important;
+}
+
+/* Equal-sized icon tiles on the home and Sharia section strips. */
+.home-top-shortcuts,
+.sharia-door-nav{
+ display:grid!important;
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:6px!important;
+ background:var(--bq-bar-bg,#285b86)!important;
+}
+.home-top-shortcuts .home-shortcut,
+.sharia-door-nav .sharia-door{
+ display:flex!important;
+ min-width:0!important;
+ min-height:62px!important;
+ height:62px!important;
+ box-sizing:border-box!important;
+ flex:1 1 0!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:4px!important;
+ padding:5px 2px!important;
+ margin:0!important;
+ border:1px solid var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ border-radius:11px!important;
+ background:rgba(255,255,255,.12)!important;
+ color:#fff!important;
+}
+.home-top-shortcuts .home-shortcut.is-selected,
+.sharia-door-nav .sharia-door.is-active{
+ background:var(--bq-bar-active,#285b86)!important;
+ border-color:rgba(255,255,255,.95)!important;
+ color:#fff!important;
+}
+/* The home tile is selected only when its real .is-selected state is set by JS. */
+.home-top-shortcuts .home-shortcut-home{
+ background:rgba(255,255,255,.12)!important;
+ border-color:var(--bq-bar-border,rgba(255,255,255,.34))!important;
+}
+.home-top-shortcuts .home-shortcut-home.is-selected{
+ background:var(--bq-bar-active,#285b86)!important;
+ border-color:rgba(255,255,255,.95)!important;
+}
+.home-top-shortcuts .home-shortcut>svg,
+.sharia-door-nav .sharia-door-icon svg{
+ width:24px!important;height:24px!important;flex:0 0 24px!important;
+}
+.home-top-shortcuts .home-shortcut>span,
+.home-top-shortcuts .home-shortcut>span b,
+.sharia-door-nav .sharia-door>span:last-child{
+ display:block!important;max-width:100%!important;
+ overflow:hidden!important;text-overflow:ellipsis!important;
+ white-space:nowrap!important;color:#fff!important;
+ font-size:10px!important;line-height:1.15!important;
+}
+.sharia-door-nav .sharia-door-icon{
+ display:grid!important;place-items:center!important;
+ width:26px!important;height:26px!important;flex:0 0 26px!important;
+ background:transparent!important;
+}
+@media(max-width:540px){
+ #topNavigation #topNav{gap:3px!important}
+ #topNavigation #topNav>button,
+ .home-top-shortcuts .home-shortcut,
+ .sharia-door-nav .sharia-door{
+  min-height:58px!important;height:58px!important;padding:4px 1px!important;
+ }
+ #topNavigation #topNav>button .nav-label,
+ .home-top-shortcuts .home-shortcut>span b,
+ .sharia-door-nav .sharia-door>span:last-child{font-size:9px!important}
+ .home-top-shortcuts,.sharia-door-nav{gap:4px!important}
+}

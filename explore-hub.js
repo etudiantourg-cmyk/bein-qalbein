@@ -88,7 +88,7 @@
    {name:'حديقة الطفولة',eyebrow:'نتعلم باللعب',icon:'🧸',color:'little',desc:'أنشطة بسيطة بصرياً وصوتياً، مناسبة للبدايات والتعلم خطوة بخطوة.',games:[
     {id:'letters',icon:'🔤',name:'قطار الحروف',desc:'اختر الحرف الذي تبدأ به الكلمة.',tag:'لغة'},
     {id:'numbers',icon:'🔢',name:'عدّ واربح',desc:'عدّ الأشياء واختر العدد الصحيح.',tag:'أرقام'},
-    {id:'shapes',icon:'🟡',name:'عالم الأشكال',desc:'ميّز الأشكال والألوان الأساسية.',tag:'تمييز'}
+    {id:'little-shapes',icon:'🟡',name:'عالم الأشكال',desc:'ميّز الأشكال والألوان الأساسية.',tag:'تمييز'}
    ]},
    {name:'مدينة المغامرات',eyebrow:'مغامرات لطيفة بلا مخاطر',icon:'🚀',color:'adventure',desc:'مهمات إنقاذ واستكشاف وتحديات حركة ذهنية بشخصيات محببة.',games:[
     {id:'rescue',icon:'🐢',name:'أنقذ السلحفاة',desc:'اختر الطريق الآمن لمساعدة صديقك.',tag:'مهمة'},
@@ -167,6 +167,13 @@
     {q:'أي حرف تبدأ به كلمة «قمر»؟',a:['ف','ق','ك'],c:1,why:'قمر تبدأ بحرف القاف.'},
     {q:'أي حرف تبدأ به كلمة «وردة»؟',a:['و','د','ز'],c:0,why:'وردة تبدأ بحرف الواو.'}
    ],
+   'little-shapes':[
+    {q:'أي شكل له أربع زوايا؟',a:['🟦 مربع','⚪ دائرة','🔺 مثلث'],c:0,why:'للمربع أربع زوايا.'},
+    {q:'اختر الشكل الدائري.',a:['🔺 مثلث','⚪ دائرة','🟦 مربع'],c:1,why:'الدائرة مستديرة ولا تحتوي زوايا.'},
+    {q:'أي شكل يشبه سقف البيت؟',a:['🔺 مثلث','⚪ دائرة','🟨 مستطيل'],c:0,why:'المثلث كثيراً ما يظهر في شكل السقف.'},
+    {q:'كم ضلعاً للمستطيل؟',a:['3','4','5'],c:1,why:'للمستطيل أربعة أضلاع.'},
+    {q:'أي شكل له ضلعان طويلان وضلعان قصيران؟',a:['مستطيل','دائرة','مثلث'],c:0,why:'هذه صفة المستطيل.'}
+   ],
    numbers:[
     {q:'كم تفاحة هنا؟ 🍎 🍎 🍎',a:['2','3','4'],c:1,why:'هناك ثلاث تفاحات.'},
     {q:'كم يساوي 2 + 1؟',a:['2','3','4'],c:1,why:'اثنان زائد واحد يساوي ثلاثة.'},
@@ -229,7 +236,7 @@
   }
   function showRound(){
    const item=deck[round];locked=false;
-   const art=({pattern:'🔷',memory:'🌟',detective:'🔎',colors:'🎨',story:'📖',shapes:'🧩',animals:'🐾',space:'🪐',world:'🗺️',letters:'🔤',numbers:'🔢',rescue:'🐢',garden:'🌱',treasure:'💎'})[activeGame]||'✨';
+   const art=({pattern:'🔷',memory:'🌟',detective:'🔎',colors:'🎨',story:'📖',shapes:'🧩','little-shapes':'🟡',animals:'🐾',space:'🪐',world:'🗺️',letters:'🔤',numbers:'🔢',rescue:'🐢',garden:'🌱',treasure:'💎'})[activeGame]||'✨';
    gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ خريطة العوالم</button><span class="kids-round-count">المستوى '+String(round+1).padStart(2,'0')+' / '+deck.length+'</span></div><div class="kids-stage-meta"><span>🎯 '+worldData[activeWorld].name+'</span><span>🔥 سلسلة '+streak+'</span><span>⭐ '+score+' نجوم</span></div><div class="kids-play-progress" role="progressbar" aria-label="تقدم المهمة" aria-valuemin="0" aria-valuemax="'+deck.length+'" aria-valuenow="'+round+'"><span style="width:'+(round/deck.length*100)+'%"></span></div><div class="kids-question-card"><div class="kids-question-art" aria-hidden="true"><span>'+art+'</span><i></i><b></b></div><span class="kids-question-label">تحدّي '+(round+1)+' · اختر الإجابة الصحيحة</span><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'" aria-label="الخيار '+(i+1)+': '+escapeHtml(a)+'"><span class="kids-answer-index">'+['أ','ب','ج','د'][i]+'</span><span class="kids-answer-text">'+escapeHtml(a)+'</span><span class="kids-answer-mark" aria-hidden="true"></span></button>').join('')+'</div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line"><span>رصيد النجوم</span><strong>⭐ '+score+'</strong><small>كل إجابة صحيحة = نجمة</small></div>';
    gameArea.hidden=false;
   }

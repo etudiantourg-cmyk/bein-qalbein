@@ -1111,6 +1111,13 @@ function advanceMiniGame(){
  const quickHub=document.getElementById('quickHub');
  // Hide every other home section with a dedicated class; .active-page uses !important.
  function resetView(){
+  document.body.dataset.currentPage='home';
+  topTabs?.querySelectorAll('button[data-go]').forEach(button=>{
+   const active=button.dataset.go==='home';
+   button.classList.toggle('active',active);
+   if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+  });
+  try{bqStorage.setItem('bq_last_page','home')}catch(_){}
   document.body.removeAttribute('data-home-shortcuts-open');
   host.hidden=true;
   Object.values(panes).forEach(p=>p.hidden=true);
@@ -1127,6 +1134,15 @@ function advanceMiniGame(){
  window.resetHomeShortcutView=resetView;
  function activate(key){
   const pane=panes[key];if(!pane)return;
+  if(key==='library'){
+   document.body.dataset.currentPage='library';
+   topTabs?.querySelectorAll('button[data-go]').forEach(button=>{
+    const active=button.dataset.go==='library';
+    button.classList.toggle('active',active);
+    if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+   });
+   try{bqStorage.setItem('bq_last_page','library')}catch(_){}
+  }
   document.body.dataset.homeShortcutsOpen='true';
   homeSections.slice(1).forEach(section=>section.classList.add('bq-shortcut-force-hidden'));
   library.classList.toggle('bq-shortcut-force-hidden',key==='library');

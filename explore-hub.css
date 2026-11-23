@@ -211,3 +211,16 @@
 @media(max-width:560px){.kids-world-grid{grid-template-columns:1fr}.kids-world-card>p{min-height:0}.kids-dashboard{padding:13px}.kids-stat{gap:5px;padding:8px 5px}.kids-stat-icon{flex-basis:29px;width:29px;height:29px;font-size:16px}.kids-stat strong{font-size:15px}.kids-stat small{font-size:8px}.kids-answer-grid{grid-template-columns:1fr}.kids-answer{min-height:62px}.kids-stage-meta span{font-size:8px;padding:5px 7px}.kids-game-card{min-height:76px}}
 @media(min-width:900px){.kids-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kids-hero{min-height:220px}.kids-world-card{padding:18px}}
 @media(prefers-reduced-motion:reduce){.kids-world-card,.kids-game-card,.kids-answer,.kids-primary-action,.kids-secondary-action,.kids-overall-track span{transition:none!important}}
+
+/* Distinct learning mechanics: memory reveal and color laboratory */
+.kids-memory-preview,.kids-color-lab{margin:12px 0 15px;padding:14px;border:1px solid #dceaf4;border-radius:18px;background:linear-gradient(145deg,#fff,#f2f8fd);text-align:center}
+.kids-scene-caption{display:block;margin-bottom:10px;color:#397eae;font-size:10px;font-weight:900}
+.kids-memory-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:0 auto 12px;max-width:330px}
+.kids-memory-tiles>span{position:relative;display:grid;place-items:center;min-height:76px;border:1px solid #dceaf4;border-radius:16px;background:linear-gradient(145deg,#fff,#eaf5fc);box-shadow:0 5px 12px rgba(40,91,134,.07);font-size:35px}
+.kids-memory-tiles small{position:absolute;top:5px;inset-inline-start:7px;color:#7a91a3;font-size:8px;font-weight:900}
+.kids-memory-start{max-width:340px;margin:0 auto}
+.kids-memory-challenge[hidden],.kids-memory-preview[hidden]{display:none!important}
+.kids-color-equation{display:flex;align-items:center;justify-content:center;gap:12px}
+.kids-color-equation i{display:block;width:46px;height:46px;border:4px solid #fff;border-radius:50%;background:var(--mix);box-shadow:0 5px 13px rgba(35,79,115,.18)}
+.kids-color-equation i.kids-color-result{width:54px;height:54px;border-width:5px;box-shadow:0 0 0 4px #eaf3f9,0 6px 15px rgba(35,79,115,.15)}
+.kids-color-equation b{color:#6c8ba1;font-size:19px}

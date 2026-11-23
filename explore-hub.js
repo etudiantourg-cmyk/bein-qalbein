@@ -10,7 +10,8 @@
  /* LEARN */
  const library=$('libraryPage');
  if(library){
-  const nav=library.querySelector('.section-number-nav');
+  const libraryHost=document.querySelector('[data-shortcut-pane="library"]')||library;
+  const nav=libraryHost.querySelector('.section-number-nav')||library.querySelector('.section-number-nav');
   const topics=[
    {id:'languages',icon:'🌐',title:'اللغات',category:'مهارات',summary:'ابدأ مفردات وتعبيرات عملية في الإنجليزية والفرنسية ولغات أخرى.',lessons:['عبارات يومية للتعارف والسؤال والجواب.','مفردات أساسية مع أمثلة قصيرة.','تدريب على النطق والاستماع والمراجعة.']},
    {id:'culture',icon:'🌍',title:'الثقافة العامة',category:'ثقافة',summary:'وسّع معرفتك بالجغرافيا والمجتمعات والحقائق من حولك.',lessons:['القارات والمحيطات والعواصم.','العادات الثقافية والتنوع الحضاري.','تمييز المعلومة الموثوقة من الشائعة.']},
@@ -24,13 +25,13 @@
    {id:'health',icon:'🩺',title:'الصحة والمعرفة الطبية',category:'علوم',summary:'معلومات صحية عامة تساعدك على فهم الجسم والوقاية.',lessons:['النوم والتغذية والنشاط البدني.','مبادئ الوقاية والنظافة.','متى تحتاج إلى استشارة مختص صحي؟']}
   ];
   const completed=new Set(safeRead('bq_learning_progress',[]).filter(x=>typeof x==='string'));
-  library.innerHTML='';
-  if(nav)library.appendChild(nav);
+  libraryHost.innerHTML='';
+  if(nav)libraryHost.appendChild(nav);
   const heading=document.createElement('h2');heading.id='libraryTitle';heading.textContent='مساحة التعلّم والمعرفة';
   const intro=document.createElement('p');intro.className='explore-intro';intro.textContent='اختر مجالاً، افتح دروسه القصيرة، وتابع تقدمك. محتوى عام يناسب مختلف الاهتمامات والأعمار.';
   const progress=document.createElement('div');progress.className='explore-progress';progress.innerHTML='<strong id="learnProgressText"></strong><div class="explore-progress-track" role="progressbar" aria-label="إنجاز مسارات التعلم" aria-valuemin="0" aria-valuemax="100"><span id="learnProgressBar"></span></div>';
   const grid=document.createElement('div');grid.className='explore-card-grid';grid.id='learningTopics';
-  library.append(heading,intro,progress,grid);
+  libraryHost.append(heading,intro,progress,grid);
   topics.forEach(topic=>{
    const card=document.createElement('article');card.className='explore-card'+(completed.has(topic.id)?' is-complete':'');card.dataset.topic=topic.id;
    card.innerHTML='<div class="explore-card-head"><span class="explore-card-icon" aria-hidden="true">'+topic.icon+'</span><h3>'+escapeHtml(topic.title)+'</h3></div><p>'+escapeHtml(topic.summary)+'</p><details><summary>افتح محاور التعلّم</summary><ul>'+topic.lessons.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></details><button type="button" class="explore-done" data-topic-done="'+topic.id+'" aria-pressed="'+String(completed.has(topic.id))+'">'+(completed.has(topic.id)?'✓ مكتمل — أزل العلامة':'تحديد كمكتمل')+'</button>';

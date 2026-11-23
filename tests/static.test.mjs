@@ -28,8 +28,8 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);
   new Function(exploreHub);
-  assert.match(aiStudio, /explore-hub\.js\?v=6/);
-  assert.match(html, /explore-hub\.css\?v=4/);
+  assert.match(aiStudio, /explore-hub\.js\?v=7/);
+  assert.match(html, /explore-hub\.css\?v=5/);
   assert.match(exploreHub, /kids-dashboard/);
   assert.match(exploreHub, /bq_kids_completed_v2/);
   assert.match(exploreHub, /little-shapes/);

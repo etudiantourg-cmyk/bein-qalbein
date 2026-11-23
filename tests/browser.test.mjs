@@ -120,6 +120,9 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
       }
     }
     await page.locator('#topNav button[data-go="games"]').click();
+    assert.equal(await page.locator(".kids-world-card").count(), 5, "all five world portals should be visible");
+    assert.equal(await page.locator(".kids-game-card").count(), 15, "all fifteen activities should be discoverable");
+    assert.equal(await page.locator(".kids-dashboard-stats .kids-stat").count(), 3, "the kids dashboard should expose progress metrics");
     await page.locator('[data-kids-game="pattern"]').click();
     assert.equal(await page.locator("#kidsPlayArea").isVisible(), true, "selected kids game should open");
     for (let round = 0; round < 5; round++) {
@@ -130,7 +133,8 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     assert.match(await page.locator("#kidsPlayArea .kids-finish-card").innerText(), /أنهيت المغامرة/);
     assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("bq_kids_progress_v1") || "{}").mind), 1);
     await page.locator("#kidsPlayArea [data-kids-back]").click();
-    assert.match(await page.locator(".kids-world-card .kids-world-badge").innerText(), /1 إنجاز/);
+    assert.match(await page.locator(".kids-world-card .kids-world-badge").first().innerText(), /1 \/ 3 مكتملة/);
+    assert.equal(await page.locator(".kids-dashboard-stats .kids-stat").nth(2).innerText().then(x => /1/.test(x)), true, "completed game count should update");
     await page.locator('#topNav button[data-go="channels"]').click();
     assert.equal(await page.locator("#channelsPage .explore-channel-card").count(), 10);
     assert.match(await page.locator("#channelsPage .explore-channel-card").first().getAttribute("href"), /youtube\.com\/results/);

@@ -135,6 +135,15 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator("#kidsPlayArea [data-kids-back]").click();
     assert.match(await page.locator(".kids-world-card .kids-world-badge").first().innerText(), /1 \/ 3 مكتملة/);
     assert.equal(await page.locator(".kids-dashboard-stats .kids-stat").nth(2).innerText().then(x => /1/.test(x)), true, "completed game count should update");
+    await page.locator('[data-kids-game="memory"]').click();
+    assert.equal(await page.locator("#kidsPlayArea .kids-memory-preview").isVisible(), true, "memory game should reveal a visual sequence first");
+    await page.locator("#kidsPlayArea [data-memory-start]").click();
+    assert.equal(await page.locator("#kidsPlayArea .kids-memory-preview").isHidden(), true);
+    assert.equal(await page.locator("#kidsPlayArea .kids-memory-challenge").isVisible(), true, "memory recall should begin only after the player is ready");
+    await page.locator("#kidsPlayArea [data-kids-back]").click();
+    await page.locator('[data-kids-game="colors"]').click();
+    assert.equal(await page.locator("#kidsPlayArea .kids-color-equation").isVisible(), true, "color game should show a color-mixing scene");
+    await page.locator("#kidsPlayArea [data-kids-back]").click();
     await page.locator('#topNav button[data-go="channels"]').click();
     assert.equal(await page.locator("#channelsPage .explore-channel-card").count(), 10);
     assert.match(await page.locator("#channelsPage .explore-channel-card").first().getAttribute("href"), /youtube\.com\/results/);

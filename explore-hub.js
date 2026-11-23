@@ -197,38 +197,55 @@
    ]
   };
   const $games=document.createElement('div');$games.className='kids-hub';
+  const dashboard=document.createElement('section');dashboard.className='kids-dashboard';dashboard.setAttribute('aria-label','إحصاءات التقدم');
+  dashboard.innerHTML='<div class="kids-dashboard-title"><span>لوحة إنجازاتك</span><strong>رحلتك تكبر مع كل محاولة</strong></div><div class="kids-dashboard-stats"><div class="kids-stat"><span class="kids-stat-icon">🎮</span><span><strong id="kidsTotalGames">15</strong><small>لعبة متاحة</small></span></div><div class="kids-stat"><span class="kids-stat-icon">⭐</span><span><strong id="kidsTotalStars">0</strong><small>نجمة جمعتها</small></span></div><div class="kids-stat"><span class="kids-stat-icon">🏅</span><span><strong id="kidsCompletedGames">0</strong><small>لعبة أنجزتها</small></span></div></div><div class="kids-overall-track" role="progressbar" aria-label="تقدمك في عالم الصغار" aria-valuemin="0" aria-valuemax="15" aria-valuenow="0"><span id="kidsOverallBar"></span></div>';
   const hero=document.createElement('section');hero.className='kids-hero';
   hero.innerHTML='<div class="kids-hero-copy"><span class="kids-hero-kicker">✦ مساحة آمنة للخيال والاكتشاف</span><h2>عالم الصغار</h2><p>خمسة عوالم مليئة بالتجارب والألعاب والقصص. تعلّم، ابتكر، واكتشف بطريقتك.</p><div class="kids-hero-pills"><span>🌱 نتعلم بهدوء</span><span>🎯 تحديات لطيفة</span><span>♡ بلا إعلانات داخل اللعب</span></div></div><div class="kids-hero-art" aria-hidden="true"><span class="kids-orbit orbit-one">⭐</span><span class="kids-orbit orbit-two">🪐</span><span class="kids-hero-mascot">🦊</span><span class="kids-hero-cloud cloud-one"></span><span class="kids-hero-cloud cloud-two"></span></div>';
   const worldIntro=document.createElement('div');worldIntro.className='kids-section-heading';worldIntro.innerHTML='<div><span>اختر بوابتك</span><h3>أي عالم ستكتشف اليوم؟</h3></div><small>5 عوالم • ألعاب قصيرة</small>';
   const worldGrid=document.createElement('div');worldGrid.className='kids-world-grid';
   const gameArea=document.createElement('section');gameArea.className='kids-play-area';gameArea.id='kidsPlayArea';gameArea.hidden=true;
   const safety=document.createElement('p');safety.className='kids-safety-note';safety.textContent='مساحة لعب هادئة: لا محادثات عامة، ولا ترتيب أو منافسة مع غرباء. تُحفظ نتائجك على هذا الجهاز فقط.';
-  $games.append(hero,worldIntro,worldGrid,gameArea,safety);games.appendChild($games);
-  let activeWorld=0,activeGame=null,round=0,score=0,deck=[],locked=false;
+  $games.append(hero,dashboard,worldIntro,worldGrid,gameArea,safety);games.appendChild($games);
+  let activeWorld=0,activeGame=null,round=0,score=0,streak=0,deck=[],locked=false;
   const progress=safeRead('bq_kids_progress_v1',{});
+  const bests=safeRead('bq_kids_best_v1',{});
+  const completedIds=new Set(safeRead('bq_kids_completed_v2',[]));
+  const totalStars=()=>Object.values(bests).reduce((sum,n)=>sum+Math.max(0,Number(n)||0),0);
+  function renderDashboard(){
+   const done=completedIds.size,stars=totalStars();
+   $('kidsTotalStars').textContent=String(stars);$('kidsCompletedGames').textContent=String(done);
+   dashboard.querySelector('[role=progressbar]').setAttribute('aria-valuenow',String(Math.min(15,done)));
+   $('kidsOverallBar').style.width=(Math.min(15,done)/15*100)+'%';
+  }
   function updateWorldTabs(index){
    if(nav)nav.querySelectorAll('[data-kids-world]').forEach(b=>{const active=Number(b.dataset.kidsWorld)===index;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active))});
   }
   function renderWorld(index){
    activeWorld=index;activeGame=null;gameArea.hidden=true;updateWorldTabs(index);
-   const w=worldData[index];
-   worldGrid.innerHTML='<article class="kids-world-card world-'+w.color+'"><div class="kids-world-card-top"><span class="kids-world-illustration">'+w.icon+'</span><span class="kids-world-badge">'+(progress[w.color]||0)+' إنجاز</span></div><span class="kids-world-eyebrow">'+w.eyebrow+'</span><h3>'+w.name+'</h3><p>'+w.desc+'</p><div class="kids-game-list">'+w.games.map(g=>'<button type="button" class="kids-game-card" data-kids-game="'+g.id+'" data-world="'+index+'"><span class="kids-game-icon">'+g.icon+'</span><span class="kids-game-copy"><strong>'+g.name+'</strong><small>'+g.desc+'</small></span><span class="kids-game-tag">'+g.tag+'</span><span class="kids-game-arrow" aria-hidden="true">‹</span></button>').join('')+'</div></article>';
-   worldIntro.querySelector('small').textContent='العالم '+(index+1)+' من 5 • '+w.games.length+' ألعاب';
+   const best=safeRead('bq_kids_best_v1',{});
+   worldGrid.innerHTML=worldData.map((w,wi)=>'<article class="kids-world-card world-'+w.color+(wi===index?' is-current':'')+'" data-world-card="'+wi+'"><div class="kids-world-card-top"><span class="kids-world-illustration">'+w.icon+'</span><span class="kids-world-badge">'+w.games.filter(g=>completedIds.has(g.id)).length+' / '+w.games.length+' مكتملة</span></div><span class="kids-world-eyebrow">'+w.eyebrow+'</span><h3>'+w.name+'</h3><p>'+w.desc+'</p><div class="kids-world-progress"><span style="width:'+(w.games.filter(g=>completedIds.has(g.id)).length/w.games.length*100)+'%"></span></div><div class="kids-game-list">'+w.games.map(g=>'<button type="button" class="kids-game-card" data-kids-game="'+g.id+'" data-world="'+wi+'"><span class="kids-game-icon">'+g.icon+'</span><span class="kids-game-copy"><strong>'+g.name+'</strong><small>'+g.desc+'</small><em>'+(completedIds.has(g.id)?'✓ أُنجزت':'مهمة تفاعلية')+' · أفضل نتيجة '+(Number(best[g.id]||0))+'/'+(datasets[g.id]||[]).length+'</em></span><span class="kids-game-tag">'+g.tag+'</span><span class="kids-game-arrow" aria-hidden="true">‹</span></button>').join('')+'</div></article>').join('');
+   worldIntro.querySelector('small').textContent='15 لعبة • 5 عوالم • اختر مغامرتك';
+   renderDashboard();
   }
   function showRound(){
    const item=deck[round];locked=false;
-   gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ العودة للعالم</button><span class="kids-round-count">المهمة '+(round+1)+' من '+deck.length+'</span></div><div class="kids-play-progress"><span style="width:'+((round)/deck.length*100)+'%"></span></div><div class="kids-question-card"><span class="kids-question-mascot">🦊</span><span class="kids-question-label">'+worldData[activeWorld].name+'</span><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'">'+a+'</button>').join('')+'</div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line">⭐ <span>نجومك</span> <strong>'+score+'</strong></div>';
+   const art=({pattern:'🔷',memory:'🌟',detective:'🔎',colors:'🎨',story:'📖',shapes:'🧩',animals:'🐾',space:'🪐',world:'🗺️',letters:'🔤',numbers:'🔢',rescue:'🐢',garden:'🌱',treasure:'💎'})[activeGame]||'✨';
+   gameArea.innerHTML='<div class="kids-play-head"><button type="button" class="kids-back" data-kids-back>‹ خريطة العوالم</button><span class="kids-round-count">المستوى '+String(round+1).padStart(2,'0')+' / '+deck.length+'</span></div><div class="kids-stage-meta"><span>🎯 '+worldData[activeWorld].name+'</span><span>🔥 سلسلة '+streak+'</span><span>⭐ '+score+' نجوم</span></div><div class="kids-play-progress" role="progressbar" aria-label="تقدم المهمة" aria-valuemin="0" aria-valuemax="'+deck.length+'" aria-valuenow="'+round+'"><span style="width:'+(round/deck.length*100)+'%"></span></div><div class="kids-question-card"><div class="kids-question-art" aria-hidden="true"><span>'+art+'</span><i></i><b></b></div><span class="kids-question-label">تحدّي '+(round+1)+' · اختر الإجابة الصحيحة</span><h3>'+item.q+'</h3><div class="kids-answer-grid">'+item.a.map((a,i)=>'<button type="button" class="kids-answer" data-kids-answer="'+i+'" aria-label="الخيار '+(i+1)+': '+escapeHtml(a)+'"><span class="kids-answer-index">'+['أ','ب','ج','د'][i]+'</span><span class="kids-answer-text">'+escapeHtml(a)+'</span><span class="kids-answer-mark" aria-hidden="true"></span></button>').join('')+'</div><p class="kids-feedback" role="status" aria-live="polite"></p></div><div class="kids-score-line"><span>رصيد النجوم</span><strong>⭐ '+score+'</strong><small>كل إجابة صحيحة = نجمة</small></div>';
    gameArea.hidden=false;
   }
   function startGame(id){
-   activeGame=id;round=0;score=0;locked=false;deck=(datasets[id]||[]).slice();if(!deck.length)return;
-   const old=Number(progress[worldData[activeWorld].color]||0);showRound();
+   activeGame=id;round=0;score=0;streak=0;locked=false;deck=(datasets[id]||[]).slice();if(!deck.length)return;
+   showRound();
    gameArea.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   function finishGame(){
    const key=worldData[activeWorld].color;progress[key]=Number(progress[key]||0)+1;safeWrite('bq_kids_progress_v1',progress);
-   const bests=safeRead('bq_kids_best_v1',{});bests[activeGame]=Math.max(Number(bests[activeGame]||0),score);safeWrite('bq_kids_best_v1',bests);
-   gameArea.innerHTML='<div class="kids-finish-card"><span class="kids-finish-art">🏆</span><span class="kids-hero-kicker">أحسنت يا بطل!</span><h3>أنهيت المغامرة</h3><p>جمعت '+score+' من '+deck.length+' نجوم. كل محاولة تعلّم جديد، وأنت تتقدم بطريقتك.</p><div class="kids-finish-stars">'+Array.from({length:deck.length},(_,i)=>'<span>'+(i<score?'⭐':'☆')+'</span>').join('')+'</div><button type="button" class="kids-primary-action" data-kids-replay>العب مرة أخرى</button><button type="button" class="kids-secondary-action" data-kids-back>العودة إلى العالم</button></div>';
+   const wasDone=completedIds.has(activeGame);completedIds.add(activeGame);safeWrite('bq_kids_completed_v2',Array.from(completedIds));
+   bests[activeGame]=Math.max(Number(bests[activeGame]||0),score);safeWrite('bq_kids_best_v1',bests);
+   const earned=score*20+(wasDone?0:30);
+   const xp=safeRead('bq_kids_xp_v1',0)+earned;safeWrite('bq_kids_xp_v1',xp);
+   renderDashboard();
+   gameArea.innerHTML='<div class="kids-finish-card"><div class="kids-finish-confetti" aria-hidden="true">✦ ✧ ✦</div><span class="kids-finish-art">🏆</span><span class="kids-hero-kicker">إنجاز جديد في رحلتك</span><h3>'+(score===deck.length?'أداء أسطوري!':'أحسنت، واصل التقدم!')+'</h3><p>أكملت '+deck.length+' تحديات وجمعت '+score+' نجوم. '+(wasDone?'لقد حسّنت تجربتك!':'أضفنا هذه اللعبة إلى إنجازاتك.')+'</p><div class="kids-finish-stars">'+Array.from({length:deck.length},(_,i)=>'<span>'+(i<score?'⭐':'☆')+'</span>').join('')+'</div><div class="kids-reward-row"><span>✨ +'+earned+' XP</span><span>🏅 '+completedIds.size+'/15 لعبة</span><span>🌟 '+totalStars()+' نجمة</span></div><button type="button" class="kids-primary-action" data-kids-replay>↻ العب مرة أخرى</button><button type="button" class="kids-secondary-action" data-kids-back>🗺 العودة إلى خريطة العوالم</button></div>';
    gameArea.hidden=false;
   }
   if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('[data-kids-world]');if(b)renderWorld(Number(b.dataset.kidsWorld))});
@@ -236,11 +253,12 @@
   gameArea.addEventListener('click',e=>{
    if(e.target.closest('[data-kids-back]')){renderWorld(activeWorld);return}
    if(e.target.closest('[data-kids-replay]')){startGame(activeGame);return}
+   if(e.target.closest('[data-kids-next]')){round++;if(round>=deck.length)finishGame();else showRound();return}
    const b=e.target.closest('[data-kids-answer]');if(!b||locked)return;
-   locked=true;const item=deck[round],choice=Number(b.dataset.kidsAnswer),correct=choice===item.c;if(correct)score++;
+   locked=true;const item=deck[round],choice=Number(b.dataset.kidsAnswer),correct=choice===item.c;if(correct){score++;streak++}else{streak=0}
    gameArea.querySelectorAll('[data-kids-answer]').forEach((button,i)=>{button.disabled=true;if(i===item.c)button.classList.add('is-correct');else if(i===choice)button.classList.add('is-wrong')});
    const fb=gameArea.querySelector('.kids-feedback');fb.textContent=(correct?'أحسنت! إجابة رائعة. ':'محاولة جميلة! ')+item.why;
-   const footer=document.createElement('button');footer.type='button';footer.className='kids-primary-action kids-next-action';footer.textContent=round===deck.length-1?'عرض النتيجة':'المهمة التالية';footer.addEventListener('click',()=>{round++;if(round>=deck.length)finishGame();else showRound()});gameArea.querySelector('.kids-question-card').appendChild(footer);
+   const footer=document.createElement('button');footer.type='button';footer.className='kids-primary-action kids-next-action';footer.dataset.kidsNext='';footer.textContent=round===deck.length-1?'🏆 عرض النتيجة':'المهمة التالية ←';gameArea.querySelector('.kids-question-card').appendChild(footer);
   });
   renderWorld(0);
  }

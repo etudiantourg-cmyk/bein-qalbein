@@ -1612,3 +1612,54 @@ body.theme-custom .sharia-door-nav .sharia-door.is-active{
  background:rgba(255,255,255,.12);color:#fff;font:700 15px/1 Alexandria, sans-serif;
 }
 @media(max-width:540px){.section-number-nav{gap:4px;padding:6px 8px 8px}.section-number-tile{height:54px;font-size:14px}}
+
+
+/* Restore the original unboxed primary navigation; keep its selection purely semantic. */
+#topNavigation #topNav{
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ gap:5px!important;align-items:center!important;
+}
+#topNavigation #topNav>button{
+ display:flex!important;position:relative!important;min-width:0!important;
+ min-height:48px!important;height:auto!important;box-sizing:border-box!important;
+ flex-direction:row!important;align-items:center!important;justify-content:center!important;
+ gap:0!important;padding:7px 2px 9px!important;margin:0!important;
+ border:0!important;border-radius:11px 11px 0 0!important;
+ background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.96)!important;
+}
+#topNavigation #topNav>button.active{
+ background:transparent!important;color:rgba(255,255,255,.96)!important;
+ box-shadow:none!important;border:0!important;
+}
+#topNavigation #topNav>button:after{display:none!important;content:none!important}
+#topNavigation #topNav>button>span{
+ display:grid!important;place-items:center!important;
+ width:34px!important;height:34px!important;flex:0 0 34px!important;
+ border-radius:0!important;background:transparent!important;box-shadow:none!important;
+}
+#topNavigation #topNav>button>span svg{display:block!important;width:23px!important;height:23px!important}
+#topNavigation #topNav>button .nav-label{
+ position:absolute!important;width:1px!important;height:1px!important;padding:0!important;
+ margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;
+ white-space:nowrap!important;border:0!important;
+}
+/* Numbered bars match the home shortcut strip's outer and tile dimensions. */
+.section-number-nav{
+ width:min(980px,calc(100% - 20px))!important;max-width:980px!important;
+ box-sizing:border-box!important;margin:0 auto 10px!important;
+ padding:7px 10px 9px!important;border:1px solid rgba(255,255,255,.18)!important;
+ border-radius:24px!important;background:var(--bq-bar-bg,#285b86)!important;
+ gap:6px!important;
+}
+.section-number-tile{
+ min-width:0!important;min-height:62px!important;height:62px!important;
+ box-sizing:border-box!important;margin:0!important;border-radius:11px!important;
+ border:1px solid var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ background:rgba(255,255,255,.12)!important;color:#fff!important;
+}
+@media(max-width:540px){
+ #topNavigation #topNav{gap:3px!important}
+ #topNavigation #topNav>button{min-height:46px!important;padding:7px 2px 9px!important}
+ .section-number-nav{gap:4px!important;padding:7px 10px 9px!important}
+ .section-number-tile{min-height:58px!important;height:58px!important}
+}

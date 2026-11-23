@@ -103,13 +103,13 @@
    ['القمر يصدر ضوءه من نفسه.','خطأ: يعكس ضوء الشمس الساقط عليه.']
   ];
   const words=[['ةسردم','مدرسة','مكان للتعلم والدراسة.'],['باتك','كتاب','نقرأ فيه المعلومات والقصص.'],['ةرايس','سيارة','وسيلة نقل برية.'],['رتويبمك','كمبيوتر','جهاز لمعالجة المعلومات.'],['ةقيدح','حديقة','مكان تكثر فيه النباتات.'],['رحب','بحر','مسطح مائي واسع.'],['ملق','قلم','أداة للكتابة.'],['ةحاسم','مساحة','مقدار السطح داخل شكل.']];
-  let mode='',round=0,score=0,items=[],locked=false,timer=null,timeLeft=0,memorySequence='';
+  let mode='',round=0,score=0,items=[],locked=false,timer=null,timeLeft=0,memorySequence='',completedGame=false;
   const stage=$('exploreGameStage'),feedback=$('exploreGameFeedback'),next=$('exploreGameNext');
   function clearTimer(){if(timer){clearInterval(timer);timer=null}}
   function shuffle(list){const copy=list.slice();for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}return copy}
   function status(){ $('exploreGameProgress').textContent='الجولة '+Math.min(round+1,5)+' من 5';$('exploreGameScore').textContent=String(score); }
   function finish(){
-   clearTimer();locked=true;next.hidden=false;next.textContent='العب مرة أخرى';
+   clearTimer();locked=true;completedGame=true;next.hidden=false;next.textContent='العب مرة أخرى';
    const bests=safeRead('bq_game_best_v1',{});const best=Math.max(Number(bests[mode]||0),score);bests[mode]=best;safeWrite('bq_game_best_v1',bests);
    $('exploreGameQuestion').textContent='انتهى التحدي!';
    stage.innerHTML='<p class="explore-game-feedback">نتيجتك: <strong>'+score+' من 5</strong> — أفضل نتيجة لك: <strong>'+best+' من 5</strong>.</p>';
@@ -160,14 +160,14 @@
     stage.innerHTML='<div class="explore-game-input-row"><input id="exploreGameAnswer" type="number" inputmode="numeric" placeholder="اكتب الناتج"><button type="button" data-submit-text>تحقق</button></div>';
     $('exploreGameTimer').textContent='';
    }else if(mode==='memory'){
-    const item=items[round];prompt.textContent='تذكّر تسلسل الأرقام ثم اكتبه.';
+    const item=items[round];memorySequence=item.answer;prompt.textContent='تذكّر تسلسل الأرقام ثم اكتبه.';
     stage.innerHTML='<p class="explore-game-feedback" id="memoryDigits">احفظ هذا التسلسل: <strong>'+memorySequence+'</strong></p><div class="explore-game-input-row"><input id="exploreGameAnswer" type="text" inputmode="numeric" autocomplete="off" placeholder="أدخل الأرقام"><button type="button" data-submit-text>تحقق</button></div>';
     $('exploreGameTimer').textContent='';
     const shown=$('memoryDigits');setTimeout(()=>{if(mode==='memory'&&round===Number(shown?.dataset.round||round)&&shown?.isConnected)shown.innerHTML='تم إخفاء التسلسل. أدخله الآن.';},2300);
    }
   }
   function start(selected){
-   clearTimer();mode=selected;round=0;score=0;locked=false;feedback.textContent='';next.hidden=true;
+   clearTimer();mode=selected;round=0;score=0;locked=false;completedGame=false;feedback.textContent='';next.hidden=true;
    modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gameMode===mode)));
    if(mode==='quiz'||mode==='speed')items=shuffle(questions).slice(0,5);
    else if(mode==='truefalse')items=shuffle(truths).slice(0,5).map(x=>({q:x[0],a:['صح','خطأ'],c:x[1].startsWith('صحيح')?0:1,w:x[1]}));
@@ -184,7 +184,7 @@
    if(e.target.closest('[data-submit-text]'))submitText();
   });
   stage.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='exploreGameAnswer'){e.preventDefault();submitText()}});
-  next.addEventListener('click',()=>{if(!mode)return;if(locked){if(round===4){start(mode)}else nextRound()}});
+  next.addEventListener('click',()=>{if(!mode||!locked)return;if(completedGame){start(mode);return}if(round===4){finish();return}nextRound()});
   games.addEventListener('click',e=>{const modeButton=e.target.closest('[data-game-mode]');if(modeButton)board.scrollIntoView({behavior:'smooth',block:'nearest'})});
  }
  

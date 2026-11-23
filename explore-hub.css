@@ -131,3 +131,83 @@
 .kids-safety-note{margin:0;padding:11px 13px;border:1px solid var(--line);border-radius:13px;background:var(--surface-2);color:var(--muted);font-size:10px;line-height:1.7}
 @media(max-width:480px){.kids-hero{min-height:190px;padding:16px}.kids-hero-copy{max-width:72%}.kids-hero-art{flex-basis:28%;min-height:135px}.kids-hero-mascot{width:82px;height:82px;border-radius:29px;font-size:49px}.kids-world-nav{gap:3px!important;padding:5px!important}.kids-world-nav .kids-world-tab{min-height:65px;padding:5px 1px!important}.kids-tab-icon{font-size:18px}.kids-tab-name{font-size:9px}.kids-answer-grid{grid-template-columns:1fr}.kids-game-tag{display:none}}
 @media(prefers-reduced-motion:reduce){.kids-hero-mascot{animation:none!important}.kids-game-card,.kids-play-progress span{transition:none!important}}
+
+/* Kids world: premium game map, tactile controls and reward feedback */
+.kids-dashboard{padding:15px 16px 13px;border:1px solid #dceaf4;border-radius:21px;background:linear-gradient(135deg,#fff 0%,#f3f9ff 55%,#f8f4ff 100%);box-shadow:0 9px 24px rgba(40,91,134,.075)}
+.kids-dashboard-title{display:flex;flex-direction:column;gap:3px;margin-bottom:11px}
+.kids-dashboard-title span{color:#397eae;font-size:10px;font-weight:900;letter-spacing:.3px}
+.kids-dashboard-title strong{color:#234f73;font-size:15px}
+.kids-dashboard-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kids-stat{display:flex;align-items:center;gap:8px;min-width:0;padding:9px 7px;border:1px solid #e1edf5;border-radius:14px;background:rgba(255,255,255,.86)}
+.kids-stat-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:11px;background:#eaf5fc;font-size:18px}
+.kids-stat>span:last-child{display:grid;gap:1px;min-width:0}
+.kids-stat strong{color:#285b86;font-size:17px;line-height:1.1}
+.kids-stat small{color:#637b8e;font-size:9px;white-space:nowrap}
+.kids-overall-track{height:7px;overflow:hidden;margin-top:12px;border-radius:99px;background:#e2edf5}
+.kids-overall-track span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#397eae,#8bc6e7);transition:width .35s ease}
+.kids-world-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;align-items:start}
+.kids-world-card{position:relative;min-width:0;padding:15px;border:1px solid #dce8f1;border-radius:23px;background:linear-gradient(150deg,#fff,#f7fbff);box-shadow:0 9px 22px rgba(40,65,90,.07);transition:transform .2s,border-color .2s,box-shadow .2s}
+.kids-world-card.is-current{border-color:#9dc5df;box-shadow:0 10px 25px rgba(40,91,134,.12),inset 0 0 0 1px rgba(40,91,134,.08)}
+.kids-world-card:before{content:"";position:absolute;inset:0 16px auto;height:4px;border-radius:0 0 9px 9px;background:linear-gradient(90deg,#397eae,#a8d9ef)}
+.kids-world-card.world-create:before{background:linear-gradient(90deg,#d78cbe,#f4c6a5)}
+.kids-world-card.world-learn:before{background:linear-gradient(90deg,#4cae9c,#a9d7a4)}
+.kids-world-card.world-little:before{background:linear-gradient(90deg,#e9a3b4,#f4d18c)}
+.kids-world-card.world-adventure:before{background:linear-gradient(90deg,#7b8fe0,#b7a4ef)}
+.kids-world-card-top{margin-bottom:3px}
+.kids-world-illustration{width:61px;height:61px;border-radius:20px;background:radial-gradient(circle at 30% 20%,#fff 0%,#e6f4fc 65%,#d7eafa 100%);font-size:34px;box-shadow:0 7px 16px rgba(40,91,134,.12)}
+.kids-world-badge{max-width:62%;padding:6px 9px;border:1px solid #e2edf5;border-radius:99px;background:#f2f8fc;color:#285b86;font-size:9px;white-space:nowrap}
+.kids-world-eyebrow{margin-top:10px;font-size:10px}
+.kids-world-card h3{font-size:19px;line-height:1.45}
+.kids-world-card>p{min-height:40px;font-size:11px;line-height:1.7}
+.kids-world-progress{height:5px;overflow:hidden;margin:8px 0 12px;border-radius:99px;background:#e7eff5}
+.kids-world-progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4c91bc,#8ac8e5)}
+.kids-game-list{gap:8px}
+.kids-game-card{position:relative;min-height:80px;padding:10px 9px;border:1px solid #e2ebf2;border-radius:17px;background:linear-gradient(115deg,#fff,#f9fcff);box-shadow:0 3px 9px rgba(40,91,134,.035);cursor:pointer}
+.kids-game-card:hover{transform:translateY(-2px);border-color:#9fc6df;box-shadow:0 8px 16px rgba(40,91,134,.1)}
+.kids-game-card:focus-visible,.kids-answer:focus-visible,.kids-back:focus-visible,.kids-primary-action:focus-visible,.kids-secondary-action:focus-visible{outline:3px solid #5b9ec7;outline-offset:3px}
+.kids-game-icon{flex-basis:47px;width:47px;height:47px;border:1px solid #e2edf5;border-radius:16px;background:linear-gradient(145deg,#edf7fd,#f4efff);font-size:25px;box-shadow:inset 0 1px #fff}
+.kids-game-copy strong{font-size:12px;line-height:1.5}
+.kids-game-copy small{font-size:9px;line-height:1.45}
+.kids-game-copy em{color:#4681a6;font-size:9px;font-style:normal;font-weight:800}
+.kids-game-tag{align-self:flex-start;margin-top:2px;padding:4px 6px;font-size:8px}
+.kids-game-arrow{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:#eaf5fc;color:#285b86;font-size:17px}
+.kids-stage-meta{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;margin:0 0 9px}
+.kids-stage-meta span{padding:6px 9px;border:1px solid #e0ebf3;border-radius:99px;background:#f6faff;color:#416a86;font-size:9px;font-weight:850}
+.kids-play-progress{height:9px;margin-bottom:17px;background:#e4edf4}
+.kids-play-progress span{background:linear-gradient(90deg,#347cac,#76bde1,#9d9ae8)}
+.kids-question-card{overflow:hidden;padding:18px 15px 15px;border:1px solid #d8e8f3;border-radius:25px;background:radial-gradient(circle at 90% 0%,rgba(218,239,251,.75),transparent 34%),linear-gradient(150deg,#fff,#f5faff);box-shadow:0 12px 26px rgba(40,91,134,.09)}
+.kids-question-art{position:relative;display:grid;place-items:center;width:82px;height:76px;margin:0 auto 13px;border:1px solid #dfebf4;border-radius:25px;background:linear-gradient(145deg,#fff,#eaf5fc);box-shadow:0 8px 18px rgba(40,91,134,.1);font-size:44px}
+.kids-question-art i,.kids-question-art b{position:absolute;display:block;width:11px;height:11px;border-radius:50%;background:#f4c66f;box-shadow:0 2px 6px rgba(40,91,134,.13)}
+.kids-question-art i{top:8px;inset-inline-start:8px}
+.kids-question-art b{right:9px;bottom:8px;width:8px;height:8px;background:#8dc6df}
+.kids-question-label{display:block;text-align:center;color:#397eae;font-size:10px;font-weight:900}
+.kids-question-card h3{margin:9px 0 17px;padding:0;color:#234f73;font-size:17px;line-height:1.85;text-align:center}
+.kids-answer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kids-answer{position:relative;display:flex;align-items:center;gap:9px;min-height:68px;padding:10px;border:1px solid #dce8f1;border-radius:17px;background:linear-gradient(145deg,#fff,#f8fbff);color:#31536b;text-align:start;box-shadow:0 4px 10px rgba(40,91,134,.045);cursor:pointer;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}
+.kids-answer:not(:disabled):hover{transform:translateY(-2px);border-color:#8ebbd8;box-shadow:0 8px 15px rgba(40,91,134,.1)}
+.kids-answer-index{display:grid;place-items:center;flex:0 0 27px;width:27px;height:27px;border:1px solid #dceaf4;border-radius:9px;background:#edf6fc;color:#397eae;font-size:11px;font-weight:900}
+.kids-answer-text{flex:1;font-size:13px;line-height:1.5}
+.kids-answer-mark{display:grid;place-items:center;flex:0 0 19px;width:19px;height:19px;border:1px solid #dce8f1;border-radius:50%;background:#fff}
+.kids-answer.is-correct{border-color:#5aa77a;background:linear-gradient(145deg,#f1fbf4,#e4f5e9);color:#21613b;box-shadow:0 5px 15px rgba(57,142,89,.12)}
+.kids-answer.is-correct .kids-answer-mark{border-color:#4a9c6a;background:#4a9c6a}
+.kids-answer.is-correct .kids-answer-mark:after{content:"✓";color:#fff;font-size:12px;font-weight:900}
+.kids-answer.is-wrong{border-color:#d18a8a;background:linear-gradient(145deg,#fff6f6,#ffeded);color:#8a3333}
+.kids-answer.is-wrong .kids-answer-mark{border-color:#d18a8a;background:#fff}
+.kids-feedback{min-height:31px;margin:13px 0 0;padding:8px 10px;border-radius:12px;background:#f1f7fb;color:#416a86;font-size:11px;font-weight:750;line-height:1.8}
+.kids-score-line{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px;padding:11px 13px;border:1px solid #e0ebf3;border-radius:15px;background:linear-gradient(100deg,#fff,#f1f8fd);color:#285b86;font-size:11px;font-weight:850}
+.kids-score-line strong{font-size:16px}
+.kids-score-line small{color:#688195;font-size:9px}
+.kids-primary-action,.kids-secondary-action{min-height:54px;border-radius:16px;box-shadow:0 6px 13px rgba(40,91,134,.13);font-size:14px;cursor:pointer;transition:transform .15s,filter .15s,box-shadow .15s}
+.kids-primary-action:hover,.kids-secondary-action:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 9px 17px rgba(40,91,134,.17)}
+.kids-primary-action:active,.kids-secondary-action:active{transform:scale(.985)}
+.kids-secondary-action{box-shadow:none}
+.kids-finish-card{position:relative;overflow:hidden;padding:28px 18px;border-radius:26px;background:radial-gradient(circle at 50% 0%,#e3f3fc,transparent 42%),linear-gradient(145deg,#fff,#f3f8ff);box-shadow:0 12px 26px rgba(40,91,134,.1)}
+.kids-finish-confetti{position:absolute;top:9px;inset-inline:0;color:#e5b85f;font-size:25px;letter-spacing:23px;opacity:.8}
+.kids-finish-art{position:relative;z-index:1;margin-top:5px;font-size:66px;filter:drop-shadow(0 7px 8px rgba(40,91,134,.13))}
+.kids-finish-card h3{font-size:25px}
+.kids-finish-card p{max-width:360px;margin:0 auto;color:#49677e;line-height:1.8}
+.kids-reward-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:17px 0}
+.kids-reward-row span{padding:9px 5px;border:1px solid #dfebf4;border-radius:13px;background:#fff;color:#356b91;font-size:9px;font-weight:900}
+@media(max-width:560px){.kids-world-grid{grid-template-columns:1fr}.kids-world-card>p{min-height:0}.kids-dashboard{padding:13px}.kids-stat{gap:5px;padding:8px 5px}.kids-stat-icon{flex-basis:29px;width:29px;height:29px;font-size:16px}.kids-stat strong{font-size:15px}.kids-stat small{font-size:8px}.kids-answer-grid{grid-template-columns:1fr}.kids-answer{min-height:62px}.kids-stage-meta span{font-size:8px;padding:5px 7px}.kids-game-card{min-height:76px}}
+@media(min-width:900px){.kids-world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kids-hero{min-height:220px}.kids-world-card{padding:18px}}
+@media(prefers-reduced-motion:reduce){.kids-world-card,.kids-game-card,.kids-answer,.kids-primary-action,.kids-secondary-action,.kids-overall-track span{transition:none!important}}

@@ -287,5 +287,5 @@ test("navigation icon system is semantic, consistent and versioned", () => {
   assert.ok(sharia.includes('circle cx="24" cy="7.5"') && sharia.includes('circle cx="33.8" cy="12.2"'), "dhikr icon should depict a beaded tasbih");
   assert.match(css, /\.top-navigation \.top-tabs button svg[\s\S]*?color:#fff!important/);
   assert.match(css, /\.home-top-shortcuts \.home-shortcut>svg[\s\S]*?color:#fff!important/);
-  assert.ok(css.includes('body[data-current-page="learn"] .sharia-door-nav{\n position:fixed'), "Sharia shortcut bar remains fixed at the top");
+  assert.match(css, /body\[data-current-page="learn"\] \.sharia-door-nav\{\s*position:fixed/, "Sharia shortcut bar remains fixed at the top");
 });

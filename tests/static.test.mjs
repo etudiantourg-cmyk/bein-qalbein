@@ -29,6 +29,10 @@ test("external app assets parse and HTML IDs are unique", () => {
   new Function(aiStudio);
   new Function(exploreHub);
   assert.match(aiStudio, /explore-hub\.js\?v=4/);
+  assert.match(html, /explore-hub\\.css\\?v=4/);
+  assert.match(exploreHub, /kids-dashboard/);
+  assert.match(exploreHub, /bq_kids_completed_v2/);
+  assert.match(exploreHub, /little-shapes/);
   assert.match(html, /<script src="\.\/ai-studio\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
   assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);

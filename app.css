@@ -52,3 +52,47 @@ body[data-current-page="channels"] #channelsPage .section-number-tile{
  body[data-current-page="games"] #gamesPage .section-number-tile,
  body[data-current-page="channels"] #channelsPage .section-number-tile{min-height:58px!important;height:58px!important;font-size:14px!important}
 }
+
+
+/* Library content is moved into the homepage shortcut host by app.js,
+   so target its live section bar from the page state, not #libraryPage. */
+body[data-current-page="library"] .section-number-nav{
+ position:fixed!important;
+ top:126px!important;
+ left:50%!important;
+ right:auto!important;
+ transform:translateX(-50%)!important;
+ z-index:950!important;
+ width:min(980px,calc(100% - 20px))!important;
+ max-width:980px!important;
+ box-sizing:border-box!important;
+ margin:0!important;
+ padding:7px 10px 9px!important;
+ border:1px solid rgba(255,255,255,.18)!important;
+ border-radius:24px!important;
+ background:var(--bq-bar-bg,#285b86)!important;
+ display:grid!important;
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ gap:6px!important;
+ align-items:stretch!important;
+}
+body[data-current-page="library"] .section-number-tile{
+ display:flex!important;
+ min-width:0!important;
+ min-height:62px!important;
+ height:62px!important;
+ box-sizing:border-box!important;
+ align-items:center!important;
+ justify-content:center!important;
+ margin:0!important;
+ padding:5px 2px!important;
+ border:1px solid var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ border-radius:11px!important;
+ background:rgba(255,255,255,.12)!important;
+ color:#fff!important;
+ font:700 15px/1 Alexandria,sans-serif!important;
+}
+@media(max-width:540px){
+ body[data-current-page="library"] .section-number-nav{gap:4px!important;padding:7px 10px 9px!important}
+ body[data-current-page="library"] .section-number-tile{min-height:58px!important;height:58px!important;font-size:14px!important}
+}

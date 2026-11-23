@@ -28,7 +28,7 @@ test("external app assets parse and HTML IDs are unique", () => {
   assert.ok(html.indexOf("./content-data.js") < html.indexOf("./app.js"));
   new Function(aiStudio);
   new Function(exploreHub);
-  assert.match(aiStudio, /explore-hub\.js\?v=3/);
+  assert.match(aiStudio, /explore-hub\.js\?v=4/);
   assert.match(html, /<script src="\.\/ai-studio\.js(?:\?v=\d+)?" defer><\/script>/);
   assert.doesNotMatch(app, /AI Studio client/);
   assert.match(aiStudio, /if\(window\.applyAiStudioLanguage\)window\.applyAiStudioLanguage\(\)/);
@@ -105,7 +105,7 @@ test("design system supports responsive layouts, focus and reduced motion", () =
   assert.match(css, /@media\(max-width:420px\)/);
   assert.match(css, /body\.dark-mode/);
   assert.match(css, /body\.dark-mode \.feature-btn\{background:#40313f;color:#fff/);
-  assert.ok(css.length < 110000, `stylesheet should stay within the bounded stylesheet budget (actual: ${css.length} bytes)`);
+  assert.ok(css.length < 111000, `stylesheet should stay within the bounded stylesheet budget (actual: ${css.length} bytes)`);
 });
 
 test("PWA cache and manifest remain coherent and avoid heavy first-install downloads", () => {

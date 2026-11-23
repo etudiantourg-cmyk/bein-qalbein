@@ -146,6 +146,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('[data-fav-tab="advice"]').click();
     await page.locator("#favoriteTipsList .saved-collection-item").first().waitFor();
     await page.locator('#topNav button[data-go="games"]').click();
+    await page.locator('[data-game-mode="quiz"]').click();
     await page.locator("#saveGameBtn").click();
     await openFavorites();
     await page.locator('[data-fav-tab="games"]').click();

@@ -1752,3 +1752,50 @@ body.theme-custom .sharia-door-nav .sharia-door.is-active{
  .section-number-nav{gap:4px!important;padding:7px 10px 9px!important}
  .section-number-tile{min-height:58px!important;height:58px!important}
 }
+
+
+/* Root fix: the Overview/Home icon must never inherit a dark active-button skin. */
+#topNavigation #topNav>button[data-go="home"],
+#topNavigation #topNav>button[data-go="home"].active,
+#topNavigation #topNav>button[data-go="home"][aria-current="page"]{
+ background:transparent!important;
+ background-color:transparent!important;
+ color:#fff!important;
+ border:0!important;
+ box-shadow:none!important;
+ filter:none!important;
+ outline:0!important;
+}
+#topNavigation #topNav>button[data-go="home"]>span,
+#topNavigation #topNav>button[data-go="home"].active>span{
+ background:transparent!important;
+ background-color:transparent!important;
+ box-shadow:none!important;
+}
+#topNavigation #topNav>button[data-go="home"] svg,
+#topNavigation #topNav>button[data-go="home"] svg *{
+ color:#fff!important;
+ stroke:#fff!important;
+ filter:none!important;
+}
+#topNavigation #topNav>button[data-go="home"] svg path{
+ fill:none!important;
+}
+#topNavigation #topNav>button[data-go="home"]:before,
+#topNavigation #topNav>button[data-go="home"]:after{
+ display:none!important;content:none!important;
+}
+/* Keep the Home tile in the secondary shortcut strip visually neutral too. */
+.home-top-shortcuts .home-shortcut-home,
+.home-top-shortcuts .home-shortcut-home.is-selected,
+.home-top-shortcuts .home-shortcut-home[aria-expanded="true"]{
+ background:rgba(255,255,255,.12)!important;
+ background-color:rgba(255,255,255,.12)!important;
+ border-color:var(--bq-bar-border,rgba(255,255,255,.34))!important;
+ box-shadow:none!important;
+ color:#fff!important;
+}
+.home-top-shortcuts .home-shortcut-home svg,
+.home-top-shortcuts .home-shortcut-home svg *{
+ stroke:#fff!important;color:#fff!important;
+}

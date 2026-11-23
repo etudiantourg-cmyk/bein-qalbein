@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./app.css?v=208">
+<link rel="stylesheet" href="./app.css?v=209">
 <link rel="stylesheet" href="./explore-hub.css?v=2">
 </head>
 <body>
@@ -21,6 +21,11 @@
   <button type="button" class="menu-tab top-menu-trigger" data-menu-toggle aria-expanded="false" aria-controls="settingsDrawer" aria-label="الإعدادات" title="الإعدادات"><span aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span></button>
   <a class="top-brand" href="./" aria-label="بين قلبين برو - الرئيسية"><span>بين قلبين <small>PRO</small></span></a>
   <div class="top-tools">
+   <div class="language-tool top-tool-btn" title="لغة الواجهة">
+    <span class="language-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+    <label id="languageLabel" class="language-tool-label" for="lang">لغة الواجهة</label>
+    <select id="lang" class="language-tool-select" aria-label="لغة الواجهة" title="لغة الواجهة"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
+   </div>
    <button type="button" id="themePickerOpen" class="top-tool-btn theme-picker-trigger" aria-label="النمط وتغيير اللون" title="النمط"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.1a2.2 2.2 0 0 0 1.5-3.8 1.7 1.7 0 0 1 1.2-2.9H18a3 3 0 0 0 3-3C21 6.7 17 3 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="7.8" cy="10" r="1.1" fill="currentColor"/><circle cx="11" cy="7.2" r="1.1" fill="currentColor"/><circle cx="15.2" cy="8.1" r="1.1" fill="currentColor"/><circle cx="7.5" cy="14.2" r="1.1" fill="currentColor"/></svg></button>
    <button type="button" id="topSearchBtn" class="top-tool-btn" aria-label="بحث" title="بحث"><span aria-hidden="true">⌕</span></button>
   </div>
@@ -341,8 +346,6 @@
  <aside class="settings-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" tabindex="-1">
  <section class="panel settings-drawer-content">
  <div class="settings-drawer-heading"><h2 id="settingsTitle"><span data-settings-icon></span><span id="settingsTitleText">الإعدادات</span></h2><button id="settingsCloseBtn" class="settings-close-btn" type="button" aria-label="إغلاق القائمة">×</button></div>
- <label id="languageLabel" for="lang">لغة الواجهة</label>
- <select id="lang"><option value="ar">العربية</option><option value="en">English</option><option value="fr">Français</option></select>
  <div class="feature-controls"><button id="themeToggle" class="feature-btn" type="button">☾ وضع الليل</button><button id="notifyToggle" class="feature-btn" type="button">♡ تفعيل الإشعارات اللطيفة</button></div>
  <p class="feature-note" id="notifyNote">إشعار رقيق واحد يومياً، ويمكنك إيقافه متى شئت.</p>
  <p class="feature-note" id="storageWarning" role="status" aria-live="polite" hidden></p><label id="fontSizeLabel" for="fontScale">حجم الخط</label><input id="fontScale" type="range" min="0.9" max="1.2" step="0.05" value="1">

@@ -33,7 +33,7 @@
   library.append(heading,intro,progress,grid);
   topics.forEach(topic=>{
    const card=document.createElement('article');card.className='explore-card'+(completed.has(topic.id)?' is-complete':'');card.dataset.topic=topic.id;
-   card.innerHTML='<div class="explore-card-head"><span class="explore-card-icon" aria-hidden="true">'+topic.icon+'</span><h3>'+escapeHtml(topic.title)+'</h3></div><p>'+escapeHtml(topic.summary)+'</p><details><summary>افتح محاور التعلّم</summary><ul>'+topic.lessons.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></details><button type="button" class="explore-done" data-topic-done="'+topic.id+'" aria-pressed="'+String(completed.has(topic.id))+'">'+(completed.has(topic.id)?'✓ أُنجز هذا المسار':'علّمني أنني أنجزته')+'</button>';
+   card.innerHTML='<div class="explore-card-head"><span class="explore-card-icon" aria-hidden="true">'+topic.icon+'</span><h3>'+escapeHtml(topic.title)+'</h3></div><p>'+escapeHtml(topic.summary)+'</p><details><summary>افتح محاور التعلّم</summary><ul>'+topic.lessons.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></details><button type="button" class="explore-done" data-topic-done="'+topic.id+'" aria-pressed="'+String(completed.has(topic.id))+'">'+(completed.has(topic.id)?'✓ مكتمل — أزل العلامة':'تحديد كمكتمل')+'</button>';
    grid.appendChild(card);
   });
   function updateProgress(){

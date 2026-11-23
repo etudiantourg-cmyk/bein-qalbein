@@ -74,10 +74,12 @@
    ['memory','🧠','تحدي الذاكرة','تذكّر تسلسل الأرقام']
   ];
   modes.innerHTML=modeList.map(m=>'<button type="button" class="explore-mode" data-game-mode="'+m[0]+'" aria-pressed="false"><span class="explore-mode-icon">'+m[1]+'</span><span><strong>'+m[2]+'</strong><small>'+m[3]+'</small></span></button>').join('');
+  const legacyBoard=document.createElement('section');legacyBoard.className='game-card';legacyBoard.id='generalKnowledgeQuiz';
+  legacyBoard.innerHTML='<div class="game-score"><span>النقاط</span><strong id="gameScore">0</strong><span id="gameProgress">السؤال 1 من 5</span></div><h3 id="gameQuestion">اختبار المعلومات العامة</h3><div id="gameAnswers" class="game-answers"></div><p id="gameFeedback" class="game-feedback" role="status" aria-live="polite">أجب عن الأسئلة لتحصل على نقاط.</p><button type="button" id="saveGameBtn" class="wide">♡ احفظ السؤال</button><button type="button" id="nextGameQuestion" class="wide primary" hidden>السؤال التالي</button>';
   const board=document.createElement('section');board.className='explore-game-board';board.id='exploreGameBoard';board.setAttribute('aria-live','polite');
   board.innerHTML='<div class="explore-game-top"><span id="exploreGameProgress">اختر لعبة للبدء</span><span>النقاط: <strong id="exploreGameScore">0</strong></span><span id="exploreGameTimer"></span></div><h3 class="explore-game-question" id="exploreGameQuestion">مستعد لاختبار معلوماتك؟</h3><div id="exploreGameStage"><p class="explore-game-feedback">ستجد هنا أسئلة وألعاباً ذهنية تعمل مباشرة على جهازك.</p></div><p class="explore-game-feedback" id="exploreGameFeedback" role="status"></p><button type="button" class="explore-game-action" id="exploreGameNext" hidden>السؤال التالي</button>';
   const note=document.createElement('p');note.className='explore-note';note.textContent='تُحفظ أفضل نتيجة محلياً على جهازك. لا توجد منافسة أو ترتيب عام ولا تُرسل إجاباتك إلى خادم.';
-  games.append(title,intro,modes,board,note);
+  board.hidden=true;games.append(title,intro,modes,legacyBoard,board,note);
 
   const questions=[
    {q:'ما عاصمة الجزائر؟',a:['وهران','الجزائر','قسنطينة','عنابة'],c:1,w:'مدينة الجزائر هي عاصمة البلاد.'},
@@ -169,7 +171,7 @@
   }
   function start(selected){
    clearTimer();mode=selected;round=0;score=0;locked=false;completedGame=false;feedback.textContent='';next.hidden=true;
-   modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gameMode===mode)));
+   modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gameMode===mode)));legacyBoard.hidden=true;board.hidden=false;
    if(mode==='quiz'||mode==='speed')items=shuffle(questions).slice(0,5);
    else if(mode==='truefalse')items=shuffle(truths).slice(0,5).map(x=>({q:x[0],a:['صح','خطأ'],c:x[1].startsWith('صحيح')?0:1,w:x[1]}));
    else if(mode==='words')items=shuffle(words).slice(0,5).map(x=>({scrambled:x[0],answer:x[1],hint:x[2],why:'راجع ترتيب الحروف وحاول مرة أخرى.'}));
@@ -179,7 +181,7 @@
    if(mode==='memory')items=items.map(()=>{memorySequence=String(1000+Math.floor(Math.random()*9000));return {answer:memorySequence}});
    renderRound();
   }
-  modes.addEventListener('click',e=>{const button=e.target.closest('[data-game-mode]');if(button)start(button.dataset.gameMode)});
+  modes.addEventListener('click',e=>{const button=e.target.closest('[data-game-mode]');if(!button)return;const selected=button.dataset.gameMode;modes.querySelectorAll('[data-game-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));if(selected==='quiz'){clearTimer();legacyBoard.hidden=false;board.hidden=true;legacyBoard.scrollIntoView({behavior:'smooth',block:'nearest'});return}legacyBoard.hidden=true;board.hidden=false;start(selected)});
   stage.addEventListener('click',e=>{
    const answer=e.target.closest('[data-answer]');if(answer){let index=Number(answer.dataset.answer);if(mode==='truefalse')answerChoice(index);else answerChoice(index);return}
    if(e.target.closest('[data-submit-text]'))submitText();

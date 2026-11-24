@@ -1761,39 +1761,31 @@ function advanceMiniGame(){
 (function setupSeasonalAmbience(){
  const enabledInput=$('seasonalEnabled'),seasonSelect=$('seasonSelect');
  if(!enabledInput||!seasonSelect)return;
- const reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');
+ const preview=$('seasonalPreview');
+ const choices=[...document.querySelectorAll('[data-season-choice]')];
  const seasonForDate=()=>{const month=new Date().getMonth()+1;return month>=3&&month<=5?'spring':month>=6&&month<=8?'summer':month>=9&&month<=11?'autumn':'winter'};
- let layer=null;
- function clearLayer(){if(layer){layer.remove();layer=null}}
- function buildLayer(season){
-  clearLayer();
-  if(!enabledInput.checked||reducedMotion?.matches)return;
-  const host=document.getElementById('topNavigation');if(!host)return;
-  layer=document.createElement('div');layer.className='seasonal-effects';layer.setAttribute('aria-hidden','true');
-  for(let i=0;i<12;i++){
-   const particle=document.createElement('span');particle.className='seasonal-particle';
-   particle.dataset.season=season;
-   particle.style.setProperty('--season-x',((i*37+9)%100)+'%');
-   particle.style.setProperty('--season-delay',(-((i*1.73)%18))+'s');
-   particle.style.setProperty('--season-duration',(15+(i%6)*2)+'s');
-   particle.style.setProperty('--season-drift',(((i%5)-2)*24)+'px');
-   layer.append(particle);
-  }
-  host.prepend(layer);
- }
  function apply(){
   const selected=seasonSelect.value;
   const season=selected==='auto'?seasonForDate():selected;
   document.body.dataset.bqSeason=season;
   document.body.classList.toggle('seasonal-enabled',enabledInput.checked);
-  buildLayer(season);
+  document.body.classList.toggle('seasonal-disabled',!enabledInput.checked);
+  if(preview)preview.dataset.previewSeason=season;
+  choices.forEach(button=>{
+   const active=button.dataset.seasonChoice===selected;
+   button.classList.toggle('is-active',active);
+   button.setAttribute('aria-pressed',String(active));
+  });
   try{bqStorage.setItem('bq_season_enabled',enabledInput.checked?'on':'off');bqStorage.setItem('bq_season',selected)}catch(_){}
  }
  enabledInput.checked=bqStorage.getItem('bq_season_enabled')==='on';
  const savedSeason=bqStorage.getItem('bq_season')||'auto';
  seasonSelect.value=['auto','spring','summer','autumn','winter'].includes(savedSeason)?savedSeason:'auto';
+ choices.forEach(button=>button.addEventListener('click',()=>{
+  seasonSelect.value=button.dataset.seasonChoice;
+  apply();
+ }));
  enabledInput.addEventListener('change',apply);
  seasonSelect.addEventListener('change',apply);
- if(reducedMotion?.addEventListener)reducedMotion.addEventListener('change',()=>buildLayer(document.body.dataset.bqSeason||seasonForDate()));
  apply();
-})();
+};

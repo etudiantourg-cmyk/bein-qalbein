@@ -1778,7 +1778,8 @@ function advanceMiniGame(){
   });
   try{bqStorage.setItem('bq_season_enabled',enabledInput.checked?'on':'off');bqStorage.setItem('bq_season',selected)}catch(_){}
  }
- enabledInput.checked=bqStorage.getItem('bq_season_enabled')==='on';
+ const savedSeasonEnabled=bqStorage.getItem('bq_season_enabled');
+ enabledInput.checked=savedSeasonEnabled===null?true:savedSeasonEnabled==='on';
  const savedSeason=bqStorage.getItem('bq_season')||'auto';
  seasonSelect.value=['auto','spring','summer','autumn','winter'].includes(savedSeason)?savedSeason:'auto';
  choices.forEach(button=>button.addEventListener('click',()=>{

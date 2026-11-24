@@ -128,7 +128,7 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
 });
 
 
-test("theme picker offers exactly six curated accessible palettes", () => {
+test("theme picker offers exactly six curated accessible palettes", async () => {
   const paletteCss = await readFile(new URL("../theme-palette.css", import.meta.url), "utf8");
   const choices = [...html.matchAll(/data-palette-choice="([^"]+)"/g)].map(match => match[1]);
   assert.equal(choices.length, 6);

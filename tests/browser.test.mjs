@@ -75,6 +75,7 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     });
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
+    await page.locator(".home-top-shortcuts[data-tabs-ready=\"1\"]").waitFor({ state: "attached" });
     const homeNav = page.locator('#topNav button[data-go="home"]');
     const assertHomeIconNeutral = async () => {
       const visual = await homeNav.evaluate(button => ({

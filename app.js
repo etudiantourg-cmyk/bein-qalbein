@@ -227,7 +227,7 @@ function renderAdviceForLanguage(){
  $('adviceModalTitle').textContent=activeAdvice==='wife'?languageText[lang].wifeAdvice:languageText[lang].husbandAdvice;
  $('husbandTips').classList.toggle('active',activeAdvice==='husband');$('wifeTips').classList.toggle('active',activeAdvice==='wife');
 }
-function applyTheme(){const dark=bqStorage.getItem('bq_theme')==='dark';document.body.classList.toggle('dark-mode',dark);$('themeToggle').textContent=dark?languageText[lang].day:languageText[lang].night;if(typeof updatePalette==='function')updatePalette(bqStorage.getItem('bq_palette')||'royal')}
+function applyTheme(){const dark=bqStorage.getItem('bq_theme')==='dark';document.body.classList.toggle('dark-mode',dark);$('themeToggle').textContent=dark?languageText[lang].day:languageText[lang].night}
 function notificationCopy(){if(lang==='en')return 'A gentle reminder: a kind word can make someone’s day warmer. ♥';if(lang==='fr')return 'Un doux rappel : quelques mots bienveillants peuvent embellir la journée. ♥';return 'تذكير لطيف: كلمة طيبة قد تجعل يوم من تحب أجمل. ♥'}
 let notificationTimer=null;
 async function sendGentleNotification(){if(!('Notification'in window)||Notification.permission!=='granted')return;const last=Number(bqStorage.getItem('bq_last_notification')||0);if(Date.now()-last<86400000)return;const title=lang==='en'?'Between Two Hearts':lang==='fr'?'Entre deux cœurs':'بين قلبين';const options={body:notificationCopy(),icon:'./icon.svg',badge:'./icon.svg',tag:'bein-qalbein-daily',renotify:false};try{if(navigator.serviceWorker){const reg=await navigator.serviceWorker.ready;await reg.showNotification(title,options)}else new Notification(title,options);bqStorage.setItem('bq_last_notification',String(Date.now()))}catch(_){}}

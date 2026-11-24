@@ -127,6 +127,20 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
   for (const file of ["./index.html", "./content-data.js", "./app.js", "./ai-studio.js", "./app.css", "./manifest.json", "./icon.svg", "./icon-maskable.svg"]) assert.ok(sw.includes(file));
 });
 
+
+test("theme picker offers exactly six curated accessible palettes", () => {
+  const paletteCss = await readFile(new URL("../theme-palette.css", import.meta.url), "utf8");
+  const choices = [...html.matchAll(/data-palette-choice="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(choices.length, 6);
+  assert.equal(new Set(choices).size, 6);
+  assert.doesNotMatch(html, /themeColorWheel|themeColorInput/);
+  assert.match(html, /theme-palette\.css/);
+  assert.match(app, /function resolvePaletteId/);
+  assert.match(app, /function applyCustomAccent/);
+  assert.match(paletteCss, /\.palette-option\.is-selected/);
+  assert.match(paletteCss, /:focus-visible/);
+});
+
 test("AI worker exposes a health route and bounded request processing", () => {
   assert.match(worker, /url\.pathname === "\/health"/);
   assert.match(worker, /readBoundedBody/);

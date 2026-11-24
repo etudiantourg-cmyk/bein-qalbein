@@ -223,13 +223,16 @@ test("surprise shortcut uses a refined lightbulb and the shared icon palette", (
   assert.doesNotMatch(css, /data-quick="surprise"[^}]*background:linear-gradient\(145deg,#fff8df/);
 });
 
-test("blue identity colors the active top navigation and backup accepts blue", () => {
-  assert.match(css, /body\.theme-blue \.top-navigation\{background:#285b86\}/);
-  assert.match(css, /body\.theme-rose \.top-navigation\{background:#7b2147\}/);
-  assert.match(css, /\.top-navigation \.top-tabs button\.active\{color:#fff;background:rgba\(255,255,255,\.16\)\}/);
-  assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night','custom'\]\.includes\(raw\)/);
-  assert.match(app, /const savedPalette=bqStorage\.getItem\('bq_palette'\)\|\|'blue'/);
-  assert.match(app, /savedPalette==='custom'&&\/\^#\[0-9a-f\]\{6\}\$\/i\.test\(savedCustomColor\|\|''\)/);
+test("six curated identity colors are applied accessibly and remain backup-compatible", () => {
+  assert.match(html, /data-palette-choice="royal"/);
+  assert.match(html, /data-palette-choice="ocean"/);
+  assert.match(html, /data-palette-choice="berry"/);
+  assert.match(html, /data-palette-choice="forest"/);
+  assert.match(html, /data-palette-choice="plum"/);
+  assert.match(html, /data-palette-choice="terracotta"/);
+  assert.match(app, /if\(key==='bq_palette'\)return \['blue','rose','royal','night','custom','ocean','berry','forest','plum','terracotta'\]\.includes\(raw\)/);
+  assert.match(app, /function resolvePaletteId/);
+  assert.match(app, /function applyCustomAccent/);
   assert.match(app, /--bq-nav-foreground/);
   assert.match(css, /body\.theme-custom \.top-navigation[\s\S]*?var\(--bq-nav-foreground/);
 });

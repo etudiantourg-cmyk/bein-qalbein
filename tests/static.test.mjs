@@ -149,7 +149,9 @@ test("theme picker offers exactly six curated accessible palettes", async () => 
   assert.equal(choices.length, 6);
   assert.equal(new Set(choices).size, 6);
   assert.doesNotMatch(html, /themeColorWheel|themeColorInput/);
-  assert.match(html, /theme-palette\.css/);
+  assert.match(html, /theme-palette\.css\?v=2/);
+  assert.match(html, /class="theme-picker-scroll"/);
+  assert.match(html, /id="themeColorConfirm" class="primary">تطبيق النمط<\/button>/);
   assert.match(app, /function resolvePaletteId/);
   assert.match(app, /function applyCustomAccent/);
   assert.match(paletteCss, /\.palette-option\.is-selected/);

@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./app.css?v=212">
 <link rel="stylesheet" href="./seasonal.css?v=1">
+<link rel="stylesheet" href="./theme-palette.css?v=1">
 <link rel="stylesheet" href="./explore-hub.css?v=5">
 </head>
 <body>
@@ -374,14 +375,45 @@
    </select>
    <small class="seasonal-hint">ألوان النمط الذي اخترته لا تتغير. يمكنك إيقاف الحركة في أي وقت.</small>
   </section>
-  <label class="theme-color-label" for="themeColorInput">دائرة اختيار الألوان</label>
-  <div class="theme-color-stage"><canvas id="themeColorWheel" class="theme-color-wheel" width="280" height="280" role="slider" tabindex="0" aria-label="عجلة الألوان: اختر درجة اللون والتشبع" aria-valuetext="أزرق"></canvas><div class="theme-color-readout"><span id="themeColorSwatch" aria-hidden="true"></span><b id="themeColorHex">#285B86</b><small>اضغط أو اسحب داخل العجلة</small></div></div>
-  <div class="theme-preview" id="themePreview"><span>معاينة اللون</span><b>بين قلبين برو</b><small>هذا مثال لشكل اللون في التطبيق</small></div>
-  <div class="theme-picker-actions"><button type="button" id="themeFactoryReset" class="theme-factory-reset">استعادة لون المصنع</button><button type="button" id="themeColorConfirm" class="primary">موافق</button></div>
+  <fieldset class="palette-fieldset">
+   <legend class="theme-color-label">اختر لون واجهتك</legend>
+   <p class="palette-intro">ستة ألوان منتقاة بعناية، متناسقة مع هوية التطبيق ومريحة للعين.</p>
+   <div class="palette-grid" role="group" aria-label="ألوان التطبيق الستة">
+    <button type="button" class="palette-option" data-palette-choice="royal" aria-pressed="true">
+     <span class="palette-swatch" style="--swatch-color:#64132F" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>عنابي ملكي</b><small>أصيل وفخم</small></span>
+    </button>
+    <button type="button" class="palette-option" data-palette-choice="ocean" aria-pressed="false">
+     <span class="palette-swatch" style="--swatch-color:#285B86" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>أزرق المحيط</b><small>هادئ وواثق</small></span>
+    </button>
+    <button type="button" class="palette-option" data-palette-choice="berry" aria-pressed="false">
+     <span class="palette-swatch" style="--swatch-color:#8A3158" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>توتي راقٍ</b><small>دافئ وأنيق</small></span>
+    </button>
+    <button type="button" class="palette-option" data-palette-choice="forest" aria-pressed="false">
+     <span class="palette-swatch" style="--swatch-color:#285B4A" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>أخضر الغابة</b><small>طبيعي ومتزن</small></span>
+    </button>
+    <button type="button" class="palette-option" data-palette-choice="plum" aria-pressed="false">
+     <span class="palette-swatch" style="--swatch-color:#59436F" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>بنفسجي مخملي</b><small>ناعم ومميز</small></span>
+    </button>
+    <button type="button" class="palette-option" data-palette-choice="terracotta" aria-pressed="false">
+     <span class="palette-swatch" style="--swatch-color:#98513F" aria-hidden="true"><span>✓</span></span>
+     <span class="palette-option-copy"><b>طيني دافئ</b><small>ترابي ومعاصر</small></span>
+    </button>
+   </div>
+  </fieldset>
+  <div class="theme-preview" id="themePreview">
+   <div class="theme-preview-bar"><span></span><span></span><span></span></div>
+   <div class="theme-preview-content"><small>معاينة اللون المختار</small><b class="theme-preview-name">عنابي ملكي</b><span id="themeColorSwatch" aria-hidden="true"></span></div>
+  </div>
+  <div class="theme-picker-actions"><button type="button" id="themeFactoryReset" class="theme-factory-reset">اللون الافتراضي</button><button type="button" id="themeColorConfirm" class="primary">اعتماد اللون</button></div>
  </section>
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=156" defer></script>
+<script src="./app.js?v=157" defer></script>
 <script src="./ai-studio.js?v=103" defer></script>
 </body></html>

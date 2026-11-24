@@ -667,7 +667,7 @@ function validBackupValue(key,raw){
  if(key==='bq_ai_language_manual')return ['0','1'].includes(raw);
  if(key==='bq_theme')return ['dark','light'].includes(raw);
  if(key==='bq_notifications')return ['on','off'].includes(raw);
- if(key==='bq_palette')return ['blue','rose','royal','night','custom'].includes(raw);
+ if(key==='bq_palette')return ['blue','rose','royal','night','custom','ocean','berry','forest','plum','terracotta'].includes(raw);
  if(key==='bq_custom_color')return /^#[0-9a-f]{6}$/i.test(raw);
  if(key==='bq_font_scale'){const n=Number(raw);return Number.isFinite(n)&&n>=0.9&&n<=1.2}
  if(key==='bq_last_notification')return raw===''||(/^\d{1,16}$/.test(raw)&&Number(raw)>=0);
@@ -729,13 +729,80 @@ $('importData').onchange=async e=>{
  }
  e.target.value='';
 };
-function updatePalette(value){const palette=['blue','rose','royal','night'].includes(value)?value:'blue';document.body.classList.remove('theme-custom','theme-blue','theme-rose','theme-royal','theme-night');document.body.classList.add('theme-'+palette);document.body.dataset.bqPalette=palette;bqStorage.setItem('bq_palette',palette);['--wine','--wine-2','--rose','--rose-soft','--surface-2','--bq-accent','--bq-nav-foreground'].forEach(k=>document.body.style.removeProperty(k));const meta=document.querySelector('meta[name=theme-color]');if(meta)meta.content=palette==='blue'?'#285b86':palette==='rose'?'#7b2147':palette==='night'?'#211923':'#64132f'}
-function applyCustomAccent(hex){if(!/^#[0-9a-f]{6}$/i.test(hex))return false;const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));const mix=(target,amount)=>'#'+rgb.map((v)=>Math.round(v*(1-amount)+target*amount).toString(16).padStart(2,'0')).join('');const light=mix(255,.72),pale=mix(255,.91),dark=mix(0,.22);const linear=rgb.map(v=>{const n=v/255;return n<=.04045?n/12.92:Math.pow((n+.055)/1.055,2.4)});const luminance=.2126*linear[0]+.7152*linear[1]+.0722*linear[2];const navForeground=luminance>.179?'#17212b':'#fff';document.body.classList.remove('theme-blue','theme-rose','theme-royal','theme-night');document.body.classList.add('theme-custom');document.body.style.setProperty('--wine',hex);document.body.style.setProperty('--wine-2',light);document.body.style.setProperty('--rose',light);document.body.style.setProperty('--rose-soft',pale);document.body.style.setProperty('--surface-2',pale);document.body.style.setProperty('--bq-accent',hex);document.body.style.setProperty('--bq-nav-foreground',navForeground);document.body.dataset.bqPalette='custom';bqStorage.setItem('bq_custom_color',hex);bqStorage.setItem('bq_palette','custom');const meta=document.querySelector('meta[name=theme-color]');if(meta)meta.content=dark;return true}
-(function setupThemePicker(){const open=$('themePickerOpen'),modal=$('themePickerModal'),close=$('themePickerClose'),wheel=$('themeColorWheel'),hex=$('themeColorHex'),swatch=$('themeColorSwatch'),preview=$('themePreview'),confirm=$('themeColorConfirm'),factory=$('themeFactoryReset');if(!open||!modal||!wheel)return;const ctx=wheel.getContext('2d');const factoryColor='#285b86';let pending=factoryColor,dragging=false;function drawWheel(){const size=wheel.width,cx=size/2,cy=size/2,r= size/2-2,img=ctx.createImageData(size,size);for(let y=0;y<size;y++)for(let x=0;x<size;x++){const dx=x-cx,dy=cy-y,dist=Math.hypot(dx,dy),i=(y*size+x)*4;if(dist>r){img.data[i+3]=0;continue}const hue=(Math.atan2(dy,dx)*180/Math.PI+360)%360,sat=Math.min(1,dist/r);const chroma=sat,hh=hue/60,xx=chroma*(1-Math.abs(hh%2-1));let rr=0,gg=0,bb=0;if(hh<1)[rr,gg,bb]=[chroma,xx,0];else if(hh<2)[rr,gg,bb]=[xx,chroma,0];else if(hh<3)[rr,gg,bb]=[0,chroma,xx];else if(hh<4)[rr,gg,bb]=[0,xx,chroma];else if(hh<5)[rr,gg,bb]=[xx,0,chroma];else [rr,gg,bb]=[chroma,0,xx];const m=1-chroma;img.data[i]=Math.round((rr+m)*255);img.data[i+1]=Math.round((gg+m)*255);img.data[i+2]=Math.round((bb+m)*255);img.data[i+3]=255}ctx.putImageData(img,0,0);ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='rgba(0,0,0,.18)';ctx.lineWidth=2;ctx.stroke()}function updatePreview(){pending=pending.toUpperCase();hex.textContent=pending;swatch.style.background=pending;preview.style.setProperty('--preview-accent',pending);wheel.setAttribute('aria-valuetext',pending)}function setFromPoint(clientX,clientY){const rect=wheel.getBoundingClientRect(),scale=wheel.width/rect.width,x=(clientX-rect.left)*scale-wheel.width/2,y=wheel.height/2-(clientY-rect.top)*scale,r=wheel.width/2-3,dist=Math.min(r,Math.hypot(x,y)),hue=(Math.atan2(y,x)*180/Math.PI+360)%360,sat=dist/r,c=sat,hh=hue/60,xx=c*(1-Math.abs(hh%2-1));let a=0,b=0,d=0;if(hh<1)[a,b,d]=[c,xx,0];else if(hh<2)[a,b,d]=[xx,c,0];else if(hh<3)[a,b,d]=[0,c,xx];else if(hh<4)[a,b,d]=[0,xx,c];else if(hh<5)[a,b,d]=[xx,0,c];else [a,b,d]=[c,0,xx];const m=1-c;pending='#'+[a,b,d].map(v=>Math.round((v+m)*255).toString(16).padStart(2,'0')).join('');updatePreview()}function show(){const saved=bqStorage.getItem('bq_custom_color');pending=/^#[0-9a-f]{6}$/i.test(saved||'')?saved:factoryColor;updatePreview();modal.hidden=false;document.body.classList.add('theme-picker-open');close?.focus()}function hide(){modal.hidden=true;document.body.classList.remove('theme-picker-open');open.focus()}wheel.addEventListener('pointerdown',e=>{dragging=true;wheel.setPointerCapture(e.pointerId);setFromPoint(e.clientX,e.clientY)});wheel.addEventListener('pointermove',e=>{if(dragging)setFromPoint(e.clientX,e.clientY)});function stop(){dragging=false}wheel.addEventListener('pointerup',stop);wheel.addEventListener('pointercancel',stop);wheel.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();const rgb=pending.match(/[0-9a-f]{2}/ig).map(v=>parseInt(v,16));let hue=(Math.atan2(Math.sqrt(3)*(rgb[1]-rgb[2]),2*rgb[0]-rgb[1]-rgb[2])*180/Math.PI+360)%360;hue=(hue+(e.key==='ArrowRight'||e.key==='ArrowUp'?5:-5)+360)%360;const sat=.85,c=sat,hh=hue/60,xx=c*(1-Math.abs(hh%2-1));let a=0,b=0,d=0;if(hh<1)[a,b,d]=[c,xx,0];else if(hh<2)[a,b,d]=[xx,c,0];else if(hh<3)[a,b,d]=[0,c,xx];else if(hh<4)[a,b,d]=[0,xx,c];else if(hh<5)[a,b,d]=[xx,0,c];else [a,b,d]=[c,0,xx];const m=1-c;pending='#'+[a,b,d].map(v=>Math.round((v+m)*255).toString(16).padStart(2,'0')).join('');updatePreview()});open.addEventListener('click',show);close?.addEventListener('click',hide);modal.addEventListener('click',e=>{if(e.target===modal)hide()});factory?.addEventListener('click',()=>{pending=factoryColor;updatePreview()});confirm?.addEventListener('click',()=>{if(applyCustomAccent(pending)){hide();if(typeof showToast==='function')showToast('تم تطبيق اللون وحفظه');}});document.addEventListener('keydown',e=>{if(!modal.hidden&&e.key==='Escape')hide()});drawWheel();})();
+
+const CURATED_PALETTES=[{"id":"royal","name":"عنابي ملكي","desc":"أصيل وفخم","hex":"#64132F"},{"id":"ocean","name":"أزرق المحيط","desc":"هادئ وواثق","hex":"#285B86"},{"id":"berry","name":"توتي راقٍ","desc":"دافئ وأنيق","hex":"#8A3158"},{"id":"forest","name":"أخضر الغابة","desc":"طبيعي ومتزن","hex":"#285B4A"},{"id":"plum","name":"بنفسجي مخملي","desc":"ناعم ومميز","hex":"#59436F"},{"id":"terracotta","name":"طيني دافئ","desc":"ترابي ومعاصر","hex":"#98513F"}];
+function resolvePaletteId(value,legacyHex){
+ const aliases={blue:'ocean',rose:'berry',night:'plum',custom:null};
+ if(CURATED_PALETTES.some(p=>p.id===value))return value;
+ if(aliases[value])return aliases[value];
+ if(value==='royal')return 'royal';
+ if(value==='custom'&&/^#[0-9a-f]{6}$/i.test(legacyHex||'')){
+  const rgb=legacyHex.match(/[0-9a-f]{2}/ig).map(v=>parseInt(v,16));
+  return CURATED_PALETTES.reduce((best,p)=>{
+   const c=p.hex.match(/[0-9a-f]{2}/ig).map(v=>parseInt(v,16));
+   const d=c.reduce((sum,v,i)=>sum+(v-rgb[i])**2,0);
+   return d<best.distance?{id:p.id,distance:d}:best;
+  },{id:'royal',distance:Infinity}).id;
+ }
+ return 'royal';
+}
+function updatePalette(value){
+ const id=resolvePaletteId(value,bqStorage.getItem('bq_custom_color'));
+ const selected=CURATED_PALETTES.find(p=>p.id===id)||CURATED_PALETTES[0];
+ applyCustomAccent(selected.hex,selected.id);
+}
+function applyCustomAccent(hex,paletteId='custom'){
+ if(!/^#[0-9a-f]{6}$/i.test(hex))return false;
+ const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));
+ const mix=(target,amount)=>'#'+rgb.map(v=>Math.round(v*(1-amount)+target*amount).toString(16).padStart(2,'0')).join('');
+ const light=mix(255,.72),pale=mix(255,.91),dark=mix(0,.22);
+ const linear=rgb.map(v=>{const n=v/255;return n<=.04045?n/12.92:Math.pow((n+.055)/1.055,2.4)});
+ const luminance=.2126*linear[0]+.7152*linear[1]+.0722*linear[2];
+ const navForeground=luminance>.179?'#17212b':'#fff';
+ document.body.classList.remove('theme-blue','theme-rose','theme-royal','theme-night');
+ document.body.classList.add('theme-custom');
+ document.body.style.setProperty('--wine',hex);document.body.style.setProperty('--wine-2',light);
+ document.body.style.setProperty('--rose',light);document.body.style.setProperty('--rose-soft',pale);
+ document.body.style.setProperty('--surface-2',pale);document.body.style.setProperty('--bq-accent',hex);
+ document.body.style.setProperty('--bq-nav-foreground',navForeground);document.body.dataset.bqPalette=paletteId;
+ bqStorage.setItem('bq_custom_color',hex);bqStorage.setItem('bq_palette',paletteId);
+ const meta=document.querySelector('meta[name=theme-color]');if(meta)meta.content=hex;return true;
+}
+(function setupThemePicker(){
+ const open=$('themePickerOpen'),modal=$('themePickerModal'),close=$('themePickerClose');
+ const options=[...document.querySelectorAll('[data-palette-choice]')],name=$('themeColorName');
+ const swatch=$('themeColorSwatch'),preview=$('themePreview'),confirm=$('themeColorConfirm'),factory=$('themeFactoryReset');
+ if(!open||!modal||!options.length)return;
+ let pending='royal';
+ function selected(){return CURATED_PALETTES.find(p=>p.id===pending)||CURATED_PALETTES[0]}
+ function updatePreview(){
+  const p=selected();name.textContent=p.name;swatch.style.background=p.hex;
+  preview.style.setProperty('--preview-accent',p.hex);
+  preview.querySelector('.theme-preview-name').textContent=p.name;
+  options.forEach(button=>{
+   const active=button.dataset.paletteChoice===pending;
+   button.setAttribute('aria-pressed',String(active));
+   button.classList.toggle('is-selected',active);
+  });
+ }
+ function show(){
+  pending=resolvePaletteId(bqStorage.getItem('bq_palette')||'royal',bqStorage.getItem('bq_custom_color'));
+  updatePreview();modal.hidden=false;document.body.classList.add('theme-picker-open');close?.focus();
+ }
+ function hide(){modal.hidden=true;document.body.classList.remove('theme-picker-open');open.focus()}
+ options.forEach(button=>button.addEventListener('click',()=>{pending=button.dataset.paletteChoice;updatePreview()}));
+ open.addEventListener('click',show);close?.addEventListener('click',hide);
+ modal.addEventListener('click',e=>{if(e.target===modal)hide()});
+ factory?.addEventListener('click',()=>{pending='royal';updatePreview()});
+ confirm?.addEventListener('click',()=>{
+  const p=selected();if(applyCustomAccent(p.hex,p.id)){hide();if(typeof showToast==='function')showToast('تم تطبيق اللون وحفظه')}
+ });
+ document.addEventListener('keydown',e=>{if(!modal.hidden&&e.key==='Escape')hide()});
+})();
 
 $('fontScale').oninput=e=>{document.documentElement.style.setProperty('--bq-scale',e.target.value);bqStorage.setItem('bq_font_scale',e.target.value)};
 const savedScale=Number(bqStorage.getItem('bq_font_scale')||'1');const storedScale=Number.isFinite(savedScale)?Math.min(1.2,Math.max(0.9,savedScale)):1;$('fontScale').value=String(storedScale);document.documentElement.style.setProperty('--bq-scale',String(storedScale));
-const savedPalette=bqStorage.getItem('bq_palette')||'blue';const savedCustomColor=bqStorage.getItem('bq_custom_color');if(savedPalette==='custom'&&/^#[0-9a-f]{6}$/i.test(savedCustomColor||''))applyCustomAccent(savedCustomColor);else updatePalette(['blue','rose','royal','night'].includes(savedPalette)?savedPalette:'blue');document.documentElement.removeAttribute('data-start-role');
+const savedPalette=bqStorage.getItem('bq_palette')||'royal';const savedCustomColor=bqStorage.getItem('bq_custom_color');updatePalette(resolvePaletteId(savedPalette,savedCustomColor));document.documentElement.removeAttribute('data-start-role');
 $('shareAppBtn').onclick=async()=>{const data={title:'بين قلبين',text:lang==='ar'?'رسائل زوجية راقية للمودة والاحترام. جرّب تطبيق بين قلبين.':lang==='fr'?'Des messages élégants pour le couple. Découvrez Entre deux cœurs.':'Elegant messages for couples. Try Between Two Hearts.',url:location.href.split('?')[0]};if(navigator.share){try{await navigator.share(data)}catch(_){}}else copyText(data.text+' '+data.url)};
 const oldApplyLanguageV35=applyLanguage;
 applyLanguage=function(){oldApplyLanguageV35();const labels={ar:{builderTitle:'اصنع رسالتك بنفسك',builderDesc:'اختر الشعور والأسلوب لتحصل على رسالة قابلة للتعديل.',builderFeelingLabel:'الشعور',builderStyleLabel:'الأسلوب',build:'✦ أنشئ رسالتي',use:'استخدم الرسالة',copy:'نسخ',rescueTitle:'أنقذ الموقف',rescueDesc:'خطوات هادئة لإصلاح الموقف دون لوم أو تصعيد.',situation:'ما الموقف؟',rescueButton:'اعرض خطة هادئة',challengeTitle:'🌷 تحدي اللطف',challengeDesc:'خطوة صغيرة اليوم تصنع فرقاً جميلاً.',newChallenge:'مهمة لطيفة أخرى',appearanceTitle:'المظهر والتخصيص',paletteLabel:'الطابع',fontSizeLabel:'حجم الخط',shareApp:'↗ شارك تطبيق بين قلبين',folderLabel:'مجلد المفضلة',assign:'صنّف الرسالة الحالية',export:'نسخة احتياطية',import:'استعادة نسخة',pin:'رمز خصوصية من 4 إلى 8 أرقام',lock:'تفعيل قفل المفضلة',unlock:'فتح المفضلة'},en:{builderTitle:'Build your own message',builderDesc:'Choose a feeling and style, then edit your message.',builderFeelingLabel:'Feeling',builderStyleLabel:'Style',build:'✦ Create my message',use:'Use this message',copy:'Copy',rescueTitle:'Repair the moment',rescueDesc:'Calm steps to work through a difficult moment.',situation:'What happened?',rescueButton:'Show a calm plan',challengeTitle:'🌷 Kindness challenge',challengeDesc:'One small action can make today better.',newChallenge:'Another kind action',appearanceTitle:'Appearance & personalisation',paletteLabel:'Theme',fontSizeLabel:'Font size',shareApp:'↗ Share Between Two Hearts',folderLabel:'Favorites folder',assign:'Organise current message',export:'Back up data',import:'Restore backup',pin:'Privacy PIN (4–8 digits)',lock:'Lock favorites',unlock:'Unlock favorites'},fr:{builderTitle:'Créer votre message',builderDesc:'Choisissez une émotion et un style, puis modifiez le texte.',builderFeelingLabel:'Émotion',builderStyleLabel:'Style',build:'✦ Créer mon message',use:'Utiliser ce message',copy:'Copier',rescueTitle:'Apaiser la situation',rescueDesc:'Des étapes calmes pour traverser un désaccord.',situation:'Quelle situation ?',rescueButton:'Afficher un plan calme',challengeTitle:'🌷 Défi de gentillesse',challengeDesc:'Un petit geste peut embellir la journée.',newChallenge:'Un autre geste',appearanceTitle:'Apparence et personnalisation',paletteLabel:'Thème',fontSizeLabel:'Taille du texte',shareApp:'↗ Partager Entre deux cœurs',folderLabel:'Dossier des favoris',assign:'Classer le message actuel',export:'Sauvegarder',import:'Restaurer',pin:'Code privé (4 à 8 chiffres)',lock:'Verrouiller les favoris',unlock:'Déverrouiller les favoris'}}[lang];Object.entries({builderTitle:'builderTitle',builderDesc:'builderDesc',builderFeelingLabel:'builderFeelingLabel',builderStyleLabel:'builderStyleLabel',build:'buildMessageBtn',use:'useBuiltMessage',copy:'copyBuiltMessage',rescueTitle:'rescueTitle',rescueDesc:'rescueDesc',situation:'rescueSituationLabel',rescueButton:'rescueGenerate',challengeTitle:'challengeTitle',challengeDesc:'challengeDesc',newChallenge:'newChallenge',appearanceTitle:'appearanceTitle',paletteLabel:'paletteLabel',fontSizeLabel:'fontSizeLabel',shareApp:'shareAppBtn',folderLabel:'folderLabel',assign:'assignFolder',export:'exportData',import:'importLabel'}).forEach(([k,id])=>{const el=$(id);if(el)el.textContent=labels[k]});$('privacyPin').placeholder=labels.pin;$('setPrivacyPin').textContent=labels.lock;$('unlockFavorites').textContent=labels.unlock;const opts={ar:[['love','مودة'],['miss','اشتياق'],['sorry','اعتذار'],['support','تشجيع'],['calm','تهدئة'],['dua','دعاء']],en:[['love','Affection'],['miss','Missing you'],['sorry','Apology'],['support','Support'],['calm','Calm'],['dua','Prayer']],fr:[['love','Affection'],['miss','Manque'],['sorry','Excuses'],['support','Soutien'],['calm','Apaisement'],['dua','Invocation']]}[lang];$('builderFeeling').innerHTML=opts.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');const styles={ar:['رقيق','عميق','مختصر'],en:['Gentle','Deep','Short'],fr:['Doux','Profond','Court']}[lang];$('builderStyle').innerHTML=['soft','deep','short'].map((v,i)=>'<option value="'+v+'">'+styles[i]+'</option>').join('');const situations={ar:['حدث خلاف','صمت وابتعاد','كلام جارح','ضغط وتعب','سوء فهم','أحتاج إلى الاعتذار'],en:['Disagreement','Silence and distance','Hurtful words','Stress and fatigue','Misunderstanding','I need to apologise'],fr:['Désaccord','Silence et distance','Paroles blessantes','Stress et fatigue','Malentendu','Je dois présenter mes excuses']}[lang];$('rescueSituation').innerHTML=['argument','silence','hurt','stress','misunderstanding','apology'].map((v,i)=>'<option value="'+v+'">'+situations[i]+'</option>').join('');const folderOpts={ar:[['all','كل الرسائل'],['love','مودة'],['support','دعم'],['prayer','أدعية'],['special','مميزة']],en:[['all','All messages'],['love','Affection'],['support','Support'],['prayer','Prayers'],['special','Special']],fr:[['all','Tous les messages'],['love','Affection'],['support','Soutien'],['prayer','Invocations'],['special','Spéciaux']]}[lang];$('favoriteFolder').innerHTML=folderOpts.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');showRescue();renderDailyChallenge();};

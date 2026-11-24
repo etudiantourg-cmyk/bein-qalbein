@@ -23,3 +23,12 @@
 .theme-picker-actions button.primary{background:var(--wine);border-color:var(--wine)}
 @media(max-width:380px){.palette-grid{gap:7px}.palette-option{gap:8px;min-height:64px;padding:7px}.palette-option.is-selected{padding:6px}.palette-swatch{width:34px;height:34px;flex-basis:34px}.palette-option-copy b{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.palette-option,.palette-swatch span{transition:none}}
+
+/* Keep the Apply action visible while the appearance choices scroll on phones. */
+.theme-picker-dialog{display:flex;flex-direction:column;overflow:hidden;max-height:min(88vh,760px)}
+.theme-picker-dialog>.modal-head,.theme-picker-dialog>.theme-picker-note,.theme-picker-dialog>.theme-picker-actions{flex:0 0 auto}
+.theme-picker-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:0 2px 8px}
+.theme-picker-actions{position:relative;z-index:3;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:9px;padding:12px 0 0;margin-top:8px;border-top:1px solid var(--line);background:var(--surface)}
+.theme-picker-actions #themeColorConfirm{min-height:50px;font-size:14px;font-weight:900;box-shadow:0 5px 14px color-mix(in srgb,var(--wine) 22%,transparent)}
+.theme-picker-actions #themeFactoryReset{min-height:50px}
+@media(max-height:620px){.theme-picker-dialog{max-height:92vh}.theme-picker-dialog>.theme-picker-note{font-size:11px;margin-bottom:6px}.theme-picker-actions{padding-top:8px;margin-top:4px}}

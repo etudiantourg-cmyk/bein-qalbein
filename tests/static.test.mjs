@@ -8,6 +8,7 @@ const contentData = await readFile(new URL("../content-data.js", import.meta.url
 const aiStudio = await readFile(new URL("../ai-studio.js", import.meta.url), "utf8");
 const exploreHub = await readFile(new URL("../explore-hub.js", import.meta.url), "utf8");
 const css = await readFile(new URL("../app.css", import.meta.url), "utf8");
+const seasonalCss = await readFile(new URL("../seasonal.css", import.meta.url), "utf8");
 const sw = await readFile(new URL("../sw.js", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../manifest.json", import.meta.url), "utf8"));
 const worker = await readFile(new URL("../ai-worker/src/index.js", import.meta.url), "utf8");
@@ -138,7 +139,7 @@ test("seasonal ambience is a static low-contrast top-bar backdrop", () => {
   assert.match(app, /function setupSeasonalAmbience/);
   assert.doesNotMatch(app, /seasonal-particle|seasonalDrift/);
   assert.match(seasonalCss, /#topNavigation::before/);
-  assert.match(seasonalCss, /body\\.seasonal-enabled #topNavigation::before/);
+  assert.match(seasonalCss, /body\.seasonal-enabled #topNavigation::before/);
   assert.doesNotMatch(seasonalCss, /@keyframes|seasonal-particle/);
  });
 

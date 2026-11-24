@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./app.css?v=210">
+<link rel="stylesheet" href="./app.css?v=211">
 <link rel="stylesheet" href="./explore-hub.css?v=5">
 </head>
 <body>
@@ -359,6 +359,20 @@
  <section class="theme-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="themePickerTitle">
   <div class="modal-head"><h2 id="themePickerTitle">اختر لون التطبيق</h2><button type="button" id="themePickerClose" aria-label="إغلاق">×</button></div>
   <p class="theme-picker-note">اختر اللون الذي يعجبك، ثم اضغط موافق لتطبيقه على الواجهة.</p>
+  <section class="seasonal-settings" aria-labelledby="seasonalTitle">
+   <div class="seasonal-settings-head"><div><h3 id="seasonalTitle">أجواء الفصول</h3><p>لمسات موسمية متحركة في الشريط وبعض أجزاء التطبيق.</p></div>
+    <label class="seasonal-switch"><input id="seasonalEnabled" type="checkbox"><span>تفعيل التأثيرات</span></label>
+   </div>
+   <label class="theme-color-label" for="seasonSelect">اختر الفصل</label>
+   <select id="seasonSelect" class="season-select">
+    <option value="auto">تلقائي حسب التاريخ</option>
+    <option value="spring">الربيع 🌸</option>
+    <option value="summer">الصيف ☀</option>
+    <option value="autumn">الخريف 🍂</option>
+    <option value="winter">الشتاء ❄</option>
+   </select>
+   <small class="seasonal-hint">ألوان النمط الذي اخترته لا تتغير. يمكنك إيقاف الحركة في أي وقت.</small>
+  </section>
   <label class="theme-color-label" for="themeColorInput">دائرة اختيار الألوان</label>
   <div class="theme-color-stage"><canvas id="themeColorWheel" class="theme-color-wheel" width="280" height="280" role="slider" tabindex="0" aria-label="عجلة الألوان: اختر درجة اللون والتشبع" aria-valuetext="أزرق"></canvas><div class="theme-color-readout"><span id="themeColorSwatch" aria-hidden="true"></span><b id="themeColorHex">#285B86</b><small>اضغط أو اسحب داخل العجلة</small></div></div>
   <div class="theme-preview" id="themePreview"><span>معاينة اللون</span><b>بين قلبين برو</b><small>هذا مثال لشكل اللون في التطبيق</small></div>
@@ -367,6 +381,6 @@
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>
 <script src="./content-data.js?v=97" defer></script>
-<script src="./app.js?v=154" defer></script>
+<script src="./app.js?v=155" defer></script>
 <script src="./ai-studio.js?v=103" defer></script>
 </body></html>

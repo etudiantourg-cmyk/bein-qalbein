@@ -141,6 +141,10 @@ test("seasonal ambience is a static low-contrast top-bar backdrop", () => {
   assert.match(seasonalCss, /#topNavigation::before/);
   assert.match(seasonalCss, /body\.seasonal-enabled #topNavigation::before/);
   assert.doesNotMatch(seasonalCss, /@keyframes|seasonal-particle/);
+  assert.match(seasonalCss, /Premium seasonal artwork/);
+  assert.match(seasonalCss, /--season-artwork:url\("data:image\\/svg\+xml/);
+  assert.match(seasonalCss, /#topNavigation::after/);
+  assert.doesNotMatch(seasonalCss, /radial-gradient\(ellipse/);
  });
 
 test("theme picker offers exactly six curated accessible palettes", async () => {

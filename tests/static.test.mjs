@@ -142,7 +142,8 @@ test("seasonal ambience is a static low-contrast top-bar backdrop", () => {
   assert.match(seasonalCss, /body\.seasonal-enabled #topNavigation::before/);
   assert.doesNotMatch(seasonalCss, /@keyframes|seasonal-particle/);
   assert.match(seasonalCss, /Premium seasonal artwork/);
-  assert.match(seasonalCss, /--season-artwork:url\("data:image\\/svg\+xml/);
+  assert.ok(seasonalCss.includes('--season-artwork:url("data:image/svg+xml'), "seasonal SVG artwork data URI is present");
+  assert.match(app, /savedSeasonEnabled===null\?true:savedSeasonEnabled===\x27on\x27/);
   assert.match(seasonalCss, /#topNavigation::after/);
   assert.doesNotMatch(seasonalCss, /radial-gradient\(ellipse/);
  });

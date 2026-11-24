@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./app.css?v=212">
 <link rel="stylesheet" href="./seasonal.css?v=2">
-<link rel="stylesheet" href="./theme-palette.css?v=1">
+<link rel="stylesheet" href="./theme-palette.css?v=2">
 <link rel="stylesheet" href="./explore-hub.css?v=5">
 </head>
 <body>
@@ -359,8 +359,9 @@
 </div>
 <div id="themePickerModal" class="modal-backdrop theme-picker-backdrop" hidden>
  <section class="theme-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="themePickerTitle">
-  <div class="modal-head"><h2 id="themePickerTitle">اختر لون التطبيق</h2><button type="button" id="themePickerClose" aria-label="إغلاق">×</button></div>
-  <p class="theme-picker-note">اختر اللون الذي يعجبك، ثم اضغط موافق لتطبيقه على الواجهة.</p>
+  <div class="modal-head"><h2 id="themePickerTitle">اختر النمط واللون</h2><button type="button" id="themePickerClose" aria-label="إغلاق">×</button></div>
+  <p class="theme-picker-note">اختر اللون أو الأجواء، ثم اضغط زر «تطبيق النمط» الثابت أسفل النافذة لحفظ اختيارك.</p>
+  <div class="theme-picker-scroll">
   <section class="seasonal-settings" aria-labelledby="seasonalTitle">
    <div class="seasonal-settings-top">
     <div class="seasonal-settings-copy">
@@ -426,7 +427,8 @@
    <div class="theme-preview-bar"><span></span><span></span><span></span></div>
    <div class="theme-preview-content"><small>معاينة اللون المختار</small><b id="themeColorName" class="theme-preview-name">عنابي ملكي</b><span id="themeColorSwatch" aria-hidden="true"></span></div>
   </div>
-  <div class="theme-picker-actions"><button type="button" id="themeFactoryReset" class="theme-factory-reset">اللون الافتراضي</button><button type="button" id="themeColorConfirm" class="primary">اعتماد اللون</button></div>
+  </div>
+  <div class="theme-picker-actions"><button type="button" id="themeFactoryReset" class="theme-factory-reset">استعادة الافتراضي</button><button type="button" id="themeColorConfirm" class="primary">تطبيق النمط</button></div>
  </section>
 </div>
 <footer id="appFooter">صُنع بالمحبة والاحترام</footer>

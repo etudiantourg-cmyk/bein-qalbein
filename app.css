@@ -7,3 +7,24 @@
 .language-tool-icon,.language-tool-icon svg{display:block;width:23px;height:23px}
 .language-tool-label{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .language-tool-select{position:absolute;inset:0;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;opacity:0;cursor:pointer;border:0!important;border-radius:12px!important}
+
+/* Seasonal ambience controls and decorative overlay. Does not override the selected palette. */
+.seasonal-settings{margin:16px 0;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.seasonal-settings-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.seasonal-settings-head h3{margin:0 0 3px;font-size:16px}
+.seasonal-settings-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.seasonal-switch{display:inline-flex;align-items:center;gap:7px;margin:0;color:var(--wine);font-size:13px;font-weight:800;white-space:nowrap}
+.seasonal-switch input{width:19px;height:19px;min-height:19px;accent-color:var(--wine)}
+.season-select{margin-top:0}
+.seasonal-hint{display:block;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.6}
+.seasonal-effects{position:fixed;inset:0;z-index:101;overflow:hidden;pointer-events:none;contain:layout paint}
+.seasonal-particle{position:absolute;top:-8vh;left:var(--season-x);font-size:var(--season-size);line-height:1;opacity:.48;color:var(--season-tint,var(--gold));text-shadow:0 1px 5px rgba(0,0,0,.12);will-change:transform;animation:seasonalFall var(--season-duration) linear var(--season-delay) infinite}
+@keyframes seasonalFall{0%{transform:translate3d(0,-4vh,0) rotate(0deg);opacity:0}10%{opacity:.48}85%{opacity:.34}100%{transform:translate3d(var(--season-drift),112vh,0) rotate(260deg);opacity:0}}
+body[data-bq-season="spring"]{--season-tint:#e99ab7}
+body[data-bq-season="summer"]{--season-tint:#e8bd65}
+body[data-bq-season="autumn"]{--season-tint:#c97836}
+body[data-bq-season="winter"]{--season-tint:#8cb8df}
+body.seasonal-enabled .top-navigation{box-shadow:inset 0 -2px 0 color-mix(in srgb,var(--season-tint) 48%,transparent),0 5px 20px rgba(20,40,65,.22)}
+body.seasonal-enabled .quick-hub{border-color:color-mix(in srgb,var(--season-tint) 45%,var(--line))}
+@media(prefers-reduced-motion:reduce){.seasonal-particle{animation:none!important;display:none!important}}
+@media(max-width:480px){.seasonal-effects{inset:0 0 auto;height:100vh}.seasonal-particle{opacity:.34}}

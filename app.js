@@ -1788,4 +1788,4 @@ function advanceMiniGame(){
  enabledInput.addEventListener('change',apply);
  seasonSelect.addEventListener('change',apply);
  apply();
-};
+})();

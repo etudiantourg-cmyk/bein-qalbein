@@ -1,0 +1,15 @@
+/* Seasonal accents are deliberately confined to the top navigation bar. */
+#topNavigation{position:relative;isolation:isolate}
+#topNavigation>.seasonal-effects{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;contain:layout paint;border-radius:inherit}
+#topNavigation>.seasonal-effects~*{position:relative;z-index:2}
+.seasonal-particle{position:absolute;top:-12px;left:var(--season-x);width:var(--season-width);height:var(--season-height);border-radius:var(--season-radius);background:var(--season-tint);opacity:.62;filter:drop-shadow(0 1px 2px rgba(0,0,0,.12));will-change:transform;animation:seasonalDrift var(--season-duration) ease-in-out var(--season-delay) infinite}
+@keyframes seasonalDrift{0%{transform:translate3d(0,-12px,0) rotate(0deg);opacity:0}12%{opacity:.62}85%{opacity:.42}100%{transform:translate3d(var(--season-drift),110px,0) rotate(150deg);opacity:0}}
+body[data-bq-season="spring"]{--season-tint:#f1a9c2}
+body[data-bq-season="summer"]{--season-tint:#f0c76f}
+body[data-bq-season="autumn"]{--season-tint:#d88b4c}
+body[data-bq-season="winter"]{--season-tint:#a8cde9}
+.seasonal-particle[data-season="spring"]{--season-width:7px;--season-height:12px;--season-radius:85% 15% 85% 15%}
+.seasonal-particle[data-season="summer"]{--season-width:8px;--season-height:8px;--season-radius:50%;box-shadow:0 0 9px var(--season-tint)}
+.seasonal-particle[data-season="autumn"]{--season-width:8px;--season-height:13px;--season-radius:80% 20% 80% 20%}
+.seasonal-particle[data-season="winter"]{--season-width:5px;--season-height:5px;--season-radius:50%;box-shadow:0 0 5px rgba(255,255,255,.7)}
+@media(prefers-reduced-motion:reduce){.seasonal-particle{animation:none!important;display:none!important}}

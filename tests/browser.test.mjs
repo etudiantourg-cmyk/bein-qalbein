@@ -75,7 +75,19 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     });
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
     await page.locator("#cats .cat").first().waitFor();
-    await page.locator(".home-top-shortcuts[data-tabs-ready=\"1\"]").waitFor({ state: "attached" });
+    await page.waitForTimeout(100);
+    const startupState = await page.evaluate(() => ({
+      shortcuts: !!document.querySelector(".home-top-shortcuts"),
+      host: !!document.getElementById("homeShortcutContent"),
+      favorites: !!document.getElementById("favoritesPage"),
+      library: !!document.getElementById("libraryPage"),
+      guide: !!document.querySelector('.page-section[data-page="guide"]'),
+      ai: !!document.getElementById("aiMessagePanel"),
+      services: !!document.querySelector('main > .page-section[data-page="services"]'),
+      ready: document.querySelector(".home-top-shortcuts")?.dataset.tabsReady || null
+    }));
+    assert.deepEqual(pageErrors, [], `startup errors before shortcut setup: ${pageErrors.join(" | ")}`);
+    assert.ok(startupState.ready === "1", `homepage shortcut controller did not initialize: ${JSON.stringify(startupState)}`);
     const homeNav = page.locator('#topNav button[data-go="home"]');
     const assertHomeIconNeutral = async () => {
       const visual = await homeNav.evaluate(button => ({

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./app.css?v=212">
-<link rel="stylesheet" href="./seasonal.css?v=1">
+<link rel="stylesheet" href="./seasonal.css?v=2">
 <link rel="stylesheet" href="./theme-palette.css?v=1">
 <link rel="stylesheet" href="./explore-hub.css?v=5">
 </head>
@@ -362,18 +362,35 @@
   <div class="modal-head"><h2 id="themePickerTitle">اختر لون التطبيق</h2><button type="button" id="themePickerClose" aria-label="إغلاق">×</button></div>
   <p class="theme-picker-note">اختر اللون الذي يعجبك، ثم اضغط موافق لتطبيقه على الواجهة.</p>
   <section class="seasonal-settings" aria-labelledby="seasonalTitle">
-   <div class="seasonal-settings-head"><div><h3 id="seasonalTitle">أجواء الفصول</h3><p>تأثيرات موسمية هادئة داخل الشريط العلوي فقط، دون رموز نجميّة أو صليبيّة.</p></div>
-    <label class="seasonal-switch"><input id="seasonalEnabled" type="checkbox"><span>تفعيل التأثيرات</span></label>
+   <div class="seasonal-settings-top">
+    <div class="seasonal-settings-copy">
+     <span class="seasonal-eyebrow">تفاصيل جمالية</span>
+     <h3 id="seasonalTitle">خلفية موسمية أنيقة</h3>
+     <p>لمسة فنية هادئة تظهر خلف الشريط العلوي فقط، وتبقى النصوص والأزرار والبيانات واضحة بالكامل.</p>
+    </div>
+    <label class="seasonal-switch" for="seasonalEnabled">
+     <input id="seasonalEnabled" type="checkbox">
+     <span class="seasonal-switch-track" aria-hidden="true"></span>
+     <span class="seasonal-switch-label">تفعيل</span>
+    </label>
    </div>
-   <label class="theme-color-label" for="seasonSelect">اختر الفصل</label>
-   <select id="seasonSelect" class="season-select">
-    <option value="auto">تلقائي حسب التاريخ</option>
-    <option value="spring">الربيع 🌸</option>
-    <option value="summer">الصيف ☀</option>
-    <option value="autumn">الخريف 🍂</option>
-    <option value="winter">الشتاء ❄</option>
+   <div class="seasonal-preview" id="seasonalPreview" data-preview-season="spring" aria-hidden="true">
+    <span class="seasonal-preview-caption">معاينة الخلفية</span>
+    <span class="seasonal-preview-title">بين قلبين <small>PRO</small></span>
+    <span class="seasonal-preview-glow"></span>
+   </div>
+   <div class="seasonal-choice-heading"><b>اختر الأجواء</b><span>أو اتركها تلقائية</span></div>
+   <div class="seasonal-choice-grid" role="group" aria-label="اختيار الأجواء الموسمية">
+    <button type="button" class="season-choice is-active" data-season-choice="auto" aria-pressed="false"><span class="season-choice-art season-art-auto"></span><b>تلقائي</b><small>حسب التاريخ</small></button>
+    <button type="button" class="season-choice" data-season-choice="spring" aria-pressed="false"><span class="season-choice-art season-art-spring"></span><b>الربيع</b><small>انتعاش ناعم</small></button>
+    <button type="button" class="season-choice" data-season-choice="summer" aria-pressed="false"><span class="season-choice-art season-art-summer"></span><b>الصيف</b><small>دفء وإشراق</small></button>
+    <button type="button" class="season-choice" data-season-choice="autumn" aria-pressed="false"><span class="season-choice-art season-art-autumn"></span><b>الخريف</b><small>دفء ترابي</small></button>
+    <button type="button" class="season-choice" data-season-choice="winter" aria-pressed="false"><span class="season-choice-art season-art-winter"></span><b>الشتاء</b><small>هدوء بارد</small></button>
+   </div>
+   <select id="seasonSelect" class="season-select" aria-label="الفصل الموسمي" tabindex="-1">
+    <option value="auto">تلقائي حسب التاريخ</option><option value="spring">الربيع</option><option value="summer">الصيف</option><option value="autumn">الخريف</option><option value="winter">الشتاء</option>
    </select>
-   <small class="seasonal-hint">ألوان النمط الذي اخترته لا تتغير. يمكنك إيقاف الحركة في أي وقت.</small>
+   <small class="seasonal-hint">الخلفية ثابتة وغير متحركة، ولا تحجب أي عنصر من عناصر الشريط.</small>
   </section>
   <fieldset class="palette-fieldset">
    <legend class="theme-color-label">اختر لون واجهتك</legend>

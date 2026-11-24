@@ -128,6 +128,20 @@ test("PWA cache and manifest remain coherent and avoid heavy first-install downl
 });
 
 
+
+test("seasonal ambience is a static low-contrast top-bar backdrop", () => {
+  assert.match(html, /seasonal-preview/);
+  assert.match(html, /data-season-choice="spring"/);
+  assert.match(html, /data-season-choice="summer"/);
+  assert.match(html, /data-season-choice="autumn"/);
+  assert.match(html, /data-season-choice="winter"/);
+  assert.match(app, /function setupSeasonalAmbience/);
+  assert.doesNotMatch(app, /seasonal-particle|seasonalDrift/);
+  assert.match(seasonalCss, /#topNavigation::before/);
+  assert.match(seasonalCss, /body\\.seasonal-enabled #topNavigation::before/);
+  assert.doesNotMatch(seasonalCss, /@keyframes|seasonal-particle/);
+ });
+
 test("theme picker offers exactly six curated accessible palettes", async () => {
   const paletteCss = await readFile(new URL("../theme-palette.css", import.meta.url), "utf8");
   const choices = [...html.matchAll(/data-palette-choice="([^"]+)"/g)].map(match => match[1]);

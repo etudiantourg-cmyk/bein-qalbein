@@ -1692,25 +1692,23 @@ function advanceMiniGame(){
  if(!enabledInput||!seasonSelect)return;
  const reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');
  const seasonForDate=()=>{const month=new Date().getMonth()+1;return month>=3&&month<=5?'spring':month>=6&&month<=8?'summer':month>=9&&month<=11?'autumn':'winter'};
- const labels={spring:['✿','❀','✧','❀'],summer:['✦','·','☼','✧'],autumn:['❧','🍂','✦','❧'],winter:['❄','✧','❅','❄']};
  let layer=null;
  function clearLayer(){if(layer){layer.remove();layer=null}}
  function buildLayer(season){
   clearLayer();
   if(!enabledInput.checked||reducedMotion?.matches)return;
+  const host=document.getElementById('topNavigation');if(!host)return;
   layer=document.createElement('div');layer.className='seasonal-effects';layer.setAttribute('aria-hidden','true');
-  const symbols=labels[season]||labels.spring;
-  for(let i=0;i<14;i++){
+  for(let i=0;i<12;i++){
    const particle=document.createElement('span');particle.className='seasonal-particle';
-   particle.textContent=symbols[i%symbols.length];
+   particle.dataset.season=season;
    particle.style.setProperty('--season-x',((i*37+9)%100)+'%');
    particle.style.setProperty('--season-delay',(-((i*1.73)%18))+'s');
    particle.style.setProperty('--season-duration',(15+(i%6)*2)+'s');
    particle.style.setProperty('--season-drift',(((i%5)-2)*24)+'px');
-   particle.style.setProperty('--season-size',(12+(i%4)*4)+'px');
    layer.append(particle);
   }
-  document.body.append(layer);
+  host.prepend(layer);
  }
  function apply(){
   const selected=seasonSelect.value;

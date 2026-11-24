@@ -326,6 +326,18 @@ test("real browser smoke: startup, categories, language, favorites, guide and se
     await page.locator('button[data-menu-toggle]').click();
     await page.locator("#settingsDrawer:not([hidden])").waitFor();
     await auditAccessibility("settings");
+    await page.locator("#themePickerOpen").click();
+    await page.locator("#themePickerModal").waitFor({ state: "visible" });
+    await page.locator('[data-palette-choice="ocean"]').click();
+    assert.equal(await page.locator('[data-palette-choice="ocean"]').getAttribute("aria-pressed"), "true");
+    assert.equal(await page.locator("#themeColorConfirm").innerText(), "تطبيق النمط");
+    assert.equal(await page.locator("#themeColorConfirm").isVisible(), true, "apply action must remain visible in the appearance picker");
+    await page.locator("#themeColorConfirm").click();
+    assert.ok(await page.locator("body").evaluate(el => el.classList.contains("theme-custom")));
+    assert.equal(await page.locator("body").evaluate(el => el.dataset.bqPalette), "ocean");
+    await page.locator("#themePickerOpen").click();
+    await page.locator('[data-palette-choice="royal"]').click();
+    await page.locator("#themeColorConfirm").click();
     await page.locator("#themeToggle").click();
     assert.ok(await page.locator("body").evaluate(el => el.classList.contains("dark-mode")));
     await auditAccessibility("settings dark theme");
